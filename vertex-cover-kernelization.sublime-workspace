@@ -1,0 +1,2834 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"inc",
+				"include"
+			],
+			[
+				"In",
+				"InferenceTest"
+			],
+			[
+				"Skip",
+				"SkipList"
+			],
+			[
+				"copi",
+				"copiedList"
+			],
+			[
+				"the",
+				"theVal"
+			],
+			[
+				"current",
+				"currentHeight"
+			],
+			[
+				"in",
+				"include"
+			],
+			[
+				"SkipL",
+				"SkipList"
+			],
+			[
+				"curre",
+				"currentHeight"
+			],
+			[
+				"skip",
+				"SkipListNode"
+			],
+			[
+				"currn",
+				"currentHeight"
+			],
+			[
+				"exi",
+				"existingScopedVariableNames"
+			],
+			[
+				"DECL",
+				"DECLARATION_GETTERS"
+			],
+			[
+				"get",
+				"getVariableDeclarations"
+			],
+			[
+				"expe",
+				"expectedPropertiesForFirstEntry"
+			],
+			[
+				"printin",
+				"printingLayoutUrlFormat"
+			],
+			[
+				"printingLay",
+				"printingLayoutService"
+			],
+			[
+				"printing",
+				"printingLayoutFileName"
+			],
+			[
+				"printingL",
+				"printingLayoutCode"
+			],
+			[
+				"existingLa",
+				"existingLayoutJson"
+			],
+			[
+				"printingLayou",
+				"printingLayoutFileName"
+			],
+			[
+				"existing",
+				"existingLayoutJson"
+			],
+			[
+				"printingLa",
+				"printingLayoutFile"
+			],
+			[
+				"versi",
+				"versionLabel"
+			],
+			[
+				"method",
+				"method	@method"
+			],
+			[
+				"prototy",
+				"prototypeRowId"
+			],
+			[
+				"getDa",
+				"getDataTypeFor"
+			],
+			[
+				"te",
+				"addedTechnicalParameters"
+			],
+			[
+				"has",
+				"hasOwnProperty"
+			],
+			[
+				"getDefinitio",
+				"getDefinitionWithTechnicalMetadata"
+			],
+			[
+				"require",
+				"requireParam"
+			],
+			[
+				"doc",
+				"docParser"
+			],
+			[
+				"hasTable",
+				"hasTableNameInSegment"
+			],
+			[
+				"tabu",
+				"tabularChildrenIndices"
+			],
+			[
+				"collection",
+				"collectionIsFlattened"
+			],
+			[
+				"docume",
+				"documentationParser"
+			],
+			[
+				"reference",
+				"referenceElementList"
+			],
+			[
+				"transac",
+				"transactionName"
+			],
+			[
+				"documen",
+				"documentationParser"
+			],
+			[
+				"Transa",
+				"TransactionDefinitionAdjuster"
+			],
+			[
+				"Tra",
+				"TransactionDefinitionAdjuster"
+			],
+			[
+				"unify",
+				"unifyTechnicalMetadata"
+			],
+			[
+				"getDe",
+				"getDefinitionWithTechnicalMetadata"
+			],
+			[
+				"remo",
+				"removeChildrenWithName"
+			],
+			[
+				"docu",
+				"documentationParser"
+			],
+			[
+				"unif",
+				"unifyTechnicalMetadata"
+			],
+			[
+				"req",
+				"requireParameter"
+			],
+			[
+				"u",
+				"unifyTechnicalMetadata"
+			],
+			[
+				"metadata",
+				"metadataToUnify"
+			],
+			[
+				"added",
+				"addedTechnicalParameters"
+			],
+			[
+				"state",
+				"statements"
+			],
+			[
+				"check",
+				"checkParameter"
+			],
+			[
+				"tec",
+				"technicalMetadataColumns"
+			],
+			[
+				"specific",
+				"specificProperty"
+			],
+			[
+				"string",
+				"STRING"
+			],
+			[
+				"tabul",
+				"tabularNameExtractor"
+			],
+			[
+				"omit",
+				"omitTrasactionSuffix"
+			],
+			[
+				"disallo",
+				"disallowedTypes"
+			],
+			[
+				"chap",
+				"chapterNumber"
+			],
+			[
+				"getTransa",
+				"getTransactionNames"
+			],
+			[
+				"schemaDo",
+				"schemaDocumentationFilePath"
+			],
+			[
+				"NEW",
+				"NEWLINE_AND_INDENT"
+			],
+			[
+				"tech",
+				"technicalIdShouldBeMandatory"
+			],
+			[
+				"techni",
+				"technicalId"
+			],
+			[
+				"document",
+				"DocumentationParser"
+			],
+			[
+				"error",
+				"errorCodes"
+			],
+			[
+				"technica",
+				"technicalMetadataOnly"
+			],
+			[
+				"getTransactions",
+				"getTransactionGroupSuffixPattern"
+			],
+			[
+				"trana",
+				"transactionName"
+			],
+			[
+				"ges",
+				"gesParser"
+			],
+			[
+				"getDataF",
+				"getDataForKey"
+			],
+			[
+				"getData",
+				"getGesDataForKey"
+			],
+			[
+				"GESCS",
+				"GESCsvParser"
+			],
+			[
+				"initi",
+				"initializeDone"
+			],
+			[
+				"task",
+				"taskQueue"
+			],
+			[
+				"GESCs",
+				"GESCsvParsser"
+			],
+			[
+				"requireParam",
+				"requireParameter"
+			],
+			[
+				"GES",
+				"GES_MEMO_FILE_PATH"
+			],
+			[
+				"case",
+				"caseConverter"
+			],
+			[
+				"unique",
+				"uniqueDistinctKeys"
+			],
+			[
+				"chapter",
+				"chapterFormat"
+			],
+			[
+				"elementDoes",
+				"elementDoesNotBelongToAnyTable"
+			],
+			[
+				"elementBelongsTo",
+				"elementBelongsToAnyTable"
+			],
+			[
+				"elementBelon",
+				"elementBelongsToGivenTable"
+			],
+			[
+				"nonTabu",
+				"nonTabularChildrenIndices"
+			],
+			[
+				"flattene",
+				"flattened"
+			],
+			[
+				"corre",
+				"correctInconsistentDefinitionName"
+			],
+			[
+				"create",
+				"createInsertStatement"
+			],
+			[
+				"actua",
+				"actualTabularElements"
+			],
+			[
+				"__",
+				"__xmlSourceType__"
+			],
+			[
+				"transactiongroup",
+				"transactionGroupTableName"
+			],
+			[
+				"groupOnly",
+				"groupOnlySource"
+			],
+			[
+				"DOCUM",
+				"DOCUMENTATION_FOLDER_PATH"
+			],
+			[
+				"getX",
+				"getXslParamTag"
+			],
+			[
+				"xslTran",
+				"XSLTransformCreator"
+			],
+			[
+				"createStyles",
+				"createStylesheet"
+			],
+			[
+				"apply",
+				"applyTemplatesIndex"
+			],
+			[
+				"buildJ",
+				"buildJsonConfigForTables"
+			],
+			[
+				"ETTransf",
+				"ETTransformCreator"
+			],
+			[
+				"character",
+				"previousCharacter"
+			],
+			[
+				"integration",
+				"integrationJsonOutput"
+			],
+			[
+				"schema",
+				"schemaDocumentationFilePath"
+			],
+			[
+				"ColumN",
+				"ColumnDefinitionParser"
+			],
+			[
+				"transaction",
+				"transactionName"
+			],
+			[
+				"docum",
+				"documentationFilePath"
+			],
+			[
+				"schem",
+				"schemaDocumentationFilePath (str)"
+			],
+			[
+				"trasn",
+				"transactionGroupInformer (?)"
+			],
+			[
+				"technicalI",
+				"technicalIdShouldBeMandatory"
+			],
+			[
+				"XSLTransfo",
+				"XSLTransformCreator"
+			],
+			[
+				"getChapter",
+				"getChapterHeaderSplitter"
+			],
+			[
+				"getEssentil",
+				"getEssentialityTypePattern"
+			],
+			[
+				"column",
+				"columnOverrides"
+			],
+			[
+				"should",
+				"shouldHaveTechnicalId"
+			],
+			[
+				"if",
+				"ife	if … else"
+			],
+			[
+				"documentation",
+				"documentationParser"
+			],
+			[
+				"xhtml",
+				"xhtmlTemplate"
+			],
+			[
+				"actualElement",
+				"actualElementList"
+			],
+			[
+				"referenceEleme",
+				"referenceElementTree"
+			],
+			[
+				"getcolumn",
+				"getColumnFromConfig"
+			],
+			[
+				"createTemplate",
+				"createXhtmlTemplate"
+			],
+			[
+				"locationIden",
+				"locationIdentifierDiff"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"testedCh",
+				"testedChapterFormat"
+			],
+			[
+				"buildJson",
+				"buildJsonConfigForXml"
+			],
+			[
+				"getAll",
+				"getAllElements"
+			],
+			[
+				"lastItemWithou",
+				"lastItemWithoutDataType"
+			],
+			[
+				"essentiality",
+				"essentialityType"
+			],
+			[
+				"essentialityType",
+				"essentialityTypes"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/Equals.cpp",
+			"settings":
+			{
+				"buffer_size": 423,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/helluin/Dropbox/JavaScript/node/highland.js",
+			"settings":
+			{
+				"buffer_size": 157,
+				"line_ending": "Unix",
+				"name": "#!/usr/bin/env/node"
+			}
+		},
+		{
+			"file": "src/headers/Suite.h",
+			"settings":
+			{
+				"buffer_size": 331,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AbstractTest.cpp",
+			"settings":
+			{
+				"buffer_size": 439,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Suite.cpp",
+			"settings":
+			{
+				"buffer_size": 526,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/selftest.cpp",
+			"settings":
+			{
+				"buffer_size": 309,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/User/g++.sublime-build",
+	"command_palette":
+	{
+		"height": 400.0,
+		"selected_items":
+		[
+			[
+				"ast",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"rename",
+				"File: Rename"
+			],
+			[
+				"build",
+				"Build: Build"
+			],
+			[
+				"asty",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"move",
+				"File: Move"
+			],
+			[
+				"folder",
+				"Project: Add Folder"
+			],
+			[
+				"git push ",
+				"Git: Push Current Branch"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git status",
+				"Git: Status"
+			],
+			[
+				"git add ",
+				"Git: Add..."
+			],
+			[
+				"as",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"st",
+				"Snippet: Typedef"
+			],
+			[
+				"c++",
+				"Set Syntax: C++"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"modific ",
+				"Modific: Show original part"
+			],
+			[
+				"modific",
+				"Modific: Revert modified part"
+			],
+			[
+				"modifi",
+				"Modific: Revert modified part"
+			],
+			[
+				"syntax tas",
+				"Set Syntax: Tasks"
+			],
+			[
+				"tasks",
+				"Tasks: New"
+			],
+			[
+				"modifc ",
+				"Modific: Show diff"
+			],
+			[
+				"git comit",
+				"Git: Commit"
+			],
+			[
+				"error",
+				"SublimeLinter: Next Error"
+			],
+			[
+				"lint",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"git show ta",
+				"Git: Show Tags"
+			],
+			[
+				"git tag",
+				"Git: New Tag"
+			],
+			[
+				"aSTY",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"astyle",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"g",
+				"Git: Pull"
+			],
+			[
+				"astyl",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"delete",
+				"File: Delete"
+			],
+			[
+				"dele",
+				"File: Delete"
+			],
+			[
+				"reset",
+				"Git: Reset (unstage) Current File"
+			],
+			[
+				"file reve",
+				"File: Revert"
+			],
+			[
+				"sublimegdb",
+				"SublimeGDB: Start Debugging"
+			],
+			[
+				"gdb",
+				"SublimeREPL: GDB"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"sublimerge",
+				"Sublimerge: View Diff"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"svn commi",
+				"SVN: Commit…"
+			],
+			[
+				"svn resol",
+				"SVN: Resolve Tree Conflict, Interactive…"
+			],
+			[
+				"svn resolve",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn commit",
+				"SVN: Commit…"
+			],
+			[
+				"file diff cu",
+				"SVN: (File) Diff, Custom Revisions…"
+			],
+			[
+				"svn diff",
+				"SVN: (File) Diff, Custom Revisions…"
+			],
+			[
+				"svn log",
+				"SVN: Log"
+			],
+			[
+				"svn update",
+				"SVN: Update"
+			],
+			[
+				"svn updat",
+				"SVN: Update"
+			],
+			[
+				"vn commit",
+				"SVN: Commit…"
+			],
+			[
+				"log",
+				"SVN: (File) Log"
+			],
+			[
+				"vn commi",
+				"SVN: Commit…"
+			],
+			[
+				"blame",
+				"SVN: (File) Blame"
+			],
+			[
+				"file resolve",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn updt",
+				"SVN: Update"
+			],
+			[
+				"Svn commit",
+				"SVN: Commit…"
+			],
+			[
+				"SVN COMMIT",
+				"SVN: Commit…"
+			],
+			[
+				"vn update",
+				"SVN: Update"
+			],
+			[
+				"diff",
+				"SVN: Diff"
+			],
+			[
+				"svn add ",
+				"SVN: Add, Interactive…"
+			],
+			[
+				"file revert",
+				"SVN: (File) Revert"
+			],
+			[
+				"xml",
+				"Set Syntax: XML"
+			],
+			[
+				"svn add",
+				"SVN: Add, Interactive…"
+			],
+			[
+				"svn status",
+				"SVN: Status"
+			],
+			[
+				"commit",
+				"SVN: Commit…"
+			],
+			[
+				"file diff",
+				"SVN: (File) Diff"
+			],
+			[
+				"vn add",
+				"SVN: Add, Interactive…"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"rebuild",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"svn blame",
+				"SVN: (File) Blame"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"file log",
+				"SVN: (File) Log"
+			],
+			[
+				"svn co",
+				"SVN: (File) Commit"
+			],
+			[
+				"vn status",
+				"SVN: Status"
+			],
+			[
+				"svn ad",
+				"SVN: Add, Interactive…"
+			],
+			[
+				"svn cleanup",
+				"SVN: Cleanup"
+			],
+			[
+				"svn file diff",
+				"SVN: (File) Diff"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"enable ",
+				"Package Control: Enable Package"
+			],
+			[
+				"remove pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"linter",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"upg",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"sublimelin",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"svn file log",
+				"SVN: (File) Log"
+			],
+			[
+				"svn updte",
+				"SVN: Update, Including Externals"
+			],
+			[
+				"vn resolve",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn file d",
+				"SVN: (File) Diff"
+			],
+			[
+				"vn blame",
+				"SVN: (File) Blame"
+			],
+			[
+				"sn add",
+				"SVN: Add, Interactive…"
+			],
+			[
+				"svn file blame",
+				"SVN: (File) Blame"
+			],
+			[
+				"resolve",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"sv commit",
+				"SVN: Commit…"
+			],
+			[
+				"svn file lo",
+				"SVN: (File) Log"
+			],
+			[
+				"svn rever",
+				"SVN: (File) Revert"
+			],
+			[
+				"svn revert",
+				"SVN: (File) Revert"
+			],
+			[
+				"svn commit ",
+				"SVN: Commit…"
+			],
+			[
+				"svn file bl",
+				"SVN: (File) Blame"
+			],
+			[
+				"svn ile sta",
+				"SVN: (File) Status"
+			],
+			[
+				"task",
+				"Set Syntax: Task"
+			],
+			[
+				"svn comm",
+				"SVN: (Folder) Commit"
+			],
+			[
+				"svn clean",
+				"SVN: Cleanup"
+			],
+			[
+				"svn file bla",
+				"SVN: (File) Blame"
+			],
+			[
+				"svn comit",
+				"SVN: Commit…"
+			],
+			[
+				"svn file re",
+				"SVN: (File) Revert"
+			],
+			[
+				"svn dif",
+				"SVN: (File) Diff"
+			],
+			[
+				"file dif",
+				"SVN: (File) Diff"
+			],
+			[
+				"toggle s",
+				"View: Toggle Status Bar"
+			],
+			[
+				"v status",
+				"View: Toggle Status Bar"
+			],
+			[
+				"file rever",
+				"SVN: (File) Revert"
+			],
+			[
+				"show scope",
+				"Scope Hunter: Show Scope Under Cursor(s)"
+			],
+			[
+				"show scop",
+				"Scope Hunter: Show Scope Under Cursor(s)"
+			],
+			[
+				"scope",
+				"Scope Hunter: Show Scope Under Cursor(s)"
+			],
+			[
+				"scopeh",
+				"Scope Hunter: Toggle Instant Scoper"
+			],
+			[
+				"html",
+				"Snippet: html"
+			],
+			[
+				"svn res",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"jsh",
+				"JSHint"
+			],
+			[
+				"status",
+				"SVN: Status"
+			],
+			[
+				"resol",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn upda",
+				"SVN: Update"
+			],
+			[
+				"svn up",
+				"SVN: Update"
+			],
+			[
+				"sv clea",
+				"SVN: Cleanup"
+			],
+			[
+				"",
+				"BracketHighlighter: Fold Bracket Content"
+			],
+			[
+				"svn file update",
+				"SVN: (File) Update"
+			],
+			[
+				"file diff ",
+				"SVN: (File) Diff"
+			],
+			[
+				"svn diff ",
+				"SVN: Diff, Custom Revisions…"
+			],
+			[
+				"svn info",
+				"SVN: Info"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
+			]
+		],
+		"width": 653.0
+	},
+	"console":
+	{
+		"height": 241.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Suite.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTest.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTestBase.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/Suite.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/InferenceTest.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/AbstractTest.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/vertex-cover-kernelization.sublime-project",
+		"/home/helluin/.config/sublime-text-3/Packages/User/g++.sublime-build",
+		"/home/helluin/Documents/Projects/vertex-cover-kernelizationsublime-project",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/test/inference",
+		"/home/helluin/Documents/Projects/skip-list.sublime-project",
+		"/home/helluin/Documents/Polsl/ZBP/lab/1/ZBP1_KC.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/timing_set.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/test_copy.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/timing_SkipList.cpp",
+		"/home/helluin/Documents/Git/skip-list/SkipListNode.h",
+		"/home/helluin/Documents/Git/skip-list/SkipListNode.cpp",
+		"/home/helluin/Documents/Git/skip-list/.gitignore",
+		"/home/helluin/Documents/Git/skip-list/SkipList.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/test_SkipList.cpp",
+		"/home/helluin/Documents/Git/skip-list/compile.sh",
+		"/home/helluin/Documents/Git/skip-list/SkipList.h",
+		"/home/helluin/Documents/Git/skip-list/todo.TODO",
+		"/home/helluin/Documents/Git/skip-list/test/test_Randomizer.cpp",
+		"/home/helluin/Documents/Git/skip-list/ExponentialRandomHeight.h",
+		"/home/helluin/Documents/Git/skip-list/ExponentialRandomHeight.cpp",
+		"/home/helluin/Documents/Git/skip-list/README.md",
+		"/home/helluin/Documents/Git/skip-list/test/test_UniformDistribution.cpp",
+		"/home/helluin/Documents/Git/skip-list/results/O2/creation.csv",
+		"/home/helluin/Documents/Git/skip-list/test/test_ExponentialDistribution.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/test_containment.cpp",
+		"/usr/include/c++/4.6/bits/c++0x_warning.h",
+		"/home/helluin/Documents/Git/skip-list/timing_SkipList.cpp",
+		"/home/helluin/Documents/Git/skip-list/test/test_creation.cpp",
+		"/home/helluin/Documents/Git/skip-list/test_SkipList",
+		"/home/helluin/Documents/Git/skip-list/test_containment.cpp",
+		"/home/helluin/Documents/Git/skip-list/test_SkipList.cpp",
+		"/home/helluin/Documents/Git/skip-list/test_copy.cpp",
+		"/home/helluin/Documents/Git/skip-list/test_creation.cpp",
+		"/home/helluin/Documents/Git/skip-list/LICENSE",
+		"/home/helluin/Documents/Git/skip-list/test_Randomizer.cpp",
+		"/home/helluin/Documents/Git/skip-list/test_containment",
+		"/home/helluin/Documents/Git/skip-list/timing_SkipList",
+		"/home/helluin/Documents/Git/skip-list/test_ExponentialDistribution.cpp",
+		"/home/helluin/Documents/Git/skip-list/tags",
+		"/home/helluin/Documents/Git/skip-list/debug_compile.sh",
+		"/home/helluin/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
+		"/home/helluin/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/helluin/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/helluin/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/home/helluin/Documents/Git/skip-list/results.csv",
+		"/home/helluin/Documents/Git/skip-list-memerror/SkipListNode.cpp",
+		"/home/helluin/Documents/Git/skip-list/RandomHeight.h",
+		"/home/helluin/Documents/Git/skip-list/RandomHeight.cpp",
+		"/home/helluin/Documents/Git/skip-list-memerror/SkipList.cpp",
+		"/home/helluin/Documents/Git/cohesion/test/util/astTestScaffolding.js",
+		"/home/helluin/Documents/Git/cohesion/bin/test.sh",
+		"/home/helluin/Documents/Git/cohesion/todo.TODO",
+		"/home/helluin/Documents/Git/cohesion/bin/watch.sh",
+		"/home/helluin/Documents/Git/cohesion/src/traverse.js",
+		"/home/helluin/Documents/Git/cohesion/test/tap_sheet.js",
+		"/home/helluin/Documents/Git/cohesion/node_modules/watchify/node_modules/browserify/node_modules/url/node_modules/punycode/vendor/requirejs/docs/faq-optimization.html",
+		"/home/helluin/Documents/Git/cohesion/out.json",
+		"/home/helluin/Documents/Git/cohesion/node_modules/tap/node_modules/glob/test/new-glob-optional-options.js",
+		"/home/helluin/Documents/Git/cohesion/node_modules/tap/bin/tap-reader.js",
+		"/home/helluin/Documents/Git/cohesion/index.js",
+		"/home/helluin/Documents/Git/cohesion/src/declarationGetter.js",
+		"/home/helluin/Documents/Git/cohesion/test/parserTest.js",
+		"/home/helluin/Documents/Git/cohesion/parser.js",
+		"/home/helluin/Documents/Git/cohesion/node_modules/.bin/tap",
+		"/home/helluin/Documents/Git/cohesion/node_modules/tap/lib/tap-assert.js",
+		"/home/helluin/Documents/Git/cohesion/node_modules/tap/lib/tap-browser-harness.js",
+		"/home/helluin/Documents/Git/cohesion/getDeclarationName.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/js/i18n/resources.se.json",
+		"/tmp/sublime-svn-1392020940/SVN",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/grunt-tool/node_modules/grunt-text-replace/test/text-replace-error-tests.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/README.md",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/start_front_service.js",
+		"/tmp/sublime-svn-1392020895/SVN",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/node_modules/common-application-bootstrapper/lib/requestHandlers/renderFileRequestHandler.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/index.html",
+		"/mnt/fedora/Documents/transfolio/fares-manager/index.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/grunt-tool/node_modules/less/test/less/errors/import-no-semi.less",
+		"/mnt/fedora/Documents/transfolio/fares-manager/test/initApplication.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/index.js",
+		"/mnt/fedora/Documents/transfolio/fares-interfaces/pathManager.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/front_service/frontServiceRouting.js",
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/modules/utils/VersionBoxDirective.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-utils/lib/restUtils.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-application-bootstrapper/lib/requestHandlers/renderFileRequestHandler.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-application-bootstrapper/lib/applicationBootstrapper.js",
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/modules/grid/RendererFactory.js",
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/utils/common.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/node_modules/grunt-contrib-concat/docs/concat-options.md",
+		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/dataAccessRouting.js",
+		"/mnt/fedora/Documents/transfolio/common-webclient/styles/less/layout/versionBox.less",
+		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/versionTest.js",
+		"/mnt/fedora/Documents/transfolio/fares-interfaces/package.json",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-http/lib/resourceUrlProvider.js",
+		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.4/V0.4.1.1__SCHEMA.sql",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/js/i18n/resources.fi.json",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/js/i18n/resources.en.json",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/templates/pricing/pricingInformation/list.html",
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/i18n/resources.fi.json",
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/i18n/resources.en.json",
+		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/resources/sql/createTables.sql",
+		"/mnt/fedora/Documents/transfolio/fares-manager/config/default.yaml",
+		"/mnt/fedora/Documents/transfolio/fares-manager/config/development.yaml",
+		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.5/V0.5.0.9__ALTER_FARES_PRODUCT.sql",
+		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/productGetTest.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/dao/parametersTable-dao.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/faresExportTest.js",
+		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.5/V0.5.0.8__ALTER_PRICING_INFORMATION.sql",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/ejs/examples/list.ejs",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-database/report/doc/yuidoc/files/lib_impl_sqliImpl.js.html",
+		"/mnt/fedora/Documents/transfolio/fares-manager/config/log4js-integration.json",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/async/LICENSE",
+		"/tmp/sublime-svn-1391769005/SVN",
+		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/restServices/productServiceRest.js",
+		"/mnt/fedora/Documents/transfolio/fares-manager-gui/package.json",
+		"/tmp/sublime-svn-1391768428/SVN",
+		"/tmp/sublime-svn-1391768371/SVN",
+		"/tmp/sublime-svn-1391768047/SVN",
+		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/log4js/test/dateFileAppender-test.js",
+		"/tmp/sublime-svn-1391766624/SVN",
+		"/tmp/sublime-svn-1391766476/SVN",
+		"/tmp/sublime-svn-1391766460/SVN",
+		"/tmp/sublime-svn-1391766242/SVN"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+			"",
+			"-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, -*.min.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, -*.min.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.html",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.html",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, -data_access/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, fares-manager-gui/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, fares-manager-gui/**",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js, fares-manager-gui.*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.less",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*, -*.html",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, -*/js/libs/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, */resources.en.json",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, resources.en.json",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js, -*.min.*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.less",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.less",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,*.html,",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm, *.json",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm, *.xsl",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm, *.sql",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,*.sql",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,*.SQL",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,*.xml",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,*.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm,-*.xsl",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.htm",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,-*.html",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *Test.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*,",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.xml",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.sql",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*, *.js",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transaction-tool/bin/",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transaction-tool/bin/*.sh",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"",
+			"*Test.js",
+			"*TEST.js",
+			"TEST.js",
+			"*.xsl",
+			".xsl",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"*.sql",
+			"-node_modules/**/*,-misc_stuff/*,-lib-cov/**/*",
+			"-node_modules/**/*,-misc_stuff/*,",
+			"",
+			"-node_modules/**/*,-misc_stuff/*,",
+			"-node_modules/**/*,-misc_stuff/*,-*.todo",
+			"-node_modules/**/*,-misc_stuff/*",
+			"",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/tools/generator/test/ETLOutput/et",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/tools/generator/test/examples/sql",
+			"-node_modules/**/*,-misc_stuff/*",
+			"-node_modules/**/*,misc_stuff/*",
+			"-node_modules/**/*,misc_stuff/**/*",
+			"-node_modules/**/*,-misc_stuff/**/*",
+			"-node_modules/**/*,-misc_stuff/**/*, *.sql",
+			"-node_modules/**/*,-misc_stuff/**/*, travelCard*.sql",
+			"-node_modules/**/*,-misc_stuff/**/*",
+			"-node_modules/**/*",
+			"",
+			"-node_modules/**/*,-*Config.js,*.js",
+			"-node_modules/**/*,*.js",
+			"",
+			"-node_modules/**/*,*.js",
+			"-node_modules,*.js",
+			"*.js",
+			"",
+			"-*ProcessingError*",
+			"",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/travelCardIssuingTransactions/,*Xslt.sql",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/distributionTransactions/,*Xslt.sql",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/distributionTransactions/",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/distributionTransactions/*Xslt*",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/distributionTransactions/*Xslt.sql",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/src/xslt/travelCardIssuing",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/src/xslt/travelCardIssuing,/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/src/xslt/distribution",
+			"travelCardIssuing*,travelCardRenewal*,travelCardReconstruction*,TRAVEL_CARD_ISSUING*",
+			"travelCardIssuing*,travelCardRenewal*,travelCardReconstruction*",
+			"travelCardIssuing*,travelCardRenewal*,travelCardReconstruction*,TRAVEL_CARD_ISSUING*",
+			"travelCardIssuing*,travelCardRenewal*,travelCardReconstruction*",
+			"travelCardIssuing*",
+			"storedValueLoading*",
+			"voucherDistribution*",
+			"valueTicketDistribution*",
+			"periodTicketDistribution*",
+			"paperTicketDistribution*",
+			"singleChargedCardDistribution*",
+			"*distribution*",
+			"distribution",
+			"",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/src/xslt/travelCardIssuing",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/travelCardIssuingTransactions",
+			"",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/test/resources/transformers/distributionTransactions",
+			"/home/helluin/Documents/FP/Parkeon/src/backoffice/transactions-etl-process/src/xslt/distribution",
+			"*.xsl",
+			"*Config.js",
+			"*.sql",
+			"*Config.js",
+			"*.xsl",
+			"*.sql",
+			"*.js",
+			"*Config.js",
+			"*Config.xml",
+			"*.xml",
+			"*.xsl"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"TestSuite",
+			"$(which g++)",
+			"g++",
+			"& ",
+			"set",
+			"SkipList",
+			"skiplist",
+			"find",
+			"std::set",
+			"SkipList",
+			"->",
+			"++it;",
+			"ExponentialRan",
+			"ExponentialRandomHeight",
+			"std::",
+			"getcurrentheight",
+			"`",
+			"completed",
+			"CLOCKS_PER_SEC",
+			"MAX",
+			"other",
+			"insertion",
+			"of",
+			"randomizer",
+			"srand",
+			"::iterator",
+			"bla.",
+			"toUpdate",
+			":insert",
+			"it",
+			"0",
+			"iterator",
+			"resetBorderNodes",
+			"size",
+			"currentHeight =",
+			":inser",
+			":insert",
+			"::skiplist",
+			"insert",
+			"resetBorderNodes",
+			"3.5",
+			".insert",
+			"insert",
+			"iterator",
+			"first",
+			"iterator",
+			"::skiplist",
+			"->",
+			"clear()",
+			"~Skip",
+			"erase",
+			"first",
+			".",
+			"->",
+			"56",
+			"insert",
+			"find",
+			"std::pair",
+			"::Skip",
+			"getheight",
+			"prev[",
+			"insert",
+			"prev[",
+			"next[",
+			"int, int",
+			"~Skip",
+			"toUpdate.at",
+			"~SkipList",
+			"toUpdate[",
+			"rit",
+			"~SkipList",
+			"valueequals",
+			"isnodem",
+			"valueequals",
+			"(theVal < tempNode->getVal() || tempNode->getVal() < theVal)",
+			"isnodem",
+			"find",
+			"insert",
+			"\"d\"",
+			"\"c\"",
+			"getKey",
+			"\"a\"",
+			"\"b\"",
+			"getKey",
+			"theKey",
+			"Key,",
+			"Key",
+			"Key, ",
+			"class class",
+			"Key, ",
+			"class class",
+			"Key, ",
+			".name",
+			"getAssignmeeName",
+			"'",
+			"existingScopedVariableNames",
+			"getGlobalVariableDeclarations",
+			"getVariableDeclarations",
+			"'",
+			"debugger;",
+			"requestsHandlersChain",
+			"renderFileRequest",
+			"applicationDetails",
+			"version",
+			"applicationDetails",
+			"findbyquery",
+			"FI:",
+			".only",
+			"printingLayout",
+			"staticData",
+			"FARES_PRICING_INFO",
+			"FARES_PRODUCT",
+			"FARES_PRICING_INFO",
+			"fares_product",
+			"404",
+			"ServiceREST",
+			"productsModelServiceREST",
+			"ServiceREST",
+			"'",
+			"product",
+			"1",
+			"customer_group",
+			"`",
+			"NVARCHAR(100)",
+			"pricing_info",
+			"	",
+			"debugger;",
+			"dataTransformer"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"lvl",
+			"2",
+			"",
+			"\\)\\n    VALUES\\n        \\('2012-03-20 00:00',",
+			"\\)\\nVALUES \\(\\n    '2012-03-20 00:00',",
+			"\\)\\n  VALUES \\(\\n    '2012-03-20 00:00',",
+			"VALUES (\\n    '",
+			"(\\n    '",
+			"\\nVALUES",
+			",\\n    ",
+			",\\n        ",
+			" && ",
+			"Robin && Barney",
+			"transaction_manager",
+			"transaction_MANAGER",
+			"transactionDefinitionAdjuster.getDefinitionWithTechnicalMetadata({\n                transactionName: transactionName\n            })",
+			"transactionDefinitionAdjuster.getDefinitionWithTechnicalMetadata({\n                transactionName: transactionName\n            });",
+			" =",
+			"technicalMetadataShouldBeMandatory",
+			"",
+			"_TRANSACTION",
+			"Transaction",
+			"INFORMATION",
+			"partiallyApply(",
+			"technicalId",
+			"\n\n",
+			"",
+			"identity",
+			"VALIDITY",
+			"EXTENSION",
+			"VALIDITY",
+			"E_TICKET",
+			"\",\\n\"",
+			", ",
+			"\",\\n\"",
+			"\\n ☐ ",
+			"\",\\n\"",
+			"\\",
+			"\"",
+			"'%cd%",
+			"^",
+			"\\",
+			"/",
+			"$(pwd)",
+			"%cd%\\..",
+			"$(pwd)'/..",
+			",",
+			"",
+			"StoredValueLoading",
+			"occurred",
+			"output",
+			"\", \"",
+			"\"",
+			"documentation_files",
+			"\"",
+			"tabularDataExtractor.getFirstNameCompartment",
+			"\"",
+			"",
+			"REPLACED_CONTAINERS",
+			"createColumnDefinition",
+			"\" + os.EOL + \"",
+			"NoEmphasisXMLValidationResultsConsoleOutput",
+			"XMLValidationResultsConsoleOutput",
+			"id",
+			"\"",
+			"Function",
+			"\\",
+			"^",
+			"\"",
+			"%cd%",
+			"\"",
+			"\\",
+			"^",
+			"%cd%",
+			"\\",
+			"^",
+			"%cd%",
+			"\\",
+			"%cd%",
+			"^",
+			"createDirectoryIfNotExists",
+			"\"",
+			"partiallyApply",
+			"lpartial",
+			"getTransactionGroup({\n                transactionName: options.transactionName\n            })",
+			".get",
+			".getTransactionGroup({\n            transactionName: transactionName\n        })",
+			"\"",
+			"",
+			"curry(",
+			"documentationParser",
+			"columnDefinitionParser",
+			"    ",
+			"common.pathExists",
+			"TRCGenerator",
+			" ",
+			"4.5",
+			"this",
+			"schemaDocumentationFilePath",
+			"        instance = new ConfigBuilder({\n            configPath: inputConfigFolderPath,\n            schematDocumentationFilePath: schemaDocumentationFilePath\n        });",
+			"schemaDocumentationFilePath",
+			"this.groupInformer",
+			"curry(",
+			" ",
+			"bind(null",
+			"getSubchapterNumberPattern",
+			"4.5.",
+			"4.4._",
+			"common.console",
+			"bold",
+			"CHAPTER_COUNT",
+			"",
+			",\n    ",
+			", ",
+			"testCommon.NO_CHAPTERS",
+			"sqlTypeChecker",
+			"testCommon.getParameter",
+			"\"\n",
+			",\n\n",
+			"\n",
+			"",
+			"\n",
+			"regExpFactory.getChapterNumberPattern()",
+			"(docParser.getTransactionName(testedChapter))",
+			"common.contains",
+			"\n",
+			"groupInformer",
+			"groupInformer\n"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/Equals.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 423,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								322,
+								322
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/helluin/Dropbox/JavaScript/node/highland.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 157,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								157,
+								157
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_name": "#!/usr/bin/env/node",
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"is_xml": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/headers/Suite.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								31,
+								31
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/AbstractTest.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 439,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								33,
+								33
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"file": "src/Suite.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								526,
+								526
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "test/selftest.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 309,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								49,
+								49
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.614513165952,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 241.0
+	},
+	"output.find_results":
+	{
+		"height": 147.0
+	},
+	"output.git":
+	{
+		"height": 203.0
+	},
+	"output.sbt":
+	{
+		"height": 0.0
+	},
+	"output.sbt_error":
+	{
+		"height": 0.0
+	},
+	"output.scope_viewer":
+	{
+		"height": 59.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 88.0
+	},
+	"project": "vertex-cover-kernelization.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"suite.h",
+				"src/headers/Suite.h"
+			],
+			[
+				"abstract",
+				"src/headers/AbstractTest.h"
+			],
+			[
+				"abstracttest",
+				"src/headers/AbstractTest.h"
+			],
+			[
+				"bstr.h",
+				"src/headers/AbstractTest.h"
+			],
+			[
+				"test.",
+				"src/headers/Test.h"
+			],
+			[
+				"memory",
+				"test/memory_SkipList.cpp"
+			],
+			[
+				"skiplist.cpp",
+				"SkipList.cpp"
+			],
+			[
+				"timing",
+				"test/timing_SkipList.cpp"
+			],
+			[
+				"skiplistnode",
+				"SkipListNode.h"
+			],
+			[
+				"test_containm",
+				"test/test_containment.cpp"
+			],
+			[
+				"test_skiplist.cp",
+				"test/test_SkipList.cpp"
+			],
+			[
+				"skiplistcpp",
+				"SkipList.cpp"
+			],
+			[
+				"randomizer",
+				"test/test_Randomizer.cpp"
+			],
+			[
+				"rand",
+				"ExponentialRandomHeight.cpp"
+			],
+			[
+				"node.cpp",
+				"SkipListNode.cpp"
+			],
+			[
+				"skiplitnode",
+				"SkipListNode.h"
+			],
+			[
+				"compile.sh",
+				"compile.sh"
+			],
+			[
+				"skiplist.h",
+				"SkipList.h"
+			],
+			[
+				"skil",
+				"SkipList.h"
+			],
+			[
+				".gitignore",
+				".gitignore"
+			],
+			[
+				"timin",
+				"test/timing_SkipList.cpp"
+			],
+			[
+				"giti",
+				".gitignore"
+			],
+			[
+				"skpilistcpp",
+				"SkipList.cpp"
+			],
+			[
+				"test_randomizer",
+				"test/test_Randomizer.cpp"
+			],
+			[
+				"test_expon",
+				"test/test_ExponentialDistribution.cpp"
+			],
+			[
+				"skpilist.cpp",
+				"SkipList.cpp"
+			],
+			[
+				"test_copy.cpp",
+				"test/test_copy.cpp"
+			],
+			[
+				"skiplistnode.cpp",
+				"SkipListNode.cpp"
+			],
+			[
+				"exponential",
+				"ExponentialRandomHeight.cpp"
+			],
+			[
+				"test_skip",
+				"test/test_SkipList.cpp"
+			],
+			[
+				"test_expo",
+				"test/test_ExponentialDistribution.cpp"
+			],
+			[
+				"compil",
+				"compile.sh"
+			],
+			[
+				"expon",
+				"ExponentialRandomHeight.cpp"
+			],
+			[
+				"skipli",
+				"SkipList.cpp"
+			],
+			[
+				"skip",
+				"SkipList.cpp"
+			],
+			[
+				"containment",
+				"test/test_containment.cpp"
+			],
+			[
+				"exponen",
+				"ExponentialRandomHeight.cpp"
+			],
+			[
+				"test_s",
+				"test/test_SkipList.cpp"
+			],
+			[
+				"skiplist",
+				"SkipList.cpp"
+			],
+			[
+				"copy.cpp",
+				"test/test_copy.cpp"
+			],
+			[
+				"skiplistnode.h",
+				"SkipListNode.h"
+			],
+			[
+				"test_copy",
+				"test/test_copy.cpp"
+			],
+			[
+				"",
+				"SkipList.h"
+			],
+			[
+				"test_skipli",
+				"test/test_SkipList.cpp"
+			],
+			[
+				"skiplisth",
+				"SkipList.h"
+			],
+			[
+				"test_skip.cp",
+				"test/test_SkipList.cpp"
+			],
+			[
+				"compi",
+				"compile.sh"
+			],
+			[
+				"comiple",
+				"compile.sh"
+			],
+			[
+				"compile",
+				"compile.sh"
+			],
+			[
+				"skipl",
+				"SkipList.h"
+			],
+			[
+				"test_skiplist.cpp",
+				"test_SkipList.cpp"
+			],
+			[
+				"tming_skiplist",
+				"timing_SkipList.cpp"
+			],
+			[
+				"test_creation",
+				"test_creation.cpp"
+			],
+			[
+				"test",
+				"test_creation.cpp"
+			],
+			[
+				"contain",
+				"test_containment.cpp"
+			],
+			[
+				"tming_",
+				"timing_SkipList.cpp"
+			],
+			[
+				"skpilistnode.cpp",
+				"SkipListNode.cpp"
+			],
+			[
+				"test_con",
+				"test_containment.cpp"
+			],
+			[
+				"randomheight.h",
+				"RandomHeight.h"
+			],
+			[
+				"foo.js",
+				"test/foo.js"
+			],
+			[
+				"traverse",
+				"src/traverse.js"
+			],
+			[
+				"parser",
+				"parser.js"
+			],
+			[
+				"tapsh",
+				"test/tap_sheet.js"
+			],
+			[
+				"getdeclarationname.js",
+				"getDeclarationName.js"
+			],
+			[
+				"resources.se.json",
+				"fares-manager-gui/src/static/js/i18n/resources.se.json"
+			],
+			[
+				"index.html",
+				"fares-manager-gui/src/static/index.html"
+			],
+			[
+				"renderfilerequesthandler",
+				"fares-manager-gui/node_modules/common-application-bootstrapper/lib/requestHandlers/renderFileRequestHandler.js"
+			],
+			[
+				"versionbox",
+				"common-webclient/js/modules/utils/VersionBoxDirective.js"
+			],
+			[
+				"resources.se",
+				"fares-manager-gui/src/static/js/i18n/resources.se.json"
+			],
+			[
+				"resources.fi.",
+				"fares-manager-gui/src/static/js/i18n/resources.fi.json"
+			],
+			[
+				"resources.en.json",
+				"fares-manager-gui/src/static/js/i18n/resources.en.json"
+			],
+			[
+				"list.html",
+				"fares-manager-gui/src/static/templates/pricing/pricingInformation/list.html"
+			],
+			[
+				"productgett",
+				"fares-manager/test/functional/productGetTest.js"
+			],
+			[
+				"productgettestj",
+				"fares-manager/test/functional/productGetTest.js"
+			],
+			[
+				"dataaccessrouting",
+				"fares-manager/src/data_access/dataAccessRouting.js"
+			],
+			[
+				"pathmanager",
+				"fares-interfaces/pathManager.js"
+			],
+			[
+				"productgettestjs",
+				"fares-manager/test/functional/productGetTest.js"
+			],
+			[
+				"createtables.sql",
+				"fares-manager/test/functional/resources/sql/createTables.sql"
+			],
+			[
+				"default",
+				"fares-manager/config/default.yaml"
+			],
+			[
+				"default.yaml",
+				"fares-manager-gui/config/default.yaml"
+			],
+			[
+				"productservicer",
+				"fares-manager/src/data_access/restServices/productServiceRest.js"
+			],
+			[
+				"productgettest",
+				"fares-manager/test/functional/productGetTest.js"
+			],
+			[
+				"insertproduct.",
+				"fares-manager/test/functional/resources/sql/insertProducts.sql"
+			],
+			[
+				"proudctgettest",
+				"fares-manager/test/functional/productGetTest.js"
+			],
+			[
+				"createtable.sq",
+				"fares-manager/test/functional/resources/sql/createTables.sql"
+			],
+			[
+				"pricinginfromation-da",
+				"fares-manager/src/data_access/dao/pricingInformation-dao.js"
+			],
+			[
+				"default.",
+				"fares-manager/config/default.yaml"
+			],
+			[
+				"pricingon",
+				"fares-manager/src/data_access/dao/pricingInformation-dao.js"
+			],
+			[
+				"pricinggettest",
+				"fares-manager/test/functional/pricingInformationGetTest.js"
+			],
+			[
+				"pricingormation",
+				"fares-manager/src/data_access/dao/pricingInformation-dao.js"
+			],
+			[
+				"dataaccess",
+				"fares-manager/src/data_access/dataAccessRouting.js"
+			],
+			[
+				"dataservicehelper",
+				"fares-manager/src/data_access/dataServiceHelper.js"
+			],
+			[
+				"pricinginformationservice",
+				"fares-manager-gui/src/front_service/service/pricing/pricingInformationService.js"
+			],
+			[
+				"pricinginformation",
+				"fares-manager-gui/src/front_service/service/pricing/pricingInformationService.js"
+			],
+			[
+				"resources.fi",
+				"fares-manager-gui/src/static/js/i18n/resources.fi.json"
+			],
+			[
+				"resources.en",
+				"fares-manager-gui/src/static/js/i18n/resources.en.json"
+			],
+			[
+				"pricinginfo",
+				"fares-manager-gui/src/front_service/service/pricing/pricingInformationService.js"
+			],
+			[
+				"layout.less",
+				"fares-manager-gui/src/static/styles/layout.less"
+			],
+			[
+				"frontservicehelper",
+				"fares-manager-gui/src/front_service/service/frontServiceHelper.js"
+			],
+			[
+				"pricingtableservice",
+				"fares-manager-gui/src/front_service/service/pricing/pricingTableService.js"
+			],
+			[
+				"princinginformation",
+				"fares-manager-gui/src/static/js/controllers/pricing/pricingInformation/PricingInformationListController.js"
+			],
+			[
+				"princingtables.html",
+				"fares-manager-gui/src/static/templates/pricing/pricingTables/pricingTablesList.html"
+			],
+			[
+				"ellipsis",
+				"common-webclient/js/modules/utils/Ellipsis.js"
+			],
+			[
+				"ellip",
+				"common-webclient/js/modules/utils/Ellipsis.js"
+			],
+			[
+				"resthelper",
+				"fares-manager-gui/src/front_service/frontServiceRestHelper.js"
+			],
+			[
+				"helper",
+				"fares-manager/src/data_access/dataServiceHelper.js"
+			],
+			[
+				"routing",
+				"fares-manager-gui/src/front_service/frontServiceRouting.js"
+			],
+			[
+				"pricingtables.h",
+				"fares-manager-gui/src/static/templates/pricing/pricingTables/pricingTablesList.html"
+			],
+			[
+				"layoutscontroller",
+				"fares-manager-gui/src/static/js/controllers/productParameters/printingLayouts/PrintingLayoutsController.js"
+			],
+			[
+				"printinglayout",
+				"fares-manager-gui/src/static/js/services/PrintingLayoutService.js"
+			],
+			[
+				"printingla",
+				"fares-manager-gui/src/front_service/service/printingLayoutService.js"
+			],
+			[
+				"printinglayoutservice",
+				"fares-manager-gui/src/static/js/services/PrintingLayoutService.js"
+			],
+			[
+				"printinglayouts",
+				"fares-manager-gui/src/static/templates/productParameters/printingLayouts/printingLayouts.html"
+			],
+			[
+				"create",
+				"fares-manager/test/functional/resources/sql/createTables.sql"
+			],
+			[
+				"layouts.html",
+				"fares-manager-gui/src/static/templates/productParameters/printingLayouts/printingLayouts.html"
+			],
+			[
+				"layoutscontroller.",
+				"fares-manager-gui/src/static/js/controllers/productParameters/printingLayouts/PrintingLayoutsController.js"
+			],
+			[
+				"printinglayoutrest",
+				"fares-manager/src/data_access/restServices/printingLayoutServiceRest.js"
+			],
+			[
+				"frontserviceh",
+				"fares-manager-gui/src/front_service/service/frontServiceHelper.js"
+			],
+			[
+				"productmodelservice",
+				"fares-manager-gui/src/front_service/service/productModelService.js"
+			],
+			[
+				"productmodelrests",
+				"fares-manager-gui/src/front_service/restServices/productModelServiceRest.js"
+			],
+			[
+				"frontserviceresthelper",
+				"fares-manager-gui/src/front_service/frontServiceRestHelper.js"
+			],
+			[
+				"dataservicerest",
+				"fares-manager/src/data_access/restServices/staticDataServiceRest.js"
+			],
+			[
+				"datahelper",
+				"fares-manager/src/data_access/dataServiceHelper.js"
+			],
+			[
+				"pathmana",
+				"fares-interfaces/pathManager.js"
+			],
+			[
+				"printinglayoutservicerest",
+				"fares-manager/src/data_access/restServices/printingLayoutServiceRest.js"
+			],
+			[
+				"gui/layoutservice",
+				"fares-manager-gui/src/static/js/services/PrintingLayoutService.js"
+			],
+			[
+				"layoutservice",
+				"fares-manager/src/data_access/service/printingLayoutService.js"
+			],
+			[
+				"printinglayoutcontroller",
+				"fares-manager-gui/src/static/js/controllers/productParameters/printingLayouts/PrintingLayoutController.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"fares",
+				"~/Documents/FP/Parkeon/fares-manager.sublime-project"
+			],
+			[
+				"cover",
+				"~/Documents/Projects/vertex-cover-kernelizationsublime-project.sublime-workspace"
+			],
+			[
+				"kerne",
+				"~/Documents/Projects/vertex-cover-kernelizationsublime-project.sublime-workspace"
+			],
+			[
+				"kerneli",
+				"~/Documents/Projects/vertex-cover-kernelizationsublime-project.sublime-workspace"
+			],
+			[
+				"skip",
+				"~/Documents/Projects/skip-list.sublime-project"
+			],
+			[
+				"database",
+				"~/Documents/FP/Parkeon/database.sublime-project"
+			],
+			[
+				"configura",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"configuration",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"configu",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"confi",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"config",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"con",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"cib",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"confiogu",
+				"~/Documents/FP/Parkeon/configuration-repository.sublime-project"
+			],
+			[
+				"de",
+				"~/Documents/FP/Parkeon/device-manager.sublime-project"
+			],
+			[
+				"codi",
+				"~/Documents/Projects/codiag.sublime-project"
+			],
+			[
+				"co",
+				"~/Documents/Projects/codiag.sublime-project"
+			],
+			[
+				"dai",
+				"/home/helluin/Dropbox/!DailyFlow/daily-flow.sublime-project"
+			],
+			[
+				"css",
+				"/home/helluin/Dropbox/CSS/CSS.sublime-project"
+			],
+			[
+				"tddjs",
+				"/home/helluin/Dropbox/JavaScript/TDD/TDDJS.sublime-project"
+			],
+			[
+				"t",
+				"/home/helluin/Dropbox/DDD & CQRS/DDD.sublime-project"
+			],
+			[
+				"tdd",
+				"/home/helluin/Dropbox/JavaScript/TDD/TDDJS.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+		"last_automatic_layout":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		]
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 285.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
