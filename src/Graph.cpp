@@ -13,12 +13,7 @@
 
 using namespace std;
 
-//enum for the status of a node
-enum Status {
-    NOT_VISITED,
-    VISITED
-};
-
+template <typename T>
 class Graph
 {
     public:
@@ -27,19 +22,19 @@ class Graph
         class Node
         {
             private:
-                string name;
+                T value;
                 unsigned int degree;
 
             public:
-                Node (string id)
+                Node (T id)
                 {
-                    name = id;
+                    value = id;
                     degree = 0;
                 }
 
-                const string &getName() const
+                const T &getVal() const
                 {
-                    return name;
+                    return value;
                 }
 
                 const unsigned int getDegree() const
@@ -83,7 +78,6 @@ class Graph
                 }
         };
 
-
         ~Graph()
         {
             //free mem allocated to vertices
@@ -106,7 +100,7 @@ class Graph
             edges.clear();
         }
 
-        const int size() const
+        const unsigned int size() const
         {
             return nodes.size();
         }
@@ -117,13 +111,13 @@ class Graph
                  end = edges.end();
                  it != end;
                  ++it) {
-                cout << (*it)->getOrgNode()->getName() << " -> " << (*it)->getDstNode()->getName() << endl ;
+                cout << (*it)->getOrgNode()->getVal() << " -> " << (*it)->getDstNode()->getVal() << endl ;
             }
         }
 
     private:
-        typedef vector<Node *>::iterator node_it;
-        typedef unordered_set<Edge *>::iterator edge_it;
+        typedef typename vector<Node *>::iterator node_it;
+        typedef typename unordered_set<Edge *>::iterator edge_it;
 
         vector<Node *> nodes;
         unordered_set<Edge *> edges;
@@ -170,9 +164,9 @@ class Graph
         //     return result;
         // }
 
-        void addNode (Node *node)
+        void insert (T val)
         {
-            nodes.push_back (node);
+            nodes.push_back (new Node(val));
         }
 
         void connect (const int origin, const int destination)
@@ -185,18 +179,18 @@ class Graph
             return nodes.at (index);
         }
 
-        Node *findNodeByName (string name)
-        {
-            for (node_it it = nodes.begin(),
-                 end = nodes.end();
-                 it != end;
-                 ++it) {
-                if ( (*it)->getName() == name) {
-                    return (*it);
-                }
-            }
+        // Node *findNodeByName (string name)
+        // {
+        //     for (node_it it = nodes.begin(),
+        //          end = nodes.end();
+        //          it != end;
+        //          ++it) {
+        //         if ( (*it)->getVal() == name) {
+        //             return (*it);
+        //         }
+        //     }
 
-            return NULL;
-        }
+        //     return NULL;
+        // }
 };
 #endif
