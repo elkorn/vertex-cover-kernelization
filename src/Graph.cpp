@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 template <typename T>
 class Graph
 {
@@ -78,6 +79,34 @@ class Graph
                 }
         };
 
+        class UndirectedEdgeEqual
+        {
+            public:
+                bool operator () (Edge* const &a,
+                                  Edge* const &b) const
+                {
+                    if (a == b) {
+                        return true;
+                    }
+
+                    if (a == NULL || b == NULL) {
+                        return false;
+                    }
+
+                    throw "YAY";
+                    return (a->getOrgNode() == b->getOrgNode() &&
+                            a->getDstNode() == b->getDstNode()) ||
+                           (a->getOrgNode() == b->getDstNode() &&
+                            a->getDstNode() == b->getOrgNode());
+                }
+        };
+
+        typedef UndirectedEdgeEqual equal_t;
+        typedef vector<Node *> nodes_t;
+        typedef unordered_set<Edge *, hash<Edge *>, equal_t, allocator<Edge *>> edges_t;
+        typedef typename nodes_t::iterator node_it;
+        typedef typename edges_t::iterator edge_it;
+
         ~Graph()
         {
             //free mem allocated to vertices
@@ -105,7 +134,7 @@ class Graph
             return nodes.size();
         }
 
-        const void display(ostream &output)
+        const void display (ostream &output)
         {
             output << "NODES" << endl;
 
@@ -114,24 +143,31 @@ class Graph
                  it != end;
                  ++it) {
                 output << (*it)->getVal()
-                     << " ";
+                       << " ";
             }
 
             output << endl << "EDGES" << endl;
+
             for (edge_it it = edges.begin(),
                  end = edges.end();
                  it != end;
                  ++it) {
                 output << (*it)->getOrgNode()->getVal()
-                     << " -> "
-                     << (*it)->getDstNode()->getVal()
-                     << endl ;
+                       << " -> "
+                       << (*it)->getDstNode()->getVal()
+                       << endl ;
             }
         }
 
         void insert (T val)
         {
-            nodes.push_back (new Node (val));
+            nodes.push_back (makeNode (val));
+        }
+
+        const void insertNode (Node *node)
+        {
+            // TODO: What about identical nodes?
+            nodes.push_back (node);
         }
 
         void connect (const int origin, const int destination)
@@ -144,16 +180,39 @@ class Graph
             return nodes.at (index);
         }
 
+        static Node *makeNode (T val)
+        {
+            return new Node (val);
+        }
+
+        const bool isVertexCover (Graph &supset)
+        {
+            if (size() == 0) {
+                return false;
+            }
+
+            for (node_it nit = nodes.begin(),
+                 nend = nodes.end();
+                 nit != nend;
+                 ++nit) {
+                Node *node = (*nit);
+
+                for (edge_it eit = supset.edges.begin(),
+                     eend = supset.edges.end();
+                     eit != eend;
+                     ++eit) {
+                    if (! (*eit)->isCoveredBy (node)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
     private:
-        typedef typename vector<Node *>::iterator node_it;
-        typedef typename unordered_set<Edge *>::iterator edge_it;
-
-        vector<Node *> nodes;
-        unordered_set<Edge *> edges;
-        // const bool isVertexCover(Graph supset) {
-        //     if(size() == 0) return false;
-
-        // }
+        nodes_t nodes;
+        edges_t edges;
 
         // Graph vertexCover (int k)
         // {

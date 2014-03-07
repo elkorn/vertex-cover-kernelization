@@ -10,6 +10,9 @@
         "sublimeclang_options": [
             "-Wno-reorder"
         ],
-        "sublimeclang_options_script": "${project_path:scripts/compileflags.rb} ${project_path:build}"
+        "sublimeclang_options_script": "${project_path:scripts/compileflags.rb} ${project_path:build}",
+        "rulers": [
+            80
+        ]
     }
 }
