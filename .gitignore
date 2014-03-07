@@ -1,0 +1,6 @@
+*.sublime-*
+build/*
+scr/headers/*
+selftest.cpp
+Suite.cpp
+src/*Test.cpp

@@ -8,7 +8,7 @@
 #include <vector>
 #include <stack>
 #include <string>
-#include <iostream>
+#include <sstream>
 #include <unordered_set>
 
 using namespace std;
@@ -105,14 +105,43 @@ class Graph
             return nodes.size();
         }
 
-        void display()
+        const void display(ostream &output)
         {
+            output << "NODES" << endl;
+
+            for (node_it it = nodes.begin(),
+                 end = nodes.end();
+                 it != end;
+                 ++it) {
+                output << (*it)->getVal()
+                     << " ";
+            }
+
+            output << endl << "EDGES" << endl;
             for (edge_it it = edges.begin(),
                  end = edges.end();
                  it != end;
                  ++it) {
-                cout << (*it)->getOrgNode()->getVal() << " -> " << (*it)->getDstNode()->getVal() << endl ;
+                output << (*it)->getOrgNode()->getVal()
+                     << " -> "
+                     << (*it)->getDstNode()->getVal()
+                     << endl ;
             }
+        }
+
+        void insert (T val)
+        {
+            nodes.push_back (new Node (val));
+        }
+
+        void connect (const int origin, const int destination)
+        {
+            edges.insert (new Edge (nodes.at (origin), nodes.at (destination)));
+        }
+
+        Node *getNode (int index) const
+        {
+            return nodes.at (index);
         }
 
     private:
@@ -164,20 +193,6 @@ class Graph
         //     return result;
         // }
 
-        void insert (T val)
-        {
-            nodes.push_back (new Node(val));
-        }
-
-        void connect (const int origin, const int destination)
-        {
-            edges.insert (new Edge (nodes.at (origin), nodes.at (destination)));
-        }
-
-        Node *getNode (int index) const
-        {
-            return nodes.at (index);
-        }
 
         // Node *findNodeByName (string name)
         // {
