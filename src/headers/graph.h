@@ -21,7 +21,7 @@ class Graph
         typedef vector<node_p> node_s;
         typedef vector<Arc> arc_s;
         typedef typename arc_s::iterator arc_it;
-        typedef typename node_s::iterator node_it;
+        typedef typename node_s::const_iterator node_it;
 
         class Arc
         {
@@ -41,37 +41,50 @@ class Graph
                 void setTail (node_p);
                 void setWeight (double);
                 Arc copy();
-                string toString();
+                const string toString() const;
                 bool equals (Arc);
-                bool isCoveredBy (node_p);
+                const bool isCoveredBy (const node_p) const;
         };
 
         class Node
         {
-            protected:
-                T name;
-                arc_s adjacent;
+            friend class Graph;
 
             public:
+                typedef enum visited {
+                    YES,
+                    NO
+                } visited;
+
                 Node();
                 Node (T);
-                T getName();
+                const T& getName() const;
                 void setName (T);
                 vector<Arc> getAdjacent();
                 node_p copy();
-                unsigned int getDegree();
+                const unsigned int getDegree() const;
                 void setAdjacent (vector<Arc>);
                 void addArc (node_p, double);
                 void removeArc (node_p);
                 bool equals (node_p/*, binary_function<T,T,bool>*/);
-                string toString ();
+                const string toString () const;
+                const bool& getIsExternal () const;
+
+            protected:
+                T name;
+                arc_s adjacent;
+                visited state;
+
+            private:
+                Node(T, bool);
+                bool isExternal;
         };
 
 
-        Graph(/*binary_function<T,T,bool>*/);
+        Graph (/*binary_function<T,T,bool>*/);
         ~Graph();
-        int getNuNodes();
-        int getNuArcs();
+        const int& getNuNodes() const;
+        const int& getNuArcs() const;
         int getVersion();
         vector<node_p> getNodeMap();
         node_p getNode (T);
@@ -79,23 +92,27 @@ class Graph
         void addNode (T);
         void removeNode (node_p);
         void removeNode (T);
-        vector<node_p> getNodes();
+        const node_s& getNodes() const;
         void addArc (node_p , node_p , double);
         void addArc (T, T, double);
         void addArc (node_p , node_p);
         void addArc (T, T);
         void removeArc (node_p, node_p);
         void removeArc (T, T);
-        // void removeRef (T);
+        // void removeRef (T);s
         void resetArcs();
         bool contains (T);
+        const bool isVertexCover(const Graph &) const;
+        node_p makeNode(T);
 
     protected:
         node_s nodeMap;
         int nuNodes;
         int nuArcs;
         int version;
-        binary_function<T,T,bool> comparer;
+
+        void clearVisited();
+        void makeVisited(node_p);
 };
 
 #endif // GRAPH_H_INCLUDED

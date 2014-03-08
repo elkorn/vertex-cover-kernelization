@@ -52,7 +52,7 @@ typename Graph<T>::Arc Graph<T>::Arc::copy() {
 }
 
 template <typename T>
-std::string Graph<T>::Arc::toString() {
+const std::string Graph<T>::Arc::toString() const {
     stringstream ss("");
     ss << head->getName();
     return ss.str();
@@ -65,6 +65,6 @@ bool Graph<T>::Arc::equals(Graph<T>::Arc other) {
 }
 
 template <typename T>
-bool Graph<T>::Arc::isCoveredBy(node_p node) {
+const bool Graph<T>::Arc::isCoveredBy(const node_p node) const {
     return node == head || node == tail;
 }

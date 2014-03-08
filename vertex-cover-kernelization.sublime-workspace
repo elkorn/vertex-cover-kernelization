@@ -4,8 +4,20 @@
 		"selected_items":
 		[
 			[
+				"node",
+				"nodeMap"
+			],
+			[
 				"inc",
-				"include"
+				"inc	#include \"…\""
+			],
+			[
+				"in",
+				"inc	#include \"…\""
+			],
+			[
+				"cur",
+				"currentNodeProcessed"
 			],
 			[
 				"In",
@@ -26,10 +38,6 @@
 			[
 				"current",
 				"currentHeight"
-			],
-			[
-				"in",
-				"include"
 			],
 			[
 				"SkipL",
@@ -506,66 +514,65 @@
 			[
 				"lastItemWithou",
 				"lastItemWithoutDataType"
-			],
-			[
-				"essentiality",
-				"essentialityType"
-			],
-			[
-				"essentialityType",
-				"essentialityTypes"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/Equals.cpp",
+			"file": "src/graph.cpp",
 			"settings":
 			{
-				"buffer_size": 423,
+				"buffer_size": 5786,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/graph_test.cpp",
+			"settings":
+			{
+				"buffer_size": 1797,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/vertexCover_test.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/helluin/Dropbox/JavaScript/node/highland.js",
+			"file": "src/test.cpp",
 			"settings":
 			{
-				"buffer_size": 157,
-				"line_ending": "Unix",
-				"name": "#!/usr/bin/env/node"
-			}
-		},
-		{
-			"file": "src/headers/Suite.h",
-			"settings":
-			{
-				"buffer_size": 331,
+				"buffer_size": 584,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/AbstractTest.cpp",
+			"file": "src/node.cpp",
 			"settings":
 			{
-				"buffer_size": 439,
+				"buffer_size": 2492,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/arc.cpp",
+			"settings":
+			{
+				"buffer_size": 1504,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/Suite.cpp",
+			"file": "src/headers/graph.h",
 			"settings":
 			{
-				"buffer_size": 526,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "test/selftest.cpp",
-			"settings":
-			{
-				"buffer_size": 309,
-				"line_ending": "Unix"
+				"buffer_size": 3078,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -580,20 +587,76 @@
 				"SublimeAStyleFormatter: Format Current File"
 			],
 			[
+				"move",
+				"File: Move"
+			],
+			[
+				"modific",
+				"Modific: Revert modified part"
+			],
+			[
+				"delete",
+				"File: Delete"
+			],
+			[
+				"asst",
+				"SublimeAStyleFormmatter: Format Current Selection"
+			],
+			[
+				"duplicate",
+				"File: Duplicate"
+			],
+			[
+				"git log",
+				"Git: Log All"
+			],
+			[
+				"dupli",
+				"File: Duplicate"
+			],
+			[
 				"rename",
 				"File: Rename"
 			],
 			[
-				"build",
-				"Build: Build"
+				"c++",
+				"Set Syntax: C++"
 			],
 			[
 				"asty",
 				"SublimeAStyleFormatter: Format Current File"
 			],
 			[
-				"move",
-				"File: Move"
+				"at",
+				"Gist: Add File to Gist"
+			],
+			[
+				"git commit ",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"as",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git stat",
+				"Git: Status"
+			],
+			[
+				"git add .",
+				"Git: Add..."
+			],
+			[
+				"build",
+				"Build: Build"
 			],
 			[
 				"folder",
@@ -604,10 +667,6 @@
 				"Git: Push Current Branch"
 			],
 			[
-				"git commit",
-				"Git: Commit"
-			],
-			[
 				"git status",
 				"Git: Status"
 			],
@@ -616,32 +675,16 @@
 				"Git: Add..."
 			],
 			[
-				"as",
-				"SublimeAStyleFormatter: Format Current File"
-			],
-			[
 				"st",
 				"Snippet: Typedef"
-			],
-			[
-				"c++",
-				"Set Syntax: C++"
 			],
 			[
 				"git comm",
 				"Git: Commit"
 			],
 			[
-				"git add",
-				"Git: Add..."
-			],
-			[
 				"modific ",
 				"Modific: Show original part"
-			],
-			[
-				"modific",
-				"Modific: Revert modified part"
 			],
 			[
 				"modifi",
@@ -694,10 +737,6 @@
 			[
 				"astyl",
 				"SublimeAStyleFormatter: Format Current File"
-			],
-			[
-				"delete",
-				"File: Delete"
 			],
 			[
 				"dele",
@@ -1054,41 +1093,9 @@
 			[
 				"svn upda",
 				"SVN: Update"
-			],
-			[
-				"svn up",
-				"SVN: Update"
-			],
-			[
-				"sv clea",
-				"SVN: Cleanup"
-			],
-			[
-				"",
-				"BracketHighlighter: Fold Bracket Content"
-			],
-			[
-				"svn file update",
-				"SVN: (File) Update"
-			],
-			[
-				"file diff ",
-				"SVN: (File) Diff"
-			],
-			[
-				"svn diff ",
-				"SVN: Diff, Custom Revisions…"
-			],
-			[
-				"svn info",
-				"SVN: Info"
-			],
-			[
-				"plain",
-				"Set Syntax: Plain Text"
 			]
 		],
-		"width": 653.0
+		"width": 619.0
 	},
 	"console":
 	{
@@ -1109,18 +1116,55 @@
 	},
 	"file_history":
 	[
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Suite.cpp",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTest.h",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTestBase.h",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/Suite.h",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/InferenceTest.h",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/AbstractTest.cpp",
-		"/home/helluin/Documents/Git/vertex-cover-kernelization/vertex-cover-kernelization.sublime-project",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/old/src-old/Graph-Edge.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/test.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/.gitignore",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/test/graphTest.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src-old/Graph.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src-old/Graph-shared_ptr-intermediate-approach.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src-old/Graph-meh.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/arc.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/node.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/arc.cpp",
+		"/home/helluin/Documents/Polsl/ZBP/lab/3/zbp3-kc.cpp",
+		"/home/helluin/Documents/Polsl/ZBP/lab/1/ZBP1_KC.cpp",
+		"/home/helluin/Documents/Polsl/ZBP/lab/2/zbp2_kc.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/build/graph",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/graph.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/marker.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/graphObserver.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/event.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/dijkstra.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/util.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/util.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/dijkstra.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/graph-mace.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Graph.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/.cproject",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Graph-meh.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Graph-shared_ptr-intermediate-approach.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Graph-Edge.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/build/graphTest",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Graph_edgeOriented.cpp",
 		"/home/helluin/.config/sublime-text-3/Packages/User/g++.sublime-build",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Equals.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/test/selftest.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/Suite.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/AbstractTest.cpp",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/test/customTest.cpp",
+		"/home/helluin/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/vertex-cover-kernelization.sublime-project",
+		"/home/helluin/.config/sublime-text-3/Packages/User/SublimeAStyleFormatter.sublime-settings",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTest.h",
+		"/usr/include/c++/4.6/bits/hashtable.h",
+		"/home/helluin/.config/sublime-text-3/Packages/SublimeAStyleFormatter/SublimeAStyleFormatter.sublime-settings",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/Suite.cpp",
+		"/home/helluin/Dropbox/JavaScript/node/highland.js",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/AbstractTestBase.h",
+		"/home/helluin/Documents/Git/vertex-cover-kernelization/src/headers/InferenceTest.h",
 		"/home/helluin/Documents/Projects/vertex-cover-kernelizationsublime-project",
 		"/home/helluin/Documents/Git/vertex-cover-kernelization/test/inference",
 		"/home/helluin/Documents/Projects/skip-list.sublime-project",
-		"/home/helluin/Documents/Polsl/ZBP/lab/1/ZBP1_KC.cpp",
 		"/home/helluin/Documents/Git/skip-list/test/timing_set.cpp",
 		"/home/helluin/Documents/Git/skip-list/test/test_copy.cpp",
 		"/home/helluin/Documents/Git/skip-list/test/timing_SkipList.cpp",
@@ -1156,7 +1200,6 @@
 		"/home/helluin/Documents/Git/skip-list/tags",
 		"/home/helluin/Documents/Git/skip-list/debug_compile.sh",
 		"/home/helluin/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
-		"/home/helluin/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
 		"/home/helluin/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
 		"/home/helluin/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
 		"/home/helluin/Documents/Git/skip-list/results.csv",
@@ -1200,43 +1243,7 @@
 		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-utils/lib/restUtils.js",
 		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-application-bootstrapper/lib/requestHandlers/renderFileRequestHandler.js",
 		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-application-bootstrapper/lib/applicationBootstrapper.js",
-		"/mnt/fedora/Documents/transfolio/common-webclient/js/modules/grid/RendererFactory.js",
-		"/mnt/fedora/Documents/transfolio/common-webclient/js/utils/common.js",
-		"/mnt/fedora/Documents/transfolio/fares-manager-gui/node_modules/grunt-contrib-concat/docs/concat-options.md",
-		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/dataAccessRouting.js",
-		"/mnt/fedora/Documents/transfolio/common-webclient/styles/less/layout/versionBox.less",
-		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/versionTest.js",
-		"/mnt/fedora/Documents/transfolio/fares-interfaces/package.json",
-		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-http/lib/resourceUrlProvider.js",
-		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.4/V0.4.1.1__SCHEMA.sql",
-		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/js/i18n/resources.fi.json",
-		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/js/i18n/resources.en.json",
-		"/mnt/fedora/Documents/transfolio/fares-manager-gui/src/static/templates/pricing/pricingInformation/list.html",
-		"/mnt/fedora/Documents/transfolio/common-webclient/js/i18n/resources.fi.json",
-		"/mnt/fedora/Documents/transfolio/common-webclient/js/i18n/resources.en.json",
-		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/resources/sql/createTables.sql",
-		"/mnt/fedora/Documents/transfolio/fares-manager/config/default.yaml",
-		"/mnt/fedora/Documents/transfolio/fares-manager/config/development.yaml",
-		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.5/V0.5.0.9__ALTER_FARES_PRODUCT.sql",
-		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/productGetTest.js",
-		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/dao/parametersTable-dao.js",
-		"/mnt/fedora/Documents/transfolio/fares-manager/test/functional/faresExportTest.js",
-		"/mnt/fedora/Documents/transfolio/database-deploy/sql/fares-manager/0.5/V0.5.0.8__ALTER_PRICING_INFORMATION.sql",
-		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/ejs/examples/list.ejs",
-		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/common-database/report/doc/yuidoc/files/lib_impl_sqliImpl.js.html",
-		"/mnt/fedora/Documents/transfolio/fares-manager/config/log4js-integration.json",
-		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/async/LICENSE",
-		"/tmp/sublime-svn-1391769005/SVN",
-		"/mnt/fedora/Documents/transfolio/fares-manager/src/data_access/restServices/productServiceRest.js",
-		"/mnt/fedora/Documents/transfolio/fares-manager-gui/package.json",
-		"/tmp/sublime-svn-1391768428/SVN",
-		"/tmp/sublime-svn-1391768371/SVN",
-		"/tmp/sublime-svn-1391768047/SVN",
-		"/mnt/fedora/Documents/transfolio/fares-manager/node_modules/log4js/test/dateFileAppender-test.js",
-		"/tmp/sublime-svn-1391766624/SVN",
-		"/tmp/sublime-svn-1391766476/SVN",
-		"/tmp/sublime-svn-1391766460/SVN",
-		"/tmp/sublime-svn-1391766242/SVN"
+		"/mnt/fedora/Documents/transfolio/common-webclient/js/modules/grid/RendererFactory.js"
 	],
 	"find":
 	{
@@ -1382,6 +1389,75 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getnunodes",
+			"makeNode",
+			"delete",
+			"new node",
+			"makeNode",
+			"delete",
+			"getnodes",
+			"nunodes++",
+			"getnunodes",
+			"isvertexcover",
+			"sstream",
+			"equals",
+			"comparer",
+			"contains",
+			"! contains",
+			"contains",
+			"StringComparer",
+			"thecomparer",
+			"comparer",
+			"equal<",
+			"equal<T, T> ",
+			"removeArc",
+			"removeref",
+			"contains",
+			"removeRef",
+			"setadj",
+			"compare<",
+			"node_ptr",
+			"#ifndef GRAPH_H_INCLUDED\n#include \"headers/graph.h\"\n#endif\n",
+			"template <typename T>",
+			"string",
+			"template <typename T>",
+			"Node::",
+			"insert",
+			"Graph<T>::",
+			"Graph::",
+			"<typename T> Graph<T>",
+			"^Graph",
+			"Arc::",
+			"^\\+",
+			"+",
+			"00\\d+",
+			"00326",
+			"->getDstNode().get()->getVal()",
+			"unordered_set",
+			"edge_ptr",
+			".find",
+			"result",
+			"disconnect",
+			";\n",
+			"unordered_set",
+			"to",
+			",",
+			"Node *",
+			"Edge *",
+			"bst_ptr",
+			"g1",
+			"break-blocks",
+			"preserve",
+			"getName",
+			"NULL",
+			"Edge *",
+			"nodeList",
+			"adjNodeList",
+			"NodeGraph",
+			"Graph",
+			"NODE",
+			"GRAPH_H_",
+			"foundcycle",
 			"TestSuite",
 			"$(which g++)",
 			"g++",
@@ -1440,76 +1516,7 @@
 			"insert",
 			"find",
 			"std::pair",
-			"::Skip",
-			"getheight",
-			"prev[",
-			"insert",
-			"prev[",
-			"next[",
-			"int, int",
-			"~Skip",
-			"toUpdate.at",
-			"~SkipList",
-			"toUpdate[",
-			"rit",
-			"~SkipList",
-			"valueequals",
-			"isnodem",
-			"valueequals",
-			"(theVal < tempNode->getVal() || tempNode->getVal() < theVal)",
-			"isnodem",
-			"find",
-			"insert",
-			"\"d\"",
-			"\"c\"",
-			"getKey",
-			"\"a\"",
-			"\"b\"",
-			"getKey",
-			"theKey",
-			"Key,",
-			"Key",
-			"Key, ",
-			"class class",
-			"Key, ",
-			"class class",
-			"Key, ",
-			".name",
-			"getAssignmeeName",
-			"'",
-			"existingScopedVariableNames",
-			"getGlobalVariableDeclarations",
-			"getVariableDeclarations",
-			"'",
-			"debugger;",
-			"requestsHandlersChain",
-			"renderFileRequest",
-			"applicationDetails",
-			"version",
-			"applicationDetails",
-			"findbyquery",
-			"FI:",
-			".only",
-			"printingLayout",
-			"staticData",
-			"FARES_PRICING_INFO",
-			"FARES_PRODUCT",
-			"FARES_PRICING_INFO",
-			"fares_product",
-			"404",
-			"ServiceREST",
-			"productsModelServiceREST",
-			"ServiceREST",
-			"'",
-			"product",
-			"1",
-			"customer_group",
-			"`",
-			"NVARCHAR(100)",
-			"pricing_info",
-			"	",
-			"debugger;",
-			"dataTransformer"
+			"::Skip"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1517,6 +1524,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"template\n<typename T> Graph<T>",
+			"",
+			"g2",
 			"lvl",
 			"2",
 			"",
@@ -1641,10 +1651,7 @@
 			"\n",
 			"regExpFactory.getChapterNumberPattern()",
 			"(docParser.getTransactionName(testedChapter))",
-			"common.contains",
-			"\n",
-			"groupInformer",
-			"groupInformer\n"
+			"common.contains"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1655,24 +1662,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/Equals.cpp",
+					"file": "src/graph.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 423,
+						"buffer_size": 5786,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								322,
-								322
+								1189,
+								1189
 							]
 						],
 						"settings":
@@ -1680,46 +1687,266 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
 								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 471.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "test/graph_test.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1797,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1797
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
-								"bh_unmatched_close"
+								"bh_unmatched_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "test/vertexCover_test.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
+							],
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/test.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 584,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								584,
+								584
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
 							],
 							"syntax": "Packages/C++/C++.tmLanguage",
 							"translate_tabs_to_spaces": true
@@ -1732,48 +1959,43 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/home/helluin/Dropbox/JavaScript/node/highland.js",
+					"buffer": 4,
+					"file": "src/node.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 157,
+						"buffer_size": 2492,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								157,
-								157
+								2389,
+								2389
 							]
 						],
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
-							"auto_name": "#!/usr/bin/env/node",
 							"bh_regions":
 							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
@@ -1782,44 +2004,48 @@
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
-								"bh_unmatched_close"
+								"bh_unmatched_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
 							],
-							"is_xml": false,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1046.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/headers/Suite.h",
+					"buffer": 5,
+					"file": "src/arc.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 331,
+						"buffer_size": 1504,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								31,
-								31
+								1395,
+								1395
 							]
 						],
 						"settings":
@@ -1827,120 +2053,51 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
-							],
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/AbstractTest.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 439,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								33,
-								33
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
 								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
 							],
-							"syntax": "Packages/C++/C++.tmLanguage"
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1956,20 +2113,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 4,
-					"file": "src/Suite.cpp",
+					"buffer": 6,
+					"file": "src/headers/graph.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 526,
+						"buffer_size": 3078,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								526,
-								526
+								407,
+								407
 							]
 						],
 						"settings":
@@ -1977,26 +2134,22 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
@@ -2005,94 +2158,26 @@
 								"bh_single_quote_center",
 								"bh_single_quote_open",
 								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
-								"bh_unmatched_close"
+								"bh_unmatched_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close"
 							],
-							"history_list_is_closing": true,
 							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "test/selftest.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 309,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								49,
-								49
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close"
-							],
-							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -2132,7 +2217,7 @@
 		"cols":
 		[
 			0.0,
-			0.614513165952,
+			0.474892835273,
 			1.0
 		],
 		"rows":
@@ -2144,7 +2229,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 241.0
+		"height": 322.0
 	},
 	"output.find_results":
 	{
@@ -2173,7 +2258,7 @@
 	"project": "vertex-cover-kernelization.sublime-project",
 	"replace":
 	{
-		"height": 40.0
+		"height": 88.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -2181,6 +2266,30 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"arc.h",
+				"src/headers/arc.h"
+			],
+			[
+				"graph.h",
+				"src/headers/graph.h"
+			],
+			[
+				"arc.cpp",
+				"src/arc.cpp"
+			],
+			[
+				"node.cpp",
+				"src/node.cpp"
+			],
+			[
+				"graph-",
+				"src/Graph-Edge.cpp"
+			],
+			[
+				"grap",
+				"src/Graph-shared_ptr-intermediate-approach.cpp"
+			],
 			[
 				"suite.h",
 				"src/headers/Suite.h"
@@ -2236,10 +2345,6 @@
 			[
 				"rand",
 				"ExponentialRandomHeight.cpp"
-			],
-			[
-				"node.cpp",
-				"SkipListNode.cpp"
 			],
 			[
 				"skiplitnode",
@@ -2672,26 +2777,6 @@
 			[
 				"datahelper",
 				"fares-manager/src/data_access/dataServiceHelper.js"
-			],
-			[
-				"pathmana",
-				"fares-interfaces/pathManager.js"
-			],
-			[
-				"printinglayoutservicerest",
-				"fares-manager/src/data_access/restServices/printingLayoutServiceRest.js"
-			],
-			[
-				"gui/layoutservice",
-				"fares-manager-gui/src/static/js/services/PrintingLayoutService.js"
-			],
-			[
-				"layoutservice",
-				"fares-manager/src/data_access/service/printingLayoutService.js"
-			],
-			[
-				"printinglayoutcontroller",
-				"fares-manager-gui/src/static/js/controllers/productParameters/printingLayouts/PrintingLayoutController.js"
 			]
 		],
 		"width": 0.0
