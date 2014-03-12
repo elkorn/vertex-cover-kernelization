@@ -258,6 +258,10 @@ typename Graph<T>::node_p Graph<T>::makeNode (T val)
 template <typename T>
 const bool  Graph<T>::isVertexCover (const Graph<T> &supset) const
 {
+    // In the context of this method, `this` is a subset of `supset`
+    // Formally:
+    // `this` = $S(V_s, E_s); |E_s|=k$
+    // `supset` = $G(V,E); |E|=n$
     if (getNuNodes() == 0)
     {
         return false;
@@ -268,6 +272,7 @@ const bool  Graph<T>::isVertexCover (const Graph<T> &supset) const
         return SHOULD_NO_EDGES_ALLOW_VERTEX_COVER;
     }
 
+    // O(knm)
     for (node_it nit = getNodes().begin(),
             nend = getNodes().end();
             nit != nend;
@@ -275,12 +280,15 @@ const bool  Graph<T>::isVertexCover (const Graph<T> &supset) const
     {
         node_s nodes = supset.getNodes();
 
+        // O(n)
         for (node_it snit = nodes.begin(),
                 snend = nodes.end();
                 snit != snend;
                 ++snit)
         {
             arc_s adjacent = (*snit)->getAdjacent();
+
+            // O(m), where m is adjacent.size
             for (arc_it sait = adjacent.begin(),
                     saend = adjacent.end();
                     sait != saend;

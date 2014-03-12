@@ -4,8 +4,8 @@
         "path": "/home/helluin/Documents/Git/vertex-cover-kernelization"
     }],
     "settings": {
-        "sublimegdb_commandline": "gdb --interpreter=mi myapp",
-        "sublimegdb_workingdir": "build",
+        "sublimegdb_commandline": "gdb --interpreter=mi ${file_base_name}",
+        "sublimegdb_workingdir": "/home/helluin/Documents/Git/vertex-cover-kernelization/build",
 
         "sublimeclang_options": [
             "-Wno-reorder"
