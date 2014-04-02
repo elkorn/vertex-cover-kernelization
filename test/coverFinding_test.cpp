@@ -9,14 +9,15 @@ using namespace std;
 
 int main()
 {
-    Graph g;
+    Graph g = Graph::fromFile("../data/simple_3x3.txt");
+    SolverBuss solver(g);
+
     vector<int> shouldCover;
     vector<int> shouldNotCover;
     shouldCover.push_back (0);
     shouldCover.push_back (1);
     shouldNotCover.push_back (0);
-    g.load ("../data/simple_3x3.txt");
-    assert (g.isVertexCover (shouldCover) == true);
-    assert (g.isVertexCover (shouldNotCover) == false);
+    assert (solver.isVertexCover (shouldCover) == true);
+    assert (solver.isVertexCover (shouldNotCover) == false);
     return 0;
 }
