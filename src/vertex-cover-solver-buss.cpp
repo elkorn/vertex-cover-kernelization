@@ -12,7 +12,8 @@ using namespace std;
 class SolverBuss
 {
     public:
-        SolverBuss (Graph g) : graph (g) {
+        SolverBuss (Graph g) : graph (g)
+        {
             cout << "Buss solver for graph:" << endl;
             graph.print();
         }
@@ -41,6 +42,31 @@ class SolverBuss
 
             cout << "Is a vertex cover." << endl;
             return true;
+        }
+
+        vector<int> findCover (int k)
+        {
+            vector<int> cover;
+            Graph kernel = Graph (graph);
+            int n = graph.size();
+
+            for (int v = 0; v < n; ++v)
+            {
+                int degree = kernel.degree (v);
+
+                if (degree > k)
+                {
+                    cover.push_back (v);
+                    kernel.removeVertex (v);
+                }
+            }
+
+            if (kernel.numberOfEdges() > k * k)
+            {
+                return vector<int>(0);
+            }
+
+            return cover;
         }
 
     private:

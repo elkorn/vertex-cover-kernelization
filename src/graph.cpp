@@ -10,6 +10,19 @@ using namespace std;
 class Graph
 {
     public:
+        Graph (const Graph &other) :
+            n (other.size()),
+            displayedSize (n)
+        {
+            graph.resize(other.graph.size());
+            for(int i = 0; i < other.graph.size(); ++i) {
+                graph[i] = vector<int>(other.graph.at(i));
+            }
+
+            vertexRemoved.resize(n);
+            collectNeighbors();
+        }
+
         static Graph fromFile (string filePath)
         {
             int n;
@@ -47,28 +60,82 @@ class Graph
             return result;
         }
 
-        bool areConnected(const int a, const int b) {
+        bool areConnected (const int a, const int b)
+        {
             return a != b && (graph[a][b] == 1 || graph[b][a] == 1);
         }
 
-        const int& size() {
-            return n;
+        const int &size() const
+        {
+            return displayedSize;
         }
 
-        void print() {
-            Printer::printMatrix(graph);
+        const int degree (int vertex)
+        {
+            return neighbors[vertex].size();
+        }
+
+        const int numberOfEdges()
+        {
+            int result = 0;
+
+            for (int i = 0; i < neighbors.size(); ++i)
+            {
+                result += neighbors[i].size();
+            }
+
+            return result;
+        }
+
+        void removeVertex (int vertex)
+        {
+            if (vertex >= 0 && vertex < n)
+            {
+                if (!vertexRemoved.at (vertex))
+                {
+                    vertexRemoved[vertex] = true;
+                    // displayed size is variable, n is constant.
+                    --displayedSize;
+
+                    for (int i = 0; i < neighbors.size(); ++i)
+                    {
+                        if (i == vertex)
+                        {
+                            neighbors[i].clear();
+                        }
+
+                        else
+                        {
+                            neighbors[i].erase (vertex);
+                        }
+                    }
+                }
+            }
+        }
+
+        void print()
+        {
+            Printer::printMatrix (graph);
         }
 
     private:
-        int n;
+        const int n;
+        int displayedSize;
 
         vector<vector<int>> graph;
         vector<set<int>> neighbors;
+        vector<bool> vertexRemoved;
 
         Graph (vector<vector<int>> theGraph) :
             n (theGraph.size()),
-            graph (theGraph)
+            displayedSize (n)
         {
+            graph.resize(theGraph.size());
+            for(int i = 0; i < theGraph.size(); ++i) {
+                graph[i] = vector<int>(theGraph.at(i));
+            }
+
+            vertexRemoved.resize(n);
             collectNeighbors();
         }
 
@@ -86,21 +153,6 @@ class Graph
 
                 neighbors.push_back (neighbor);
             }
-        }
-
-        vector<vector<int>> removeVertex (vector<vector<int>> graph, int vertex)
-        {
-            vector<vector<int>> result = graph;
-
-            for (int i = 0; i < result.size(); ++i)
-            {
-                // result[vertex].erase(result[i].begin() + i);
-                // result[i].erase(result[vertex].begin() + i);
-                result[i][vertex] = 0;
-                result[vertex][i] = 0;
-            }
-
-            return result;
         }
 };
 
