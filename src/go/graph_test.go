@@ -6,6 +6,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func mkGraphWithVertices(howMany int) *Graph {
+	g := MkGraph()
+	for i := 1; i <= howMany; i++ {
+		g.AddVertex(Vertex(i))
+	}
+
+	return g
+}
+
 func TestOpts(t *testing.T) {
 	SetOptions(Options{Verbose: false})
 }
@@ -27,10 +36,7 @@ func TestAddVertex(t *testing.T) {
 }
 
 func TestRemoveVertex(t *testing.T) {
-	g := MkGraph()
-	g.AddVertex(1)
-	g.AddVertex(2)
-	g.AddVertex(3)
+	g := mkGraphWithVertices(3)
 
 	err := g.RemoveVertex(2)
 	assert.Nil(t, err)
@@ -168,4 +174,16 @@ func TestVertexDegree(t *testing.T) {
 	degree, err = g.Degree(1)
 	assert.Nil(t, err)
 	assert.Equal(t, degree, 1)
+}
+
+func TestGetNeighbors(t *testing.T) {
+	g := mkGraphWithVertices(5)
+
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+	g.AddEdge(4, 3)
+	g.AddEdge(5, 3)
+
+	assert.Equal(t, Neighbors{1, 2, 4, 5}, g.getNeighbors(3))
+	assert.Equal(t, Neighbors{3}, g.getNeighbors(1))
 }
