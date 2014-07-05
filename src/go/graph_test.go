@@ -6,6 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestOpts(t *testing.T) {
+	SetOptions(Options{Verbose: false})
+}
+
 func TestMkGraph(t *testing.T) {
 	g := MkGraph()
 	assert.Equal(t, len(g.Edges), 0)
@@ -120,4 +124,21 @@ func TestVertexCoverNonTrivialGraph2(t *testing.T) {
 	g.AddEdge(8, 5)
 
 	assert.Equal(t, g.IsVertexCover(2, 3, 4, 5, 7), true)
+}
+
+func TestVertexDegree(t *testing.T) {
+	g := MkGraph()
+	g.AddVertex(1)
+	g.AddVertex(2)
+	g.AddVertex(3)
+	g.AddVertex(4)
+	g.AddVertex(5)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(4, 2)
+	g.AddEdge(5, 2)
+	degree, err := g.Degree(2)
+	assert.Nil(t, err)
+	assert.Equal(t, degree, 4)
 }

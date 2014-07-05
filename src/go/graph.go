@@ -6,6 +6,22 @@ import (
 	"log"
 )
 
+type Options struct {
+	Verbose bool
+}
+
+var options Options
+
+func SetOptions(opts Options) {
+	options = opts
+}
+
+func debug(msg string) {
+	if options.Verbose {
+		log.Print(msg)
+	}
+}
+
 func extend(slice []Edge, element Edge) []Edge {
 	n := len(slice)
 	if n == cap(slice) {
@@ -21,13 +37,10 @@ func extend(slice []Edge, element Edge) []Edge {
 }
 
 func append(slice []Edge, items ...Edge) []Edge {
-	log.Printf("Appending to slice %v", slice)
 	for _, item := range items {
-		log.Printf("appending %v", item)
 		slice = extend(slice, item)
 	}
 
-	log.Printf("slice: %v", slice)
 	return slice
 }
 
@@ -88,7 +101,6 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 		return errors.New(fmt.Sprintf("An edge between %v and %v already exists.", a, b))
 	}
 
-	log.Printf("new edge: %v", Edge{a, b})
 	self.Edges = append(self.Edges, Edge{a, b})
 	return nil
 }
@@ -107,7 +119,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 		}
 	}
 
-	log.Printf("Coverage map for %v: %v", vertices, isCovered)
+	debug(fmt.Sprintf("Coverage map for %v: %v", vertices, isCovered))
 	for _, v := range isCovered {
 		if v == false {
 			return false
@@ -115,6 +127,21 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 	}
 
 	return true
+}
+
+func (self *Graph) Degree(v Vertex) (int, error) {
+	result := 0
+	if !self.hasVertex(v) {
+		return -1, errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
+	}
+
+	for _, edge := range self.Edges {
+		if edge.IsCoveredBy(v) {
+			result++
+		}
+	}
+
+	return result, nil
 }
 
 func MkGraph() *Graph {
