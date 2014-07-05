@@ -21,4 +21,14 @@ func TestRemoveHighDegree(t *testing.T) {
 
 	RemoveVerticesOfDegree(g, 4)
 	assert.Equal(t, 4, len(g.Vertices))
+	assert.Equal(t, true, g.hasVertex(1))
+	assert.Equal(t, false, g.hasVertex(2))
+	assert.Equal(t, true, g.hasVertex(3))
+	assert.Equal(t, true, g.hasVertex(4))
+	assert.Equal(t, true, g.hasVertex(5))
+
+	assert.Equal(t, false, g.hasEdge(1, 2))
+	assert.Equal(t, false, g.hasEdge(2, 3))
+	assert.Equal(t, false, g.hasEdge(4, 2))
+	assert.Equal(t, false, g.hasEdge(5, 2))
 }
