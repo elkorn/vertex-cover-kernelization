@@ -45,7 +45,7 @@ func TestAddEdge(t *testing.T) {
 	assert.Equal(t, edge.to, 1)
 }
 
-func TestVertexCover(t *testing.T) {
+func TestVertexCoverSimpleGraph(t *testing.T) {
 	g := MkGraph()
 	g.AddVertex(1)
 	g.AddVertex(2)
@@ -57,5 +57,24 @@ func TestVertexCover(t *testing.T) {
 	assert.Equal(t, g.IsVertexCover(2), true)
 	assert.Equal(t, g.IsVertexCover(3), false)
 	assert.Equal(t, g.IsVertexCover(1, 3), true)
+}
 
+func TestVertexCoverComplicatedGraph(t *testing.T) {
+	g := MkGraph()
+	g.AddVertex(1)
+	g.AddVertex(2)
+	g.AddVertex(3)
+	g.AddVertex(4)
+	g.AddVertex(5)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 5)
+	g.AddEdge(4, 5)
+
+	assert.Equal(t, g.IsVertexCover(5), false)
+	assert.Equal(t, g.IsVertexCover(1, 3, 5), true)
 }
