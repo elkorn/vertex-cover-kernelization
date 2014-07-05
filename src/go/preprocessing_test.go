@@ -6,20 +6,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRemoveHighDegree(t *testing.T) {
-	g := MkGraph()
-	g.AddVertex(1)
-	g.AddVertex(2)
-	g.AddVertex(3)
-	g.AddVertex(4)
-	g.AddVertex(5)
+func TestRemoveOfDegree(t *testing.T) {
+	g := mkGraphWithVertices(5)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(4, 2)
 	g.AddEdge(5, 2)
 
-	RemoveVerticesOfDegree(g, 4)
+	g.removeVerticesOfDegree(4)
 	assert.Equal(t, 4, len(g.Vertices))
 	assert.Equal(t, true, g.hasVertex(1))
 	assert.Equal(t, false, g.hasVertex(2))
@@ -32,3 +27,16 @@ func TestRemoveHighDegree(t *testing.T) {
 	assert.Equal(t, false, g.hasEdge(4, 2))
 	assert.Equal(t, false, g.hasEdge(5, 2))
 }
+
+// func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
+// 	g := mkGraphWithVertices(5)
+//
+// 	g.AddEdge(2, 5)
+// 	g.AddEdge(3, 5)
+// 	g.AddEdge(2, 3)
+// 	g.AddEdge(1, 4)
+//
+// 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
+//
+// 	assert.Equal(t, Neighbors{2, 3}, result[5])
+// }

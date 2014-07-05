@@ -15,10 +15,6 @@ func mkGraphWithVertices(howMany int) *Graph {
 	return g
 }
 
-func TestOpts(t *testing.T) {
-	SetOptions(Options{Verbose: false})
-}
-
 func TestMkGraph(t *testing.T) {
 	g := MkGraph()
 	assert.Equal(t, len(g.Edges), 0)
