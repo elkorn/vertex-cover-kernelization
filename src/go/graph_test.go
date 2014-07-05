@@ -141,4 +141,8 @@ func TestVertexDegree(t *testing.T) {
 	degree, err := g.Degree(2)
 	assert.Nil(t, err)
 	assert.Equal(t, degree, 4)
+
+	degree, err = g.Degree(1)
+	assert.Nil(t, err)
+	assert.Equal(t, degree, 1)
 }

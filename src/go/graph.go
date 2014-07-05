@@ -3,57 +3,7 @@ package graph
 import (
 	"errors"
 	"fmt"
-	"log"
 )
-
-type Options struct {
-	Verbose bool
-}
-
-var options Options
-
-func SetOptions(opts Options) {
-	options = opts
-}
-
-func debug(msg string) {
-	if options.Verbose {
-		log.Print(msg)
-	}
-}
-
-func extend(slice []Edge, element Edge) []Edge {
-	n := len(slice)
-	if n == cap(slice) {
-		// Slice is full; must grow.
-		// We double its size and add 1, so if the size is zero we still grow.
-		newSlice := make([]Edge, len(slice), 2*len(slice)+1)
-		copy(newSlice, slice)
-		slice = newSlice
-	}
-	slice = slice[0 : n+1]
-	slice[n] = element
-	return slice
-}
-
-func append(slice []Edge, items ...Edge) []Edge {
-	for _, item := range items {
-		slice = extend(slice, item)
-	}
-
-	return slice
-}
-
-type Vertex int
-
-type Edge struct {
-	from Vertex
-	to   Vertex
-}
-
-func (self *Edge) IsCoveredBy(v Vertex) bool {
-	return self.from == v || self.to == v
-}
 
 type Graph struct {
 	Vertices map[Vertex]bool
@@ -119,7 +69,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 		}
 	}
 
-	debug(fmt.Sprintf("Coverage map for %v: %v", vertices, isCovered))
+	Debug(fmt.Sprintf("Coverage map for %v: %v", vertices, isCovered))
 	for _, v := range isCovered {
 		if v == false {
 			return false
