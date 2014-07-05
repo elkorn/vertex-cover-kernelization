@@ -7,7 +7,7 @@ import (
 
 type Graph struct {
 	Vertices map[Vertex]bool
-	Edges    []Edge
+	Edges    Edges
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
@@ -24,6 +24,17 @@ func (self *Graph) hasEdge(a, b Vertex) bool {
 	return false
 }
 
+func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
+	result := make([]int, 0)
+	for index, edge := range self.Edges {
+		if edge.IsCoveredBy(v) {
+			result = append(result, index)
+		}
+	}
+
+	return result
+}
+
 func (g *Graph) AddVertex(v Vertex) error {
 	_, exists := g.Vertices[v]
 	if exists {
@@ -31,6 +42,20 @@ func (g *Graph) AddVertex(v Vertex) error {
 	}
 
 	g.Vertices[v] = true
+	return nil
+}
+
+func (self *Graph) RemoveVertex(v Vertex) error {
+	if !self.hasVertex(v) {
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
+	}
+
+	delete(self.Vertices, v)
+	positions := self.getCoveredEdgePositions(v)
+	for i := len(positions) - 1; i >= 0; i-- {
+		self.Edges = removeAt(self.Edges, positions[i])
+	}
+
 	return nil
 }
 
@@ -97,6 +122,6 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 func MkGraph() *Graph {
 	g := new(Graph)
 	g.Vertices = make(map[Vertex]bool)
-	g.Edges = make([]Edge, 0)
+	g.Edges = make(Edges, 0)
 	return g
 }

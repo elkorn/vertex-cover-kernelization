@@ -8,3 +8,5 @@ type Edge struct {
 func (self *Edge) IsCoveredBy(v Vertex) bool {
 	return self.from == v || self.to == v
 }
+
+type Edges []Edge

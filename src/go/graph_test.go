@@ -26,6 +26,29 @@ func TestAddVertex(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
+func TestRemoveVertex(t *testing.T) {
+	g := MkGraph()
+	g.AddVertex(1)
+	g.AddVertex(2)
+	g.AddVertex(3)
+
+	err := g.RemoveVertex(2)
+	assert.Nil(t, err)
+	assert.Equal(t, 2, len(g.Vertices))
+
+	g.AddVertex(2)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+
+	err = g.RemoveVertex(2)
+	assert.Nil(t, err)
+	assert.Equal(t, false, g.hasEdge(1, 2))
+	assert.Equal(t, false, g.hasEdge(2, 3))
+	assert.Equal(t, true, g.hasEdge(1, 3))
+}
+
 func TestAddEdge(t *testing.T) {
 	g := MkGraph()
 	g.AddVertex(1)
