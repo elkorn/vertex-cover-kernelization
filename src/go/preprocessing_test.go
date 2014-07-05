@@ -28,15 +28,15 @@ func TestRemoveOfDegree(t *testing.T) {
 	assert.Equal(t, false, g.hasEdge(5, 2))
 }
 
-// func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
-// 	g := mkGraphWithVertices(5)
-//
-// 	g.AddEdge(2, 5)
-// 	g.AddEdge(3, 5)
-// 	g.AddEdge(2, 3)
-// 	g.AddEdge(1, 4)
-//
-// 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
-//
-// 	assert.Equal(t, Neighbors{2, 3}, result[5])
-// }
+func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
+	g := mkGraphWithVertices(5)
+
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 5)
+	g.AddEdge(2, 3)
+	g.AddEdge(1, 4)
+
+	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
+
+	assert.Equal(t, Neighbors{2, 3}, result[5])
+}
