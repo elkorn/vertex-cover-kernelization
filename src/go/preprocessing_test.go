@@ -158,6 +158,16 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	assert.Nil(t, result[6])
 	assert.Nil(t, result[7])
 	assert.Equal(t, Neighbors{1}, result[8])
+
+	g = mkGraph5()
+	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
+	assert.Equal(t, Neighbors{2, 3}, result[1])
+	assert.Nil(t, result[2])
+	assert.Nil(t, result[3])
+	assert.Nil(t, result[4])
+	assert.Nil(t, result[5])
+	assert.Equal(t, Neighbors{2, 7}, result[6])
+	assert.Nil(t, result[7])
 }
 
 func TestContractEdges(t *testing.T) {
@@ -174,4 +184,18 @@ func TestContractEdges(t *testing.T) {
 	assert.True(t, g.hasEdge(1, 6))
 	assert.True(t, g.hasEdge(1, 7))
 
+	g = mkGraph5()
+	contractionMap = make(NeighborMap)
+	contractionMap[1] = Neighbors{2, 3}
+	contractionMap[6] = Neighbors{2, 7}
+	g.contractEdges(contractionMap)
+
+	assert.False(t, g.hasVertex(2))
+	assert.False(t, g.hasVertex(3))
+	assert.False(t, g.hasVertex(7))
+
+	assert.True(t, g.hasEdge(1, 4))
+	assert.True(t, g.hasEdge(1, 5))
+	assert.True(t, g.hasEdge(6, 4))
+	assert.True(t, g.hasEdge(6, 5))
 }
