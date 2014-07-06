@@ -16,16 +16,16 @@ func TestRemoveOfDegree(t *testing.T) {
 
 	g.removeVerticesOfDegree(4)
 	assert.Equal(t, 4, len(g.Vertices))
-	assert.Equal(t, true, g.hasVertex(1))
-	assert.Equal(t, false, g.hasVertex(2))
-	assert.Equal(t, true, g.hasVertex(3))
-	assert.Equal(t, true, g.hasVertex(4))
-	assert.Equal(t, true, g.hasVertex(5))
+	assert.True(t, g.hasVertex(1))
+	assert.False(t, g.hasVertex(2))
+	assert.True(t, g.hasVertex(3))
+	assert.True(t, g.hasVertex(4))
+	assert.True(t, g.hasVertex(5))
 
-	assert.Equal(t, false, g.hasEdge(1, 2))
-	assert.Equal(t, false, g.hasEdge(2, 3))
-	assert.Equal(t, false, g.hasEdge(4, 2))
-	assert.Equal(t, false, g.hasEdge(5, 2))
+	assert.False(t, g.hasEdge(1, 2))
+	assert.False(t, g.hasEdge(2, 3))
+	assert.False(t, g.hasEdge(4, 2))
+	assert.False(t, g.hasEdge(5, 2))
 }
 
 func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
@@ -39,4 +39,31 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
 
 	assert.Equal(t, Neighbors{2, 3}, result[5])
+	assert.Equal(t, Neighbors{5, 3}, result[2])
+	assert.Equal(t, Neighbors{2, 5}, result[3])
+}
+
+func TestRemoveAllVerticesFromMap(t *testing.T) {
+	g := mkGraphWithVertices(5)
+
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 5)
+	g.AddEdge(2, 3)
+	g.AddEdge(1, 4)
+
+	theMap := make(NeighborMap)
+	theMap[5] = Neighbors{2, 3}
+	theMap[2] = Neighbors{5, 3}
+	theMap[3] = Neighbors{2, 5}
+
+	err := g.removeAllVerticesFromMap(theMap)
+	assert.Nil(t, err)
+	assert.False(t, g.hasVertex(2))
+	assert.False(t, g.hasVertex(3))
+	assert.False(t, g.hasVertex(5))
+	assert.True(t, g.hasVertex(4))
+	assert.True(t, g.hasVertex(1))
+
+	assert.False(t, g.hasEdge(2, 3))
+	assert.False(t, g.hasEdge(3, 5))
 }

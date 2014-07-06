@@ -30,8 +30,8 @@ func (self *Graph) removeVerticesOfDegree(degree int) error {
 	})
 }
 
-func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) map[Vertex]Neighbors {
-	result := make(map[Vertex]Neighbors)
+func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
+	result := make(NeighborMap)
 	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
@@ -66,6 +66,16 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) map[
 		return nil
 	})
 	return result
+}
+
+func (self *Graph) removeAllVerticesAccordingToMap(v NeighborMap) {
+	performRemoval := removeOnce(self, make(coverageMap))
+	for center, neighbors := range v {
+		performRemoval(center)
+		for _, neighbor := range neighbors {
+			performRemoval(neighbor)
+		}
+	}
 }
 
 func Preprocessing(g *Graph) error {
