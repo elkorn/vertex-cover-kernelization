@@ -7,5 +7,5 @@ import "testing"
 */
 
 func TestOpts(t *testing.T) {
-	SetOptions(Options{Verbose: true})
+	SetOptions(Options{Verbose: false})
 }

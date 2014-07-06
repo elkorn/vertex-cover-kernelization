@@ -78,6 +78,10 @@ func (self *Graph) removeAllVerticesAccordingToMap(v NeighborMap) {
 	}
 }
 
+func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
+	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
+}
+
 func Preprocessing(g *Graph) error {
 	// 1. Disjoint vertices cannot be in a vertex cover - remove them.
 	err := g.removeVerticesOfDegree(0)
@@ -98,7 +102,9 @@ func Preprocessing(g *Graph) error {
 
 	// 3. Remove vertices with degree 2 which have connected neighbors.
 	// Then, remove nodes whose degree has dropped to 0.
-	// TODO
+	g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
+	g.removeVerticesOfDegree(0)
 	// 4. Contract the edges between vertices of degree 2 and their neighbors if they are not connected.
+	// TODO
 	return nil
 }
