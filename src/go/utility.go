@@ -1,7 +1,5 @@
 package graph
 
-import "fmt"
-
 func removeAt(source Edges, position int) Edges {
 	return append(source[:position], source[position+1:]...)
 }
@@ -17,13 +15,14 @@ func indexOf(n int, f func(int) bool) int {
 }
 
 func contains(neighbors Neighbors, v Vertex) bool {
+	// Debug(fmt.Sprintf("==== SEARCH ====="))
 	length := len(neighbors)
-	Debug(fmt.Sprintf("Searching for %v in %v", v, neighbors))
+	// Debug(fmt.Sprintf("Searching for %v in %v", v, neighbors))
 	foundIndex := indexOf(length, func(i int) bool {
-		Debug(fmt.Sprintf("[%v] %v == %v ? %v", i, neighbors[i], v, neighbors[i] == v))
 		return neighbors[i] == v
 	})
 
-	Debug(fmt.Sprintf("Found index %v", foundIndex))
+	// Debug(fmt.Sprintf("Found index %v", foundIndex))
+	// Debug(fmt.Sprintf("==== END SEARCH ===="))
 	return foundIndex < length && neighbors[foundIndex] == v
 }

@@ -182,4 +182,18 @@ func TestGetNeighbors(t *testing.T) {
 
 	assert.Equal(t, Neighbors{1, 2, 4, 5}, g.getNeighbors(3))
 	assert.Equal(t, Neighbors{3}, g.getNeighbors(1))
+
+	g = mkGraphWithVertices(8)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+
+	g.AddEdge(1, 8)
+	g.AddEdge(2, 8)
+
+	assert.Equal(t, Neighbors{2, 3, 8}, g.getNeighbors(1))
 }

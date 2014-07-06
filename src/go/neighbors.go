@@ -4,12 +4,8 @@ type Neighbors []Vertex
 
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := Neighbors{}
-	coveredEdges := Edges{}
-	for _, i := range self.getCoveredEdgePositions(v) {
-		coveredEdges = append(coveredEdges, self.Edges[i])
-	}
 
-	for i := range self.getCoveredEdgePositions(v) {
+	for _, i := range self.getCoveredEdgePositions(v) {
 		edge := self.Edges[i]
 		if edge.from != v && !contains(result, edge.from) {
 			result = append(result, edge.from)

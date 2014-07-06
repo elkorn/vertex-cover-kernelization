@@ -40,7 +40,7 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 
 	assert.Equal(t, Neighbors{2, 3}, result[5])
 	assert.Equal(t, Neighbors{5, 3}, result[2])
-	assert.Equal(t, Neighbors{2, 5}, result[3])
+	assert.Equal(t, Neighbors{5, 2}, result[3])
 }
 
 func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
@@ -86,4 +86,56 @@ func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	assert.False(t, g.hasEdge(2, 3))
 	assert.False(t, g.hasEdge(3, 5))
 	assert.True(t, g.hasEdge(1, 4))
+}
+
+func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
+	g := mkGraphWithVertices(7)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+
+	result := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
+	assert.Equal(t, result[1], Neighbors{2, 3})
+	assert.Nil(t, result[2])
+	assert.Nil(t, result[3])
+	assert.Nil(t, result[4])
+	assert.Nil(t, result[5])
+	assert.Nil(t, result[6])
+	assert.Nil(t, result[7])
+
+	g = mkGraphWithVertices(8)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(6, 7)
+	g.AddEdge(4, 5)
+
+	g.AddEdge(1, 8)
+	g.AddEdge(2, 8)
+	/*
+	           1-----8
+	          / \    |
+	     3---+   +---2
+	    / \         / \
+	   7---6       5---4
+
+	*/
+
+	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(3)
+	assert.Nil(t, result[1])
+	assert.Nil(t, result[2])
+	assert.Nil(t, result[3])
+	assert.Nil(t, result[4])
+	assert.Nil(t, result[5])
+	assert.Nil(t, result[6])
+	assert.Nil(t, result[7])
+	assert.Nil(t, result[8])
 }
