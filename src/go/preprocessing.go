@@ -117,6 +117,25 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
+func (self *Graph) contractEdges(contractionMap NeighborMap) {
+	// toRemove is probably redundant given the circumstances under which this will be called.
+	// TODO Reason about this redundancy and introduce changes.
+	toRemove := Neighbors{}
+	for vertex, neighbors := range contractionMap {
+		for _, neighbor := range neighbors {
+			for _, distantNeighbor := range self.getNeighbors(neighbor) {
+				self.AddEdge(vertex, distantNeighbor)
+			}
+
+			toRemove = toRemove.appendIfNotContains(neighbor)
+		}
+	}
+
+	for _, neighbor := range toRemove {
+		self.RemoveVertex(neighbor)
+	}
+}
+
 func Preprocessing(g *Graph) error {
 	// 1. Disjoint vertices cannot be in a vertex cover - remove them.
 	err := g.removeVerticesOfDegree(0)
@@ -141,6 +160,9 @@ func Preprocessing(g *Graph) error {
 	g.removeVerticesOfDegree(0)
 
 	// 4. Contract the edges between vertices of degree 2 and their neighbors if they are not connected.
-	// TODO
+	// Repeat this step until all such vertices are eliminated.
+	for contractable := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2); len(contractable) > 0; contractable = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2) {
+	}
+
 	return nil
 }
