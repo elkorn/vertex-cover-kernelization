@@ -44,21 +44,8 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 				n1, n2 := neighbors[i], neighbors[j]
 
 				if self.hasEdge(n1, n2) {
-					Debug(fmt.Sprintf("For %v", v))
-					if result[v] == nil {
-						result[v] = Neighbors{n1, n2}
-					} else {
-						if !contains(result[v], n1) {
-							Debug(fmt.Sprintf("%v contains %v == %v", result[v], n1, contains(result[v], n1)))
-							result[v] = append(result[v], n1)
-						}
-
-						if !contains(result[v], n2) {
-							Debug(fmt.Sprintf("%v contains %v == %v", result[v], n2, contains(result[v], n2)))
-							result[v] = append(result[v], n2)
-						}
-					}
-
+					result.AddNeighborOfVertex(v, n1)
+					result.AddNeighborOfVertex(v, n2)
 					break
 				}
 			}
