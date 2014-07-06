@@ -14,7 +14,7 @@ import (
 //
 // 	searchFor := func(v int) int {
 // 		return sort.Search(len(data), func(i int) bool {
-// 			Debug(fmt.Sprint(i))
+// 			Debug("%v", i)
 // 			return data[i] == v
 // 		})
 // 	}

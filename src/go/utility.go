@@ -1,5 +1,10 @@
 package graph
 
+import (
+	"fmt"
+	"log"
+)
+
 func removeAt(source Edges, position int) Edges {
 	return append(source[:position], source[position+1:]...)
 }
@@ -15,14 +20,20 @@ func indexOf(n int, f func(int) bool) int {
 }
 
 func contains(neighbors Neighbors, v Vertex) bool {
-	// Debug(fmt.Sprintf("==== SEARCH ====="))
+	// Debug("==== SEARCH =====")
 	length := len(neighbors)
-	// Debug(fmt.Sprintf("Searching for %v in %v", v, neighbors))
+	// Debug("Searching for %v in %v", v, neighbors)
 	foundIndex := indexOf(length, func(i int) bool {
 		return neighbors[i] == v
 	})
 
-	// Debug(fmt.Sprintf("Found index %v", foundIndex))
-	// Debug(fmt.Sprintf("==== END SEARCH ===="))
+	// Debug("Found index %v", foundIndex)
+	// Debug("==== END SEARCH ====")
 	return foundIndex < length && neighbors[foundIndex] == v
+}
+
+func Debug(format string, args ...interface{}) {
+	if options.Verbose {
+		log.Print(fmt.Sprintf(format, args...))
+	}
 }

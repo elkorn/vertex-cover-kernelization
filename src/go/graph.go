@@ -94,7 +94,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 		}
 	}
 
-	Debug(fmt.Sprintf("Coverage map for %v: %v", vertices, isCovered))
+	Debug("Coverage map for %v: %v", vertices, isCovered)
 	for _, v := range isCovered {
 		if v == false {
 			return false

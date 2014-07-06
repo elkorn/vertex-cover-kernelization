@@ -52,12 +52,12 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) NeighborMap {
-	Debug(fmt.Sprintf("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree))
+	Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	result := make(NeighborMap)
 	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
-		Debug(fmt.Sprintf("OPERATION FOR %v (neighbors: %v)", v, neighbors))
+		Debug("OPERATION FOR %v (neighbors: %v)", v, neighbors)
 		hasOnlyDisjoint := true
 		potentiallyToBeAdded := Neighbors{}
 		if length == 1 {
@@ -73,11 +73,11 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 					n2 := neighbors[j]
 
 					if self.hasEdge(n1, n2) {
-						Debug(fmt.Sprintf("%v and %v are NOT disjoint", n1, n2))
+						Debug("%v and %v are NOT disjoint", n1, n2)
 						hasOnlyDisjoint = false
 						break
 					} else {
-						Debug(fmt.Sprintf("%v and %v are disjoint", n1, n2))
+						Debug("%v and %v are disjoint", n1, n2)
 						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n1)
 						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n2)
 					}
@@ -86,15 +86,15 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 		}
 
 		if hasOnlyDisjoint {
-			Debug(fmt.Sprintf("For %v: adding %v", v, potentiallyToBeAdded))
+			Debug("For %v: adding %v", v, potentiallyToBeAdded)
 			result[v] = potentiallyToBeAdded
 		}
 
 		return nil
 	})
 
-	Debug(fmt.Sprintf("%v", result))
-	Debug(fmt.Sprintf("===== END GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree))
+	Debug("%v", result)
+	Debug("===== END GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	return result
 }
 func (self *Graph) removeVerticesOfDegree(degree int) error {
