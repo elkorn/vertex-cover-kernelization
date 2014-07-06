@@ -197,3 +197,8 @@ func TestGetNeighbors(t *testing.T) {
 
 	assert.Equal(t, Neighbors{2, 3, 8}, g.getNeighbors(1))
 }
+
+func TestAddVertexWithAutoId(t *testing.T) {
+	g := mkGraphWithVertices(12)
+	assert.Equal(t, Vertex(13), g.generateVertex())
+}

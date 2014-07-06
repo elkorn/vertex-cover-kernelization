@@ -60,23 +60,27 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 		Debug(fmt.Sprintf("OPERATION FOR %v (neighbors: %v)", v, neighbors))
 		hasOnlyDisjoint := true
 		potentiallyToBeAdded := Neighbors{}
-		for i := 0; i < length; i++ {
-			n1 := neighbors[i]
-			for j := 0; j < length && hasOnlyDisjoint; j++ {
-				if i == j {
-					continue
-				}
+		if length == 1 {
+			potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(neighbors[0])
+		} else {
+			for i := 0; i < length; i++ {
+				n1 := neighbors[i]
+				for j := 0; j < length && hasOnlyDisjoint; j++ {
+					if i == j {
+						continue
+					}
 
-				n2 := neighbors[j]
+					n2 := neighbors[j]
 
-				if self.hasEdge(n1, n2) {
-					Debug(fmt.Sprintf("%v and %v are NOT disjoint", n1, n2))
-					hasOnlyDisjoint = false
-					break
-				} else {
-					Debug(fmt.Sprintf("%v and %v are disjoint", n1, n2))
-					potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n1)
-					potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n2)
+					if self.hasEdge(n1, n2) {
+						Debug(fmt.Sprintf("%v and %v are NOT disjoint", n1, n2))
+						hasOnlyDisjoint = false
+						break
+					} else {
+						Debug(fmt.Sprintf("%v and %v are disjoint", n1, n2))
+						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n1)
+						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n2)
+					}
 				}
 			}
 		}

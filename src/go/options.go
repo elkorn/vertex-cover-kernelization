@@ -13,6 +13,7 @@ func SetOptions(opts Options) {
 }
 
 func Debug(msg string) {
+	// func (message ...interface{}) { fmt.Println(...message) }
 	if options.Verbose {
 		log.Print(msg)
 	}
