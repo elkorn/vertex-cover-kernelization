@@ -6,8 +6,9 @@ import (
 )
 
 type Graph struct {
-	Vertices map[Vertex]bool
-	Edges    Edges
+	Vertices           map[Vertex]bool
+	Edges              Edges
+	currentVertexIndex int
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
@@ -35,13 +36,10 @@ func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
 	return result
 }
 
-func (g *Graph) AddVertex(v Vertex) error {
-	_, exists := g.Vertices[v]
-	if exists {
-		return errors.New(fmt.Sprintf("Vertex %v already in the set", v))
-	}
-
-	g.Vertices[v] = true
+func (g *Graph) AddVertex() error {
+	g.currentVertexIndex++
+	Debug("Adding %v", g.currentVertexIndex)
+	g.Vertices[Vertex(g.currentVertexIndex)] = true
 	return nil
 }
 

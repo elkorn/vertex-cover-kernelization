@@ -102,7 +102,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	g = mkGraph4()
 
-	g.AddVertex(8)
+	g.AddVertex()
 
 	g.AddEdge(1, 8)
 	g.AddEdge(2, 8)
@@ -127,7 +127,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	g = mkGraph4()
 
-	g.AddVertex(8)
+	g.AddVertex()
 	g.AddEdge(1, 8)
 	/*
 	           1-----8
