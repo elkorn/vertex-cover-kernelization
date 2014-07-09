@@ -18,3 +18,5 @@ func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
 
 	return result
 }
+
+// ILP forumlation is the second mehtod, but it has been moved to a separate file.
