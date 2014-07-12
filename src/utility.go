@@ -45,6 +45,15 @@ func inVerboseContext(fn func()) {
 
 }
 
+func factorial(val int) int {
+	res := 1
+	for i := 1; i <= val; i++ {
+		res *= i
+	}
+
+	return res
+}
+
 func mkGraph1() *Graph {
 	/*
 		   1o---o2
