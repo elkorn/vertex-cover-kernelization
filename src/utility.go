@@ -38,6 +38,13 @@ func Debug(format string, args ...interface{}) {
 	}
 }
 
+func inVerboseContext(fn func()) {
+	SetOptions(Options{Verbose: true})
+	fn()
+	SetOptions(Options{Verbose: false})
+
+}
+
 func mkGraph1() *Graph {
 	/*
 		   1o---o2
