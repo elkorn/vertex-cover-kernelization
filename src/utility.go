@@ -54,6 +54,12 @@ func factorial(val int) int {
 	return res
 }
 
+func rng(args ...int) []int {
+	c := make([]int, len(args))
+	copy(c, args)
+	return c
+}
+
 func mkGraph1() *Graph {
 	/*
 		   1o---o2
