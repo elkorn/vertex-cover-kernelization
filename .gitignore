@@ -7,3 +7,4 @@ src/*Test.cpp
 old
 tags
 EDIT_COMMITMSG
+coverage.out
