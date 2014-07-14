@@ -23,7 +23,9 @@ func TestRemoveHighDegree(t *testing.T) {
 	g1.AddEdge(9, 8)
 
 	res := g1.removeVerticesWithDegreeGreaterThan(2)
-	assert.Equal(t, Neighbors{1, 2}, res)
+	assert.True(t, contains(res, 1))
+	assert.True(t, contains(res, 2))
+
 	assert.False(t, g1.hasVertex(1))
 	assert.False(t, g1.hasVertex(2))
 
