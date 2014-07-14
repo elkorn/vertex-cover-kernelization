@@ -20,3 +20,8 @@ func objectiveFunction(feasibleSolutions []map[Vertex]int) map[Vertex]int {
 
 	return res
 }
+
+// Takes in all the edges and returns the least-costing combination according to the LP formulation.
+func branchAndBound(edges Edges) []int {
+	return nil
+}
