@@ -32,6 +32,7 @@ func TestPriorityQueue(t *testing.T) {
 		value:    "orange",
 		priority: 1,
 	}
+
 	heap.Push(&pq, item)
 	pq.update(item, item.value, 5)
 	previousItem := &Item{
