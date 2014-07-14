@@ -45,15 +45,6 @@ func inVerboseContext(fn func()) {
 
 }
 
-func factorial(val int) int {
-	res := 1
-	for i := 1; i <= val; i++ {
-		res *= i
-	}
-
-	return res
-}
-
 func rng(args ...int) []int {
 	c := make([]int, len(args))
 	copy(c, args)
