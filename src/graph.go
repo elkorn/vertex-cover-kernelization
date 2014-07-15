@@ -6,18 +6,19 @@ import (
 )
 
 type Graph struct {
-	Vertices           map[Vertex]bool
+	Vertices           map[int]*Vertex
 	Edges              Edges
 	currentVertexIndex int
 }
 
-func (self *Graph) hasVertex(v Vertex) bool {
-	return self.Vertices[v]
+func (self *Graph) hasVertex(v int) bool {
+	_, res := self.Vertices[v]
+	return res
 }
 
-func (self *Graph) hasEdge(a, b Vertex) bool {
+func (self *Graph) hasEdge(a, b int) bool {
 	for _, v := range self.Edges {
-		if v.from == a && v.to == b || v.from == b && v.to == a {
+		if v.from == self.Vertices[a] && v.to == self.Vertices[b] || v.from == self.Vertices[b] && v.to == self.Vertices[a] {
 			return true
 		}
 	}
@@ -25,10 +26,10 @@ func (self *Graph) hasEdge(a, b Vertex) bool {
 	return false
 }
 
-func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
+func (self *Graph) getCoveredEdgePositions(v int) []int {
 	result := make([]int, 0)
 	for index, edge := range self.Edges {
-		if edge.IsCoveredBy(v) {
+		if edge.IsCoveredBy(self.Vertices[v]) {
 			result = append(result, index)
 		}
 	}
@@ -36,14 +37,13 @@ func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
 	return result
 }
 
-func (g *Graph) AddVertex() error {
-	g.currentVertexIndex++
+func (g *Graph) AddVertex() {
 	Debug("Adding %v", g.currentVertexIndex)
-	g.Vertices[Vertex(g.currentVertexIndex)] = true
-	return nil
+	vertex := g.generateVertex()
+	g.Vertices[vertex.id] = &vertex
 }
 
-func (self *Graph) RemoveVertex(v Vertex) error {
+func (self *Graph) RemoveVertex(v int) error {
 	if !self.hasVertex(v) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
@@ -57,11 +57,7 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 	return nil
 }
 
-func (self *Graph) AddEdge(a, b Vertex) error {
-	if a == b {
-		return errors.New(fmt.Sprintf("Connect two separate vertices."))
-	}
-
+func (self *Graph) AddEdge(a, b int) error {
 	if !self.hasVertex(a) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", a))
 	}
@@ -70,15 +66,21 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", b))
 	}
 
+	if self.Vertices[a] == self.Vertices[b] {
+		return errors.New(fmt.Sprintf("Connect two separate vertices."))
+	}
+
 	if self.hasEdge(a, b) {
 		return errors.New(fmt.Sprintf("An edge between %v and %v already exists.", a, b))
 	}
 
-	self.Edges = append(self.Edges, Edge{a, b})
+	self.Edges = append(self.Edges, Edge{self.Vertices[a], self.Vertices[b]})
+	self.Vertices[a].degree += 1
+	self.Vertices[b].degree += 1
 	return nil
 }
 
-func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
+func (self *Graph) IsVertexCover(vertices ...int) bool {
 	isCovered := make(map[Edge]bool)
 	for _, edge := range self.Edges {
 		isCovered[edge] = false
@@ -86,7 +88,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 
 	for _, vertex := range vertices {
 		for _, edge := range self.Edges {
-			if edge.IsCoveredBy(vertex) {
+			if edge.IsCoveredBy(self.Vertices[vertex]) {
 				isCovered[edge] = true
 			}
 		}
@@ -102,14 +104,14 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 	return true
 }
 
-func (self *Graph) Degree(v Vertex) (int, error) {
+func (self *Graph) Degree(v int) (int, error) {
 	result := 0
 	if !self.hasVertex(v) {
 		return -1, errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
 	for _, edge := range self.Edges {
-		if edge.IsCoveredBy(v) {
+		if edge.IsCoveredBy(self.Vertices[v]) {
 			result++
 		}
 	}
@@ -119,7 +121,7 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 
 func MkGraph() *Graph {
 	g := new(Graph)
-	g.Vertices = make(map[Vertex]bool)
+	g.Vertices = make(map[int]*Vertex)
 	g.Edges = make(Edges, 0)
 	return g
 }

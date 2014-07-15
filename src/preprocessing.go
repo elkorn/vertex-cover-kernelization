@@ -1,19 +1,9 @@
 package graph
 
-import (
-	"errors"
-	"fmt"
-)
-
 // TODO: copy the graph instead of mutating.
-func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error) error {
-	for vertex := range self.Vertices {
-		vDegree, err := self.Degree(vertex)
-		if nil != err {
-			return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex))
-		}
-
-		if vDegree == degree {
+func (self *Graph) forAllVerticesOfDegree(degree int, action func(*Vertex) error) error {
+	for _, vertex := range self.Vertices {
+		if vertex.degree == degree {
 			err := action(vertex)
 			if nil != err {
 				return err
@@ -26,7 +16,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error)
 
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
 	result := make(NeighborMap)
-	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
+	self.forAllVerticesOfDegree(degree, func(v *Vertex) error {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
 		for i := 0; i < length; i++ {
@@ -37,7 +27,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 
 				n1, n2 := neighbors[i], neighbors[j]
 
-				if self.hasEdge(n1, n2) {
+				if self.hasEdge(n1.id, n2.id) {
 					result.AddNeighborOfVertex(v, n1)
 					result.AddNeighborOfVertex(v, n2)
 					break
@@ -54,7 +44,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) NeighborMap {
 	Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	result := make(NeighborMap)
-	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
+	self.forAllVerticesOfDegree(degree, func(v *Vertex) error {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
 		Debug("OPERATION FOR %v (neighbors: %v)", v, neighbors)
@@ -72,7 +62,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 
 					n2 := neighbors[j]
 
-					if self.hasEdge(n1, n2) {
+					if self.hasEdge(n1.id, n2.id) {
 						Debug("%v and %v are NOT disjoint", n1, n2)
 						hasOnlyDisjoint = false
 						break
@@ -98,8 +88,8 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 	return result
 }
 func (self *Graph) removeVerticesOfDegree(degree int) error {
-	return self.forAllVerticesOfDegree(degree, func(v Vertex) error {
-		return self.RemoveVertex(v)
+	return self.forAllVerticesOfDegree(degree, func(v *Vertex) error {
+		return self.RemoveVertex(v.id)
 	})
 }
 
@@ -124,7 +114,7 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	for vertex, neighbors := range contractionMap {
 		for _, neighbor := range neighbors {
 			for _, distantNeighbor := range self.getNeighbors(neighbor) {
-				self.AddEdge(vertex, distantNeighbor)
+				self.AddEdge(vertex.id, distantNeighbor.id)
 			}
 
 			toRemove = toRemove.appendIfNotContains(neighbor)
@@ -132,7 +122,7 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	}
 
 	for _, neighbor := range toRemove {
-		self.RemoveVertex(neighbor)
+		self.RemoveVertex(neighbor.id)
 	}
 }
 

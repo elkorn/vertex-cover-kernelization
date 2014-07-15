@@ -1,12 +1,12 @@
 package graph
 
-type coverageMap map[Vertex]bool
+type coverageMap map[*Vertex]bool
 
 // TODO copy the graph instead of mutating
-func removeOnce(g *Graph, removed coverageMap) func(Vertex) {
-	return func(v Vertex) {
+func removeOnce(g *Graph, removed coverageMap) func(*Vertex) {
+	return func(v *Vertex) {
 		if !removed[v] {
-			err := g.RemoveVertex(v)
+			err := g.RemoveVertex(v.id)
 			if nil != err {
 				removed[v] = true
 			}

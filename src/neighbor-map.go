@@ -1,8 +1,8 @@
 package graph
 
-type NeighborMap map[Vertex]Neighbors
+type NeighborMap map[*Vertex]Neighbors
 
-func (self NeighborMap) AddNeighborOfVertex(v, n Vertex) {
+func (self NeighborMap) AddNeighborOfVertex(v, n *Vertex) {
 	if self[v] == nil {
 		self[v] = Neighbors{n}
 	} else {

@@ -38,9 +38,9 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 
 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
 
-	assert.Equal(t, Neighbors{2, 3}, result[5])
-	assert.Equal(t, Neighbors{5, 3}, result[2])
-	assert.Equal(t, Neighbors{5, 2}, result[3])
+	assert.Equal(t, Neighbors{g.Vertices[2], g.Vertices[3]}, result[g.Vertices[5]])
+	assert.Equal(t, Neighbors{g.Vertices[5], g.Vertices[3]}, result[g.Vertices[2]])
+	assert.Equal(t, Neighbors{g.Vertices[5], g.Vertices[2]}, result[g.Vertices[3]])
 }
 
 func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
@@ -52,9 +52,9 @@ func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
 	g.AddEdge(1, 4)
 
 	theMap := make(NeighborMap)
-	theMap[5] = Neighbors{2, 3}
-	theMap[2] = Neighbors{5, 3}
-	theMap[3] = Neighbors{2, 5}
+	theMap[g.Vertices[5]] = Neighbors{g.Vertices[2], g.Vertices[3]}
+	theMap[g.Vertices[2]] = Neighbors{g.Vertices[5], g.Vertices[3]}
+	theMap[g.Vertices[3]] = Neighbors{g.Vertices[2], g.Vertices[5]}
 
 	g.removeAllVerticesAccordingToMap(theMap)
 	assert.False(t, g.hasVertex(2))
@@ -92,13 +92,13 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	g := mkGraph3()
 
 	result := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
-	assert.Equal(t, result[1], Neighbors{2, 3})
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
+	assert.Equal(t, result[g.Vertices[1]], Neighbors{g.Vertices[2], g.Vertices[3]})
+	assert.Nil(t, result[g.Vertices[2]])
+	assert.Nil(t, result[g.Vertices[3]])
+	assert.Nil(t, result[g.Vertices[4]])
+	assert.Nil(t, result[g.Vertices[5]])
+	assert.Nil(t, result[g.Vertices[6]])
+	assert.Nil(t, result[g.Vertices[7]])
 
 	g = mkGraph4()
 
@@ -116,14 +116,14 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	*/
 
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(3)
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
-	assert.Nil(t, result[8])
+	assert.Nil(t, result[g.Vertices[1]])
+	assert.Nil(t, result[g.Vertices[2]])
+	assert.Nil(t, result[g.Vertices[3]])
+	assert.Nil(t, result[g.Vertices[4]])
+	assert.Nil(t, result[g.Vertices[5]])
+	assert.Nil(t, result[g.Vertices[6]])
+	assert.Nil(t, result[g.Vertices[7]])
+	assert.Nil(t, result[g.Vertices[8]])
 
 	g = mkGraph4()
 
@@ -139,25 +139,25 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	*/
 
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(3)
-	assert.Equal(t, Neighbors{2, 3, 8}, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
-	assert.Nil(t, result[8])
+	assert.Equal(t, Neighbors{g.Vertices[2], g.Vertices[3], g.Vertices[8]}, result[g.Vertices[1]])
+	assert.Nil(t, result[g.Vertices[2]])
+	assert.Nil(t, result[g.Vertices[3]])
+	assert.Nil(t, result[g.Vertices[4]])
+	assert.Nil(t, result[g.Vertices[5]])
+	assert.Nil(t, result[g.Vertices[6]])
+	assert.Nil(t, result[g.Vertices[7]])
+	assert.Nil(t, result[g.Vertices[8]])
 
 	// Edge case: neighbors of a vertex with degree of 1.
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(1)
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
-	assert.Equal(t, Neighbors{1}, result[8])
+	assert.Nil(t, result[g.Vertices[1]])
+	assert.Nil(t, result[g.Vertices[2]])
+	assert.Nil(t, result[g.Vertices[3]])
+	assert.Nil(t, result[g.Vertices[4]])
+	assert.Nil(t, result[g.Vertices[5]])
+	assert.Nil(t, result[g.Vertices[6]])
+	assert.Nil(t, result[g.Vertices[7]])
+	assert.Equal(t, Neighbors{g.Vertices[1]}, result[g.Vertices[8]])
 
 	g = mkGraph5()
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)

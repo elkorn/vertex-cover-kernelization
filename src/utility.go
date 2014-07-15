@@ -19,7 +19,7 @@ func indexOf(n int, f func(int) bool) int {
 	return n + 1
 }
 
-func contains(neighbors Neighbors, v Vertex) bool {
+func contains(neighbors Neighbors, v *Vertex) bool {
 	// Debug("==== SEARCH =====")
 	length := len(neighbors)
 	// Debug("Searching for %v in %v", v, neighbors)

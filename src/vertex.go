@@ -10,7 +10,7 @@ func mkVertex(id int) Vertex {
 	return Vertex{id, 0}
 }
 
-func (self Vertex) eq(other Vertex) bool {
+func (self Vertex) eq(other *Vertex) bool {
 	return other != nil && self.id == other.id
 }
 

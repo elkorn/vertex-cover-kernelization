@@ -1,11 +1,11 @@
 package graph
 
-type Neighbors []Vertex
+type Neighbors []*Vertex
 
-func (self *Graph) getNeighbors(v Vertex) Neighbors {
+func (self *Graph) getNeighbors(v *Vertex) Neighbors {
 	result := Neighbors{}
 
-	for _, i := range self.getCoveredEdgePositions(v) {
+	for _, i := range self.getCoveredEdgePositions(v.id) {
 		edge := self.Edges[i]
 		if edge.from != v && !contains(result, edge.from) {
 			result = append(result, edge.from)
@@ -17,7 +17,7 @@ func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	return result
 }
 
-func (self Neighbors) appendIfNotContains(v Vertex) Neighbors {
+func (self Neighbors) appendIfNotContains(v *Vertex) Neighbors {
 	if !contains(self, v) {
 		self = append(self, v)
 	}

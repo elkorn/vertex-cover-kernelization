@@ -119,8 +119,8 @@ func TestGetNeighbors(t *testing.T) {
 	g.AddEdge(4, 3)
 	g.AddEdge(5, 3)
 
-	assert.Equal(t, Neighbors{1, 2, 4, 5}, g.getNeighbors(3))
-	assert.Equal(t, Neighbors{3}, g.getNeighbors(1))
+	assert.Equal(t, Neighbors{g.Vertices[1], g.Vertices[2], g.Vertices[4], g.Vertices[5]}, g.getNeighbors(g.Vertices[3]))
+	assert.Equal(t, Neighbors{g.Vertices[3]}, g.getNeighbors(g.Vertices[1]))
 
 	g = mkGraphWithVertices(8)
 
@@ -134,10 +134,10 @@ func TestGetNeighbors(t *testing.T) {
 	g.AddEdge(1, 8)
 	g.AddEdge(2, 8)
 
-	assert.Equal(t, Neighbors{2, 3, 8}, g.getNeighbors(1))
+	assert.Equal(t, Neighbors{g.Vertices[2], g.Vertices[3], g.Vertices[8]}, g.getNeighbors(g.Vertices[1]))
 }
 
 func TestAddVertexWithAutoId(t *testing.T) {
 	g := mkGraphWithVertices(12)
-	assert.Equal(t, Vertex(13), g.generateVertex())
+	assert.Equal(t, Vertex{13, 0}, g.generateVertex())
 }
