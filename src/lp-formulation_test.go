@@ -27,8 +27,8 @@ func TestObjectiveFunction(t *testing.T) {
 }
 
 func TestResolveConflict(t *testing.T) {
-	n1 := Node{Vertex(1), 1}
-	n2 := Node{Vertex(2), 3}
+	n1 := Node{1, 1}
+	n2 := Node{2, 3}
 
 	assert.Equal(t, n2, resolveConflict(n1, n2))
 
@@ -41,8 +41,29 @@ func TestResolveConflict(t *testing.T) {
 	assert.Equal(t, n2, resolveConflict(n1, n2))
 }
 
-func TestCalculateWeight(t *testing.T) {
+func TestCalculateLowerBound(t *testing.T) {
+	g := mkGraphWithVertices(10)
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 5)
+	g.AddEdge(1, 6)
+	g.AddEdge(8, 9)
+
+	selection := make(map[Vertex]int)
+	for i := range g.Vertices {
+		selection[i] = 0
+	}
+
 	// It's very sensible to reimplement as a struct with a degree field.
 	// It's gonna be looked up a lot during this computation.
+	assert.Equal(t, 3, computeLowerBound(g, selection))
 
+	selection[8] = 1
+	selection[9] = 1
+	selection[5] = 1
+
+	assert.Equal(t, 5, computeLowerBound(g, selection))
 }

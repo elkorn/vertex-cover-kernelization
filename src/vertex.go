@@ -4,7 +4,7 @@ type Vertex int
 
 type Node struct {
 	// This will become Vertex after refactoring.
-	Vertex
+	id     int
 	degree int
 }
 
