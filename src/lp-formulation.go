@@ -7,6 +7,12 @@ const MAX_INT = int(MAX_UINT >> 1)
 
 type Selection map[Vertex]int
 
+type lpNode struct {
+	selection   Selection
+	lowerBound  int
+	left, right *lpNode
+}
+
 func computeLowerBound(g *Graph, preselected Selection) int {
 	result := 0
 	for _, edge := range g.Edges {
@@ -29,12 +35,8 @@ func computeLowerBound(g *Graph, preselected Selection) int {
 	return result
 }
 
-type lpNode struct {
-	selection Selection
-}
-
-func objectiveFunction(feasibleSolutions []map[Vertex]int) map[Vertex]int {
-	res := make(map[Vertex]int)
+func objectiveFunction(feasibleSolutions []Selection) Selection {
+	res := Selection{}
 	minWeight := MAX_INT
 	for _, solution := range feasibleSolutions {
 		totalWeight := 0
