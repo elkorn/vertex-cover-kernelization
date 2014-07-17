@@ -97,18 +97,25 @@ func TestVertexCoverNonTrivialGraph2(t *testing.T) {
 
 func TestVertexDegree(t *testing.T) {
 	g := mkGraphWithVertices(5)
+	assertDegreeIsCorrect := func(v Vertex, expectedDegree int) {
+		degree, err := g.Degree(v)
+		assert.Nil(t, err)
+		assert.Equal(t, expectedDegree, degree)
+	}
+
+	for i := 1; i <= 5; i++ {
+		assertDegreeIsCorrect(Vertex(i), 0)
+	}
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(4, 2)
 	g.AddEdge(5, 2)
-	degree, err := g.Degree(2)
-	assert.Nil(t, err)
-	assert.Equal(t, degree, 4)
+	assertDegreeIsCorrect(Vertex(2), 4)
 
-	degree, err = g.Degree(1)
-	assert.Nil(t, err)
-	assert.Equal(t, degree, 1)
+	g.AddEdge(1, 5)
+	assertDegreeIsCorrect(Vertex(5), 2)
+	assertDegreeIsCorrect(Vertex(1), 2)
 }
 
 func TestGetNeighbors(t *testing.T) {
