@@ -18,7 +18,7 @@ func TestPriorityQueue(t *testing.T) {
 	pq := make(PriorityQueue, len(items))
 	i := 0
 	for value, priority := range items {
-		pq[i] = &Item{
+		pq[i] = &pqItem{
 			value:    value,
 			priority: priority,
 			index:    i,
@@ -28,22 +28,35 @@ func TestPriorityQueue(t *testing.T) {
 	heap.Init(&pq)
 
 	// Insert a new item and then modify its priority.
-	item := &Item{
+	item := &pqItem{
 		value:    "orange",
 		priority: 1,
 	}
 
 	heap.Push(&pq, item)
 	pq.update(item, item.value, 5)
-	previousItem := &Item{
+	previouspqItem := &pqItem{
 		value:    "dummy",
 		priority: 999,
 		index:    100,
 	}
 	// Take the items out; they arrive in decreasing priority order.
 	for pq.Len() > 0 {
-		item := heap.Pop(&pq).(*Item)
-		assert.True(t, item.priority < previousItem.priority)
-		previousItem = item
+		item := heap.Pop(&pq).(*pqItem)
+		assert.True(t, item.priority < previouspqItem.priority)
+		previouspqItem = item
 	}
+}
+
+func TestPopVal(t *testing.T) {
+	q1 := PriorityQueue{}
+	q2 := PriorityQueue{}
+	item1 := &pqItem{
+		value:    "banana",
+		priority: 1,
+	}
+	item2 := item1
+	q1.Push(item1)
+	q2.Push(item2)
+	assert.Equal(t, q1.Pop().(*pqItem).value, q2.PopVal())
 }

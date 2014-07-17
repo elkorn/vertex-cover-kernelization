@@ -2,16 +2,16 @@ package graph
 
 import "container/heap"
 
-// An Item is something we manage in a priority queue.
-type Item struct {
+// An pqItem is something we manage in a priority queue.
+type pqItem struct {
 	value    string // The value of the item; arbitrary.
 	priority int    // The priority of the item in the queue.
 	// The index is needed by update and is maintained by the heap.Interface methods.
 	index int // The index of the item in the heap.
 }
 
-// A PriorityQueue implements heap.Interface and holds Items.
-type PriorityQueue []*Item
+// A PriorityQueue implements heap.Interface and holds pqItems.
+type PriorityQueue []*pqItem
 
 func (pq PriorityQueue) Len() int { return len(pq) }
 
@@ -28,7 +28,7 @@ func (pq PriorityQueue) Swap(i, j int) {
 
 func (pq *PriorityQueue) Push(x interface{}) {
 	n := len(*pq)
-	item := x.(*Item)
+	item := x.(*pqItem)
 	item.index = n
 	*pq = append(*pq, item)
 }
@@ -42,8 +42,12 @@ func (pq *PriorityQueue) Pop() interface{} {
 	return item
 }
 
-// update modifies the priority and value of an Item in the queue.
-func (pq *PriorityQueue) update(item *Item, value string, priority int) {
+func (pq *PriorityQueue) PopVal() interface{} {
+	return pq.Pop().(*pqItem).value
+}
+
+// update modifies the priority and value of an pqItem in the queue.
+func (pq *PriorityQueue) update(item *pqItem, value string, priority int) {
 	item.value = value
 	item.priority = priority
 	heap.Fix(pq, item.index)
