@@ -53,13 +53,8 @@ func TestCalculateLowerBound(t *testing.T) {
 	g.AddEdge(1, 6)
 	g.AddEdge(8, 9)
 
-	selection := make(map[Vertex]int)
-	for i := range g.Vertices {
-		selection[i] = 0
-	}
+	selection := Selection{}
 
-	// It's very sensible to reimplement as a struct with a degree field.
-	// It's gonna be looked up a lot during this computation.
 	assert.Equal(t, 3, computeLowerBound(g, selection))
 
 	selection[8] = 1
