@@ -78,7 +78,32 @@ func resolveConflict(g *Graph, v1, v2 Vertex) Vertex {
 	}
 }
 
+func getEndpoints(edges Edges) []Vertex {
+	contains := make(map[Vertex]bool)
+	result := make([]Vertex, 0)
+	appendIfNotContains := func(v ...Vertex) []Vertex {
+		for _, v := range v {
+			if !contains[v] {
+				contains[v] = true
+				result = append(result, v)
+			}
+		}
+
+		return result
+	}
+
+	for _, edge := range edges {
+		result = appendIfNotContains(edge.from, edge.to)
+	}
+	return result
+}
+
 // Takes in all the edges and returns the least-costing combination according to the LP formulation.
 func branchAndBound(edges Edges) []int {
+	// 1. Initial value for the best combination
+	// bestCombination := MAX_INT
+	// // 2. Initialize a priority queue.
+	// queue := PriorityQueue{}
+
 	return nil
 }
