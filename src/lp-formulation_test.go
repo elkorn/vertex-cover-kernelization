@@ -27,18 +27,19 @@ func TestObjectiveFunction(t *testing.T) {
 }
 
 func TestResolveConflict(t *testing.T) {
-	n1 := Node{1, 1}
-	n2 := Node{2, 3}
+	g := mkGraphWithVertices(2)
+	n1 := Vertex(1)
+	n2 := Vertex(2)
 
-	assert.Equal(t, n2, resolveConflict(n1, n2))
+	assert.Equal(t, n2, resolveConflict(g, n1, n2))
 
-	n1.degree = 4
-	assert.Equal(t, n1, resolveConflict(n1, n2))
+	g.degrees[1] = 4
+	assert.Equal(t, n1, resolveConflict(g, n1, n2))
 
 	// Seeding the rand differently can break this test.
 	rand.Seed(1)
-	n2.degree = n1.degree
-	assert.Equal(t, n2, resolveConflict(n1, n2))
+	g.degrees[n2] = g.degrees[n1]
+	assert.Equal(t, n2, resolveConflict(g, n1, n2))
 }
 
 func TestCalculateLowerBound(t *testing.T) {
