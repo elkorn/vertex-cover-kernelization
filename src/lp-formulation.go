@@ -7,16 +7,26 @@ const MAX_INT = int(MAX_UINT >> 1)
 
 type Selection map[Vertex]int
 
+func (self Selection) Copy() Selection {
+	result := Selection{}
+	for k, v := range self {
+		result[k] = v
+	}
+
+	return result
+}
+
 type lpNode struct {
 	selection  Selection
 	level      int
 	lowerBound int
 }
 
-func mkLpNode(g *Graph, selection Selection) *lpNode {
+func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 	result := new(lpNode)
 	result.selection = selection
 	result.lowerBound = computeLowerBound(g, selection)
+	result.level = level
 
 	return result
 }
@@ -109,12 +119,15 @@ func getEndpoints(edges Edges) []Vertex {
 // Similar to Vertex.degree -> this should be push-based while computing the lower bound.
 func getNumberOfCoveredEdges(g *Graph, s Selection) int {
 	result := 0
+	covered := make(map[int]bool)
+	Debug("Selection %v", s)
 	for val := range s {
 		vertex := Vertex(val)
-		Debug("Vertex: %v", vertex)
-		for _, edge := range g.Edges {
-			if edge.from == vertex || edge.to == vertex {
+		for i, edge := range g.Edges {
+			if !covered[i] && (edge.from == vertex || edge.to == vertex) {
 				result++
+				covered[i] = true
+				Debug("%v covers %v -> %v", vertex, edge, result)
 			}
 		}
 	}
@@ -123,25 +136,30 @@ func getNumberOfCoveredEdges(g *Graph, s Selection) int {
 
 // Takes in all the edges and returns the least-costing combination
 // according to the LP formulation.
-func branchAndBound(g *Graph) []int {
+func branchAndBound(g *Graph) Selection {
 	// 1. Initial value for the best combination
-	bestLowerBound := MAX_INT
 	bestSelection := Selection{}
-	n := len(g.Vertices)
+	n := len(g.Edges)
 	// 2. Initialize a priority queue.
 	queue := PriorityQueue{}
 	vertices := getEndpoints(g.Edges)
 	selection := Selection{vertices[0]: 1}
+	// This is buggy. Adding the first vertex into the initial selection
+	// causes it to be retained in the result. This may work for TSP, but
+	// not here. What needs to be done is to create multiple initial nodes,
+	// each one with a different vertex selectd as first.
 	// 3. Generate the first node with vertex [1] and compute its lower bound.
 	// 4. Insert the node into the PQ.
-	queue.Push(mkLpNode(g, selection))
+	queue.PushVal(mkLpNode(g, selection, 0))
+	bestLowerBound := MAX_INT
 	// 5. while there is something in the PQ
 	for !queue.Empty() {
 		// 6. Remove the first element from the PQ and assign it to the parent node.
 		node := queue.PopVal().(*lpNode)
-
+		Debug("Working %v", node)
 		// 7. If the lower bound is better then the current one...
 		if node.lowerBound < bestLowerBound {
+			Debug("Has better lower bound (%v < %v)", node.lowerBound, bestLowerBound)
 			// 8. Set the new level to a parent's + 1.
 			newLevel := node.level + 1
 			selection := node.selection
@@ -150,18 +168,42 @@ func branchAndBound(g *Graph) []int {
 			// // This condition is OK for TSP, has to be changed for this formulation.
 			// }
 			// This is my proposition for the condition. Let's see if it makes sense...
-			// if len(getCoveredEdges(g, selection)) == n {
-			// 	// 10. Compute the cost of the combo.
-			// 	// ...
-			// }
-			for _, vertex := range vertices {
-				if selection[vertex] != 0 {
-					continue
+			Debug("Covers %v edges", getNumberOfCoveredEdges(g, selection))
+			if getNumberOfCoveredEdges(g, selection) == n {
+				Debug("Covers all edges.")
+				// 10. Compute the cost of the combo.
+				// 11. Set the current lower bound as the best one.
+				bestLowerBound = node.lowerBound
+				Debug("New lower bound - %v", bestLowerBound)
+				// 12. Set the current selection as the best one.
+				bestSelection = selection
+				Debug("New best selection - %v", bestSelection)
+			} else { // 13. If not (9.)...
+				// 14. For all vertices v such that v is not in the selection of the parent...
+				Debug("Does not cover all edges.")
+				for _, v := range vertices {
+					if selection[v] != 0 {
+						continue
+					}
+
+					// 15. Copy the parent selection to new node
+					newSelection := bestSelection.Copy()
+					// 16. Add v to the selection.
+					newSelection[v] = 1
+					// 17. Compute the lower bound.
+					newNode := mkLpNode(g, newSelection, newLevel)
+					// 18. If the new lower bound is better...
+					Debug("Checking lower bound for %v", newNode)
+					if newNode.lowerBound < bestLowerBound {
+						Debug("Looks good, pushing into the queue.")
+						// 19. Insert the node into the priority queue.
+						queue.PushVal(newNode)
+					}
 				}
 			}
 		}
 
 	}
 
-	return nil
+	return bestSelection
 }

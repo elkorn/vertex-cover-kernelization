@@ -80,14 +80,37 @@ func TestMkLpNode(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
 	selection := Selection{}
-	node := mkLpNode(g, selection)
+	level := 1
+	node := mkLpNode(g, selection, level)
 	assert.NotNil(t, node)
 	assert.Equal(t, selection, node.selection)
 	assert.Equal(t, 2, node.lowerBound)
+	assert.Equal(t, 1, node.level)
 }
 
 func TestGetNumberOfCoveredEdges(t *testing.T) {
 	g := mkGraph1()
 	s := Selection{1: 1, 2: 1}
 	assert.Equal(t, 5, getNumberOfCoveredEdges(g, s))
+
+	g = mkGraph6()
+	s = Selection{4: 1, 5: 1}
+	assert.Equal(t, 7, getNumberOfCoveredEdges(g, s))
+}
+
+func TestBranchAndBound(t *testing.T) {
+	g := mkGraphWithVertices(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	optimalSelection := Selection{2: 1}
+	inVerboseContext(func() {
+		assert.Equal(t, optimalSelection, branchAndBound(g))
+	})
+
+	g = mkGraph6()
+	optimalSelection = Selection{4: 1, 5: 1}
+
+	// inVerboseContext(func() {
+	assert.Equal(t, optimalSelection, branchAndBound(g))
+	// })
 }
