@@ -20,6 +20,7 @@ func (pq PriorityQueue) Empty() bool { return pq.Len() == 0 }
 func (pq PriorityQueue) Less(i, j int) bool {
 	// If the nodes are at the same level, priority goes to the better lower bound.
 	if pq[i].value.level == pq[j].value.level {
+		// TODO tie resolution
 		return pq[i].value.lowerBound < pq[j].value.lowerBound
 	}
 
