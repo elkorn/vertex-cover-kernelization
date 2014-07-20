@@ -13,6 +13,16 @@ type lpNode struct {
 	left, right *lpNode
 }
 
+func mkLpNode(g *Graph, selection Selection) *lpNode {
+	result := new(lpNode)
+	result.selection = selection
+	result.lowerBound = computeLowerBound(g, selection)
+	result.left = (*lpNode)(nil)
+	result.right = (*lpNode)(nil)
+
+	return result
+}
+
 func computeLowerBound(g *Graph, preselected Selection) int {
 	result := 0
 	for _, edge := range g.Edges {
@@ -100,10 +110,11 @@ func getEndpoints(edges Edges) []Vertex {
 
 // Takes in all the edges and returns the least-costing combination according to the LP formulation.
 func branchAndBound(edges Edges) []int {
-	// 1. Initial value for the best combination
+	// // 1. Initial value for the best combination
 	// bestCombination := MAX_INT
 	// // 2. Initialize a priority queue.
 	// queue := PriorityQueue{}
+	// vertices := getEndpoints(edges)
 
 	return nil
 }

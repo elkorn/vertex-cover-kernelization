@@ -72,3 +72,18 @@ func TestGetEndpoints(t *testing.T) {
 	expected[2] = 4
 	assert.Equal(t, expected, getEndpoints(edges))
 }
+
+func TestMkLpNode(t *testing.T) {
+	g := mkGraphWithVertices(4)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	selection := Selection{1: 1}
+	node := mkLpNode(g, selection)
+	assert.NotNil(t, node)
+	assert.Equal(t, selection, node.selection)
+	assert.Equal(t, 2, node.lowerBound)
+	assert.Nil(t, node.left)
+	assert.Nil(t, node.right)
+}
