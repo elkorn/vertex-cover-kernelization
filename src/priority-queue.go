@@ -4,8 +4,8 @@ import "container/heap"
 
 // An pqItem is something we manage in a priority queue.
 type pqItem struct {
-	value    *lpNode // The value of the item; arbitrary.
-	priority int     // The priority of the item in the queue.
+	value *lpNode // The value of the item; arbitrary.
+	// priority int     // The priority of the item in the queue.
 	// The index is needed by update and is maintained by the heap.Interface methods.
 	index int // The index of the item in the heap.
 }
@@ -18,8 +18,16 @@ func (pq PriorityQueue) Len() int { return len(pq) }
 func (pq PriorityQueue) Empty() bool { return pq.Len() == 0 }
 
 func (pq PriorityQueue) Less(i, j int) bool {
+	// If the nodes are at the same level, priority goes to the better lower bound.
+	if pq[i].value.level == pq[j].value.level {
+		return pq[i].value.lowerBound < pq[j].value.lowerBound
+	}
+
+	// Nodes on a deeper level have priority.
+	return pq[i].value.level > pq[j].value.level
+
 	// We want Pop to give us the highest, not lowest, priority so we use greater than here.
-	return pq[i].priority > pq[j].priority
+	// return pq[i].priority > pq[j].priority
 }
 
 func (pq PriorityQueue) Swap(i, j int) {
@@ -49,8 +57,7 @@ func (pq *PriorityQueue) PopVal() interface{} {
 }
 
 // update modifies the priority and value of an pqItem in the queue.
-func (pq *PriorityQueue) update(item *pqItem, value *lpNode, priority int) {
+func (pq *PriorityQueue) update(item *pqItem, value *lpNode) {
 	item.value = value
-	item.priority = priority
 	heap.Fix(pq, item.index)
 }
