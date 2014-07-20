@@ -4,8 +4,8 @@ import "container/heap"
 
 // An pqItem is something we manage in a priority queue.
 type pqItem struct {
-	value    string // The value of the item; arbitrary.
-	priority int    // The priority of the item in the queue.
+	value    *lpNode // The value of the item; arbitrary.
+	priority int     // The priority of the item in the queue.
 	// The index is needed by update and is maintained by the heap.Interface methods.
 	index int // The index of the item in the heap.
 }
@@ -14,6 +14,8 @@ type pqItem struct {
 type PriorityQueue []*pqItem
 
 func (pq PriorityQueue) Len() int { return len(pq) }
+
+func (pq PriorityQueue) Empty() bool { return pq.Len() == 0 }
 
 func (pq PriorityQueue) Less(i, j int) bool {
 	// We want Pop to give us the highest, not lowest, priority so we use greater than here.
@@ -47,7 +49,7 @@ func (pq *PriorityQueue) PopVal() interface{} {
 }
 
 // update modifies the priority and value of an pqItem in the queue.
-func (pq *PriorityQueue) update(item *pqItem, value string, priority int) {
+func (pq *PriorityQueue) update(item *pqItem, value *lpNode, priority int) {
 	item.value = value
 	item.priority = priority
 	heap.Fix(pq, item.index)

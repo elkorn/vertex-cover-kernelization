@@ -9,8 +9,12 @@ import (
 
 func TestPriorityQueue(t *testing.T) {
 	// Some items and their priorities.
-	items := map[string]int{
-		"banana": 3, "apple": 2, "pear": 4,
+	n1 := new(lpNode)
+	n2 := new(lpNode)
+	n3 := new(lpNode)
+	n4 := new(lpNode)
+	items := map[*lpNode]int{
+		n1: 3, n2: 2, n3: 4,
 	}
 
 	// Create a priority queue, put the items in it, and
@@ -29,14 +33,14 @@ func TestPriorityQueue(t *testing.T) {
 
 	// Insert a new item and then modify its priority.
 	item := &pqItem{
-		value:    "orange",
+		value:    n4,
 		priority: 1,
 	}
 
 	heap.Push(&pq, item)
 	pq.update(item, item.value, 5)
 	previouspqItem := &pqItem{
-		value:    "dummy",
+		value:    new(lpNode),
 		priority: 999,
 		index:    100,
 	}
@@ -52,7 +56,7 @@ func TestPopVal(t *testing.T) {
 	q1 := PriorityQueue{}
 	q2 := PriorityQueue{}
 	item1 := &pqItem{
-		value:    "banana",
+		value:    new(lpNode),
 		priority: 1,
 	}
 	item2 := item1
