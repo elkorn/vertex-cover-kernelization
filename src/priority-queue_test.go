@@ -86,7 +86,6 @@ func TestLowerBoundPriority(t *testing.T) {
 	inVerboseContext(func() {
 		for pq.Len() > 0 {
 			item := heap.Pop(&pq).(*pqItem)
-			Debug("Popped %v (previous %v) -> %v", item.value.lowerBound, previouspqItem.value.lowerBound, item.value.lowerBound > previouspqItem.value.lowerBound)
 			assert.True(t, item.value.lowerBound > previouspqItem.value.lowerBound, "Smaller lower bound should be prioritized.")
 			previouspqItem = item
 		}

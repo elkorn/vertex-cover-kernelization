@@ -8,17 +8,15 @@ const MAX_INT = int(MAX_UINT >> 1)
 type Selection map[Vertex]int
 
 type lpNode struct {
-	selection   Selection
-	lowerBound  int
-	left, right *lpNode
+	selection  Selection
+	level      int
+	lowerBound int
 }
 
 func mkLpNode(g *Graph, selection Selection) *lpNode {
 	result := new(lpNode)
 	result.selection = selection
 	result.lowerBound = computeLowerBound(g, selection)
-	result.left = (*lpNode)(nil)
-	result.right = (*lpNode)(nil)
 
 	return result
 }
@@ -28,7 +26,6 @@ func computeLowerBound(g *Graph, preselected Selection) int {
 	for _, edge := range g.Edges {
 		// Maintaining the invariant: {u,v} \SUB0 E \==> Xu + Xv >= 1 (use mathematics.vim to write this correctly)
 		if preselected[edge.from] < 1 && preselected[edge.to] < 1 {
-			// This is stupid and temporary - `Vertex.degree` has to be implemented.
 			// Select only one node, preferably with one with the larger degree.
 			// Maintaining the invariant: Minimize \GS X_v
 			selected := resolveConflict(g, edge.from, edge.to)
@@ -36,6 +33,7 @@ func computeLowerBound(g *Graph, preselected Selection) int {
 			// Should a copy be made here?
 			preselected[selected] = 1
 		}
+		// else -> numberOfCoveredEdges += 1
 	}
 
 	for _, val := range preselected {
@@ -108,13 +106,62 @@ func getEndpoints(edges Edges) []Vertex {
 	return result
 }
 
-// Takes in all the edges and returns the least-costing combination according to the LP formulation.
-func branchAndBound(edges Edges) []int {
-	// // 1. Initial value for the best combination
-	// bestCombination := MAX_INT
-	// // 2. Initialize a priority queue.
-	// queue := PriorityQueue{}
-	// vertices := getEndpoints(edges)
+// Similar to Vertex.degree -> this should be push-based while computing the lower bound.
+func getNumberOfCoveredEdges(g *Graph, s Selection) int {
+	result := 0
+	for val := range s {
+		vertex := Vertex(val)
+		Debug("Vertex: %v", vertex)
+		for _, edge := range g.Edges {
+			if edge.from == vertex || edge.to == vertex {
+				result++
+			}
+		}
+	}
+	return result
+}
+
+// Takes in all the edges and returns the least-costing combination
+// according to the LP formulation.
+func branchAndBound(g *Graph) []int {
+	// 1. Initial value for the best combination
+	bestLowerBound := MAX_INT
+	bestSelection := Selection{}
+	n := len(g.Vertices)
+	// 2. Initialize a priority queue.
+	queue := PriorityQueue{}
+	vertices := getEndpoints(g.Edges)
+	selection := Selection{vertices[0]: 1}
+	// 3. Generate the first node with vertex [1] and compute its lower bound.
+	// 4. Insert the node into the PQ.
+	queue.Push(mkLpNode(g, selection))
+	// 5. while there is something in the PQ
+	for !queue.Empty() {
+		// 6. Remove the first element from the PQ and assign it to the parent node.
+		node := queue.PopVal().(*lpNode)
+
+		// 7. If the lower bound is better then the current one...
+		if node.lowerBound < bestLowerBound {
+			// 8. Set the new level to a parent's + 1.
+			newLevel := node.level + 1
+			selection := node.selection
+			// 9. If this level equals the number of vertices - 1...
+			// if newLevel == n-1 {
+			// // This condition is OK for TSP, has to be changed for this formulation.
+			// }
+			// This is my proposition for the condition. Let's see if it makes sense...
+			// if len(getCoveredEdges(g, selection)) == n {
+			// 	// 10. Compute the cost of the combo.
+			// 	// ...
+			// }
+			for _, vertex := range vertices {
+				if selection[vertex] != 0 {
+					continue
+				}
+			}
+		}
+
+	}
 
 	return nil
 }

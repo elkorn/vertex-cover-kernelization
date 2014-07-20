@@ -79,11 +79,15 @@ func TestMkLpNode(t *testing.T) {
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
-	selection := Selection{1: 1}
+	selection := Selection{}
 	node := mkLpNode(g, selection)
 	assert.NotNil(t, node)
 	assert.Equal(t, selection, node.selection)
 	assert.Equal(t, 2, node.lowerBound)
-	assert.Nil(t, node.left)
-	assert.Nil(t, node.right)
+}
+
+func TestGetNumberOfCoveredEdges(t *testing.T) {
+	g := mkGraph1()
+	s := Selection{1: 1, 2: 1}
+	assert.Equal(t, 5, getNumberOfCoveredEdges(g, s))
 }
