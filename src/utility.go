@@ -64,6 +64,7 @@ func mkGraph1() *Graph {
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(3, 4)
+	g.AddEdge(1, 4)
 	g.AddEdge(1, 5)
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 5)
@@ -154,5 +155,24 @@ func mkGraph5() *Graph {
 	g.AddEdge(4, 5)
 	g.AddEdge(6, 7)
 
+	return g
+}
+
+func mkGraph6() *Graph {
+	/*
+			3        6
+			 \      /
+		   2--4----5--7
+			 /      \
+			1        8
+	*/
+	g := mkGraphWithVertices(8)
+	g.AddEdge(1, 4)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(5, 6)
+	g.AddEdge(5, 7)
+	g.AddEdge(5, 8)
 	return g
 }
