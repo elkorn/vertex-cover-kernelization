@@ -44,6 +44,12 @@ func (pq *PriorityQueue) Push(x interface{}) {
 	*pq = append(*pq, item)
 }
 
+func (pq *PriorityQueue) PushVal(x interface{}) {
+	pq.Push(&pqItem{
+		value: x.(*lpNode),
+	})
+}
+
 func (pq *PriorityQueue) Pop() interface{} {
 	old := *pq
 	n := len(old)

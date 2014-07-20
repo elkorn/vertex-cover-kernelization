@@ -103,3 +103,11 @@ func TestPopVal(t *testing.T) {
 	q2.Push(item2)
 	assert.Equal(t, q1.Pop().(*pqItem).value, q2.PopVal())
 }
+
+func TestPushVal(t *testing.T) {
+	pq := PriorityQueue{}
+	item := &lpNode{}
+
+	pq.PushVal(item)
+	assert.Equal(t, item, pq.PopVal())
+}
