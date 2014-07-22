@@ -143,12 +143,8 @@ func branchAndBound(g *Graph) Selection {
 	// 2. Initialize a priority queue.
 	queue := PriorityQueue{}
 	vertices := getEndpoints(g.Edges)
-	selection := Selection{vertices[0]: 1}
-	// This is buggy. Adding the first vertex into the initial selection
-	// causes it to be retained in the result. This may work for TSP, but
-	// not here. What needs to be done is to create multiple initial nodes,
-	// each one with a different vertex selectd as first.
-	// 3. Generate the first node with vertex [1] and compute its lower bound.
+	selection := Selection{}
+	// 3. Generate the first node with initial selection and compute its lower bound.
 	// 4. Insert the node into the PQ.
 	queue.PushVal(mkLpNode(g, selection, 0))
 	bestLowerBound := MAX_INT
