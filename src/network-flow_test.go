@@ -32,20 +32,28 @@ func TestMkToNetworkFlow(t *testing.T) {
 	}
 }
 
-func TestNetnet(t *testing.T) {
+func TestNet(t *testing.T) {
 	g := mkGraphWithVertices(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 
 	netFlow := mkNetworkFlow(g)
-	assert.Equal(t, len(netFlow.graph.Edges), len(netFlow.net), "Each edge in the network flow must be represented by an Arc.")
-	for i := range netFlow.net {
-		for _, arc := range netFlow.net[i] {
-			if nil == arc {
-				continue
-			}
-			assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")
-			assert.Equal(t, 0, arc.flow, "Every arc must have an initial flow of 0.")
-		}
+	assert.Equal(t, len(netFlow.graph.Edges), len(netFlow.net))
+	for _, edge := range netFlow.graph.Edges {
+		arc := netFlow.net[edge.from][edge.to]
+		assert.NotNil(t, arc, "Each edge in the network flow must be represented by an Arc.")
+		assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")
+		assert.Equal(t, 0, arc.flow, "Every arc must have an initial flow of 0.")
 	}
+}
+
+func TestBFS(t *testing.T) {
+	g := mkGraphWithVertices(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	netFlow := mkNetworkFlow(g)
+	inVerboseContext(func() {
+		result, dist := netFlow.bfs()
+		Debug("%v, %v", result, dist)
+	})
 }

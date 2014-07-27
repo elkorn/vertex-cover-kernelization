@@ -58,3 +58,40 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	result.net = mkNet(bipartite)
 	return result
 }
+
+func (self *NetworkFlow) ComputeMaxFlow() Edges {
+	// It has to return a set of edges constituting the max. flow
+	result := Edges{}
+
+	return result
+}
+
+func (self *NetworkFlow) bfs() (bool, []int) {
+	// Define `dist[v]` to be the length of the shortest
+	// path from source to v in the current instance.
+	dist := make([]int, len(self.net))
+	for i := range dist {
+		dist[i] = -1
+	}
+
+	dist[self.source] = 0
+	queue := MkQueue(len(self.net))
+	queue.Push(int(self.source))
+	for i := 0; i < queue.count; i++ {
+		from := queue.Pop()
+		Debug("From: %v", from)
+		for to, arc := range self.net[from] {
+			Debug("To: %v (%v)", to, arc)
+			if nil == arc {
+				continue
+			}
+
+			if dist[to] < 0 && arc.residuum() > 0 {
+				dist[to] = dist[from] + 1
+				queue.Push(to)
+			}
+		}
+	}
+
+	return dist[int(self.sink)] >= 0, dist
+}

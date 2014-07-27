@@ -8,6 +8,13 @@ type Queue struct {
 	count int
 }
 
+func MkQueue(size int) *Queue {
+	return &Queue{
+		nodes: make([]int, size),
+		size:  size,
+	}
+}
+
 func (q *Queue) Push(n int) {
 	if q.head == q.tail && q.count > 0 {
 		nodes := make([]int, len(q.nodes)+q.size)
