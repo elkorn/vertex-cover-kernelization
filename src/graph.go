@@ -77,14 +77,15 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 		return errors.New(fmt.Sprintf("An edge between %v and %v already exists.", a, b))
 	}
 
-	self.Edges = append(self.Edges, Edge{a, b})
+	self.Edges = append(self.Edges, MkEdge(a, b))
+
 	self.degrees[a] += 1
 	self.degrees[b] += 1
 	return nil
 }
 
 func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
-	isCovered := make(map[Edge]bool)
+	isCovered := make(map[*Edge]bool)
 	for _, edge := range self.Edges {
 		isCovered[edge] = false
 	}

@@ -65,7 +65,7 @@ func TestCalculateLowerBound(t *testing.T) {
 }
 
 func TestGetEndpoints(t *testing.T) {
-	edges := Edges{Edge{1, 2}, Edge{2, 4}}
+	edges := Edges{&Edge{1, 2}, &Edge{2, 4}}
 	expected := make([]Vertex, 3)
 	expected[0] = 1
 	expected[1] = 2
