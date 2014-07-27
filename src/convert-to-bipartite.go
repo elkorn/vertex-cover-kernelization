@@ -14,23 +14,30 @@ func getVertices(g *Graph) []Vertex {
 	return result
 }
 
-func addBipartiteEdges(originalEdges []*Edge) []*Edge {
-	before := len(originalEdges)
+func addBipartiteEdges(g *Graph) {
+	before := len(g.Edges)
 	after := 2 * before
 	border := before + 1
-	result := make([]*Edge, after)
 	// Invariant: F = {(A_v,B_v)|(v,u) \in E or (u,v) \in E}
-	for i, edge := range originalEdges {
-		result[i] = edge
-	}
 
 	for i := before; i < after; i++ {
-		orig := originalEdges[i-before]
-		result[i] = &Edge{
-			Vertex(int(orig.from) + border),
-			Vertex(int(orig.to) + border),
-		}
+		orig := g.Edges[i-before]
+		g.AddEdge(
+			Vertex(int(orig.from)+border),
+			Vertex(int(orig.to)+border))
 	}
 
-	return result
 }
+
+// func makeBipartite(g *Graph) *Graph {
+// 	before := len(g.Edges)
+// 	edges := before * 2
+// 	border := before + 1
+// 	result := mkGraphWithVertices(len(g.Vertices) * 2)
+// 	for i := 0; i < before; i++ {
+// 		orig := g.Edges[i]
+// 		result.AddEdge(orig.from, orig.to)
+// 	}
+// //
+// 	return result
+// }
