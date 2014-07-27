@@ -17,3 +17,21 @@ func TestGetVertices(t *testing.T) {
 	actual := getVertices(g)
 	assert.Equal(t, expected, actual)
 }
+
+func TestAddBipartiteEdges(t *testing.T) {
+	originalEdges := []*Edge{
+		0: &Edge{1, 2},
+		1: &Edge{1, 3},
+	}
+	expected := make([]*Edge, 4)
+	expected[0] = &Edge{1, 2}
+	expected[1] = &Edge{1, 3}
+	expected[2] = &Edge{4, 5}
+	expected[3] = &Edge{4, 6}
+	// inVerboseContext(func() {
+	for i, actual := range addBipartiteEdges(originalEdges) {
+		Debug("expected: %v, actual: %v", *expected[i], *actual)
+		assert.Equal(t, *expected[i], *actual)
+	}
+	// })
+}
