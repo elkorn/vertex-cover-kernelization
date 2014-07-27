@@ -35,22 +35,24 @@ func TestAddBipartiteEdges(t *testing.T) {
 	expected[1] = &Edge{1, 3}
 	expected[2] = &Edge{4, 5}
 	expected[3] = &Edge{4, 6}
-	addBipartiteEdges(original)
+	addBipartiteEdges(original, 4)
 	assertAllEdgesEqual(t, expected, original.Edges)
 }
 
-// func TestMakeBipartite(t *testing.T) {
-// 	g := mkGraphWithVertices(4)
-// 	g.AddEdge(4, 1)
-// 	g.AddEdge(2, 3)
-//
-// 	expectedVertices := []Vertex{1, 2, 3, 4, 5, 6, 7, 8}
-// 	expectedEdges := Edges{MkEdge(1, 4), MkEdge(2, 3), MkEdge(5, 8), MkEdge(6, 7)}
-//
-// 	actual := makeBipartite(g)
-// 	for _, v := range expectedVertices {
-// 		assert.Equal(t, v, actual.Vertices[v])
-// 	}
-//
-// 	assertAllEdgesEqual(t, expectedEdges, actual.Edges)
-// }
+func TestMakeBipartite(t *testing.T) {
+	g := mkGraphWithVertices(4)
+	g.AddEdge(4, 1)
+	g.AddEdge(2, 3)
+
+	expectedVertices := []Vertex{1, 2, 3, 4, 5, 6, 7, 8}
+	expectedEdges := Edges{MkEdge(4, 1), MkEdge(2, 3), MkEdge(8, 5), MkEdge(6, 7)}
+
+	inVerboseContext(func() {
+		actual := makeBipartite(g)
+		for _, v := range expectedVertices {
+			assert.True(t, actual.Vertices[v])
+		}
+
+		assertAllEdgesEqual(t, expectedEdges, actual.Edges)
+	})
+}
