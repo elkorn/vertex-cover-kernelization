@@ -103,9 +103,9 @@ func TestBranchAndBound(t *testing.T) {
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	optimalSelection := Selection{2: 1}
-	inVerboseContext(func() {
-		assert.Equal(t, optimalSelection, branchAndBound(g))
-	})
+	// inVerboseContext(func() {
+	assert.Equal(t, optimalSelection, branchAndBound(g))
+	// })
 
 	g = mkGraph6()
 	optimalSelection = Selection{4: 1, 5: 1}
