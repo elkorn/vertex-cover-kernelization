@@ -47,12 +47,10 @@ func TestMakeBipartite(t *testing.T) {
 	expectedVertices := []Vertex{1, 2, 3, 4, 5, 6, 7, 8}
 	expectedEdges := Edges{MkEdge(4, 1), MkEdge(2, 3), MkEdge(8, 5), MkEdge(6, 7)}
 
-	inVerboseContext(func() {
-		actual := makeBipartite(g)
-		for _, v := range expectedVertices {
-			assert.True(t, actual.Vertices[v])
-		}
+	actual := makeBipartite(g)
+	for _, v := range expectedVertices {
+		assert.True(t, actual.Vertices[v])
+	}
 
-		assertAllEdgesEqual(t, expectedEdges, actual.Edges)
-	})
+	assertAllEdgesEqual(t, expectedEdges, actual.Edges)
 }
