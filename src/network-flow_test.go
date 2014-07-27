@@ -31,3 +31,16 @@ func TestMkToNetworkFlow(t *testing.T) {
 		assert.True(t, result.graph.hasEdge(Vertex(i), sink), "Sink has to be connected to all edges in set B.")
 	}
 }
+
+func TestNetArcs(t *testing.T) {
+	g := mkGraphWithVertices(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+
+	netFlow := mkNetworkFlow(g)
+	assert.Equal(t, len(netFlow.graph.Edges), len(netFlow.arcs), "Each edge in the network flow must be represented by an Arc.")
+	for _, arc := range netFlow.arcs {
+		assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")
+	}
+
+}

@@ -3,6 +3,15 @@ package graph
 type NetworkFlow struct {
 	source, sink Vertex
 	graph        *Graph
+	arcs         []*NetArc
+}
+
+type NetArc struct {
+	capacity int
+}
+
+func mkNetArc() *NetArc {
+	return &NetArc{1}
 }
 
 func mkNetworkFlow(g *Graph) *NetworkFlow {
@@ -24,6 +33,11 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 
 	for i := verticesBefore; i < verticesAfter; i++ {
 		bipartite.AddEdge(Vertex(i+1), result.sink)
+	}
+
+	result.arcs = make([]*NetArc, len(bipartite.Edges))
+	for i := range bipartite.Edges {
+		result.arcs[i] = mkNetArc()
 	}
 
 	return result
