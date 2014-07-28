@@ -77,7 +77,7 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 
 	dist[self.source] = 0
 	queue := MkQueue(len(self.net))
-	queue.Push(int(self.source))
+	queue.Push(int(self.source - 1))
 	for i := 0; i < queue.count; i++ {
 		from := queue.Pop()
 		Debug("From: %v", from)
@@ -94,5 +94,5 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 		}
 	}
 
-	return dist[int(self.sink)] >= 0, dist
+	return dist[int(self.sink-1)] >= 0, dist
 }
