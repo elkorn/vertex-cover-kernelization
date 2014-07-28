@@ -22,7 +22,7 @@ func mkNetArc() *NetArc {
 type Net [][]*NetArc
 
 func mkNet(g *Graph) Net {
-	result := make([][]*NetArc, len(g.Edges))
+	result := make([][]*NetArc, len(g.Vertices))
 	for i := 0; i < len(g.Vertices); i++ {
 		result[i] = make([]*NetArc, len(g.Vertices))
 	}
@@ -66,6 +66,7 @@ func (self *NetworkFlow) ComputeMaxFlow() Edges {
 	return result
 }
 
+// https://sites.google.com/site/indy256/algo/dinic_flow
 func (self *NetworkFlow) bfs() (bool, []int) {
 	// Define `dist[v]` to be the length of the shortest
 	// path from source to v in the current instance.
