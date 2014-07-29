@@ -67,10 +67,8 @@ func TestMkJpg(t *testing.T) {
 
 	defer actualFile.Close()
 
-	expected, actual := make([]byte, 0), make([]byte, 0)
+	expected, actual := make([]byte, 7000), make([]byte, 7000)
 	expectedFile.Read(expected)
 	actualFile.Read(actual)
 	assert.Equal(t, expected, actual)
-
-	os.Remove("actual_dot.jpg")
 }
