@@ -3,6 +3,7 @@ package graph
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
 )
 
@@ -41,4 +42,16 @@ func DotToJpg(dot bytes.Buffer) bytes.Buffer {
 	cmd.Stdin = &dot
 	cmd.Run()
 	return res
+}
+
+func MkJpg(g *Graph, name string) error {
+	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
+	if nil != err {
+		return err
+	}
+
+	defer file.Close()
+	buf := DotToJpg(g.ToDot(name))
+	_, err = file.Write(buf.Bytes())
+	return err
 }

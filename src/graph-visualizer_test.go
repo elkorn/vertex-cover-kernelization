@@ -32,7 +32,7 @@ func TestDotToJpg(t *testing.T) {
 	file, err := os.Open("expected_dot.jpg")
 	expected := make([]byte, 0)
 	if nil != err {
-		panic("Cannot open file.")
+		panic("Cannot open reference file.")
 	}
 
 	defer file.Close()
@@ -40,4 +40,37 @@ func TestDotToJpg(t *testing.T) {
 	file.Read(expected)
 	actual := DotToJpg(dot)
 	assert.Equal(t, expected, actual.Bytes())
+}
+
+func TestMkJpg(t *testing.T) {
+	g := mkGraphWithVertices(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+
+	expectedFile, err := os.Open("expected_dot.jpg")
+	if nil != err {
+		panic(err)
+	}
+
+	defer expectedFile.Close()
+
+	err = MkJpg(g, "actual_dot")
+	if nil != err {
+		panic(err)
+	}
+
+	actualFile, err := os.Open("actual_dot.jpg")
+	if nil != err {
+		panic(err)
+	}
+
+	defer actualFile.Close()
+
+	expected, actual := make([]byte, 0), make([]byte, 0)
+	expectedFile.Read(expected)
+	actualFile.Read(actual)
+	assert.Equal(t, expected, actual)
+
+	os.Remove("actual_dot.jpg")
 }
