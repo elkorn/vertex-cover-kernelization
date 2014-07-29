@@ -3,6 +3,7 @@ package graph
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -37,10 +38,15 @@ func toDot(g *Graph, name string) bytes.Buffer {
 
 func dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	var res bytes.Buffer
-	cmd := exec.Command("dot", "T")
+	cmd := exec.Command("dot", "-T", "jpg")
 	cmd.Stdout = &res
-	cmd.Stdin = &dot
-	cmd.Run()
+	cmd.Stdin = bytes.NewReader(dot.Bytes())
+	err := cmd.Run()
+	if nil != err {
+		log.Fatal(err)
+		return res
+	}
+
 	return res
 }
 

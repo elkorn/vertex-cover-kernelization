@@ -71,4 +71,5 @@ func TestMkJpg(t *testing.T) {
 	expectedFile.Read(expected)
 	actualFile.Read(actual)
 	assert.Equal(t, expected, actual)
+	os.Remove("actual_dot.jpg")
 }
