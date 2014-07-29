@@ -3,6 +3,7 @@ package graph
 import (
 	"bytes"
 	"fmt"
+	"os/exec"
 )
 
 func stob(str string) []byte {
@@ -13,22 +14,31 @@ func stobn(str string) []byte {
 	return append(stob(str), '\n')
 }
 
-func ttstobn(str string) []byte {
+func tstobn(str string) []byte {
 	res := new(bytes.Buffer)
-	res.Write(stob("\t\t"))
+	res.Write(stob("\t"))
 	res.Write(stobn(str))
 	return res.Bytes()
 }
 
-func (self *Graph) ToDot(name string) string {
-	res := new(bytes.Buffer)
+func (self *Graph) ToDot(name string) bytes.Buffer {
+	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
 	for _, edge := range self.Edges {
-		res.Write(ttstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to)))
+		res.Write(tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to)))
 	}
 
 	res.Write(stob("}"))
-	return res.String()
+	return res
+}
+
+func DotToJpg(dot bytes.Buffer) bytes.Buffer {
+	var res bytes.Buffer
+	cmd := exec.Command("dot", "T")
+	cmd.Stdout = &res
+	cmd.Stdin = &dot
+	cmd.Run()
+	return res
 }
