@@ -22,12 +22,12 @@ func tstobn(str string) []byte {
 	return res.Bytes()
 }
 
-func (self *Graph) ToDot(name string) bytes.Buffer {
+func toDot(g *Graph, name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
-	for _, edge := range self.Edges {
+	for _, edge := range g.Edges {
 		res.Write(tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to)))
 	}
 
@@ -35,7 +35,7 @@ func (self *Graph) ToDot(name string) bytes.Buffer {
 	return res
 }
 
-func DotToJpg(dot bytes.Buffer) bytes.Buffer {
+func dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	var res bytes.Buffer
 	cmd := exec.Command("dot", "T")
 	cmd.Stdout = &res
@@ -51,7 +51,7 @@ func MkJpg(g *Graph, name string) error {
 	}
 
 	defer file.Close()
-	buf := DotToJpg(g.ToDot(name))
+	buf := dotToJpg(toDot(g, name))
 	_, err = file.Write(buf.Bytes())
 	return err
 }

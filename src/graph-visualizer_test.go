@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToDot(t *testing.T) {
+func TesttoDot(t *testing.T) {
 	g := mkGraphWithVertices(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -19,16 +19,16 @@ func TestToDot(t *testing.T) {
 	2 -- 3;
 }`
 
-	result := g.ToDot("test")
+	result := toDot(g, "test")
 	assert.Equal(t, expected, result.String())
 }
 
-func TestDotToJpg(t *testing.T) {
+func TestdotToJpg(t *testing.T) {
 	g := mkGraphWithVertices(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
-	dot := g.ToDot("test")
+	dot := toDot(g, "test")
 	file, err := os.Open("expected_dot.jpg")
 	expected := make([]byte, 0)
 	if nil != err {
@@ -38,7 +38,7 @@ func TestDotToJpg(t *testing.T) {
 	defer file.Close()
 
 	file.Read(expected)
-	actual := DotToJpg(dot)
+	actual := dotToJpg(dot)
 	assert.Equal(t, expected, actual.Bytes())
 }
 
