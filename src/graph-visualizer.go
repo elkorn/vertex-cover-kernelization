@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"os/exec"
 )
@@ -50,6 +51,10 @@ func dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	return res
 }
 
+func mkJpg(g *Graph, name string) bytes.Buffer {
+	return dotToJpg(toDot(g, name))
+}
+
 func MkJpg(g *Graph, name string) error {
 	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
 	if nil != err {
@@ -57,7 +62,24 @@ func MkJpg(g *Graph, name string) error {
 	}
 
 	defer file.Close()
-	buf := dotToJpg(toDot(g, name))
+	buf := mkJpg(g, name)
 	_, err = file.Write(buf.Bytes())
 	return err
+}
+
+func Display(g *Graph, name string) {
+	randname := fmt.Sprintf("%v%v%v", name, rand.Int63(), rand.Int63())
+	filename := fmt.Sprintf("%v.jpg", randname)
+	cmd := exec.Command("feh", filename)
+	err := MkJpg(g, randname)
+	if nil != err {
+		log.Fatal(err)
+	}
+
+	defer os.Remove(filename)
+
+	err = cmd.Run()
+	if nil != err {
+		log.Fatal(err)
+	}
 }
