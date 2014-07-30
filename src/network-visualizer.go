@@ -10,10 +10,10 @@ func MkNetworkVisualizer() *networkVisualizer {
 	}
 }
 
-func convertToGraph(net Net) *Graph {
-	result := mkGraphWithVertices(len(net))
-	for x := range net {
-		for y, arc := range net[x] {
+func convertToGraph(net *Net) *Graph {
+	result := mkGraphWithVertices(len(*net))
+	for y := range *net {
+		for x, arc := range (*net)[y] {
 			if nil == arc {
 				continue
 			}
@@ -23,4 +23,12 @@ func convertToGraph(net Net) *Graph {
 	}
 
 	return result
+}
+
+func (self *networkVisualizer) MkJpg(net *Net) error {
+	return self.gv.MkJpg(convertToGraph(net), "net")
+}
+
+func (self *networkVisualizer) Display(net *Net) {
+	self.gv.Display(convertToGraph(net))
 }
