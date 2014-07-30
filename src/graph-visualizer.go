@@ -9,6 +9,12 @@ import (
 	"os/exec"
 )
 
+type graphVisualizer struct{}
+
+func MkGraphVisualizer() *graphVisualizer {
+	return &graphVisualizer{}
+}
+
 func stob(str string) []byte {
 	return []byte(str)
 }
@@ -24,7 +30,7 @@ func tstobn(str string) []byte {
 	return res.Bytes()
 }
 
-func toDot(g *Graph, name string) bytes.Buffer {
+func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
@@ -37,7 +43,7 @@ func toDot(g *Graph, name string) bytes.Buffer {
 	return res
 }
 
-func dotToJpg(dot bytes.Buffer) bytes.Buffer {
+func (self *graphVisualizer) dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	var res bytes.Buffer
 	cmd := exec.Command("dot", "-T", "jpg")
 	cmd.Stdout = &res
@@ -51,27 +57,27 @@ func dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	return res
 }
 
-func mkJpg(g *Graph, name string) bytes.Buffer {
-	return dotToJpg(toDot(g, name))
+func (self *graphVisualizer) mkJpg(g *Graph, name string) bytes.Buffer {
+	return self.dotToJpg(self.toDot(g, name))
 }
 
-func MkJpg(g *Graph, name string) error {
+func (self *graphVisualizer) MkJpg(g *Graph, name string) error {
 	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
 	if nil != err {
 		return err
 	}
 
 	defer file.Close()
-	buf := mkJpg(g, name)
+	buf := self.mkJpg(g, name)
 	_, err = file.Write(buf.Bytes())
 	return err
 }
 
-func Display(g *Graph) {
+func (self *graphVisualizer) Display(g *Graph) {
 	randname := fmt.Sprintf("%v", rand.Int63())
 	filename := fmt.Sprintf("%v.jpg", randname)
 	cmd := exec.Command("feh", filename)
-	err := MkJpg(g, randname)
+	err := self.MkJpg(g, randname)
 	if nil != err {
 		log.Fatal(err)
 	}
