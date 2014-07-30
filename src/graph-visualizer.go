@@ -67,8 +67,8 @@ func MkJpg(g *Graph, name string) error {
 	return err
 }
 
-func Display(g *Graph, name string) {
-	randname := fmt.Sprintf("%v%v%v", name, rand.Int63(), rand.Int63())
+func Display(g *Graph) {
+	randname := fmt.Sprintf("%v", rand.Int63())
 	filename := fmt.Sprintf("%v.jpg", randname)
 	cmd := exec.Command("feh", filename)
 	err := MkJpg(g, randname)
