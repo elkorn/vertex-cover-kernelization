@@ -21,6 +21,18 @@ func mkNetArc() *NetArc {
 
 type Net [][]*NetArc
 
+func (self *Net) Capacity(edge *Edge) int {
+	return (*self)[edge.from-1][edge.to-1].capacity
+}
+
+func (self *Net) Flow(edge *Edge) int {
+	return (*self)[edge.from-1][edge.to-1].flow
+}
+
+func (self *Net) Residuum(edge *Edge) int {
+	return (*self)[edge.from-1][edge.to-1].residuum()
+}
+
 func mkNet(g *Graph) Net {
 	result := make([][]*NetArc, len(g.Vertices))
 	for i := 0; i < len(g.Vertices); i++ {
@@ -79,17 +91,13 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 	queue := MkQueue(len(self.net))
 	queue.Push(int(self.source - 1))
 	for i := 0; i < queue.count; i++ {
+		Debug("Queue: %v", queue.nodes)
 		from := queue.Pop()
 		Debug("From: %v", from)
-		for to, arc := range self.net[from] {
-			Debug("To: %v (%v)", to, arc)
-			if nil == arc {
-				continue
-			}
-
-			if dist[to] < 0 && arc.residuum() > 0 {
-				dist[to] = dist[from] + 1
-				queue.Push(to)
+		for _, edge := range self.graph.Edges {
+			if dist[edge.to-1] < 0 && self.net.Residuum(edge) > 0 {
+				dist[edge.to-1] = dist[from] + 1
+				queue.Push(int(edge.to - 1))
 			}
 		}
 	}
