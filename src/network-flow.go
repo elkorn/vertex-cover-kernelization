@@ -74,6 +74,7 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 func (self *NetworkFlow) ComputeMaxFlow() Edges {
 	// It has to return a set of edges constituting the max. flow
 	result := Edges{}
+	// dist := make([]int, len(self.g.Edges))
 
 	return result
 }
@@ -87,20 +88,32 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 		dist[i] = -1
 	}
 
-	dist[self.source] = 0
+	from := int(self.source) - 1
+	dist[from] = 0
 	queue := MkQueue(len(self.net))
-	queue.Push(int(self.source - 1))
+	queue.Push(from)
 	for i := 0; i < queue.count; i++ {
-		Debug("Queue: %v", queue.nodes)
+		Debug("Queue: %v [%v of %v]", queue.nodes, i+1, queue.count)
 		from := queue.Pop()
 		Debug("From: %v", from)
-		for _, edge := range self.graph.Edges {
-			if dist[edge.to-1] < 0 && self.net.Residuum(edge) > 0 {
-				dist[edge.to-1] = dist[from] + 1
-				queue.Push(int(edge.to - 1))
+		for to, arc := range self.net[from] {
+			if nil == arc {
+				Debug("\tTo: %v is nil", to)
+				continue
+			}
+
+			Debug("\tTo: %v", to)
+			if dist[to] < 0 && arc.residuum() > 0 {
+				dist[to] = dist[from] + 1
+				Debug("\tDistance: %v", dist[to])
+				queue.Push(to)
 			}
 		}
 	}
 
 	return dist[int(self.sink-1)] >= 0, dist
+}
+
+func dfs() {
+
 }

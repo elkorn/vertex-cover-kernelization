@@ -48,12 +48,28 @@ func TestNet(t *testing.T) {
 }
 
 func TestBFS(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := mkGraphWithVertices(6)
 	g.AddEdge(1, 2)
-	g.AddEdge(1, 3)
-	netFlow := mkNetworkFlow(g)
+	g.AddEdge(2, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 6)
+	g.AddEdge(4, 5)
+	g.AddEdge(5, 3)
+	g.AddEdge(6, 5)
+	// gv := MkGraphVisualizer()
+	// gv.Display(g)
+
+	netFlow := &NetworkFlow{
+		source: Vertex(1),
+		sink:   Vertex(4),
+		graph:  g,
+		net:    mkNet(g),
+	}
+
 	inVerboseContext(func() {
 		result, dist := netFlow.bfs()
-		Debug("%v, %v", result, dist)
+		assert.Equal(t, true, result, "BFS must detect that there is a path from source to sink.")
+		expectedDist := []int{2, 1, 0, -1}
+		assert.Equal(t, expectedDist, dist, "BFS must discern the length of the path from various nodes to the sink")
 	})
 }
