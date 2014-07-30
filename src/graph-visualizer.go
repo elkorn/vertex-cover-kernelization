@@ -30,13 +30,17 @@ func tstobn(str string) []byte {
 	return res.Bytes()
 }
 
+func edgeToB(edge *Edge) []byte {
+	return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
+}
+
 func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
 	for _, edge := range g.Edges {
-		res.Write(tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to)))
+		res.Write(edgeToB(edge))
 	}
 
 	res.Write(stob("}"))
