@@ -92,21 +92,23 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 	dist[from] = 0
 	queue := MkQueue(len(self.net))
 	queue.Push(from)
-	for i := 0; i < queue.count; i++ {
+	limit := 1
+	for i := 0; i < limit; i++ {
 		Debug("Queue: %v [%v of %v]", queue.nodes, i+1, queue.count)
 		from := queue.Pop()
-		Debug("From: %v", from)
+		Debug("From: %v", from+1)
 		for to, arc := range self.net[from] {
 			if nil == arc {
-				Debug("\tTo: %v is nil", to)
+				Debug("\tNo arc from %v to %v", from+1, to+1)
 				continue
 			}
 
-			Debug("\tTo: %v", to)
+			Debug("\tTo: %v", to+1)
 			if dist[to] < 0 && arc.residuum() > 0 {
 				dist[to] = dist[from] + 1
-				Debug("\tDistance: %v", dist[to])
+				Debug("\tDistance: %v, pushing %v", dist[to], to+1)
 				queue.Push(to)
+				limit++
 			}
 		}
 	}
