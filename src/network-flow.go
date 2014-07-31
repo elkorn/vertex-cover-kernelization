@@ -88,25 +88,36 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 		dist[i] = -1
 	}
 
+	isTraversable := func(from, to int) bool {
+		arc := self.net[from][to]
+		if nil == arc {
+			return false
+		}
+
+		return dist[to] < 0 && arc.residuum() > 0
+	}
+
 	from := int(self.source) - 1
 	dist[from] = 0
 	queue := MkQueue(len(self.net))
 	queue.Push(from)
 	limit := 1
+
 	for i := 0; i < limit; i++ {
-		Debug("Queue: %v [%v of %v]", queue.nodes, i+1, queue.count)
 		from := queue.Pop()
-		Debug("From: %v", from+1)
-		for to, arc := range self.net[from] {
-			if nil == arc {
-				Debug("\tNo arc from %v to %v", from+1, to+1)
+		Debug("From: %v", from)
+		for to := range self.net[from] {
+			if from == to {
 				continue
 			}
 
-			Debug("\tTo: %v", to+1)
-			if dist[to] < 0 && arc.residuum() > 0 {
+			Debug("\t -> %v", to)
+			// TODO Maintain non-direction of graph edges.
+			if isTraversable(from, to) {
+				Debug("dist[%v] == %v", to, dist[to])
+				Debug("dist[%v] == %v", from, dist[from])
 				dist[to] = dist[from] + 1
-				Debug("\tDistance: %v, pushing %v", dist[to], to+1)
+				Debug("\t -> dist[%v] == %v", to, dist[to])
 				queue.Push(to)
 				limit++
 			}

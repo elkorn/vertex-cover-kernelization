@@ -63,9 +63,13 @@ func TestBFS(t *testing.T) {
 		net:    mkNet(g),
 	}
 
-	result, dist := netFlow.bfs()
+	var result bool
+	var dist []int
+	var expectedDist []int
+
+	result, dist = netFlow.bfs()
 	assert.Equal(t, true, result, "BFS must detect that there is a path from source to sink.")
-	expectedDist := []int{0, 2, 3, 1, 2, 1}
+	expectedDist = []int{0, 2, 3, 1, 2, 1}
 	assert.Equal(t, expectedDist, dist, "BFS must discern the length of the path from various nodes to the sink")
 
 	g = mkGraphWithVertices(5)
