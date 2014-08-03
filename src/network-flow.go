@@ -1,5 +1,7 @@
 package graph
 
+import "math"
+
 type NetworkFlow struct {
 	source, sink Vertex
 	graph        *Graph
@@ -7,16 +9,26 @@ type NetworkFlow struct {
 }
 
 type NetArc struct {
-	capacity int
-	flow     int
+	capacity    int
+	flow        int
+	reverseFlow int
+	edge        *Edge
+}
+
+func min(x, y int) int {
+	return int(math.Min(float64(x), float64(y)))
 }
 
 func (self *NetArc) residuum() int {
 	return self.capacity - self.flow
 }
 
-func mkNetArc() *NetArc {
-	return &NetArc{1, 0}
+func mkNetArc(e *Edge) *NetArc {
+	return &NetArc{
+		capacity: 1,
+		flow:     0,
+		edge:     e,
+	}
 }
 
 type Net struct {
@@ -48,7 +60,7 @@ func mkNet(g *Graph) Net {
 
 	for _, edge := range g.Edges {
 		x := int(edge.from) - 1
-		result.arcs[x][(edge.to)-1] = mkNetArc()
+		result.arcs[x][(edge.to)-1] = mkNetArc(edge)
 		result.length[x] += 1
 	}
 
@@ -150,11 +162,28 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 	return dist[int(self.sink-1)] >= 0, dist
 }
 
-func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, f int) int {
-	result := 0
+func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, leftoverFlow int) int {
+	u := int(from) - 1
+	// dest := int(to) - 1
 	if from == to {
-		return f
+		return leftoverFlow
 	}
 
-	return result
+	for ; ptr[u] < self.net.length[u]; ptr[u]++ {
+		arc := self.net.arcs[u][ptr[u]]
+		// this will be a non-issue if I decide to convert the Net to a dense 2D arrray.
+		if nil == arc {
+			continue
+		}
+
+		if dist[arc.edge.to-1] == dist[u]+1 && arc.residuum() > 0 {
+			df := self.dfs(ptr, dist, arc.edge.to, to, min(leftoverFlow, arc.residuum()))
+			if df > 0 {
+				arc.flow += df
+				return df
+			}
+		}
+	}
+
+	return 0
 }
