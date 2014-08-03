@@ -33,22 +33,28 @@ func TestMkToNetworkFlow(t *testing.T) {
 }
 
 func TestNet(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := mkGraphWithVertices(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
 
 	netFlow := mkNetworkFlow(g)
-	assert.Equal(t, len(netFlow.graph.Vertices), len(netFlow.net), "The flow net should be an NxN matrix.")
+	assert.Equal(t, len(netFlow.graph.Vertices), len(netFlow.net.arcs), "The flow net should be an NxN matrix.")
 	for _, edge := range netFlow.graph.Edges {
-		arc := netFlow.net[edge.from-1][edge.to-1]
+		arc := netFlow.net.arcs[edge.from-1][edge.to-1]
 		assert.NotNil(t, arc, "Each edge in the network flow must be represented by an Arc.")
 		assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")
 		assert.Equal(t, 0, arc.flow, "Every arc must have an initial flow of 0.")
 	}
+
+	assert.Equal(t, 2, netFlow.net.length[0], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
+	assert.Equal(t, 2, netFlow.net.length[1], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 }
 
 func TestBFS(t *testing.T) {
 	g := mkGraphWithVertices(6)
+	// The following set of edges constitutes the BFS error case.
 	g.AddEdge(2, 3)
 	g.AddEdge(1, 4)
 	g.AddEdge(1, 6)
@@ -58,7 +64,7 @@ func TestBFS(t *testing.T) {
 
 	netFlow := &NetworkFlow{
 		source: Vertex(1),
-		sink:   Vertex(3),
+		sink:   Vertex(6),
 		graph:  g,
 		net:    mkNet(g),
 	}

@@ -11,9 +11,11 @@ func MkNetworkVisualizer() *networkVisualizer {
 }
 
 func convertToGraph(net *Net) *Graph {
-	result := mkGraphWithVertices(len(*net))
-	for y := range *net {
-		for x, arc := range (*net)[y] {
+	// FIXME this will not work when the network is represented as a dense 2D array.
+	arcs := (*net).arcs
+	result := mkGraphWithVertices(len(arcs))
+	for y := range arcs {
+		for x, arc := range arcs[y] {
 			if nil == arc {
 				continue
 			}

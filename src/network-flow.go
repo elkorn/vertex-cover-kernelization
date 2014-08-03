@@ -19,28 +19,37 @@ func mkNetArc() *NetArc {
 	return &NetArc{1, 0}
 }
 
-type Net [][]*NetArc
+type Net struct {
+	arcs   [][]*NetArc
+	length []int
+}
 
 func (self *Net) Capacity(edge *Edge) int {
-	return (*self)[edge.from-1][edge.to-1].capacity
+	return (*self).arcs[edge.from-1][edge.to-1].capacity
 }
 
 func (self *Net) Flow(edge *Edge) int {
-	return (*self)[edge.from-1][edge.to-1].flow
+	return (*self).arcs[edge.from-1][edge.to-1].flow
 }
 
 func (self *Net) Residuum(edge *Edge) int {
-	return (*self)[edge.from-1][edge.to-1].residuum()
+	return (*self).arcs[edge.from-1][edge.to-1].residuum()
 }
 
 func mkNet(g *Graph) Net {
-	result := make([][]*NetArc, len(g.Vertices))
+	result := Net{
+		arcs:   make([][]*NetArc, len(g.Vertices)),
+		length: make([]int, len(g.Vertices)),
+	}
+
 	for i := 0; i < len(g.Vertices); i++ {
-		result[i] = make([]*NetArc, len(g.Vertices))
+		result.arcs[i] = make([]*NetArc, len(g.Vertices))
 	}
 
 	for _, edge := range g.Edges {
-		result[int(edge.from)-1][(edge.to)-1] = mkNetArc()
+		x := int(edge.from) - 1
+		result.arcs[x][(edge.to)-1] = mkNetArc()
+		result.length[x] += 1
 	}
 
 	return result
@@ -71,49 +80,63 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	return result
 }
 
-func (self *NetworkFlow) ComputeMaxFlow() Edges {
+func (self *NetworkFlow) ComputeMaxFlow() int {
 	// It has to return a set of edges constituting the max. flow
-	result := Edges{}
+	// result := Edges{}
 	// dist := make([]int, len(self.g.Edges))
+	flow := 0
+	for cont, dist := self.bfs(); cont; cont, dist = self.bfs() {
+		ptr := make([]int, len(self.net.arcs))
+		for {
+			df := self.dfs(ptr, dist, self.source, self.sink, MAX_INT)
+			if 0 == df {
+				break
+			}
 
-	return result
+			flow += df
+		}
+	}
+
+	// return result
+	return flow
+}
+
+func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
+	arc := self.net.arcs[from][to]
+	if nil == arc {
+		return false
+	}
+
+	return dist[to] < 0 && arc.residuum() > 0
 }
 
 // https://sites.google.com/site/indy256/algo/dinic_flow
 func (self *NetworkFlow) bfs() (bool, []int) {
 	// Define `dist[v]` to be the length of the shortest
 	// path from source to v in the current instance.
-	dist := make([]int, len(self.net))
+	dist := make([]int, len(self.net.arcs))
+
 	for i := range dist {
 		dist[i] = -1
 	}
 
-	isTraversable := func(from, to int) bool {
-		arc := self.net[from][to]
-		if nil == arc {
-			return false
-		}
-
-		return dist[to] < 0 && arc.residuum() > 0
-	}
-
 	from := int(self.source) - 1
 	dist[from] = 0
-	queue := MkQueue(len(self.net))
+	queue := MkQueue(len(self.net.arcs))
 	queue.Push(from)
 	limit := 1
 
 	for i := 0; i < limit; i++ {
 		from := queue.Pop()
 		Debug("From: %v", from)
-		for to := range self.net[from] {
+		for to := range self.net.arcs[from] {
 			if from == to {
 				continue
 			}
 
 			Debug("\t -> %v", to)
 			// TODO Maintain non-direction of graph edges.
-			if isTraversable(from, to) {
+			if self.isTraversable(from, to, dist) {
 				Debug("dist[%v] == %v", to, dist[to])
 				Debug("dist[%v] == %v", from, dist[from])
 				dist[to] = dist[from] + 1
@@ -127,6 +150,11 @@ func (self *NetworkFlow) bfs() (bool, []int) {
 	return dist[int(self.sink-1)] >= 0, dist
 }
 
-func dfs() {
+func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, f int) int {
+	result := 0
+	if from == to {
+		return f
+	}
 
+	return result
 }
