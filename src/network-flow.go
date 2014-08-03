@@ -169,6 +169,8 @@ func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, leftoverFlow int)
 		return leftoverFlow
 	}
 
+	Debug("%v -> %v (%v)", from, to, leftoverFlow)
+	Debug("ptr: %v", ptr)
 	for ; ptr[u] < self.net.length[u]; ptr[u]++ {
 		arc := self.net.arcs[u][ptr[u]]
 		// this will be a non-issue if I decide to convert the Net to a dense 2D arrray.
@@ -178,6 +180,7 @@ func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, leftoverFlow int)
 
 		if dist[arc.edge.to-1] == dist[u]+1 && arc.residuum() > 0 {
 			df := self.dfs(ptr, dist, arc.edge.to, to, min(leftoverFlow, arc.residuum()))
+			Debug("Finished DFS")
 			if df > 0 {
 				arc.flow += df
 				return df

@@ -96,3 +96,22 @@ func TestBFS(t *testing.T) {
 	expectedDist = []int{0, 1, 2, 3, 4}
 	assert.Equal(t, expectedDist, dist, "BFS must discern the length of the path from various nodes to the sink")
 }
+
+func TestFunction(t *testing.T) {
+	g := mkGraphWithVertices(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+
+	netFlow := &NetworkFlow{
+		source: Vertex(1),
+		sink:   Vertex(5),
+		graph:  g,
+		net:    mkNet(g),
+	}
+
+	inVerboseContext(func() {
+		assert.Equal(t, 4, netFlow.ComputeMaxFlow())
+	})
+}
