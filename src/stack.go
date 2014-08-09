@@ -26,13 +26,27 @@ func (self *Stack) Pop() int {
 	return value
 }
 
+func (self *Stack) Values() []int {
+	tmp := MkStack()
+	tmp.values = self.values
+	tmp.count = self.count
+	result := make([]int, self.count)
+	i := 0
+	for !tmp.Empty() {
+		result[i] = tmp.Pop()
+		i++
+	}
+
+	return result
+}
+
 func (self *Stack) Empty() bool {
 	return self.count == 0
 }
 
 func MkStack() *Stack {
 	return &Stack{
-		values: []int{},
+		values: make([]int, 3),
 		count:  0,
 	}
 }
