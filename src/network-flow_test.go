@@ -52,51 +52,6 @@ func TestNet(t *testing.T) {
 	assert.Equal(t, 2, netFlow.net.length[1], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 }
 
-func TestBFS(t *testing.T) {
-	g := mkGraphWithVertices(6)
-	// The following set of edges constitutes the BFS error case.
-	g.AddEdge(2, 3)
-	g.AddEdge(1, 4)
-	g.AddEdge(1, 6)
-	g.AddEdge(4, 5)
-	g.AddEdge(5, 3)
-	g.AddEdge(6, 5)
-
-	netFlow := &NetworkFlow{
-		source: Vertex(1),
-		sink:   Vertex(6),
-		graph:  g,
-		net:    mkNet(g),
-	}
-
-	var result bool
-	var dist []int
-	var expectedDist []int
-
-	result, dist = netFlow.bfs()
-	assert.Equal(t, true, result, "BFS must detect that there is a path from source to sink.")
-	expectedDist = []int{0, 2, 3, 1, 2, 1}
-	assert.Equal(t, expectedDist, dist, "BFS must discern the length of the path from various nodes to the sink")
-
-	g = mkGraphWithVertices(5)
-	g.AddEdge(1, 2)
-	g.AddEdge(2, 3)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 5)
-
-	netFlow = &NetworkFlow{
-		source: Vertex(1),
-		sink:   Vertex(5),
-		graph:  g,
-		net:    mkNet(g),
-	}
-
-	result, dist = netFlow.bfs()
-	assert.Equal(t, true, result, "BFS must detect that there is a path from source to sink.")
-	expectedDist = []int{0, 1, 2, 3, 4}
-	assert.Equal(t, expectedDist, dist, "BFS must discern the length of the path from various nodes to the sink")
-}
-
 func TestFunction(t *testing.T) {
 	g := mkGraphWithVertices(5)
 	g.AddEdge(1, 2)

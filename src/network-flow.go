@@ -93,112 +93,8 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 }
 
 func (self *NetworkFlow) ComputeMaxFlow() int {
-	// * @param E neighbour lists
-	// * @param C capacity matrix (must be n by n) === self.net
-	// * @param s source
-	// * @param t sink
-	// * @return maximum flow
-	//    public static int edmondsKarp(int[][] E, int[][] C, int s, int t) {
-	//     int n = C.length;
-	n := len(self.net.arcs)
-	// Residual capacity from u to v is C[u][v] - F[u][v]
-	//     int[][] F = new int[n][n];
-	// both C and F can be accomodated through self.net...
-	F := make([][]int, n)
-	for i := range F {
-		F[i] = make([]int, n)
-	}
-	//     while (true) {
-	for {
-		//         int[] P = new int[n]; // Parent table
-		parents := make([]int, n)
-		//         Arrays.fill(P, -1);
-		for i := range parents {
-			parents[i] = -1
-		}
-		//         P[s] = s;
-		parents[self.source.toInt()] = self.source.toInt()
-		//         int[] M = new int[n]; // Capacity of path to node
-		pathCapacity := make([]int, n)
-		//         M[s] = Integer.MAX_VALUE;
-		pathCapacity[self.source.toInt()] = MAX_INT
-		//         // BFS queue
-		//         Queue<Integer> Q = new LinkedList<Integer>();
-		bfsQueue := MkQueue(n)
-		//         Q.offer(s);
-		bfsQueue.Push(self.source.toInt())
-		//         LOOP:
-		//         while (!Q.isEmpty()) {
-		shouldContinue := true
-		for !bfsQueue.Empty() && shouldContinue {
-			//             int u = Q.poll();
-			u := bfsQueue.Pop()
-			//             for (int v : E[u]) {
-			for v, arc := range self.net.arcs[u] {
-				if nil == arc {
-					continue
-				}
-				//                 // There is available capacity,
-				//                 // and v is not seen before in search
-				//                 if (C[u][v] - F[u][v] > 0 && P[v] == -1) {
-				if arc.capacity-F[u][v] > 0 && P[v] == -1 {
-					//                     P[v] = u;
-					parents[v] = u
-					//                     M[v] = Math.min(M[u], C[u][v] - F[u][v]);
-					pathCapacity[v] = min(pathCapacity[u], arc.capacity-F[u][v])
-					//                     if (v != t)
-					if v != self.sink.toInt() {
-						//                         Q.offer(v);
-						bfsQueue.Push(v)
-					} else {
-						//                     else {
-						//                         // Backtrack search, and write flow
-						//                         while (P[v] != v) {
-						for parents[v] != v {
-							//                             u = P[v];
-							u = parents[v]
-							//                             F[u][v] += M[t];
-							F[u][v] += pathCapacity[self.sink.toInt()]
-							//                             F[v][u] -= M[t];
-							F[v][u] -= pathCapacity[self.sink.toInt()]
-							//                             v = u;
-							v = u
-							//                         }
-						}
-
-						//                         break LOOP;
-						shouldContinue := false
-						//                     }
-					}
-					//                 }
-				}
-
-				//         if (P[t] == -1) { // We did not find a path to t
-				if -1 == parents[self.sink.toInt()] {
-					//             int sum = 0;
-					flow := 0
-					//             for (int x : F[s])
-					for _, df := range F[self.source.toInt()] {
-						//                 sum += x;
-						flow += df
-					}
-					//             return sum;
-					return flow
-					//		  }
-				}
-			}
-
-			//         }
-		}
-		//         }
-	}
-
-	// It has to return a set of edges constituting the max. flow
-	// result := Edges{}
-	// dist := make([]int, len(self.g.Edges))
-
-	// return result
-	return flow
+	// I gotta grasp this conceptually first.
+	return 0
 }
 
 func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
@@ -210,46 +106,7 @@ func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
 	return dist[to] < 0 && arc.residuum() > 0
 }
 
-// https://sites.google.com/site/indy256/algo/dinic_flow
-func (self *NetworkFlow) bfs() (bool, []int) {
-	// Define `dist[v]` to be the length of the shortest
-	// path from source to v in the current instance.
-	dist := make([]int, len(self.net.arcs))
-
-	for i := range dist {
-		dist[i] = -1
-	}
-
-	from := int(self.source) - 1
-	dist[from] = 0
-	queue := MkQueue(len(self.net.arcs))
-	queue.Push(from)
-	limit := 1
-
-	for i := 0; i < limit; i++ {
-		from := queue.Pop()
-		Debug("From: %v", from)
-		for to := range self.net.arcs[from] {
-			if from == to {
-				continue
-			}
-
-			Debug("\t -> %v", to)
-			// TODO Maintain non-direction of graph edges.
-			if self.isTraversable(from, to, dist) {
-				Debug("dist[%v] == %v", to, dist[to])
-				Debug("dist[%v] == %v", from, dist[from])
-				dist[to] = dist[from] + 1
-				Debug("\t -> dist[%v] == %v", to, dist[to])
-				queue.Push(to)
-				limit++
-			}
-		}
-	}
-
-	return dist[int(self.sink-1)] >= 0, dist
-}
-
+// R. Sedgewick
 func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, leftoverFlow int) int {
 	u := int(from) - 1
 	// dest := int(to) - 1
