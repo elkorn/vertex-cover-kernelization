@@ -59,9 +59,11 @@ func mkNet(g *Graph) Net {
 	}
 
 	for _, edge := range g.Edges {
-		x := int(edge.from) - 1
-		result.arcs[x][(edge.to)-1] = mkNetArc(edge)
-		result.length[x] += 1
+		from := edge.from.toInt()
+		to := edge.to.toInt()
+		result.arcs[from][to] = mkNetArc(edge)
+		result.arcs[to][from] = mkNetArc(nil)
+		result.length[from] += 1
 	}
 
 	return result
@@ -92,11 +94,6 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	return result
 }
 
-func (self *NetworkFlow) ComputeMaxFlow() int {
-	// I gotta grasp this conceptually first.
-	return 0
-}
-
 func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
 	arc := self.net.arcs[from][to]
 	if nil == arc {
@@ -104,34 +101,4 @@ func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
 	}
 
 	return dist[to] < 0 && arc.residuum() > 0
-}
-
-// R. Sedgewick
-func (self *NetworkFlow) dfs(ptr, dist []int, from, to Vertex, leftoverFlow int) int {
-	u := int(from) - 1
-	// dest := int(to) - 1
-	if from == to {
-		return leftoverFlow
-	}
-
-	Debug("%v -> %v (%v)", from, to, leftoverFlow)
-	Debug("ptr: %v", ptr)
-	for ; ptr[u] < self.net.length[u]; ptr[u]++ {
-		arc := self.net.arcs[u][ptr[u]]
-		// this will be a non-issue if I decide to convert the Net to a dense 2D arrray.
-		if nil == arc {
-			continue
-		}
-
-		if dist[arc.edge.to-1] == dist[u]+1 && arc.residuum() > 0 {
-			df := self.dfs(ptr, dist, arc.edge.to, to, min(leftoverFlow, arc.residuum()))
-			Debug("Finished DFS")
-			if df > 0 {
-				arc.flow += df
-				return df
-			}
-		}
-	}
-
-	return 0
 }

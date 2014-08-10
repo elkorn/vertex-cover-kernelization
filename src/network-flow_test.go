@@ -51,22 +51,3 @@ func TestNet(t *testing.T) {
 	assert.Equal(t, 2, netFlow.net.length[0], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 	assert.Equal(t, 2, netFlow.net.length[1], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 }
-
-func TestFunction(t *testing.T) {
-	g := mkGraphWithVertices(5)
-	g.AddEdge(1, 2)
-	g.AddEdge(2, 3)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 5)
-
-	netFlow := &NetworkFlow{
-		source: Vertex(1),
-		sink:   Vertex(5),
-		graph:  g,
-		net:    mkNet(g),
-	}
-
-	inVerboseContext(func() {
-		assert.Equal(t, 4, netFlow.ComputeMaxFlow())
-	})
-}
