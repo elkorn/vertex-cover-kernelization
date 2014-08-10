@@ -40,7 +40,13 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, Container) {
 			Debug("[%v->%v] marked: %v, residuum: %v", v, w, marked[w], arc.residuum())
 			if !marked[w] && arc.residuum() > 0 {
 				edgeTo[w] = v // Note the last edge on the shortest path.
-				mark(arc.edge.to)
+				if nil == arc.edge {
+					// Dealing with a reverse arc, existing only in the residual net.
+					// This case is treated explicitly only for clarity.
+					mark(Vertex(w + 1))
+				} else {
+					mark(arc.edge.to)
+				}
 			}
 		}
 	}
