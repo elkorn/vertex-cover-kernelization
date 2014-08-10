@@ -83,13 +83,11 @@ func TestLowerBoundPriority(t *testing.T) {
 	}
 
 	// Take the items out, they arrive in an increasing order by lower bound.
-	inVerboseContext(func() {
-		for pq.Len() > 0 {
-			item := heap.Pop(&pq).(*pqItem)
-			assert.True(t, item.value.lowerBound > previouspqItem.value.lowerBound, "Smaller lower bound should be prioritized.")
-			previouspqItem = item
-		}
-	})
+	for pq.Len() > 0 {
+		item := heap.Pop(&pq).(*pqItem)
+		assert.True(t, item.value.lowerBound > previouspqItem.value.lowerBound, "Smaller lower bound should be prioritized.")
+		previouspqItem = item
+	}
 }
 
 func TestPopVal(t *testing.T) {
