@@ -19,9 +19,10 @@ func TestShortestPath(t *testing.T) {
 		graph:  g,
 		net:    mkNet(g),
 	}
-	exists, path := shortestPathFromSourceToSink(nf)
+	exists, path, distance := shortestPathFromSourceToSink(nf)
 	assert.True(t, exists, "The path in the graph should be found by BFS.")
-	assert.Equal(t, []int{0, 3}, path.Values())
+	assert.Equal(t, []int{0, 3}, path, "The path nodes have to be correct.")
+	assert.Equal(t, []int{0, 1, 2, 1}, distance, "The path distance has to be correct.")
 }
 
 func TestShortestPath2(t *testing.T) {
@@ -36,9 +37,10 @@ func TestShortestPath2(t *testing.T) {
 		graph:  g,
 		net:    mkNet(g),
 	}
-	exists, path := shortestPathFromSourceToSink(nf)
+	exists, path, distance := shortestPathFromSourceToSink(nf)
 	assert.True(t, exists, "The path in the graph should be found by BFS.")
-	assert.Equal(t, []int{0, 1, 2, 3}, path.Values())
+	assert.Equal(t, []int{0, 1, 2, 3}, path, "The path nodes have to be correct.")
+	assert.Equal(t, []int{0, 1, 2, 3}, distance, "The path distance has to be correct.")
 }
 
 func TestShortestPathUndirected(t *testing.T) {
@@ -57,8 +59,9 @@ func TestShortestPathUndirected(t *testing.T) {
 		net:    mkNet(g),
 	}
 
-	exists, path := shortestPathFromSourceToSink(nf)
+	exists, path, distance := shortestPathFromSourceToSink(nf)
 	assert.True(t, exists, "The path in an undirected graph has to be found.")
-	assert.Equal(t, []int{0, 4, 3, 5}, path.Values(), "The correct path has to be found in an undirected graph.")
+	assert.Equal(t, []int{0, 4, 3, 5}, path, "The correct path has to be found in an undirected graph.")
+	assert.Equal(t, []int{0, 1, 2, 2, 1, 3}, distance, "The distance has to be correct.")
 
 }

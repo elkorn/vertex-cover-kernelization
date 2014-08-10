@@ -7,24 +7,22 @@ import (
 )
 
 func TestFordFulkerson(t *testing.T) {
-	inVerboseContext(func() {
-		g := mkGraphWithVertices(4)
-		g.AddEdge(1, 2)
-		g.AddEdge(2, 3)
-		g.AddEdge(3, 4)
+	g := mkGraphWithVertices(4)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
 
-		nf := &NetworkFlow{
-			graph:  g,
-			source: Vertex(1),
-			sink:   Vertex(4),
-			net:    mkNet(g),
-		}
+	nf := &NetworkFlow{
+		graph:  g,
+		source: Vertex(1),
+		sink:   Vertex(4),
+		net:    mkNet(g),
+	}
 
-		flowPath, flowValue := fordFulkerson(nf)
+	flowPath, flowValue := fordFulkerson(nf)
 
-		assert.Equal(t, Edges{&Edge{1, 2}, &Edge{2, 3}, &Edge{3, 4}}, flowPath)
-		assert.Equal(t, flowValue, 3)
-	})
+	assert.Equal(t, Edges{&Edge{1, 2}, &Edge{2, 3}, &Edge{3, 4}}, flowPath)
+	assert.Equal(t, flowValue, 3)
 }
 
 func TestFordFulkerson2(t *testing.T) {
