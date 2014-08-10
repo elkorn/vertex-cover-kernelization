@@ -93,12 +93,3 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	result.net = mkNet(bipartite)
 	return result
 }
-
-func (self *NetworkFlow) isTraversable(from, to int, dist []int) bool {
-	arc := self.net.arcs[from][to]
-	if nil == arc {
-		return false
-	}
-
-	return dist[to] < 0 && arc.residuum() > 0
-}
