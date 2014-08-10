@@ -62,7 +62,7 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 
 func (self *Graph) AddEdge(a, b Vertex) error {
 	if a == b {
-		return errors.New(fmt.Sprintf("Connect two separate vertices."))
+		return errors.New(fmt.Sprintf("Cannot connect vertex %v with itself.", a))
 	}
 
 	if !self.hasVertex(a) {

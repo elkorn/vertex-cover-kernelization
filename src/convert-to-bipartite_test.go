@@ -19,24 +19,11 @@ func TestGetVertices(t *testing.T) {
 }
 
 func assertAllEdgesEqual(t *testing.T, expected, actual []*Edge) {
+	assert.Equal(t, len(expected), len(actual), "The number of edges must be the same.")
 	for i, actual := range actual {
 		Debug("expected: %v, actual: %v", *expected[i], *actual)
 		assert.Equal(t, *expected[i], *actual)
 	}
-}
-
-func TestAddBipartiteEdges(t *testing.T) {
-	original := mkGraphWithVertices(3)
-	original.AddEdge(1, 2)
-	original.AddEdge(1, 3)
-
-	expected := make([]*Edge, 4)
-	expected[0] = &Edge{1, 2}
-	expected[1] = &Edge{1, 3}
-	expected[2] = &Edge{4, 5}
-	expected[3] = &Edge{4, 6}
-	addBipartiteEdges(original, 4)
-	assertAllEdgesEqual(t, expected, original.Edges)
 }
 
 func TestMakeBipartite(t *testing.T) {
@@ -45,7 +32,10 @@ func TestMakeBipartite(t *testing.T) {
 	g.AddEdge(2, 3)
 
 	expectedVertices := []Vertex{1, 2, 3, 4, 5, 6, 7, 8}
-	expectedEdges := Edges{MkEdge(4, 1), MkEdge(2, 3), MkEdge(8, 5), MkEdge(6, 7)}
+	expectedEdges := Edges{
+		MkEdge(4, 5),
+		MkEdge(2, 7),
+	}
 
 	actual := makeBipartite(g)
 	for _, v := range expectedVertices {
