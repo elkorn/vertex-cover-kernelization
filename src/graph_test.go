@@ -24,7 +24,7 @@ func TestMkGraph(t *testing.T) {
 func TestAddVertex(t *testing.T) {
 	g := MkGraph()
 	g.AddVertex()
-	assert.Equal(t, g.Vertices[1], true)
+	assert.True(t, g.hasVertex(MkVertex(0)))
 }
 
 func TestRemoveVertex(t *testing.T) {

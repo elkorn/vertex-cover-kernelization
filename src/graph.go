@@ -13,13 +13,17 @@ type Graph struct {
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
-	for _, b := range self.Vertices {
+	return self.indexOfVertex(v) != -1
+}
+
+func (self *Graph) indexOfVertex(v Vertex) int {
+	for i, b := range self.Vertices {
 		if b == v {
-			return true
+			return i
 		}
 	}
 
-	return false
+	return -1
 }
 
 func (self *Graph) hasEdge(a, b Vertex) bool {
@@ -51,11 +55,12 @@ func (g *Graph) AddVertex() error {
 }
 
 func (self *Graph) RemoveVertex(v Vertex) error {
-	if !self.hasVertex(v) {
+	index := self.indexOfVertex(v)
+	if index == -1 {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	self.Vertices = append(self.Vertices[0:v.toInt()], self.Vertices[v.toInt()+1:self.currentVertexIndex]...)
+	self.Vertices = append(self.Vertices[0:index], self.Vertices[index+1:len(self.Vertices)]...)
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
 		self.degrees[self.Edges[positions[i]].from] -= 1
