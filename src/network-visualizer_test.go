@@ -15,7 +15,7 @@ func TestConvertToGraph(t *testing.T) {
 
 	net := mkNet(expected)
 	actual := convertToGraph(&net)
-	for vertex := range expected.Vertices {
+	for _, vertex := range expected.Vertices {
 		assert.True(t, actual.hasVertex(vertex))
 	}
 

@@ -7,7 +7,7 @@ import (
 
 // TODO: copy the graph instead of mutating.
 func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error) error {
-	for vertex := range self.Vertices {
+	for _, vertex := range self.Vertices {
 		vDegree, err := self.Degree(vertex)
 		if nil != err {
 			return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex))

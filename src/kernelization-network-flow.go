@@ -5,7 +5,7 @@ import "github.com/deckarep/golang-set"
 func assignWeightsToVertices(G *Graph, H *Graph, isCovered []bool) []float64 {
 	border := len(G.Vertices)
 	weights := make([]float64, border)
-	for Av := range G.Vertices {
+	for _, Av := range G.Vertices {
 		Bv := MkVertex(Av.toInt() + border)
 		avIndex := Av.toInt()
 		if isCovered[Av] {
@@ -32,7 +32,7 @@ func networkFlowKernelization(G *Graph, k int) (*Graph, int) {
 	hPrime := mkNetworkFlow(G)
 
 	// Step 3: Find the maximum flow in H'.
-	maxFlowPath, maxFlowValue := fordFulkerson(hPrime)
+	maxFlowPath, _ /* maxFlowValue */ := fordFulkerson(hPrime)
 
 	// Step 4: The arcs in H' included in the instance of the maximum flow
 	// 		   that correspond to edges in H constitute a matching set M of H.
@@ -53,7 +53,7 @@ func networkFlowKernelization(G *Graph, k int) (*Graph, int) {
 	if numberOfMatchedOriginalVertices == len(hPrime.graph.Vertices) {
 		// Vertex cover of H is either the set A or B.
 		// TODO refactor when the map of Vertices gets switched to an array.
-		for vertex := range G.Vertices {
+		for _, vertex := range G.Vertices {
 			bipartiteCover[vertex.toInt()] = true
 		}
 	} else {

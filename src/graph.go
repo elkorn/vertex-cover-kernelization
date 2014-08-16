@@ -6,14 +6,20 @@ import (
 )
 
 type Graph struct {
-	Vertices           map[Vertex]bool
+	Vertices           []Vertex
 	Edges              Edges
 	degrees            map[Vertex]int
 	currentVertexIndex int
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
-	return self.Vertices[v]
+	for _, b := range self.Vertices {
+		if b == v {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (self *Graph) hasEdge(a, b Vertex) bool {
@@ -40,7 +46,7 @@ func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
 func (g *Graph) AddVertex() error {
 	g.currentVertexIndex++
 	Debug("Adding %v", g.currentVertexIndex)
-	g.Vertices[Vertex(g.currentVertexIndex)] = true
+	g.Vertices = append(g.Vertices, Vertex(g.currentVertexIndex))
 	return nil
 }
 
@@ -49,7 +55,7 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	delete(self.Vertices, v)
+	self.Vertices = append(self.Vertices[0:v.toInt()], self.Vertices[v.toInt()+1:self.currentVertexIndex]...)
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
 		self.degrees[self.Edges[positions[i]].from] -= 1
@@ -118,7 +124,7 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 
 func MkGraph() *Graph {
 	g := new(Graph)
-	g.Vertices = make(map[Vertex]bool)
+	g.Vertices = make([]Vertex, 0)
 	g.Edges = make(Edges, 0)
 	g.degrees = make(map[Vertex]int)
 	return g
