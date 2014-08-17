@@ -44,3 +44,12 @@ func TestMakeBipartite(t *testing.T) {
 
 	assertAllEdgesEqual(t, expectedEdges, actual.Edges)
 }
+
+// func TestPrintBipartite(t *testing.T) {
+// 	g := mkGraph1()
+// 	gv := MkGraphVisualizer()
+// 	nf := mkNetworkFlow(g)
+
+// 	gv.Display(g)
+// 	gv.Display(nf.graph)
+// }

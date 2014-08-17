@@ -1,7 +1,11 @@
 package graph
 
 func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
-	n := len(nf.graph.Vertices)
+	return shortestPath(nf.net, nf.source, nf.sink)
+}
+
+func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
+	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
 	distance := make([]int, n)
@@ -13,7 +17,7 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 	}
 	pathTo := func(v Vertex) []int {
 		vi := v.toInt()
-		si := nf.source.toInt()
+		si := from.toInt()
 
 		if !marked[vi] {
 			return nil
@@ -29,12 +33,12 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 		return path.Values() // it can be done much better performance-wise.
 	}
 
-	mark(nf.source)
-	distance[nf.source.toInt()] = 0
+	mark(from)
+	distance[from.toInt()] = 0
 
 	for !queue.Empty() {
 		v := queue.Pop()
-		for w, arc := range nf.net.arcs[v] {
+		for w, arc := range net.arcs[v] {
 			if nil == arc {
 				continue
 			}
@@ -54,6 +58,5 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 		}
 	}
 
-	return marked[nf.sink.toInt()], pathTo(nf.sink), distance
-
+	return marked[to.toInt()], pathTo(to), distance
 }
