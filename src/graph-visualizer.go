@@ -7,6 +7,8 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+
+	"github.com/deckarep/golang-set"
 )
 
 type graphVisualizer struct{}
@@ -34,13 +36,28 @@ func edgeToB(edge *Edge) []byte {
 	return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
 }
 
+func vertexToB(v Vertex) []byte {
+	return tstobn(fmt.Sprintf("%v;", v))
+}
+
 func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
+	connectedVertices := mapset.NewSet()
 	for _, edge := range g.Edges {
 		res.Write(edgeToB(edge))
+		connectedVertices.Add(edge.from)
+		connectedVertices.Add(edge.to)
+	}
+
+	for _, v := range g.Vertices {
+		if connectedVertices.Contains(v) {
+			continue
+		}
+
+		res.Write(vertexToB(v))
 	}
 
 	res.Write(stob("}"))

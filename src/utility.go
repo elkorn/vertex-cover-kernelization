@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+	"github.com/deckarep/golang-set"
 	"log"
 )
 
@@ -30,6 +31,12 @@ func contains(neighbors Neighbors, v Vertex) bool {
 	// Debug("Found index %v", foundIndex)
 	// Debug("==== END SEARCH ====")
 	return foundIndex < length && neighbors[foundIndex] == v
+}
+
+func PrintSet(set mapset.Set) {
+	for s := range set.Iter() {
+		Debug("%v", s)
+	}
 }
 
 func Debug(format string, args ...interface{}) {
