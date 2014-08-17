@@ -3,7 +3,7 @@ package graph
 import "github.com/deckarep/golang-set"
 
 func assignWeightsToVertices(G *Graph, H *Graph, isCovered []bool) []float64 {
-	border := len(G.Vertices)
+	border := G.currentVertexIndex
 	inVerboseContext(func() {
 		Debug("verts: %v", G.Vertices)
 	})
@@ -64,7 +64,7 @@ func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 	}
 
 	// This acts as a map[int]bool.
-	bipartiteCover := make([]bool, len(G.Vertices)*2)
+	bipartiteCover := make([]bool, G.currentVertexIndex*2)
 	// Step 5: From M we cand find a vertex cover of H.
 	// Case 1: all vertices are matched.
 	if matchedVertices.Cardinality() == len(hPrime.graph.Vertices) {

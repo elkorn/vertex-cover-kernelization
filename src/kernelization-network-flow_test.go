@@ -16,18 +16,17 @@ func TestMaterializeVertexDiscontinuityHandlingError(t *testing.T) {
 	g.AddEdge(5, 7)
 	g.AddEdge(5, 6)
 
-	Preprocessing(g)
 	kPrime := networkFlowKernelization(g, 3)
 
-	assert.Equal(t, 3, kPrime)
+	assert.Equal(t, 1, kPrime)
 	assert.True(t, g.hasVertex(2))
 	assert.True(t, g.hasVertex(4))
-	assert.True(t, g.hasVertex(5))
-	assert.True(t, g.hasVertex(6))
+	assert.False(t, g.hasVertex(5))
+	assert.False(t, g.hasVertex(6))
 	assert.False(t, g.hasVertex(1))
 	assert.False(t, g.hasVertex(3))
 
 	assert.True(t, g.hasEdge(2, 4))
-	assert.True(t, g.hasEdge(2, 5))
-	assert.True(t, g.hasEdge(2, 6))
+	assert.False(t, g.hasEdge(2, 5))
+	assert.False(t, g.hasEdge(2, 6))
 }
