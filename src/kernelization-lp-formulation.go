@@ -96,10 +96,10 @@ func resolveConflict(g *Graph, v1, v2 Vertex) Vertex {
 	}
 }
 
-func getEndpoints(edges Edges) []Vertex {
+func getEndpoints(edges Edges) Vertices {
 	contains := make(map[Vertex]bool)
-	result := make([]Vertex, 0)
-	appendIfNotContains := func(v ...Vertex) []Vertex {
+	result := make(Vertices, 0)
+	appendIfNotContains := func(v ...Vertex) Vertices {
 		for _, v := range v {
 			if !contains[v] {
 				contains[v] = true

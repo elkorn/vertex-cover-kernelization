@@ -1,7 +1,7 @@
 package graph
 
-func getVertices(g *Graph) []Vertex {
-	result := make([]Vertex, 0)
+func getVertices(g *Graph) Vertices {
+	result := make(Vertices, 0)
 	n := len(g.Vertices)
 	for _, v := range g.Vertices {
 		result = append(result, v)

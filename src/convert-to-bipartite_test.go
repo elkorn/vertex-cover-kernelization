@@ -9,7 +9,7 @@ import (
 func TestGetVertices(t *testing.T) {
 	g := mkGraphWithVertices(3)
 
-	expected := make([]Vertex, 6)
+	expected := make(Vertices, 6)
 	for i := 0; i < 6; i++ {
 		expected[i] = Vertex(i + 1)
 	}
@@ -31,7 +31,7 @@ func TestMakeBipartite(t *testing.T) {
 	g.AddEdge(4, 1)
 	g.AddEdge(2, 3)
 
-	expectedVertices := []Vertex{1, 2, 3, 4, 5, 6, 7, 8}
+	expectedVertices := Vertices{1, 2, 3, 4, 5, 6, 7, 8}
 	expectedEdges := Edges{
 		MkEdge(4, 5),
 		MkEdge(2, 7),

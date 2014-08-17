@@ -6,7 +6,7 @@ import (
 )
 
 type Graph struct {
-	Vertices           []Vertex
+	Vertices           Vertices
 	Edges              Edges
 	degrees            map[Vertex]int
 	currentVertexIndex int
@@ -129,7 +129,7 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 
 func MkGraph() *Graph {
 	g := new(Graph)
-	g.Vertices = make([]Vertex, 0)
+	g.Vertices = make(Vertices, 0)
 	g.Edges = make(Edges, 0)
 	g.degrees = make(map[Vertex]int)
 	return g

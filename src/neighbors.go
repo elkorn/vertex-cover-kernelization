@@ -1,6 +1,6 @@
 package graph
 
-type Neighbors []Vertex
+type Neighbors Vertices
 
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := Neighbors{}

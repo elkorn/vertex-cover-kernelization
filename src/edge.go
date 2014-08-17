@@ -13,4 +13,8 @@ func MkEdge(a, b Vertex) *Edge {
 	return &Edge{a, b}
 }
 
+func MkEdgeFromInts(a, b int) *Edge {
+	return MkEdge(MkVertex(a), MkVertex(b))
+}
+
 type Edges []*Edge

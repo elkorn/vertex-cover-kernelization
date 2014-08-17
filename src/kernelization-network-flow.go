@@ -3,23 +3,23 @@ package graph
 import "github.com/deckarep/golang-set"
 
 func isAlternatingPathWithMatching(path []int, matching mapset.Set) bool {
-	previous := Edge{path[0], path[1]}
+	previous := MkEdgeFromInts(path[0], path[1])
 	// P is an alternating path if:
 	// 	- P is a path in G
 	// 	- for each subsequent pair of edges from P one of them
 	//    belongs to M and the other one does not.
 
 	for i := 2; i < len(path); i++ {
-		current := Edge{path[i-1], path[i]}
+		current := MkEdgeFromInts(path[i-1], path[i])
 		inVerboseContext(func() {
 			Debug("Checking %v:%v", previous, current)
 		})
 
-		if matching.Contains(e1) == matching.Contains(e2) {
+		if matching.Contains(previous) == matching.Contains(current) {
 			return false
 		}
 
-		previous := current
+		previous = current
 	}
 
 	return true
@@ -40,7 +40,7 @@ func isReachableWithMatching(from, to Vertex, net Net, matching mapset.Set) bool
 	return false
 }
 
-func reachableFrom(toReach []Vertex, reachFrom mapset.Set, net Net, matching mapset.Set) mapset.Set {
+func reachableFrom(toReach Vertices, reachFrom mapset.Set, net Net, matching mapset.Set) mapset.Set {
 	result := mapset.NewSet()
 	for from := range reachFrom.Iter() {
 		for _, to := range toReach {
@@ -48,7 +48,7 @@ func reachableFrom(toReach []Vertex, reachFrom mapset.Set, net Net, matching map
 				continue
 			}
 
-			if isReachableWithMatching(from, to, net, matching) {
+			if isReachableWithMatching(from.(Vertex), to, net, matching) {
 				result.Add(to)
 			}
 		}
