@@ -34,12 +34,12 @@ func (self *networkVisualizer) toDot(net *Net, name string) bytes.Buffer {
 	res.Write(stobn(" {"))
 	arcs := (*net).arcs
 	for y := range arcs {
-		for _, arc := range arcs[y] {
+		for x, arc := range arcs[y] {
 			if nil == arc || nil == arc.edge {
 				continue
 			}
 
-			if arc.residuum() == 0 {
+			if arc.residuum() == 0 || (net.arcs[x][y] != nil && net.arcs[x][y].residuum() == 0) {
 				res.Write(edgeToBWithColor(arc.edge, "red"))
 			} else {
 				res.Write(edgeToB(arc.edge))
