@@ -4,16 +4,10 @@ import "github.com/deckarep/golang-set"
 
 func assignWeightsToVertices(G *Graph, H *Graph, isCovered []bool) []float64 {
 	border := G.currentVertexIndex
-	inVerboseContext(func() {
-		Debug("verts: %v", G.Vertices)
-	})
 	weights := make([]float64, border)
 	for _, Av := range G.Vertices {
 		bvIndex := Av.toInt() + border
 		avIndex := Av.toInt()
-		inVerboseContext(func() {
-			Debug("A: %v, B: %v (of %v)", avIndex, bvIndex, len(isCovered))
-		})
 		if isCovered[avIndex] {
 			if isCovered[bvIndex] {
 				weights[avIndex] = 1

@@ -11,10 +11,6 @@ func isAlternatingPathWithMatching(path []int, matching mapset.Set) bool {
 
 	for i := 2; i < len(path); i++ {
 		current := MkEdgeFromInts(path[i-1], path[i])
-		inVerboseContext(func() {
-			Debug("Checking %v:%v", previous, current)
-		})
-
 		if matching.Contains(previous) == matching.Contains(current) {
 			return false
 		}
