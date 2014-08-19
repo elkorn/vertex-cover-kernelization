@@ -73,13 +73,13 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	verticesBefore := len(g.Vertices)
 	verticesAfter := verticesBefore * 2
 	bipartite := makeBipartite(g)
-	bipartite.AddVertex()
+	bipartite.addVertex()
 	result := &NetworkFlow{
 		graph:  bipartite,
 		source: Vertex(bipartite.currentVertexIndex),
 	}
 
-	bipartite.AddVertex()
+	bipartite.addVertex()
 
 	result.sink = Vertex(bipartite.currentVertexIndex)
 	for i := 0; i < verticesBefore; i++ {

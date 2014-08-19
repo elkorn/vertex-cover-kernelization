@@ -69,7 +69,7 @@ func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
 	return result
 }
 
-func (g *Graph) AddVertex() error {
+func (g *Graph) addVertex() error {
 	g.currentVertexIndex++
 	Debug("Adding %v", g.currentVertexIndex)
 	g.Vertices = append(g.Vertices, Vertex(g.currentVertexIndex))

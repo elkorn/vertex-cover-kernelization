@@ -16,9 +16,9 @@ func TestMkGraph(t *testing.T) {
 	assert.Equal(t, len(g.Vertices), 0)
 }
 
-func TestAddVertex(t *testing.T) {
+func TestaddVertex(t *testing.T) {
 	g := MkGraph(0)
-	g.AddVertex()
+	g.addVertex()
 	assert.True(t, g.hasVertex(MkVertex(0)))
 }
 
@@ -29,7 +29,7 @@ func TestRemoveVertex(t *testing.T) {
 	assert.Nil(t, err)
 	assert.False(t, g.hasVertex(2))
 	inVerboseContext(func() {
-		g.AddVertex()
+		g.addVertex()
 
 		g.AddEdge(1, 4)
 	})
@@ -45,9 +45,9 @@ func TestRemoveVertex(t *testing.T) {
 
 func TestAddEdge(t *testing.T) {
 	g := MkGraph(0)
-	g.AddVertex()
-	g.AddVertex()
-	g.AddVertex()
+	g.addVertex()
+	g.addVertex()
+	g.addVertex()
 	err := g.AddEdge(1, 2)
 	assert.Nil(t, err)
 
@@ -68,9 +68,9 @@ func TestAddEdge(t *testing.T) {
 
 func TestVertexCoverSimpleGraph(t *testing.T) {
 	g := MkGraph(0)
-	g.AddVertex()
-	g.AddVertex()
-	g.AddVertex()
+	g.addVertex()
+	g.addVertex()
+	g.addVertex()
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -140,7 +140,7 @@ func TestGetNeighbors(t *testing.T) {
 	assert.Equal(t, Neighbors{2, 3, 8}, g.getNeighbors(1))
 }
 
-func TestAddVertexWithAutoId(t *testing.T) {
+func TestaddVertexWithAutoId(t *testing.T) {
 	g := mkGraphWithVertices(12)
 	assert.Equal(t, Vertex(13), g.generateVertex())
 }
