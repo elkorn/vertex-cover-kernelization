@@ -1,8 +1,9 @@
 package graph
 
 type Edge struct {
-	from Vertex
-	to   Vertex
+	from      Vertex
+	to        Vertex
+	isDeleted bool
 }
 
 func (self *Edge) IsCoveredBy(v Vertex) bool {
@@ -10,7 +11,7 @@ func (self *Edge) IsCoveredBy(v Vertex) bool {
 }
 
 func MkEdge(a, b Vertex) *Edge {
-	return &Edge{a, b}
+	return &Edge{a, b, false}
 }
 
 func MkEdgeFromInts(a, b int) *Edge {

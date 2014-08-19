@@ -15,7 +15,6 @@ func TestRemoveOfDegree(t *testing.T) {
 	g.AddEdge(5, 2)
 
 	g.removeVerticesOfDegree(4)
-	assert.Equal(t, 4, len(g.Vertices))
 	assert.True(t, g.hasVertex(1))
 	assert.False(t, g.hasVertex(2))
 	assert.True(t, g.hasVertex(3))

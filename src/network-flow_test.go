@@ -41,12 +41,12 @@ func TestNet(t *testing.T) {
 
 	netFlow := mkNetworkFlow(g)
 	assert.Equal(t, len(netFlow.graph.Vertices), len(netFlow.net.arcs), "The flow net should be an NxN matrix.")
-	for _, edge := range netFlow.graph.Edges {
+	netFlow.graph.ForAllEdges(func(edge *Edge, _ int, _ chan<- bool) {
 		arc := netFlow.net.arcs[edge.from-1][edge.to-1]
 		assert.NotNil(t, arc, "Each edge in the network flow must be represented by an Arc.")
 		assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")
 		assert.Equal(t, 0, arc.flow, "Every arc must have an initial flow of 0.")
-	}
+	})
 
 	assert.Equal(t, 2, netFlow.net.length[0], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 	assert.Equal(t, 2, netFlow.net.length[1], "The Net structure must contain information about the number of arcs going out of a specified vertex.")

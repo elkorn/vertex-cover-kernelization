@@ -33,12 +33,14 @@ func TestResolveConflict(t *testing.T) {
 
 	assert.Equal(t, n2, resolveConflict(g, n1, n2))
 
-	g.degrees[1] = 4
-	assert.Equal(t, n1, resolveConflict(g, n1, n2))
+	g.degrees[0] = 4
+	inVerboseContext(func() {
+		assert.Equal(t, n1, resolveConflict(g, n1, n2))
+	})
 
 	// Seeding the rand differently can break this test.
 	rand.Seed(1)
-	g.degrees[n2] = g.degrees[n1]
+	g.degrees[n2.toInt()] = g.degrees[n1.toInt()]
 	assert.Equal(t, n2, resolveConflict(g, n1, n2))
 }
 
@@ -65,7 +67,7 @@ func TestCalculateLowerBound(t *testing.T) {
 }
 
 func TestGetEndpoints(t *testing.T) {
-	edges := Edges{&Edge{1, 2}, &Edge{2, 4}}
+	edges := Edges{MkEdgeFromInts(0, 1), MkEdgeFromInts(1, 3)}
 	expected := make(Vertices, 3)
 	expected[0] = 1
 	expected[1] = 2

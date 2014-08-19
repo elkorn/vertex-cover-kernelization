@@ -21,7 +21,7 @@ func TestFordFulkerson(t *testing.T) {
 
 	flowPath, flowValue := fordFulkerson(nf)
 
-	assert.Equal(t, Edges{&Edge{1, 2}, &Edge{2, 3}, &Edge{3, 4}}, flowPath)
+	assert.Equal(t, Edges{MkEdgeFromInts(0, 1), MkEdgeFromInts(1, 2), MkEdgeFromInts(2, 3)}, flowPath)
 	assert.Equal(t, flowValue, 3)
 }
 
@@ -43,6 +43,6 @@ func TestFordFulkerson2(t *testing.T) {
 
 	flowPath, flowValue := fordFulkerson(nf)
 
-	assert.Equal(t, Edges{&Edge{1, 5}, &Edge{5, 4}, &Edge{4, 6}}, flowPath)
+	assert.Equal(t, Edges{MkEdgeFromInts(0, 4), MkEdgeFromInts(4, 3), MkEdgeFromInts(3, 5)}, flowPath)
 	assert.Equal(t, flowValue, 3)
 }

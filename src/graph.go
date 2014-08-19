@@ -8,12 +8,14 @@ import (
 type Graph struct {
 	Vertices           Vertices
 	Edges              Edges
-	degrees            map[Vertex]int
+	degrees            []int
 	currentVertexIndex int
+	isVertexDeleted    []bool
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
-	return self.indexOfVertex(v) != -1
+	index := self.indexOfVertex(v)
+	return index != -1 && !self.isVertexDeleted[index]
 }
 
 func (self *Graph) indexOfVertex(v Vertex) int {
@@ -26,23 +28,43 @@ func (self *Graph) indexOfVertex(v Vertex) int {
 	return -1
 }
 
-func (self *Graph) hasEdge(a, b Vertex) bool {
-	for _, v := range self.Edges {
-		if v.from == a && v.to == b || v.from == b && v.to == a {
-			return true
+func (self *Graph) ForAllEdges(fn func(*Edge, int, chan<- bool)) {
+	done := make(chan bool, 1)
+	for idx, edge := range self.Edges {
+		if edge.isDeleted {
+			continue
 		}
-	}
 
-	return false
+		fn(edge, idx, done)
+
+		select {
+		case <-done:
+			return
+		default:
+		}
+
+	}
+}
+
+func (self *Graph) hasEdge(a, b Vertex) bool {
+	result := false
+	self.ForAllEdges(func(edge *Edge, i int, done chan<- bool) {
+		if edge.from == a && edge.to == b || edge.from == b && edge.to == a {
+			result = true
+			done <- true
+		}
+	})
+
+	return result
 }
 
 func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
 	result := make([]int, 0)
-	for index, edge := range self.Edges {
+	self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
 		if edge.IsCoveredBy(v) {
 			result = append(result, index)
 		}
-	}
+	})
 
 	return result
 }
@@ -51,21 +73,23 @@ func (g *Graph) AddVertex() error {
 	g.currentVertexIndex++
 	Debug("Adding %v", g.currentVertexIndex)
 	g.Vertices = append(g.Vertices, Vertex(g.currentVertexIndex))
+	g.isVertexDeleted = append(g.isVertexDeleted, false)
+	g.degrees = append(g.degrees, 0)
 	return nil
 }
 
 func (self *Graph) RemoveVertex(v Vertex) error {
 	index := self.indexOfVertex(v)
-	if index == -1 {
+	if index == -1 || self.isVertexDeleted[index] {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	self.Vertices = append(self.Vertices[0:index], self.Vertices[index+1:len(self.Vertices)]...)
+	self.isVertexDeleted[index] = true
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
-		self.degrees[self.Edges[positions[i]].from] -= 1
-		self.degrees[self.Edges[positions[i]].to] -= 1
-		self.Edges = removeAt(self.Edges, positions[i])
+		self.degrees[self.Edges[positions[i]].from.toInt()] -= 1
+		self.degrees[self.Edges[positions[i]].to.toInt()] -= 1
+		self.Edges[positions[i]].isDeleted = true
 	}
 
 	return nil
@@ -90,33 +114,29 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 
 	self.Edges = append(self.Edges, MkEdge(a, b))
 
-	self.degrees[a] += 1
-	self.degrees[b] += 1
+	self.degrees[a.toInt()] += 1
+	self.degrees[b.toInt()] += 1
 	return nil
 }
 
 func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
-	isCovered := make(map[*Edge]bool)
-	for _, edge := range self.Edges {
-		isCovered[edge] = false
-	}
-
+	// TODO refactor to use a number instead of a map !!!
+	n := len(self.Edges)
+	amountCovered := 0
+	isCovered := make([]bool, n)
 	for _, vertex := range vertices {
-		for _, edge := range self.Edges {
+		self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
 			if edge.IsCoveredBy(vertex) {
-				isCovered[edge] = true
+				if !isCovered[index] {
+					amountCovered++
+					isCovered[index] = true
+				}
 			}
-		}
+		})
 	}
 
 	Debug("Coverage map for %v: %v", vertices, isCovered)
-	for _, v := range isCovered {
-		if v == false {
-			return false
-		}
-	}
-
-	return true
+	return amountCovered == n
 }
 
 func (self *Graph) Degree(v Vertex) (int, error) {
@@ -124,13 +144,19 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 		return -1, errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	return self.degrees[v], nil
+	return self.degrees[v.toInt()], nil
 }
 
-func MkGraph() *Graph {
+func MkGraph(vertices int) *Graph {
 	g := new(Graph)
-	g.Vertices = make(Vertices, 0)
+	g.Vertices = make(Vertices, vertices)
+	for i := 0; i < vertices; i++ {
+		g.Vertices[i] = MkVertex(i)
+	}
+
+	g.currentVertexIndex = vertices
 	g.Edges = make(Edges, 0)
-	g.degrees = make(map[Vertex]int)
+	g.degrees = make([]int, vertices)
+	g.isVertexDeleted = make([]bool, vertices)
 	return g
 }

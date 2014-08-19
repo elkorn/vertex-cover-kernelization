@@ -25,4 +25,6 @@ func TestScanGraph(t *testing.T) {
 	for _, edge := range expected.edges {
 		assert.True(t, g.hasEdge(edge.from, edge.to), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.from, edge.to))
 	}
+
+	ScanGraph("../examples/sh2/sh2-3.dim.sh")
 }

@@ -4,10 +4,10 @@ func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
 	degrees := make(map[Vertex]int)
 	result := Neighbors{}
 
-	for _, edge := range self.Edges {
+	self.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
 		degrees[edge.from]++
 		degrees[edge.to]++
-	}
+	})
 
 	for vertex, degree := range degrees {
 		if degree > k {

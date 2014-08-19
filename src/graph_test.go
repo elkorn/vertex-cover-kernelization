@@ -7,22 +7,17 @@ import (
 )
 
 func mkGraphWithVertices(howMany int) *Graph {
-	g := MkGraph()
-	for i := 1; i <= howMany; i++ {
-		g.AddVertex()
-	}
-
-	return g
+	return MkGraph(howMany)
 }
 
 func TestMkGraph(t *testing.T) {
-	g := MkGraph()
+	g := MkGraph(0)
 	assert.Equal(t, len(g.Edges), 0)
 	assert.Equal(t, len(g.Vertices), 0)
 }
 
 func TestAddVertex(t *testing.T) {
-	g := MkGraph()
+	g := MkGraph(0)
 	g.AddVertex()
 	assert.True(t, g.hasVertex(MkVertex(0)))
 }
@@ -32,11 +27,12 @@ func TestRemoveVertex(t *testing.T) {
 
 	err := g.RemoveVertex(2)
 	assert.Nil(t, err)
-	assert.Equal(t, 2, len(g.Vertices))
+	assert.False(t, g.hasVertex(2))
+	inVerboseContext(func() {
+		g.AddVertex()
 
-	g.AddVertex()
-
-	g.AddEdge(1, 4)
+		g.AddEdge(1, 4)
+	})
 	g.AddEdge(1, 3)
 	g.AddEdge(4, 3)
 
@@ -48,7 +44,7 @@ func TestRemoveVertex(t *testing.T) {
 }
 
 func TestAddEdge(t *testing.T) {
-	g := MkGraph()
+	g := MkGraph(0)
 	g.AddVertex()
 	g.AddVertex()
 	g.AddVertex()
@@ -71,7 +67,7 @@ func TestAddEdge(t *testing.T) {
 }
 
 func TestVertexCoverSimpleGraph(t *testing.T) {
-	g := MkGraph()
+	g := MkGraph(0)
 	g.AddVertex()
 	g.AddVertex()
 	g.AddVertex()

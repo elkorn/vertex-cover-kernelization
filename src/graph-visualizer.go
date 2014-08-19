@@ -46,11 +46,14 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
 	connectedVertices := mapset.NewSet()
-	for _, edge := range g.Edges {
+	g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
+		// In this context it might be useful to use this range loop and e.g. display
+		// the removed edge as dotted or grayed out.
+		// for _, edge := range g.Edges {
 		res.Write(edgeToB(edge))
 		connectedVertices.Add(edge.from)
 		connectedVertices.Add(edge.to)
-	}
+	})
 
 	for _, v := range g.Vertices {
 		if connectedVertices.Contains(v) {

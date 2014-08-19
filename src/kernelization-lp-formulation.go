@@ -33,7 +33,7 @@ func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 
 func computeLowerBound(g *Graph, preselected Selection) int {
 	result := 0
-	for _, edge := range g.Edges {
+	g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
 		// Maintaining the invariant: {u,v} \SUB0 E \==> Xu + Xv >= 1 (use mathematics.vim to write this correctly)
 		if preselected[edge.from] < 1 && preselected[edge.to] < 1 {
 			// Select only one node, preferably with one with the larger degree.
@@ -44,7 +44,7 @@ func computeLowerBound(g *Graph, preselected Selection) int {
 			preselected[selected] = 1
 		}
 		// else -> numberOfCoveredEdges += 1
-	}
+	})
 
 	for _, val := range preselected {
 		result += val
@@ -81,6 +81,8 @@ func resolveConflict(g *Graph, v1, v2 Vertex) Vertex {
 	if nil != err {
 		panic(err)
 	}
+
+	Debug("Resolving conflict v1(%v) vs v2(%v)", d1, d2)
 
 	switch true {
 	case d1 > d2:
@@ -123,13 +125,13 @@ func getNumberOfCoveredEdges(g *Graph, s Selection) int {
 	Debug("Selection %v", s)
 	for val := range s {
 		vertex := Vertex(val)
-		for i, edge := range g.Edges {
+		g.ForAllEdges(func(edge *Edge, i int, done chan<- bool) {
 			if !covered[i] && (edge.from == vertex || edge.to == vertex) {
 				result++
 				covered[i] = true
 				Debug("%v covers %v -> %v", vertex, edge, result)
 			}
-		}
+		})
 	}
 	return result
 }
