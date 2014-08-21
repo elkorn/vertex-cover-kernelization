@@ -14,8 +14,7 @@ type Graph struct {
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
-	index := self.indexOfVertex(v)
-	return index != -1 && !self.isVertexDeleted[index]
+	return v.toInt() < self.currentVertexIndex && !self.isVertexDeleted[v.toInt()]
 }
 
 func (self *Graph) indexOfVertex(v Vertex) int {
@@ -79,12 +78,11 @@ func (g *Graph) addVertex() error {
 }
 
 func (self *Graph) RemoveVertex(v Vertex) error {
-	index := self.indexOfVertex(v)
-	if index == -1 || self.isVertexDeleted[index] {
+	if !self.hasVertex(v) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	self.isVertexDeleted[index] = true
+	self.isVertexDeleted[v.toInt()] = true
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
 		self.degrees[self.Edges[positions[i]].from.toInt()] -= 1

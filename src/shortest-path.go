@@ -51,7 +51,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 					// Dealing with a reverse arc, existing only in the residual net.
 					// This case is treated explicitly only for clarity.
 					mark(Vertex(w + 1))
-				} else {
+				} else if !arc.edge.isDeleted {
 					mark(arc.edge.to)
 				}
 			}
