@@ -11,20 +11,20 @@ type Graph struct {
 	degrees            []int
 	currentVertexIndex int
 	isVertexDeleted    []bool
+	numberOfVertices   int
+	numberOfEdges      int
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
 	return v.toInt() < self.currentVertexIndex && !self.isVertexDeleted[v.toInt()]
 }
 
-func (self *Graph) indexOfVertex(v Vertex) int {
-	for i, b := range self.Vertices {
-		if b == v {
-			return i
-		}
-	}
+func (self *Graph) NVertices() int {
+	return self.numberOfVertices
+}
 
-	return -1
+func (self *Graph) NEdges() int {
+	return self.numberOfEdges
 }
 
 func (self *Graph) ForAllEdges(fn func(*Edge, int, chan<- bool)) {
@@ -74,6 +74,7 @@ func (g *Graph) addVertex() error {
 	g.Vertices = append(g.Vertices, Vertex(g.currentVertexIndex))
 	g.isVertexDeleted = append(g.isVertexDeleted, false)
 	g.degrees = append(g.degrees, 0)
+	g.numberOfVertices++
 	return nil
 }
 
@@ -88,8 +89,10 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 		self.degrees[self.Edges[positions[i]].from.toInt()] -= 1
 		self.degrees[self.Edges[positions[i]].to.toInt()] -= 1
 		self.Edges[positions[i]].isDeleted = true
+		self.numberOfEdges--
 	}
 
+	self.numberOfVertices--
 	return nil
 }
 
@@ -114,6 +117,7 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 
 	self.degrees[a.toInt()] += 1
 	self.degrees[b.toInt()] += 1
+	self.numberOfEdges++
 	return nil
 }
 
@@ -156,5 +160,6 @@ func MkGraph(vertices int) *Graph {
 	g.Edges = make(Edges, 0)
 	g.degrees = make([]int, vertices)
 	g.isVertexDeleted = make([]bool, vertices)
+	g.numberOfVertices = vertices
 	return g
 }

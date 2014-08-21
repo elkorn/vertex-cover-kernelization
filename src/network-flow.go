@@ -50,12 +50,12 @@ func (self *Net) Residuum(edge *Edge) int {
 
 func mkNet(g *Graph) Net {
 	result := Net{
-		arcs:   make([][]*NetArc, len(g.Vertices)),
-		length: make([]int, len(g.Vertices)),
+		arcs:   make([][]*NetArc, g.NVertices()),
+		length: make([]int, g.NVertices()),
 	}
 
-	for i := 0; i < len(g.Vertices); i++ {
-		result.arcs[i] = make([]*NetArc, len(g.Vertices))
+	for i := 0; i < g.NVertices(); i++ {
+		result.arcs[i] = make([]*NetArc, g.NVertices())
 	}
 
 	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
@@ -70,7 +70,7 @@ func mkNet(g *Graph) Net {
 }
 
 func mkNetworkFlow(g *Graph) *NetworkFlow {
-	verticesBefore := len(g.Vertices)
+	verticesBefore := g.NVertices()
 	verticesAfter := verticesBefore * 2
 	bipartite := makeBipartite(g)
 	bipartite.addVertex()

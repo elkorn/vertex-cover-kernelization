@@ -33,7 +33,7 @@ func makeBipartite(g *Graph) *Graph {
 	*/
 
 	// TODO this is going to cause problems if there are discontinuities in the vertex collection.
-	border := len(g.Vertices)
+	border := g.NVertices()
 	result := mkGraphWithVertices(border * 2)
 	addBipartiteEdges(result, g.Edges, border)
 	return result

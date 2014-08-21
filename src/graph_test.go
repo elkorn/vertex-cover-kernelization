@@ -13,7 +13,7 @@ func mkGraphWithVertices(howMany int) *Graph {
 func TestMkGraph(t *testing.T) {
 	g := MkGraph(0)
 	assert.Equal(t, len(g.Edges), 0)
-	assert.Equal(t, len(g.Vertices), 0)
+	assert.Equal(t, g.NVertices(), 0)
 }
 
 func TestaddVertex(t *testing.T) {

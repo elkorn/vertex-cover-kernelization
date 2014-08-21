@@ -40,7 +40,7 @@ func TestNet(t *testing.T) {
 	g.AddEdge(2, 4)
 
 	netFlow := mkNetworkFlow(g)
-	assert.Equal(t, len(netFlow.graph.Vertices), len(netFlow.net.arcs), "The flow net should be an NxN matrix.")
+	assert.Equal(t, netFlow.graph.NVertices(), len(netFlow.net.arcs), "The flow net should be an NxN matrix.")
 	netFlow.graph.ForAllEdges(func(edge *Edge, _ int, _ chan<- bool) {
 		arc := netFlow.net.arcs[edge.from-1][edge.to-1]
 		assert.NotNil(t, arc, "Each edge in the network flow must be represented by an Arc.")
