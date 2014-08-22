@@ -19,11 +19,11 @@ func mkEdgeWriter(buf *bytes.Buffer) *edgeWriter {
 }
 
 func (self *edgeWriter) writeEdge(from, to int) {
-	self.buf.WriteByte('\t')
+	self.buf.WriteString("e ")
 	self.buf.WriteString(strconv.Itoa(from))
-	self.buf.WriteString(" -- ")
+	self.buf.WriteByte(' ')
 	self.buf.WriteString(strconv.Itoa(to))
-	self.buf.WriteString(";\n")
+	self.buf.WriteString("\n")
 }
 
 func MkExampleGraph(vertices int) []byte {
@@ -33,9 +33,9 @@ func MkExampleGraph(vertices int) []byte {
 	buf.WriteString(strconv.Itoa(vertices))
 	buf.WriteByte(' ')
 	buf.WriteString(strconv.Itoa(vertices*vertices - vertices))
-	buf.WriteString("{\n")
-	for from := 1; from <= vertices; from++ {
-		for to := 1; to <= vertices; to++ {
+	buf.WriteByte('\n')
+	for from := 0; from < vertices; from++ {
+		for to := 0; to < vertices; to++ {
 			if to == from {
 				continue
 			}
@@ -44,7 +44,6 @@ func MkExampleGraph(vertices int) []byte {
 		}
 	}
 
-	buf.WriteString("}")
 	return buf.Bytes()
 }
 
