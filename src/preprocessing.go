@@ -162,6 +162,7 @@ func Preprocessing(g *Graph) error {
 	// 4. Contract the edges between vertices of degree 2 and their neighbors if they are not connected.
 	// Repeat this step until all such vertices are eliminated.
 	for contractable := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2); len(contractable) > 0; contractable = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2) {
+		// TODO implement this!
 	}
 
 	return nil

@@ -15,6 +15,20 @@ type Graph struct {
 	numberOfEdges      int
 }
 
+func (self *Graph) Copy() *Graph {
+	result := &Graph{
+		currentVertexIndex: self.currentVertexIndex,
+		numberOfVertices:   self.numberOfVertices,
+		numberOfEdges:      self.numberOfEdges,
+	}
+	copy(result.Vertices, self.Vertices)
+	copy(result.Edges, self.Edges)
+	copy(result.isVertexDeleted, self.isVertexDeleted)
+	copy(result.degrees, self.degrees)
+
+	return result
+}
+
 func (self *Graph) hasVertex(v Vertex) bool {
 	return v.toInt() < self.currentVertexIndex && !self.isVertexDeleted[v.toInt()]
 }

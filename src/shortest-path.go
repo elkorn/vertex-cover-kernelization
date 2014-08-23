@@ -1,9 +1,12 @@
 package graph
 
+import "log"
+
 func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
+// TODO add bool parameter allowing to not compute the path itself
 func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
@@ -18,6 +21,10 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	pathTo := func(v Vertex) []int {
 		vi := v.toInt()
 		si := from.toInt()
+
+		inVerboseContext(func() {
+			Debug("vi: %v, marked: %v", vi, marked)
+		})
 
 		if !marked[vi] {
 			return nil
@@ -48,9 +55,9 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 				edgeTo[w] = v // Note the last edge on the shortest path.
 				distance[w] = distance[v] + 1
 				if nil == arc.edge {
+					log.Println("Marking reverse arc %v", w+1)
 					// Dealing with a reverse arc, existing only in the residual net.
-					// This case is treated explicitly only for clarity.
-					mark(Vertex(w + 1))
+					mark(MkVertex(w))
 				} else if !arc.edge.isDeleted {
 					mark(arc.edge.to)
 				}
@@ -58,5 +65,6 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 	}
 
+	log.Println("Path from", from, "to", to, "in", n)
 	return marked[to.toInt()], pathTo(to), distance
 }
