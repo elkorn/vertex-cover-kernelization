@@ -27,10 +27,10 @@ func TestMaximalMatching(t *testing.T) {
 
 func TestIsExposed(t *testing.T) {
 	matching := mapset.NewSet()
-	matching.Add(MkEdge(1, 2))
-	matching.Add(MkEdge(2, 3))
-	matching.Add(MkEdge(4, 5))
-	matching.Add(MkEdge(7, 8))
+	matching.Add(Edge{1, 2, false})
+	matching.Add(Edge{2, 3, false})
+	matching.Add(Edge{4, 5, false})
+	matching.Add(Edge{7, 8, false})
 
 	assert.False(t, Vertex(1).isExposed(matching))
 	assert.False(t, Vertex(2).isExposed(matching))
@@ -42,4 +42,17 @@ func TestIsExposed(t *testing.T) {
 
 	assert.True(t, Vertex(6).isExposed(matching))
 	assert.True(t, Vertex(9).isExposed(matching))
+}
+
+func TestIsAugmentingPath(t *testing.T) {
+	path := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	matching := mapset.NewSet()
+	matching.Add(MkEdgeValFromInts(1, 2))
+	matching.Add(MkEdgeValFromInts(3, 4))
+	matching.Add(MkEdgeValFromInts(5, 6))
+
+	assert.True(t, isAlternatingPathWithMatching(path, matching), "The test path should be alternating.")
+	assert.True(t, MkVertex(0).isExposed(matching), "The start point should be exposed.")
+	assert.True(t, MkVertex(7).isExposed(matching), "The end point should be exposed.")
+	assert.True(t, isAugmentingPath(path, matching), "The test path should be augmenting.")
 }

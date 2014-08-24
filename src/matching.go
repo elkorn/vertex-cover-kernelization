@@ -27,3 +27,27 @@ func maximalMatching(g *Graph) (matching mapset.Set, outsiders mapset.Set) {
 
 	return matching, outsiders
 }
+
+// Given G = (V, E) and a matching M of G, a vertex v is exposed,
+// if no edge of M is incident with v.
+func (self Vertex) isExposed(matching mapset.Set) bool {
+	for element := range matching.Iter() {
+		edge := element.(Edge)
+		if edge.IsCoveredBy(self) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// An augmenting path P is an alternating path that starts and ends
+// at two distinct exposed vertices.
+func isAugmentingPath(path []int, matching mapset.Set) bool {
+	start := MkVertex(path[0])
+	end := MkVertex(path[len(path)-1])
+
+	return start.isExposed(matching) &&
+		end.isExposed(matching) &&
+		isAlternatingPathWithMatching(path, matching)
+}
