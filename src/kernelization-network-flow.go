@@ -86,7 +86,10 @@ func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 		// R is the set of all vertices in A which are reachable
 		// from S by alternating paths with respect to M.
 		start("Getting reachable vertices")
-		R := G.Vertices.reachableFromWithMatching(S, hPrime.net, M)
+		// TODO this cannot work in this context when edges are compared
+		// by pointer values when checking whether the path is alternating.
+		// Investigate.
+		R := G.Vertices.reachableFromWithMatching(S, hPrime, M)
 		end("Getting reachable vertices")
 
 		// T is the set of neighbors of R along edges in M
