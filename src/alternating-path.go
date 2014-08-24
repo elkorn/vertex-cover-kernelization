@@ -2,53 +2,71 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
-func (self *Graph) isAlternatingPathWithMatching(path []int, matching mapset.Set) bool {
-	// This version of the method compares by pointers!
-	previous := self.getEdgeByCoordinates(path[0], path[1])
-	// P is an alternating path if:
-	//  - P is a path in G
-	//  - for each subsequent pair of edges from P one of them
-	//    belongs to M and the other one does not.
+func forAllCoordsInPath(path []int, fn func(int, int, int, int, chan<- bool)) {
+	done := make(chan bool, 1)
 
-	for i := 2; i < len(path); i++ {
-		current := self.getEdgeByCoordinates(path[i-1], path[i])
-		containsPrevious := matching.Contains(previous)
-		containsCurrent := matching.Contains(current)
-		Debug("Previous: %v, contains: %v", previous, containsPrevious)
-		Debug("Current: %v, contains: %v", current, containsCurrent)
-		if containsPrevious == containsCurrent {
-			return false
+	prevFrom, prevTo := path[0], path[1]
+	n := len(path)
+
+	for i := 2; i < n; i++ {
+		curFrom, curTo := path[i-1], path[i]
+		fn(prevFrom, prevTo, curFrom, curTo, done)
+		select {
+		case <-done:
+			return
+		default:
 		}
 
-		// TODO this may cause havoc - are pointers getting switched in sources?
-		previous = current
+		prevFrom, prevTo = curFrom, curTo
 	}
 
-	return true
 }
 
-func isAlternatingPathWithMatching(path []int, matching mapset.Set) bool {
-	// This version of the method compares by values!
-	previous := MkEdgeValFromInts(path[0], path[1])
-	// P is an alternating path if:
-	//  - P is a path in G
-	//  - for each subsequent pair of edges from P one of them
-	//    belongs to M and the other one does not.
-
-	for i := 2; i < len(path); i++ {
-		current := MkEdgeValFromInts(path[i-1], path[i])
+func (self *Graph) isAlternatingPathWithMatching(path []int, matching mapset.Set) (result bool) {
+	// This version of the method compares by pointers!
+	result = true
+	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+		previous := self.getEdgeByCoordinates(prevFrom, prevTo)
+		// P is an alternating path if:
+		//  - P is a path in G
+		//  - for each subsequent pair of edges from P one of them
+		//    belongs to M and the other one does not.
+		current := self.getEdgeByCoordinates(curFrom, curTo)
 		containsPrevious := matching.Contains(previous)
 		containsCurrent := matching.Contains(current)
 		Debug("Previous: %v, contains: %v", previous, containsPrevious)
 		Debug("Current: %v, contains: %v", current, containsCurrent)
 		if containsPrevious == containsCurrent {
-			return false
+			result = false
+			done <- true
 		}
+	})
 
-		previous = current
-	}
+	return result
+}
 
-	return true
+func isAlternatingPathWithMatching(path []int, matching mapset.Set) (result bool) {
+	// This version of the method compares by values!
+	result = true
+	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+		// P is an alternating path if:
+		//  - P is a path in G
+		//  - for each subsequent pair of edges from P one of them
+		//    belongs to M and the other one does not.
+
+		previous := MkEdgeValFromInts(prevFrom, prevTo)
+		current := MkEdgeValFromInts(curFrom, curTo)
+		containsPrevious := matching.Contains(previous)
+		containsCurrent := matching.Contains(current)
+		Debug("Previous: %v, contains: %v", previous, containsPrevious)
+		Debug("Current: %v, contains: %v", current, containsCurrent)
+		if containsPrevious == containsCurrent {
+			result = false
+			done <- true
+		}
+	})
+
+	return result
 }
 
 func (from Vertex) isReachableWithMatchingThroughAlternatingPath(to Vertex, netFlow *NetworkFlow, matching mapset.Set) bool {
