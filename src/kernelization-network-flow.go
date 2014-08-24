@@ -1,10 +1,6 @@
 package graph
 
-import (
-	"log"
-
-	"github.com/deckarep/golang-set"
-)
+import "github.com/deckarep/golang-set"
 
 func assignWeightsToVertices(G *Graph, H *Graph, isCovered []bool) []float64 {
 	border := G.currentVertexIndex
@@ -31,15 +27,11 @@ func assignWeightsToVertices(G *Graph, H *Graph, isCovered []bool) []float64 {
 }
 
 func start(name string, args ...interface{}) {
-	inVerboseContext(func() {
-		Debug("start: "+name, args...)
-	})
+	Debug("start: "+name, args...)
 }
 
 func end(name string, args ...interface{}) {
-	inVerboseContext(func() {
-		Debug("end: "+name, args...)
-	})
+	Debug("end: "+name, args...)
 }
 
 func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
@@ -83,7 +75,7 @@ func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 	bipartiteCover := make([]bool, G.currentVertexIndex*2)
 	// Step 5: From M we cand find a vertex cover of H.
 	// Case 1: all vertices are matched.
-	log.Printf("Matched: %v of %v", matchedVertices.Cardinality(), hPrime.graph.NVertices())
+	Debug("Matched: %v of %v", matchedVertices.Cardinality(), hPrime.graph.NVertices())
 	if matchedVertices.Cardinality() == hPrime.graph.NVertices() {
 		// Vertex cover of H is either the set A or B.
 		for _, vertex := range G.Vertices {
@@ -123,7 +115,7 @@ func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 	// Step 6: Assign weights to all of the vertices of G, according to the vertex cover of H.
 	weights := assignWeightsToVertices(G, hPrime.graph, bipartiteCover)
 
-	log.Printf("weight: %v\n", weights)
+	Debug("weight: %v\n", weights)
 
 	// Step 7: The remaining graph will be G' = (V', E') where V' = {v|W_v = 0.5} and k'=k-x where x = len({v|W_v = 1})
 	x := 0

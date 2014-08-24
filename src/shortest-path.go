@@ -1,7 +1,5 @@
 package graph
 
-import "log"
-
 func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
@@ -23,7 +21,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		si := from.toInt()
 
 		inVerboseContext(func() {
-			Debug("vi: %v, marked: %v", vi, marked)
+			// Debug("vi: %v, marked: %v", vi, marked)
 		})
 
 		if !marked[vi] {
@@ -55,7 +53,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 				edgeTo[w] = v // Note the last edge on the shortest path.
 				distance[w] = distance[v] + 1
 				if nil == arc.edge {
-					log.Println("Marking reverse arc %v", w+1)
+					// log.Println("Marking reverse arc %v", w+1)
 					// Dealing with a reverse arc, existing only in the residual net.
 					mark(MkVertex(w))
 				} else if !arc.edge.isDeleted {
@@ -65,6 +63,6 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 	}
 
-	log.Println("Path from", from, "to", to, "in", n)
+	// log.Println("Path from", from, "to", to, "in", n)
 	return marked[to.toInt()], pathTo(to), distance
 }

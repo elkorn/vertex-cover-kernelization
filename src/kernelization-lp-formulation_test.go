@@ -34,9 +34,7 @@ func TestResolveConflict(t *testing.T) {
 	assert.Equal(t, n2, resolveConflict(g, n1, n2))
 
 	g.degrees[0] = 4
-	inVerboseContext(func() {
-		assert.Equal(t, n1, resolveConflict(g, n1, n2))
-	})
+	assert.Equal(t, n1, resolveConflict(g, n1, n2))
 
 	// Seeding the rand differently can break this test.
 	rand.Seed(1)
@@ -105,14 +103,10 @@ func TestBranchAndBound(t *testing.T) {
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	optimalSelection := Selection{2: 1}
-	// inVerboseContext(func() {
 	assert.Equal(t, optimalSelection, branchAndBound(g))
-	// })
 
 	g = mkGraph6()
 	optimalSelection = Selection{4: 1, 5: 1}
 
-	// inVerboseContext(func() {
 	assert.Equal(t, optimalSelection, branchAndBound(g))
-	// })
 }

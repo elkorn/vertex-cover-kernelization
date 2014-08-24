@@ -27,20 +27,26 @@ func (self *edgeWriter) writeEdge(from, to int) {
 }
 
 func MkExampleGraph(vertices int) []byte {
+	written := make([][]bool, vertices)
+	for i := range written {
+		written[i] = make([]bool, vertices)
+	}
+
 	var buf bytes.Buffer
 	ew := mkEdgeWriter(&buf)
 	buf.WriteString("a b ")
 	buf.WriteString(strconv.Itoa(vertices))
 	buf.WriteByte(' ')
-	buf.WriteString(strconv.Itoa(vertices*vertices - vertices))
+	buf.WriteString(strconv.Itoa((vertices*vertices - vertices) / 2))
 	buf.WriteByte('\n')
 	for from := 0; from < vertices; from++ {
 		for to := 0; to < vertices; to++ {
-			if to == from {
+			if to == from || written[from][to] || written[to][from] {
 				continue
 			}
 
 			ew.writeEdge(from, to)
+			written[from][to] = true
 		}
 	}
 
