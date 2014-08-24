@@ -7,7 +7,7 @@ import (
 )
 
 func TestRemoveHighDegree(t *testing.T) {
-	g1 := mkGraphWithVertices(10)
+	g1 := MkGraph(10)
 
 	g1.AddEdge(1, 2)
 	g1.AddEdge(1, 3)

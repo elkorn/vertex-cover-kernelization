@@ -7,7 +7,7 @@ import (
 )
 
 func TestMkToNetworkFlow(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 
@@ -33,7 +33,7 @@ func TestMkToNetworkFlow(t *testing.T) {
 }
 
 func TestNet(t *testing.T) {
-	g := mkGraphWithVertices(4)
+	g := MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)

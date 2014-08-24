@@ -6,44 +6,50 @@ import (
 )
 
 // TODO: copy the graph instead of mutating.
-func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error) error {
-	for _, vertex := range self.Vertices {
+func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error) (result error) {
+	self.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
 		vDegree, err := self.Degree(vertex)
 		if nil != err {
-			return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex))
+			result = errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex))
+			done <- true
 		}
 
 		if vDegree == degree {
-			err := action(vertex)
+			err = action(vertex)
 			if nil != err {
-				return err
+				result = err
+				done <- true
 			}
 		}
-	}
+	})
 
-	return nil
+	return result
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
 	result := make(NeighborMap)
 	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
-		neighbors := self.getNeighbors(v)
-		length := len(neighbors)
-		for i := 0; i < length; i++ {
-			for j := 0; j < length; j++ {
-				if i == j {
-					continue
-				}
-
-				n1, n2 := neighbors[i], neighbors[j]
-
-				if self.hasEdge(n1, n2) {
-					result.AddNeighborOfVertex(v, n1)
-					result.AddNeighborOfVertex(v, n2)
-					break
-				}
-			}
-		}
+		self.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+			result.AddNeighborOfVertex(v, getOtherVertex(v, edge))
+		})
+		// neighbors := self.getNeighbors(v)
+		// length := len(neighbors)
+		// for i := 0; i < length; i++ {
+		// 	for j := 0; j < length; j++ {
+		// 		if i == j {
+		// 			continue
+		// 		}
+		//
+		// 		n1, n2 := neighbors[i], neighbors[j]
+		//
+		//
+		// 		if self.hasEdge(n1, n2) {
+		// 			result.AddNeighborOfVertex(v, n1)
+		// 			result.AddNeighborOfVertex(v, n2)
+		// 			break
+		// 		}
+		// 	}
+		// }
 
 		return nil
 	})

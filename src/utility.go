@@ -2,8 +2,9 @@ package graph
 
 import (
 	"fmt"
-	"github.com/deckarep/golang-set"
 	"log"
+
+	"github.com/deckarep/golang-set"
 )
 
 func removeAt(source Edges, position int) Edges {
@@ -66,7 +67,7 @@ func mkGraph1() *Graph {
 			|/ \|
 		   4o---o3
 	*/
-	g := mkGraphWithVertices(5)
+	g := MkGraph(5)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -90,7 +91,7 @@ func mkGraph2() *Graph {
 			|/      \|
 		   4o--------o3
 	*/
-	g := mkGraphWithVertices(8)
+	g := MkGraph(8)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -114,7 +115,7 @@ func mkGraph3() *Graph {
 	    / \         / \
 	   7   6       5   4
 	*/
-	g := mkGraphWithVertices(7)
+	g := MkGraph(7)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -152,7 +153,7 @@ func mkGraph5() *Graph {
 		  5---4
 	*/
 
-	g := mkGraphWithVertices(7)
+	g := MkGraph(7)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -173,7 +174,7 @@ func mkGraph6() *Graph {
 			 /      \
 			1        8
 	*/
-	g := mkGraphWithVertices(8)
+	g := MkGraph(8)
 	g.AddEdge(1, 4)
 	g.AddEdge(2, 4)
 	g.AddEdge(3, 4)

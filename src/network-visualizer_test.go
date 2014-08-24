@@ -8,7 +8,7 @@ package graph
 // )
 
 // func TestColorEdges(t *testing.T) {
-// 	g := mkGraphWithVertices(3)
+// 	g := MkGraph(3)
 // 	g.AddEdge(1, 2)
 // 	g.AddEdge(1, 3)
 // 	g.AddEdge(2, 3)
@@ -20,7 +20,7 @@ package graph
 // }
 
 // func TestMkJpgFromNet(t *testing.T) {
-// 	g := mkGraphWithVertices(3)
+// 	g := MkGraph(3)
 // 	g.AddEdge(1, 2)
 // 	g.AddEdge(1, 3)
 // 	g.AddEdge(2, 3)

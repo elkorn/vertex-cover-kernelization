@@ -73,7 +73,7 @@ func ScanGraph(path string) *Graph {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	header := processHeader(scanner)
-	graph := mkGraphWithVertices(header.vertices)
+	graph := MkGraph(header.vertices)
 	for scanner.Scan() {
 		processLine(scanner.Text(), graph)
 	}

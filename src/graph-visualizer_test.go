@@ -10,7 +10,7 @@ import (
 var gv *graphVisualizer = MkGraphVisualizer()
 
 func TesttoDot(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -26,7 +26,7 @@ func TesttoDot(t *testing.T) {
 }
 
 func TestdotToJpg(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -46,7 +46,7 @@ func TestdotToJpg(t *testing.T) {
 }
 
 func TestMkJpg(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)

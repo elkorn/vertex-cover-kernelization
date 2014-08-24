@@ -7,7 +7,7 @@ import (
 )
 
 func TestRemoveOfDegree(t *testing.T) {
-	g := mkGraphWithVertices(5)
+	g := MkGraph(5)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -28,7 +28,7 @@ func TestRemoveOfDegree(t *testing.T) {
 }
 
 func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
-	g := mkGraphWithVertices(5)
+	g := MkGraph(5)
 
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 5)
@@ -38,12 +38,12 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
 
 	assert.Equal(t, Neighbors{2, 3}, result[5])
-	assert.Equal(t, Neighbors{5, 3}, result[2])
-	assert.Equal(t, Neighbors{5, 2}, result[3])
+	assert.Equal(t, Neighbors{3, 5}, result[2])
+	assert.Equal(t, Neighbors{2, 5}, result[3])
 }
 
 func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
-	g := mkGraphWithVertices(5)
+	g := MkGraph(5)
 
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 5)
@@ -68,7 +68,7 @@ func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
 }
 
 func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
-	g := mkGraphWithVertices(5)
+	g := MkGraph(5)
 
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 5)

@@ -7,7 +7,7 @@ import (
 )
 
 func TestMaterializeVertexDiscontinuityHandlingError(t *testing.T) {
-	g := mkGraphWithVertices(7)
+	g := MkGraph(7)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
@@ -31,10 +31,10 @@ func TestMaterializeVertexDiscontinuityHandlingError(t *testing.T) {
 	assert.False(t, g.hasEdge(2, 6))
 }
 
-func TestNetFlow(t *testing.T) {
-	g := ScanGraph("example_1")
-	gv := MkGraphVisualizer()
-	gv.Display(g)
-	networkFlowKernelization(g, 5)
-	gv.Display(g)
-}
+// func TestNetFlow(t *testing.T) {
+// 	g := ScanGraph("example_1")
+// 	gv := MkGraphVisualizer()
+// 	gv.Display(g)
+// 	networkFlowKernelization(g, 5)
+// 	gv.Display(g)
+// }

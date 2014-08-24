@@ -20,9 +20,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		vi := v.toInt()
 		si := from.toInt()
 
-		inVerboseContext(func() {
-			// Debug("vi: %v, marked: %v", vi, marked)
-		})
+		Debug("vi: %v, marked: %v", vi, marked)
 
 		if !marked[vi] {
 			return nil

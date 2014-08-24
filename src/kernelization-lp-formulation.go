@@ -28,6 +28,7 @@ func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 	result.lowerBound = computeLowerBound(g, selection)
 	result.level = level
 
+	Debug("New lp node\n\tselection: %v\n\tcost: %v\n\tlevel: %v", result.selection, result.lowerBound, result.level)
 	return result
 }
 
@@ -98,13 +99,15 @@ func resolveConflict(g *Graph, v1, v2 Vertex) Vertex {
 	}
 }
 
-func getEndpoints(edges Edges) Vertices {
-	contains := make(map[Vertex]bool)
-	result := make(Vertices, 0)
-	appendIfNotContains := func(v ...Vertex) Vertices {
-		for _, v := range v {
-			if !contains[v] {
-				contains[v] = true
+func (self *Graph) getEdgeEndpoints() Vertices {
+	// TODO: Refactor to not use the containment map.
+	result := make(Vertices, 0, self.currentVertexIndex)
+	contains := make([]bool, self.currentVertexIndex)
+	appendIfNotContains := func(vs ...Vertex) Vertices {
+		for _, v := range vs {
+			vi := v.toInt()
+			if !contains[vi] {
+				contains[vi] = true
 				result = append(result, v)
 			}
 		}
@@ -112,9 +115,10 @@ func getEndpoints(edges Edges) Vertices {
 		return result
 	}
 
-	for _, edge := range edges {
+	self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
 		result = appendIfNotContains(edge.from, edge.to)
-	}
+	})
+
 	return result
 }
 
@@ -141,10 +145,11 @@ func getNumberOfCoveredEdges(g *Graph, s Selection) int {
 func branchAndBound(g *Graph) Selection {
 	// 1. Initial value for the best combination
 	bestSelection := Selection{}
-	n := len(g.Edges)
+	n := g.NEdges()
 	// 2. Initialize a priority queue.
 	queue := PriorityQueue{}
-	vertices := getEndpoints(g.Edges)
+	vertices := g.getEdgeEndpoints()
+	Debug("Edge endpoints: %v", vertices)
 	selection := Selection{}
 	// 3. Generate the first node with initial selection and compute its lower bound.
 	// 4. Insert the node into the PQ.
@@ -167,6 +172,7 @@ func branchAndBound(g *Graph) Selection {
 			// }
 			// This is my proposition for the condition. Let's see if it makes sense...
 			Debug("Covers %v edges", getNumberOfCoveredEdges(g, selection))
+			// return bestSelection
 			if getNumberOfCoveredEdges(g, selection) == n {
 				Debug("Covers all edges.")
 				// 10. Compute the cost of the combo.

@@ -7,7 +7,7 @@ import (
 )
 
 func TestShortestPath(t *testing.T) {
-	g := mkGraphWithVertices(4)
+	g := MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(3, 4)
@@ -26,7 +26,7 @@ func TestShortestPath(t *testing.T) {
 }
 
 func TestShortestPath2(t *testing.T) {
-	g := mkGraphWithVertices(4)
+	g := MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(3, 4)
@@ -44,7 +44,7 @@ func TestShortestPath2(t *testing.T) {
 }
 
 func TestShortestPathUndirected(t *testing.T) {
-	g := mkGraphWithVertices(6)
+	g := MkGraph(6)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 5)
 	g.AddEdge(2, 3)
@@ -66,7 +66,7 @@ func TestShortestPathUndirected(t *testing.T) {
 }
 
 func TestShortestPathArbitraryEndpoints(t *testing.T) {
-	g := mkGraphWithVertices(6)
+	g := MkGraph(6)
 	g.AddEdge(1, 5)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)

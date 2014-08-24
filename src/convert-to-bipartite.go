@@ -14,13 +14,11 @@ func getVertices(g *Graph) Vertices {
 	return result
 }
 
-func addBipartiteEdges(g *Graph, originalEdges Edges, border int) {
-	before := len(originalEdges)
-	for i := 0; i < before; i++ {
-		orig := originalEdges[i]
+func addBipartiteEdges(g *Graph, original *Graph, border int) {
+	original.ForAllEdges(func(edge *Edge, idx int, done chan<- bool) {
 		// Invariant: F = {(A_v,B_u)|(v,u) \in E or (u,v) \in E}
-		g.AddEdge(orig.from, Vertex(orig.to.toInt()+border+1))
-	}
+		g.AddEdge(edge.from, MkVertex(edge.to.toInt()+border))
+	})
 }
 
 func makeBipartite(g *Graph) *Graph {
@@ -33,8 +31,8 @@ func makeBipartite(g *Graph) *Graph {
 	*/
 
 	// TODO this is going to cause problems if there are discontinuities in the vertex collection.
-	border := g.NVertices()
-	result := mkGraphWithVertices(border * 2)
-	addBipartiteEdges(result, g.Edges, border)
+	border := len(g.Vertices)
+	result := MkGraphRememberingDeletedVertices(border*2, g.isVertexDeleted) // remember deleted vertices
+	addBipartiteEdges(result, g, border)
 	return result
 }

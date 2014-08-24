@@ -27,7 +27,7 @@ func TestObjectiveFunction(t *testing.T) {
 }
 
 func TestResolveConflict(t *testing.T) {
-	g := mkGraphWithVertices(2)
+	g := MkGraph(2)
 	n1 := Vertex(1)
 	n2 := Vertex(2)
 
@@ -43,7 +43,7 @@ func TestResolveConflict(t *testing.T) {
 }
 
 func TestCalculateLowerBound(t *testing.T) {
-	g := mkGraphWithVertices(10)
+	g := MkGraph(10)
 
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -64,17 +64,19 @@ func TestCalculateLowerBound(t *testing.T) {
 	assert.Equal(t, 5, computeLowerBound(g, selection))
 }
 
-func TestGetEndpoints(t *testing.T) {
-	edges := Edges{MkEdgeFromInts(0, 1), MkEdgeFromInts(1, 3)}
+func TestgetEdgeEndpoints(t *testing.T) {
+	g := MkGraph(4)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 4)
 	expected := make(Vertices, 3)
 	expected[0] = 1
 	expected[1] = 2
 	expected[2] = 4
-	assert.Equal(t, expected, getEndpoints(edges))
+	assert.Equal(t, expected, g.getEdgeEndpoints())
 }
 
 func TestMkLpNode(t *testing.T) {
-	g := mkGraphWithVertices(4)
+	g := MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -99,7 +101,7 @@ func TestGetNumberOfCoveredEdges(t *testing.T) {
 }
 
 func TestBranchAndBound(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	optimalSelection := Selection{2: 1}

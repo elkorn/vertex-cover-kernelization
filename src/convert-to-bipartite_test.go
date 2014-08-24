@@ -1,13 +1,14 @@
 package graph
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetVertices(t *testing.T) {
-	g := mkGraphWithVertices(3)
+	g := MkGraph(3)
 
 	expected := make(Vertices, 6)
 	for i := 0; i < 6; i++ {
@@ -18,16 +19,26 @@ func TestGetVertices(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func assertAllEdgesEqual(t *testing.T, expected, actual []*Edge) {
-	assert.Equal(t, len(expected), len(actual), "The number of edges must be the same.")
-	for i, actual := range actual {
-		Debug("expected: %v, actual: %v", *expected[i], *actual)
-		assert.Equal(t, *expected[i], *actual)
+func assertAllEdgesEqual(t *testing.T, expected Edges, actual *Graph) {
+	assert.Equal(t, len(expected), actual.NEdges(), "The number of edges must be the same.")
+	check := func(actual Edge) {
+		result := false
+		for _, expEdge := range expected {
+			if *expEdge == actual {
+				result = true
+				break
+			}
+		}
+
+		assert.True(t, result, "Expected the graph to have edge "+fmt.Sprintf("%v", actual))
 	}
+	actual.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		check(*edge)
+	})
 }
 
 func TestMakeBipartite(t *testing.T) {
-	g := mkGraphWithVertices(4)
+	g := MkGraph(4)
 	g.AddEdge(4, 1)
 	g.AddEdge(2, 3)
 
@@ -42,7 +53,7 @@ func TestMakeBipartite(t *testing.T) {
 		assert.True(t, actual.hasVertex(v))
 	}
 
-	assertAllEdgesEqual(t, expectedEdges, actual.Edges)
+	assertAllEdgesEqual(t, expectedEdges, actual)
 }
 
 // func TestPrintBipartite(t *testing.T) {
