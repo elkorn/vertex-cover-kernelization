@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/deckarep/golang-set"
@@ -55,4 +56,25 @@ func TestIsAugmentingPath(t *testing.T) {
 	assert.True(t, MkVertex(0).isExposed(matching), "The start point should be exposed.")
 	assert.True(t, MkVertex(7).isExposed(matching), "The end point should be exposed.")
 	assert.True(t, isAugmentingPath(path, matching), "The test path should be augmenting.")
+}
+
+func TestMatchingAugmentation(t *testing.T) {
+	path := []int{0, 1, 2, 3, 4, 5}
+	matching := mapset.NewSet()
+	matching.Add(MkEdgeValFromInts(1, 2))
+	matching.Add(MkEdgeValFromInts(3, 4))
+	expected := []Edge{
+		MkEdgeValFromInts(0, 1),
+		MkEdgeValFromInts(2, 3),
+		MkEdgeValFromInts(4, 5),
+	}
+
+	inVerboseContext(func() {
+		matchingAugmentation(path, matching)
+	})
+	augmentation := matchingAugmentation(path, matching)
+	assert.Equal(t, 3, augmentation.Cardinality(), "Given augmentation should contain 3 edges.")
+	for _, edge := range expected {
+		assert.True(t, augmentation.Contains(edge), fmt.Sprintf("Given augmentation should contain edge %v-%v", edge.from, edge.to))
+	}
 }
