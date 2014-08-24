@@ -22,10 +22,20 @@ func (self *Graph) Copy() *Graph {
 		numberOfVertices:   self.numberOfVertices,
 		numberOfEdges:      self.numberOfEdges,
 	}
+	result.Vertices = make(Vertices, len(self.Vertices))
 	copy(result.Vertices, self.Vertices)
+
+	result.Edges = make(Edges, len(self.Edges))
 	copy(result.Edges, self.Edges)
+	result.isVertexDeleted = make([]bool, len(self.isVertexDeleted))
 	copy(result.isVertexDeleted, self.isVertexDeleted)
+	result.degrees = make([]int, len(self.degrees))
 	copy(result.degrees, self.degrees)
+	result.neighbors = make([][]*Edge, len(self.neighbors))
+	for x := range self.neighbors {
+		result.neighbors[x] = make([]*Edge, len(self.neighbors[x]))
+		copy(result.neighbors[x], self.neighbors[x])
+	}
 
 	return result
 }
@@ -154,9 +164,10 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
-		self.degrees[self.Edges[positions[i]].from.toInt()] -= 1
-		self.degrees[self.Edges[positions[i]].to.toInt()] -= 1
-		self.Edges[positions[i]].isDeleted = true
+		edge := self.Edges[positions[i]]
+		self.degrees[edge.from.toInt()] -= 1
+		self.degrees[edge.to.toInt()] -= 1
+		edge.isDeleted = true
 		self.numberOfEdges--
 	}
 

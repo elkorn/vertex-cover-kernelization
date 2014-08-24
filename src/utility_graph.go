@@ -13,3 +13,12 @@ func getOtherVertex(v Vertex, edge *Edge) Vertex {
 
 	panic(errors.New("An edge with the same vertex as both endpoints may not exist."))
 }
+
+func (self *Graph) getEdgeByCoordinates(from, to int) *Edge {
+	result := self.neighbors[from][to]
+	if nil == result {
+		return self.neighbors[to][from]
+	}
+
+	return result
+}

@@ -127,15 +127,6 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
-func (self *Graph) getEdgeByCoordinates(from, to int) *Edge {
-	result := self.neighbors[from][to]
-	if nil == result {
-		return self.neighbors[to][from]
-	}
-
-	return result
-}
-
 func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
 	fromIndex := from.toInt()
 	toIndex := to.toInt()
