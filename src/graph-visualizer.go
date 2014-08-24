@@ -60,7 +60,9 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 			continue
 		}
 
-		res.Write(vertexToB(v))
+		if g.hasVertex(v) {
+			res.Write(vertexToB(v))
+		}
 	}
 
 	res.Write(stob("}"))

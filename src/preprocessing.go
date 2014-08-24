@@ -27,7 +27,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error)
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
-	result := make(NeighborMap)
+	result := make(NeighborMap, len(self.Vertices))
 	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
 		self.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
 			result.AddNeighborOfVertex(v, getOtherVertex(v, edge))
@@ -59,13 +59,13 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 
 func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) NeighborMap {
 	Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
-	result := make(NeighborMap)
+	result := make(NeighborMap, len(self.Vertices))
 	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
 		Debug("OPERATION FOR %v (neighbors: %v)", v, neighbors)
 		hasOnlyDisjoint := true
-		potentiallyToBeAdded := Neighbors{}
+		potentiallyToBeAdded := make(Neighbors, 0, length)
 		if length == 1 {
 			potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(neighbors[0])
 		} else {
@@ -93,7 +93,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 
 		if hasOnlyDisjoint {
 			Debug("For %v: adding %v", v, potentiallyToBeAdded)
-			result[v] = potentiallyToBeAdded
+			result[v.toInt()] = potentiallyToBeAdded
 		}
 
 		return nil
@@ -112,7 +112,11 @@ func (self *Graph) removeVerticesOfDegree(degree int) error {
 func (self *Graph) removeAllVerticesAccordingToMap(v NeighborMap) {
 	performRemoval := removeOnce(self, make(coverageMap))
 	for center, neighbors := range v {
-		performRemoval(center)
+		if nil == neighbors {
+			continue
+		}
+
+		performRemoval(MkVertex(center))
 		for _, neighbor := range neighbors {
 			performRemoval(neighbor)
 		}
@@ -123,19 +127,53 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
+func (self *Graph) getEdgeByCoordinates(from, to int) *Edge {
+	result := self.neighbors[from][to]
+	if nil == result {
+		return self.neighbors[to][from]
+	}
+
+	return result
+}
+
+func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
+	fromIndex := from.toInt()
+	toIndex := to.toInt()
+	newAnchorIndex := newAnchor.toInt()
+
+	edge := self.getEdgeByCoordinates(fromIndex, toIndex)
+	if nil == edge {
+		return
+	}
+
+	edge.from = newAnchor
+	self.neighbors[newAnchorIndex][toIndex] = edge
+	self.neighbors[toIndex][newAnchorIndex] = edge
+	self.degrees[newAnchorIndex]++
+	self.degrees[fromIndex]--
+}
+
 func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	// toRemove is probably redundant given the circumstances under which this will be called.
 	// TODO Reason about this redundancy and introduce changes.
-	toRemove := Neighbors{}
-	for vertex, neighbors := range contractionMap {
+	// TODO does this work in undirected context?
+	toRemove := make(Neighbors, 0, self.NVertices())
+	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
+		// TODO @refactor rewire edges from neighbor->distantNeighbor
 		for _, neighbor := range neighbors {
-			for _, distantNeighbor := range self.getNeighbors(neighbor) {
+			distantNeighbors := self.getNeighbors(neighbor)
+			Debug("Neighbor: %v", neighbor)
+			for _, distantNeighbor := range distantNeighbors {
+				Debug("Distante Neighbor: %v", distantNeighbor)
+				// self.rewireEdge(neighbor, distantNeighbor, vertex)
+				// self.neighbors[vertex][distantNeighbor] = self.neighbors[neighbor][distantNeighbor]
+				// self.neighbors[distantNeighbor][vertex] = self.neighbors[distantNeighbor][neighbor]
 				self.AddEdge(vertex, distantNeighbor)
 			}
 
 			toRemove = toRemove.appendIfNotContains(neighbor)
 		}
-	}
+	})
 
 	for _, neighbor := range toRemove {
 		self.RemoveVertex(neighbor)
@@ -168,7 +206,7 @@ func Preprocessing(g *Graph) error {
 	// 4. Contract the edges between vertices of degree 2 and their neighbors if they are not connected.
 	// Repeat this step until all such vertices are eliminated.
 	for contractable := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2); len(contractable) > 0; contractable = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2) {
-		// TODO implement this!
+		g.contractEdges(contractable)
 	}
 
 	return nil

@@ -159,9 +159,9 @@ func mkGraph5() *Graph {
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 4)
 	g.AddEdge(2, 5)
-	g.AddEdge(2, 6)
 	g.AddEdge(4, 5)
 	g.AddEdge(6, 7)
+	g.AddEdge(6, 2)
 
 	return g
 }
