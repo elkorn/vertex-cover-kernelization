@@ -171,9 +171,10 @@ func branchAndBound(g *Graph) Selection {
 			// // This condition is OK for TSP, has to be changed for this formulation.
 			// }
 			// This is my proposition for the condition. Let's see if it makes sense...
-			Debug("Covers %v edges", getNumberOfCoveredEdges(g, selection))
+			nCoveredEdges := getNumberOfCoveredEdges(g, selection)
+			Debug("Covers %v edges", nCoveredEdges)
 			// return bestSelection
-			if getNumberOfCoveredEdges(g, selection) == n {
+			if nCoveredEdges == n {
 				Debug("Covers all edges.")
 				// 10. Compute the cost of the combo.
 				// 11. Set the current lower bound as the best one.
