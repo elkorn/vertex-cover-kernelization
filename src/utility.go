@@ -34,6 +34,15 @@ func contains(neighbors Neighbors, v Vertex) bool {
 	return foundIndex < length && neighbors[foundIndex] == v
 }
 
+func mkBoolMatrix(n, cap int) [][]bool {
+	result := make([][]bool, n, cap)
+	for i := range result {
+		result[i] = make([]bool, n, cap)
+	}
+
+	return result
+}
+
 func PrintSet(set mapset.Set) {
 	for s := range set.Iter() {
 		Debug("%v", s)
