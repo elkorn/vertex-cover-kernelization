@@ -147,10 +147,11 @@ func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
 func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	// toRemove is probably redundant given the circumstances under which this will be called.
 	// TODO Reason about this redundancy and introduce changes.
-	// TODO does this work in undirected context?
 	toRemove := make(Neighbors, 0, self.NVertices())
 	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
 		// TODO @refactor rewire edges from neighbor->distantNeighbor
+		// When refactoring, keep in mind the cases when two neighbors of one
+		// vertex are connected.
 		for _, neighbor := range neighbors {
 			distantNeighbors := self.getNeighbors(neighbor)
 			Debug("Neighbor: %v", neighbor)

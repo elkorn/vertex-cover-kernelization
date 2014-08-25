@@ -118,15 +118,8 @@ func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, int, chan<- bool)) {
 }
 
 func (self *Graph) hasEdge(a, b Vertex) bool {
-	result := false
-	self.ForAllEdges(func(edge *Edge, i int, done chan<- bool) {
-		if edge.from == a && edge.to == b || edge.from == b && edge.to == a {
-			result = true
-			done <- true
-		}
-	})
-
-	return result
+	edge := self.getEdgeByCoordinates(a.toInt(), b.toInt())
+	return edge != nil && !edge.isDeleted
 }
 
 func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
