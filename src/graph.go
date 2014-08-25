@@ -235,9 +235,9 @@ func (self *Graph) Degree(v Vertex) (int, error) {
 	return self.degrees[v.toInt()], nil
 }
 
-func MkGraph(vertices int) *Graph {
+func mkGraph(vertices, capacity int) *Graph {
 	g := new(Graph)
-	g.Vertices = make(Vertices, vertices)
+	g.Vertices = make(Vertices, vertices, capacity)
 	for i := 0; i < vertices; i++ {
 		g.Vertices[i] = MkVertex(i)
 	}
@@ -245,16 +245,24 @@ func MkGraph(vertices int) *Graph {
 	g.currentVertexIndex = vertices
 	// NOTE: Duplicate edges are not allowed, thus the maximum number of edges in the graph is V^2
 	// (when every vertex is connected to each other)
-	g.Edges = make(Edges, vertices*vertices)
-	g.degrees = make([]int, vertices)
-	g.neighbors = make([][]*Edge, vertices)
+	g.Edges = make(Edges, vertices*vertices, capacity*capacity)
+	g.degrees = make([]int, vertices, capacity)
+	g.neighbors = make([][]*Edge, vertices, capacity)
 	for y := range g.neighbors {
-		g.neighbors[y] = make([]*Edge, vertices)
+		g.neighbors[y] = make([]*Edge, vertices, capacity)
 	}
 
-	g.isVertexDeleted = make([]bool, vertices)
+	g.isVertexDeleted = make([]bool, vertices, capacity)
 	g.numberOfVertices = vertices
 	return g
+}
+
+func MkGraph(vertices int) *Graph {
+	return mkGraph(vertices, vertices)
+}
+
+func MkGraphWithCapacity(vertices, capacity int) *Graph {
+	return mkGraph(vertices, capacity)
 }
 
 func MkGraphRememberingDeletedVertices(vertices int, deletedReference []bool) *Graph {
