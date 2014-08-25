@@ -54,19 +54,21 @@ func isAugmentingPath(path []int, matching mapset.Set) bool {
 
 // A matching augmentation along an augmenting path P
 // is the operation of replacing M with a new matching M1 = M⊕P = (M⧵P)∪(P⧵M).
-// TODO: This does not yet work as written in the sources. @start-from-here
 func matchingAugmentation(path []int, M mapset.Set) mapset.Set {
-	P := pathToSet(path)
-	return M.SymmetricDifference(P)
+	return M.SymmetricDifference(pathToSet(path))
 }
 
 func pathToSet(path []int) (P mapset.Set) {
 	P = mapset.NewSet()
+	addedFirst := false
 	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
-		P.Add(MkEdgeValFromInts(prevFrom, prevTo))
-	})
+		if !addedFirst {
+			P.Add(MkEdgeValFromInts(prevFrom, prevTo))
+			addedFirst = true
+		}
 
-	PrintSet(P)
+		P.Add(MkEdgeValFromInts(curFrom, curTo))
+	})
 
 	return P
 }
