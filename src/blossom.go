@@ -68,15 +68,27 @@ type blossom struct {
 // B33 end function
 
 func findAugmentingPath(G *Graph, M mapset.Set) []int {
+	P := make([]int, 0, G.currentVertexIndex)
 	// TODO what should the capacity be?
 	// B02    F ← empty forest
-	F := MkForest(100)
+	F := MkForest(G.currentVertexIndex)
 	// B03    unmark all vertices and edges in G, mark all edges of M
-	markedVertex := make([]bool, G.currentVertexIndex)
+	// markedVertex := make([]bool, G.currentVertexIndex)
 	edgeMarkMatrix := mkBoolMatrix(G.currentVertexIndex, G.currentVertexIndex)
 	for edge := range M.Iter() {
-		setEdgeMarked(edgeMarkMatrix, edge, true)
+		setEdgeMarked(edgeMarkMatrix, edge.(*Edge), true)
 	}
+
+	// B05    for each exposed vertex v do
+	G.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
+		if vertex.isExposed(M) {
+			// B06        create a singleton tree { v } and add the tree to F
+			tree := MkTree(vertex, G.currentVertexIndex)
+			F.trees[vertex] = tree
+		}
+	})
+
+	return P
 }
 
 func setEdgeMarked(mx [][]bool, edge *Edge, state bool) {
