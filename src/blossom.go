@@ -67,32 +67,93 @@ type blossom struct {
 // B32    return empty path
 // B33 end function
 
+type edmondsMarker struct {
+	markedVertex           []bool
+	numberOfMarkedVertices int
+	edgeMarkLookup         [][]bool
+	markedEdgesFromVertex  []int
+}
+
+func mkEdmondsMarker(G *Graph) *edmondsMarker {
+	return &edmondsMarker{
+		markedVertex:           make([]bool, G.currentVertexIndex),
+		numberOfMarkedVertices: 0,
+		edgeMarkLookup:         mkBoolMatrix(G.currentVertexIndex, G.currentVertexIndex),
+		markedEdgesFromVertex:  make([]int, G.currentVertexIndex),
+	}
+}
+
+func (self *edmondsMarker) SetEdgeMarked(edge *Edge, state bool) {
+	a, b := edge.GetIntEndpoints()
+	if self.edgeMarkLookup[a][b] == state || self.edgeMarkLookup[b][a] == state {
+		return
+	}
+
+	self.edgeMarkLookup[a][b] = state
+	self.edgeMarkLookup[b][a] = state
+	var incr int
+	if state {
+		incr = 1
+	} else {
+		incr = -1
+	}
+
+	self.markedEdgesFromVertex[a] += incr
+	self.markedEdgesFromVertex[b] += incr
+}
+
+func (self *edmondsMarker) IsEdgeMarked(edge *Edge) bool {
+	a, b := edge.GetIntEndpoints()
+	return self.edgeMarkLookup[a][b] || self.edgeMarkLookup[b][a]
+}
+
+func (self *edmondsMarker) IsVertexMarked(v Vertex) bool {
+	return self.markedVertex[v.toInt()]
+}
+
+func (self *edmondsMarker) ExistsUnmarkedEdgeFromVertex(v Vertex) bool {
+	// IDEA: length of neighbors collection for each vertex should be
+	// maintained in graph and used for the edmondsMarker.
+	return true
+}
+
 func findAugmentingPath(G *Graph, M mapset.Set) []int {
 	P := make([]int, 0, G.currentVertexIndex)
 	// TODO what should the capacity be?
-	// B02    F ← empty forest
+	// B02 F ← empty forest
 	F := MkForest(G.currentVertexIndex)
-	// B03    unmark all vertices and edges in G, mark all edges of M
-	// markedVertex := make([]bool, G.currentVertexIndex)
-	edgeMarkMatrix := mkBoolMatrix(G.currentVertexIndex, G.currentVertexIndex)
+	// B03 unmark all vertices and edges in G, mark all edges of M
+	marker := mkEdmondsMarker(G)
 	for edge := range M.Iter() {
-		setEdgeMarked(edgeMarkMatrix, edge.(*Edge), true)
+		marker.SetEdgeMarked(edge.(*Edge), true)
 	}
 
-	// B05    for each exposed vertex v do
+	// B05 for each exposed vertex v do
 	G.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
 		if vertex.isExposed(M) {
-			// B06        create a singleton tree { v } and add the tree to F
-			tree := MkTree(vertex, G.currentVertexIndex)
-			F.trees[vertex] = tree
+			// B06 create a singleton tree { v } and add the tree to F
+			F.AddTree(MkTree(vertex, G.currentVertexIndex))
 		}
 	})
 
-	return P
-}
+	// B08 while there is an unmarked vertex v in F with distance( v, root( v ) ) even do
+	F.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if marker.IsVertexMarked(v) {
+			return
+		}
 
-func setEdgeMarked(mx [][]bool, edge *Edge, state bool) {
-	a, b := edge.from.toInt(), edge.to.toInt()
-	mx[a][b] = state
-	mx[b][a] = state
+		var distance int
+		if distance = F.Distance(v, F.Root(v)); distance%2 != 0 {
+			return
+		}
+
+		// B09 while there exists an unmarked edge e = { v, w } do
+		// TODO this requires some more work. @start-from-here
+		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+			if !marker.IsEdgeMarked(edge) {
+
+			}
+		})
+	})
+	return P
 }

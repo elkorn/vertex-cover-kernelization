@@ -10,6 +10,15 @@ func (self *Edge) IsCoveredBy(v Vertex) bool {
 	return self.from == v || self.to == v
 }
 
+func (self Edge) GetEndpoints() (Vertex, Vertex) {
+	return self.from, self.to
+}
+
+func (self Edge) GetIntEndpoints() (int, int) {
+	a, b := self.GetEndpoints()
+	return a.toInt(), b.toInt()
+}
+
 func MkEdge(a, b Vertex) *Edge {
 	return &Edge{a, b, false}
 }

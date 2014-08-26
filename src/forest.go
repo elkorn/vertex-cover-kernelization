@@ -49,6 +49,24 @@ func (self *forest) Distance(a, b Vertex) int {
 	return self.lookup(a).Distance(a, b)
 }
 
+func (self *forest) ForAllVertices(fn func(Vertex, chan<- bool)) {
+	done := make(chan bool, 1)
+
+	for vi, tree := range self.vertexTreeLookup {
+		if nil == tree {
+			continue
+		}
+
+		fn(MkVertex(vi), done)
+
+		select {
+		case <-done:
+			return
+		default:
+		}
+	}
+}
+
 func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
 	// This is supposed to enforce the trees of a forest to be disjoint.
 	if existing := self.Root(vertex); existing != INVALID_VERTEX {

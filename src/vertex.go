@@ -2,6 +2,8 @@ package graph
 
 type Vertex int
 
+var INVALID_VERTEX Vertex = Vertex(0)
+
 func (self Vertex) toInt() int {
 	return int(self) - 1
 }
