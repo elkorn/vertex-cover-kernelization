@@ -26,6 +26,7 @@ func (self *Stack) Pop() int {
 	return value
 }
 
+// TODO add an Iter method.
 func (self *Stack) Values() []int {
 	tmp := MkStack()
 	tmp.values = self.values

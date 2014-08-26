@@ -1,5 +1,6 @@
 package graph
 
+// TODO Add a Path method, which will be used in Distance.
 type tree struct {
 	Root Vertex
 	g    *Graph
