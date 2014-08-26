@@ -21,7 +21,7 @@ func MkForest(capacity int) *forest {
 }
 
 func (self *forest) Root(v Vertex) Vertex {
-	if t := self.vertexTreeLookup[v.toInt()]; t != nil {
+	if t := self.lookup(v); t != nil {
 		return t.Root
 	}
 
@@ -44,7 +44,13 @@ func (self *forest) AddTree(t *tree) {
 	})
 }
 
+func (self *forest) Distance(a, b Vertex) int {
+	// Return the length of the path from a to b in this forest.
+	return self.lookup(a).Distance(a, b)
+}
+
 func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
+	// This is supposed to enforce the trees of a forest to be disjoint.
 	if existing := self.Root(vertex); existing != INVALID_VERTEX {
 		panic(
 			errors.New(
@@ -59,6 +65,6 @@ func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
 	self.vertexTreeLookup[vertex.toInt()] = t
 }
 
-func (self *forest) Distance(a, b Vertex) {
-	// Return the length of the path from a to b in this forest.
+func (self *forest) lookup(v Vertex) *tree {
+	return self.vertexTreeLookup[v.toInt()]
 }
