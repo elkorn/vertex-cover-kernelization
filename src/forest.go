@@ -67,6 +67,15 @@ func (self *forest) ForAllVertices(fn func(Vertex, chan<- bool)) {
 	}
 }
 
+func (self *forest) HasVertex(v Vertex) bool {
+	return self.lookup(v) != nil
+}
+
+// TODO Create a method AddEdgeFromPtr which reuses provided Edge.
+func (self *forest) AddEdge(root Vertex, edge *Edge) {
+	self.lookup(root).AddEdge(edge.from, edge.to)
+}
+
 func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
 	// This is supposed to enforce the trees of a forest to be disjoint.
 	if existing := self.Root(vertex); existing != INVALID_VERTEX {

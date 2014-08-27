@@ -68,6 +68,7 @@ type blossom struct {
 // B33 end function
 
 type edmondsMarker struct {
+	g                      *Graph
 	markedVertex           []bool
 	numberOfMarkedVertices int
 	edgeMarkLookup         [][]bool
@@ -80,6 +81,7 @@ func mkEdmondsMarker(G *Graph) *edmondsMarker {
 		numberOfMarkedVertices: 0,
 		edgeMarkLookup:         mkBoolMatrix(G.currentVertexIndex, G.currentVertexIndex),
 		markedEdgesFromVertex:  make([]int, G.currentVertexIndex),
+		g: G,
 	}
 }
 
@@ -114,7 +116,12 @@ func (self *edmondsMarker) IsVertexMarked(v Vertex) bool {
 func (self *edmondsMarker) ExistsUnmarkedEdgeFromVertex(v Vertex) bool {
 	// IDEA: length of neighbors collection for each vertex should be
 	// maintained in graph and used for the edmondsMarker.
-	return true
+	degree, err := self.g.Degree(v)
+	if err != nil {
+		panic(err)
+	}
+
+	return self.markedEdgesFromVertex[v.toInt()] < degree
 }
 
 func findAugmentingPath(G *Graph, M mapset.Set) []int {
@@ -124,8 +131,13 @@ func findAugmentingPath(G *Graph, M mapset.Set) []int {
 	F := MkForest(G.currentVertexIndex)
 	// B03 unmark all vertices and edges in G, mark all edges of M
 	marker := mkEdmondsMarker(G)
-	for edge := range M.Iter() {
-		marker.SetEdgeMarked(edge.(*Edge), true)
+	matchedEdges := make([]*Edge, G.currentVertexIndex)
+	for e := range M.Iter() {
+		edge := e.(*Edge)
+		marker.SetEdgeMarked(edge, true)
+		// There cannot exist two edges beginning in the same vertex in
+		// a matching.
+		matchedEdges[edge.from.toInt()] = edge
 	}
 
 	// B05 for each exposed vertex v do
@@ -148,12 +160,34 @@ func findAugmentingPath(G *Graph, M mapset.Set) []int {
 		}
 
 		// B09 while there exists an unmarked edge e = { v, w } do
-		// TODO this requires some more work. @start-from-here
-		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
-			if !marker.IsEdgeMarked(edge) {
+		for marker.ExistsUnmarkedEdgeFromVertex(v) {
+			G.ForAllNeighbors(v, func(e *Edge, index int, done chan<- bool) {
+				w := getOtherVertex(v, e)
+				if !marker.IsEdgeMarked(e) {
+					// B10            if w is not in F then
+					if !F.HasVertex(w) {
+						//                    // w is matched, so add e and w's matched edge to F
+						matchedEdge := matchedEdges[w.toInt()]
+						// B11 x ← vertex matched to w in M
+						// x := getOtherVertex(w, matchedEdge)
+						// B12 add edges { v, w } and { w, x } to the tree of v
+						F.AddEdge(v, e)           // { v, w }
+						F.AddEdge(v, matchedEdge) // { w, x }
+					} else { // B13 else
+						// B14 if distance( w, root( w ) ) is odd then
+						if F.Distance(w, F.Root(w))%2 == 1 {
+							// Do nothing.
+						} else { // B15 else
+							// Report an augmenting path in F \cup { e }.
+							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
+							// B18                        return P
+						}
 
-			}
-		})
+					}
+
+				}
+			})
+		}
 	})
 	return P
 }
