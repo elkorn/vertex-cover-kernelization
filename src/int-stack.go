@@ -16,8 +16,22 @@ func (self *IntStack) Pop() int {
 	return self.s.Pop().(int)
 }
 
-// // TODO add an Iter method.
+// TODO add an Iter method.
 // It should return a buffered channel of length self.count
+func (self *IntStack) Iter() <-chan int {
+	iter := make(chan int, self.s.count)
+	count := self.s.count - 1
+
+	go func() {
+		for ; count > 0; count-- {
+			iter <- self.s.values[count].(int)
+		}
+		close(iter)
+	}()
+
+	return iter
+}
+
 func (self *IntStack) Values() []int {
 	result := make([]int, self.s.count)
 	for i, original := range self.s.Values() {

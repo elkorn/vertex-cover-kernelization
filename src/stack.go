@@ -26,8 +26,20 @@ func (self *Stack) Pop() interface{} {
 	return value
 }
 
-// TODO add an Iter method.
-// It should return a buffered channel of length self.count
+func (self *Stack) Iter() <-chan interface{} {
+	iter := make(chan interface{}, self.count)
+	count := self.count - 1
+
+	go func() {
+		for ; count > 0; count-- {
+			iter <- self.values[count]
+		}
+		close(iter)
+	}()
+
+	return iter
+}
+
 func (self *Stack) Values() []interface{} {
 	tmp := MkStack(self.count)
 	tmp.values = self.values
