@@ -15,3 +15,22 @@ func TestDistanceInTree(t *testing.T) {
 
 	assert.Equal(t, 4, tr.Distance(MkVertex(4), root))
 }
+
+func TestPathInTree(t *testing.T) {
+	root := MkVertex(0)
+	tr := MkTree(root, 5)
+	expectedEdges := make([]*Edge, 0, 4)
+	for i := 1; i < 5; i++ {
+		expectedEdges = append(expectedEdges, MkEdgeFromInts(i-1, i))
+		tr.AddEdge(MkVertex(i-1), MkVertex(i))
+	}
+
+	path := tr.Path(MkVertex(4), root)
+	actual := path.Values()
+
+	for i, expected := range expectedEdges {
+		expectedEdge := expected
+		actualEdge := actual[i].(*Edge)
+		assert.Equal(t, *expectedEdge, *actualEdge)
+	}
+}
