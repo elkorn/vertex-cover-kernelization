@@ -10,7 +10,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
 	distance := make([]int, n)
-	queue := MkQueue(n)
+	queue := MkIntQueue(n)
 	mark := func(v Vertex) {
 		vi := v.toInt()
 		marked[vi] = true
@@ -33,7 +33,8 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 
 		path.Push(si)
-		return path.Values() // it can be done much better performance-wise.
+		// TODO introduce Queue.Iter() to get rid of O(N) here.
+		return path.Values()
 	}
 
 	mark(from)
