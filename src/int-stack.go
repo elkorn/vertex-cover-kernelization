@@ -22,6 +22,8 @@ func (self *IntStack) Iter() <-chan int {
 	iter := make(chan int, self.s.count)
 	count := self.s.count - 1
 
+	// This is cheating a bit- the algorithms are supposed to be single-threaded.
+	// TODO: Implement a proper iterator?
 	go func() {
 		for ; count > 0; count-- {
 			iter <- self.s.values[count].(int)

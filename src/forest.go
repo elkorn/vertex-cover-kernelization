@@ -95,3 +95,29 @@ func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
 func (self *forest) lookup(v Vertex) *tree {
 	return self.vertexTreeLookup[v.toInt()]
 }
+
+func (self *forest) path(treePathEndpoints ...*treePath) (result []int) {
+	paths := make([]*Stack, len(treePathEndpoints))
+	totalLength := 0
+	for i, endpoint := range treePathEndpoints {
+		paths[i] = self.lookup(endpoint.from).Path(endpoint.from, endpoint.to)
+	}
+
+	result = make([]int, 0, totalLength)
+
+	for i, path := range paths {
+		first := true
+		for e := range path.Iter() {
+			edge := e.(*Edge)
+			Debug("Tree: %v, edge %v-%v", MkVertex(i), edge.from, edge.to)
+			if first {
+				result = append(result, edge.from.toInt(), edge.to.toInt())
+				first = false
+			} else {
+				result = append(result, edge.to.toInt())
+			}
+		}
+	}
+
+	return result
+}
