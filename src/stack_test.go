@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestStack(t *testing.T) {
-	s := MkStack()
+func TestIntStack(t *testing.T) {
+	s := MkIntStack(3)
 	s.Push(1)
 	s.Push(2)
 	s.Push(3)

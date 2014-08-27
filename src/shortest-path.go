@@ -26,7 +26,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 			return nil
 		}
 
-		path := MkStack()
+		path := MkIntStack(distance[v.toInt()])
 
 		for x := vi; x != si; x = edgeTo[x] {
 			path.Push(x)

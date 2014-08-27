@@ -1,13 +1,13 @@
 package graph
 
 type Stack struct {
-	values []int
+	values []interface{}
 	count  int
 }
 
-func (self *Stack) Push(value int) {
+func (self *Stack) Push(value interface{}) {
 	if self.count >= len(self.values) {
-		values := make([]int, len(self.values)*2)
+		values := make([]interface{}, len(self.values)*2)
 		copy(values, self.values)
 		self.values = values
 	}
@@ -16,7 +16,7 @@ func (self *Stack) Push(value int) {
 	self.count++
 }
 
-func (self *Stack) Pop() int {
+func (self *Stack) Pop() interface{} {
 	if self.Empty() {
 		panic("Trying to pop from an empty stack.")
 	}
@@ -27,11 +27,12 @@ func (self *Stack) Pop() int {
 }
 
 // TODO add an Iter method.
-func (self *Stack) Values() []int {
-	tmp := MkStack()
+// It should return a buffered channel of length self.count
+func (self *Stack) Values() []interface{} {
+	tmp := MkStack(self.count)
 	tmp.values = self.values
 	tmp.count = self.count
-	result := make([]int, self.count)
+	result := make([]interface{}, self.count)
 	i := 0
 	for !tmp.Empty() {
 		result[i] = tmp.Pop()
@@ -45,9 +46,9 @@ func (self *Stack) Empty() bool {
 	return self.count == 0
 }
 
-func MkStack() *Stack {
+func MkStack(capacity int) *Stack {
 	return &Stack{
-		values: make([]int, 3),
+		values: make([]interface{}, capacity),
 		count:  0,
 	}
 }
