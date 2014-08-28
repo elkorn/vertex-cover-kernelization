@@ -1,6 +1,5 @@
 package graph
 
-// TODO Add a Path method, which will be used in Distance.
 type tree struct {
 	Root Vertex
 	g    *Graph
@@ -48,6 +47,7 @@ func (self *tree) Path(a, b Vertex) (result *Stack) {
 	result = MkStack(self.g.NEdges())
 
 	self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
+		Debug("Adding edge %v-%v to path.", edge.from, edge.to)
 		result.Push(edge)
 	})
 
@@ -75,11 +75,12 @@ func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
 	to := -1
 	done := make(chan bool, 1)
 	// This is safe in the context of a tree, where cycles should not exist.
+	// TODO Something has to be done about when somebody searches for a path in
+	// 		a reversed order, to avoid infinite looping.
 	for to != bi {
-		Debug("Iterating...")
 		for to = 0; to < self.g.currentVertexIndex; to++ {
 			if edge = self.g.getEdgeByCoordinates(from, to); edge != nil {
-				Debug("%v -> %v: edge", from, to)
+				Debug("%v -> %v: edge", MkVertex(from), MkVertex(to))
 				fn(edge, done)
 
 				select {
@@ -93,7 +94,7 @@ func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
 
 			}
 
-			Debug("%v -> %v: no edge", from, to)
+			Debug("%v -> %v: no edge", MkVertex(from), MkVertex(to))
 		}
 	}
 }

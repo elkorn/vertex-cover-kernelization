@@ -25,7 +25,7 @@ func (self *IntStack) Iter() <-chan int {
 	// This is cheating a bit- the algorithms are supposed to be single-threaded.
 	// TODO: Implement a proper iterator?
 	go func() {
-		for ; count > 0; count-- {
+		for ; count >= 0; count-- {
 			iter <- self.s.values[count].(int)
 		}
 		close(iter)

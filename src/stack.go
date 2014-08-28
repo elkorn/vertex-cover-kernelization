@@ -31,7 +31,7 @@ func (self *Stack) Iter() <-chan interface{} {
 	count := self.count - 1
 
 	go func() {
-		for ; count > 0; count-- {
+		for ; count >= 0; count-- {
 			iter <- self.values[count]
 		}
 		close(iter)

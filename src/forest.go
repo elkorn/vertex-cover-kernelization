@@ -1,6 +1,5 @@
 package graph
 
-// TODO Add a Path method, which will be used in Distance.
 import (
 	"errors"
 	"fmt"
@@ -73,11 +72,23 @@ func (self *forest) HasVertex(v Vertex) bool {
 
 // TODO Create a method AddEdgeFromPtr which reuses provided Edge.
 func (self *forest) AddEdge(root Vertex, edge *Edge) {
-	self.lookup(root).AddEdge(edge.from, edge.to)
+	Debug("Adding edge %v-%v to tree %v", edge.from, edge.to, root)
+	tree := self.lookup(root)
+	addIfNotRoot := func(v Vertex) {
+		existingRoot := self.Root(v)
+		if v != root && existingRoot == INVALID_VERTEX {
+			self.addVertexToLookup(v, tree)
+		}
+	}
+
+	addIfNotRoot(edge.from)
+	addIfNotRoot(edge.to)
+	tree.AddEdge(edge.from, edge.to)
 }
 
 func (self *forest) addVertexToLookup(vertex Vertex, t *tree) {
 	// This is supposed to enforce the trees of a forest to be disjoint.
+	Debug("Adding vertex %v to lookup %v", vertex, t.Root)
 	if existing := self.Root(vertex); existing != INVALID_VERTEX {
 		panic(
 			errors.New(
@@ -96,11 +107,24 @@ func (self *forest) lookup(v Vertex) *tree {
 	return self.vertexTreeLookup[v.toInt()]
 }
 
-func (self *forest) path(treePathEndpoints ...*treePath) (result []int) {
+func (self *forest) checkRoot(v Vertex) {
+	if INVALID_VERTEX == self.Root(v) {
+		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the forest", v)))
+	}
+}
+
+func (self *forest) Path(treePathEndpoints ...*treePath) (result []int) {
 	paths := make([]*Stack, len(treePathEndpoints))
 	totalLength := 0
 	for i, endpoint := range treePathEndpoints {
-		paths[i] = self.lookup(endpoint.from).Path(endpoint.from, endpoint.to)
+		self.checkRoot(endpoint.to)
+		tree := self.lookup(endpoint.from)
+		if nil == tree {
+			panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the forest", endpoint.from)))
+		}
+
+		Debug("Searching for path %v-%v in %v", endpoint.from, endpoint.to, tree.Root)
+		paths[i] = tree.Path(endpoint.from, endpoint.to)
 	}
 
 	result = make([]int, 0, totalLength)
