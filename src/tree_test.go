@@ -34,3 +34,21 @@ func TestPathInTree(t *testing.T) {
 		assert.Equal(t, *expectedEdge, *actualEdge)
 	}
 }
+
+func TestPathEndpointsOrdering(t *testing.T) {
+	root := MkVertex(0)
+	tr := MkTree(root, 5)
+	for i := 1; i < 5; i++ {
+		tr.AddEdge(MkVertex(i-1), MkVertex(i))
+	}
+
+	expected := tr.Path(MkVertex(4), root).Values()
+	n := len(expected)
+	actual := tr.Path(root, MkVertex(4)).Values()
+
+	for i, e := range expected {
+		expectedEdge := e.(*Edge)
+		actualEdge := actual[n-i-1].(*Edge)
+		assert.Equal(t, *expectedEdge, *actualEdge)
+	}
+}

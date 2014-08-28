@@ -74,11 +74,14 @@ func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
 	bi := b.toInt()
 	to := -1
 	done := make(chan bool, 1)
+	prevFrom := -1 // Used to avoid locking when using reverse path ordering.
 	// This is safe in the context of a tree, where cycles should not exist.
-	// TODO Something has to be done about when somebody searches for a path in
-	// 		a reversed order, to avoid infinite looping.
 	for to != bi {
 		for to = 0; to < self.g.currentVertexIndex; to++ {
+			if to == prevFrom {
+				continue
+			}
+
 			if edge = self.g.getEdgeByCoordinates(from, to); edge != nil {
 				Debug("%v -> %v: edge", MkVertex(from), MkVertex(to))
 				fn(edge, done)
@@ -89,6 +92,7 @@ func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
 				default:
 				}
 
+				prevFrom = from
 				from = to
 				break
 
