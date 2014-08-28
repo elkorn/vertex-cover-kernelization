@@ -114,7 +114,7 @@ func (self *forest) checkRoot(v Vertex) {
 }
 
 func (self *forest) Path(treePathEndpoints ...*treePath) (result []int) {
-	paths := make([]*Stack, len(treePathEndpoints))
+	paths := make([][]*Edge, len(treePathEndpoints))
 	totalLength := 0
 	for i, endpoint := range treePathEndpoints {
 		self.checkRoot(endpoint.to)
@@ -131,8 +131,7 @@ func (self *forest) Path(treePathEndpoints ...*treePath) (result []int) {
 
 	for i, path := range paths {
 		first := true
-		for e := range path.Iter() {
-			edge := e.(*Edge)
+		for _, edge := range path {
 			Debug("Tree: %v, edge %v-%v", MkVertex(i), edge.from, edge.to)
 			if first {
 				result = append(result, edge.from.toInt(), edge.to.toInt())

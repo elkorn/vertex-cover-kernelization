@@ -16,8 +16,8 @@ func MkTreePath(from, to Vertex) *treePath {
 	// TODO see if it is possible to change for tree path lookup to use the
 	// 'straightforward' argument order as well.
 	return &treePath{
-		from: to,
-		to:   from,
+		from: from,
+		to:   to,
 	}
 }
 
@@ -41,14 +41,12 @@ func (self *tree) AddEdge(a, b Vertex) {
 	self.g.AddEdge(a, b)
 }
 
-func (self *tree) Path(a, b Vertex) (result *Stack) {
+func (self *tree) Path(a, b Vertex) (result []*Edge) {
 	// If the main graph itself is a tree AND it happens to be wholly included
 	// in this tree, then this tree needs to have the same amount of edges.
-	result = MkStack(self.g.NEdges())
-
+	result = make([]*Edge, 0, self.g.NEdges())
 	self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
-		Debug("Adding edge %v-%v to path.", edge.from, edge.to)
-		result.Push(edge)
+		result = append(result, edge)
 	})
 
 	return result

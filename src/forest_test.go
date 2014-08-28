@@ -58,4 +58,12 @@ func TestPathInForest1(t *testing.T) {
 	actual = f.Path(ep2, ep1)
 	assert.Equal(t, 10, len(actual))
 	assert.Equal(t, expected, actual)
+
+	// TODO understand this case better, look at the diagrams.
+	// Come up with a correct `expected` value and make this pass. @start-from-here
+	ep3 := MkTreePath(MkVertex(9), root2)
+	expected = []int{0, 1, 2, 3, 4, 9, 8, 7, 6, 5}
+	actual = f.Path(ep1, ep3)
+	assert.Equal(t, 10, len(actual))
+	assert.Equal(t, expected, actual)
 }
