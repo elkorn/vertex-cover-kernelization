@@ -20,4 +20,8 @@ Richard Wiener
 
 [5] *CS266: Parameterized Algorithms and Complexity, Lecture 1*
 
+[6] *Edmonds's blossom algorithm*
+
+Matthew Kusner
+
 Stanford, Spring 2013
