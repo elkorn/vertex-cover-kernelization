@@ -41,63 +41,22 @@ func (self *tree) AddEdge(a, b Vertex) {
 	self.g.AddEdge(a, b)
 }
 
-func (self *tree) Path(a, b Vertex) (result []*Edge) {
-	// If the main graph itself is a tree AND it happens to be wholly included
-	// in this tree, then this tree needs to have the same amount of edges.
-	result = make([]*Edge, 0, self.g.NEdges())
-	self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
-		Debug("Adding edge %v-%v to path", edge.from, edge.to)
-		result = append(result, edge)
-	})
+func (self *tree) Path(a, b Vertex) []*Edge {
+	// // If the main graph itself is a tree AND it happens to be wholly included
+	// // in this tree, then this tree needs to have the same amount of edges.
+	// result = make([]*Edge, 0, self.g.NEdges())
+	// self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
+	// 	Debug("Adding edge %v-%v to path", edge.from, edge.to)
+	// 	result = append(result, edge)
+	// })
 
-	return result
+	return ShortestPathInGraph(self.g, a, b)
 }
 
-func (self *tree) Distance(a, b Vertex) (distance int) {
-	distance = 0
-
-	self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
-		distance++
-	})
-
-	return distance
+func (self *tree) Distance(a, b Vertex) int {
+	return ShortestDistanceInGraph(self.g, a, b)
 }
 
 func (self *tree) addVertex(vertex Vertex) {
 	self.g.isVertexDeleted[vertex.toInt()] = false
-}
-
-func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
-	var edge *Edge
-	from := a.toInt()
-	bi := b.toInt()
-	to := -1
-	done := make(chan bool, 1)
-	prevFrom := -1 // Used to avoid locking when using reverse path ordering.
-	// This is safe in the context of a tree, where cycles should not exist.
-	for to != bi {
-		for to = 0; to < self.g.currentVertexIndex; to++ {
-			if to == prevFrom {
-				continue
-			}
-
-			if edge = self.g.getEdgeByCoordinates(from, to); edge != nil {
-				Debug("%v -> %v: edge (%v)", MkVertex(from), MkVertex(to), edge)
-				fn(edge, done)
-
-				select {
-				case <-done:
-					return
-				default:
-				}
-
-				prevFrom = from
-				from = to
-				break
-
-			}
-
-			Debug("%v -> %v: no edge", MkVertex(from), MkVertex(to))
-		}
-	}
 }

@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// TODO refactor to allow adding only vertices and edges through the public interface.
+
 // The capacity of the forest should be the same as the capacity of each of its
 // trees, to accomodate the graph performance optimizations.
 type forest struct {

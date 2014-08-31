@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -49,7 +48,6 @@ func TestPathInForest1(t *testing.T) {
 		f.AddEdge(root2, edges[i+3])
 	}
 
-	log.Printf("%v\n", edges)
 	ep1 := MkTreePath(root1, MkVertex(4))
 	ep2 := MkTreePath(root2, MkVertex(9))
 
