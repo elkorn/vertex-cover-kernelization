@@ -124,8 +124,11 @@ func (self *edmondsMarker) ExistsUnmarkedEdgeFromVertex(v Vertex) bool {
 	return self.markedEdgesFromVertex[v.toInt()] < degree
 }
 
-func findAugmentingPath(G *Graph, M mapset.Set) []int {
-	P := make([]int, 0, G.currentVertexIndex)
+func (self *edmondsMarker) SetVertexMarked(v Vertex, state bool) {
+	self.markedVertex[v.toInt()] = state
+}
+
+func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	// TODO what should the capacity be?
 	// B02 F ← empty forest
 	F := MkForest(G.currentVertexIndex)
@@ -150,6 +153,11 @@ func findAugmentingPath(G *Graph, M mapset.Set) []int {
 
 	// B08 while there is an unmarked vertex v in F with distance( v, root( v ) ) even do
 	F.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if nil != result {
+			done <- true
+			return
+		}
+
 		if marker.IsVertexMarked(v) {
 			return
 		}
@@ -162,32 +170,63 @@ func findAugmentingPath(G *Graph, M mapset.Set) []int {
 		// B09 while there exists an unmarked edge e = { v, w } do
 		for marker.ExistsUnmarkedEdgeFromVertex(v) {
 			G.ForAllNeighbors(v, func(e *Edge, index int, done chan<- bool) {
+				if marker.IsEdgeMarked(e) {
+					return
+				}
+
+				// B10            if w is not in F then
 				w := getOtherVertex(v, e)
-				if !marker.IsEdgeMarked(e) {
-					// B10            if w is not in F then
-					if !F.HasVertex(w) {
-						//                    // w is matched, so add e and w's matched edge to F
-						matchedEdge := matchedEdges[w.toInt()]
-						// B11 x ← vertex matched to w in M
-						// x := getOtherVertex(w, matchedEdge)
-						// B12 add edges { v, w } and { w, x } to the tree of v
-						F.AddEdge(v, e)           // { v, w }
-						F.AddEdge(v, matchedEdge) // { w, x }
-					} else { // B13 else
-						// B14 if distance( w, root( w ) ) is odd then
-						if F.Distance(w, F.Root(w))%2 == 1 {
-							// Do nothing.
-						} else { // B15 else
+				if !F.HasVertex(w) {
+					// w is matched, so add e and w's matched edge to F
+					// B11 x ← vertex matched to w in M
+					matchedEdge := matchedEdges[w.toInt()]
+					// x := getOtherVertex(w, matchedEdge)
+					// B12 add edges { v, w } and { w, x } to the tree of v
+					F.AddEdge(v, e)           // { v, w }
+					F.AddEdge(v, matchedEdge) // { w, x }
+				} else { // B13 else
+					// B14 if distance( w, root( w ) ) is odd then
+					if F.Distance(w, F.Root(w))%2 == 1 {
+						// Do nothing.
+					} else { // B15 else
+						// B16 if root( v ) ≠ root( w ) then
+						if vRoot, wRoot := F.Root(v), F.Root(w); vRoot != wRoot {
 							// Report an augmenting path in F \cup { e }.
 							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
 							// B18                        return P
+							result = F.Path(MkTreePath(vRoot, v), MkTreePath(w, wRoot))
+							done <- true
+							return
+						} else {
+							// Contract a blossom in G and look for the path in the contracted graph.
+							// B20 B ← blossom formed by e and edges on the path v → w in T
+							blossomPath := F.Path(MkTreePath(v, w))
+							B := make([]*Edge, 0, len(blossomPath)+1)
+							B = append(B, blossomPath...)
+							// B21 G’, M’ ← contract G and M by B
+							// B22 P’ ← find_augmenting_path( G’, M’ )
+							// B23 P ← lift P’ to G
+							// B24 return P
 						}
-
+						// B25 end if
 					}
-
+					// B26 end if
 				}
+				// B27 end if
+				// B28 mark edge e
+				marker.SetEdgeMarked(e, true)
 			})
 		}
+		// B29 end while
+		// B30 mark vertex v
+		marker.SetVertexMarked(v, true)
 	})
-	return P
+	// B31 end while
+
+	if nil == result {
+		// B32 return empty path
+		result = make([]*Edge, 0, G.NEdges())
+	}
+
+	return result
 }
