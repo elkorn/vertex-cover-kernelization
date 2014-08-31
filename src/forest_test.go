@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -39,31 +40,42 @@ func TestPathInForest1(t *testing.T) {
 	f := MkForest(10)
 	f.AddTree(MkTree(root1, 10))
 	f.AddTree(MkTree(root2, 10))
+	edges := make([]*Edge, 8)
 
 	for i := 1; i < 5; i++ {
-		f.AddEdge(root1, MkEdgeFromInts(i-1, i))
-		f.AddEdge(root2, MkEdgeFromInts(i+4, i+5))
+		edges[i-1] = MkEdgeFromInts(i-1, i)
+		edges[i+3] = MkEdgeFromInts(i+4, i+5)
+		f.AddEdge(root1, edges[i-1])
+		f.AddEdge(root2, edges[i+3])
 	}
 
+	log.Printf("%v\n", edges)
 	ep1 := MkTreePath(root1, MkVertex(4))
 	ep2 := MkTreePath(root2, MkVertex(9))
 
-	expected := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	actual := f.Path(ep1, ep2)
+	var expected []*Edge
+	var actual []*Edge
 
-	assert.Equal(t, 10, len(actual))
+	expected = []*Edge{edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7]}
+	actual = f.Path(ep1, ep2)
+
+	assert.Equal(t, 8, len(actual))
 	assert.Equal(t, expected, actual)
 
-	expected = []int{5, 6, 7, 8, 9, 0, 1, 2, 3, 4}
+	expected = []*Edge{edges[4], edges[5], edges[6], edges[7], edges[0], edges[1], edges[2], edges[3]}
 	actual = f.Path(ep2, ep1)
-	assert.Equal(t, 10, len(actual))
+	assert.Equal(t, 8, len(actual))
 	assert.Equal(t, expected, actual)
 
-	// TODO understand this case better, look at the diagrams.
-	// Come up with a correct `expected` value and make this pass. @start-from-here
 	ep3 := MkTreePath(MkVertex(9), root2)
-	expected = []int{0, 1, 2, 3, 4, 9, 8, 7, 6, 5}
+	expected = []*Edge{edges[7], edges[6], edges[5], edges[4]}
+	actual = f.Path(ep3)
+
+	assert.Equal(t, 4, len(actual))
+	assert.Equal(t, expected, actual)
+	// TODO what about not-in-tree edges?
+	expected = []*Edge{edges[0], edges[1], edges[2], edges[3], edges[7], edges[6], edges[5], edges[4]}
 	actual = f.Path(ep1, ep3)
-	assert.Equal(t, 10, len(actual))
+	assert.Equal(t, 8, len(actual))
 	assert.Equal(t, expected, actual)
 }

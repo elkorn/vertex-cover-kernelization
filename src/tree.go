@@ -46,6 +46,7 @@ func (self *tree) Path(a, b Vertex) (result []*Edge) {
 	// in this tree, then this tree needs to have the same amount of edges.
 	result = make([]*Edge, 0, self.g.NEdges())
 	self.forAllEdgesInPath(a, b, func(edge *Edge, done chan<- bool) {
+		Debug("Adding edge %v-%v to path", edge.from, edge.to)
 		result = append(result, edge)
 	})
 
@@ -81,7 +82,7 @@ func (self *tree) forAllEdgesInPath(a, b Vertex, fn func(*Edge, chan<- bool)) {
 			}
 
 			if edge = self.g.getEdgeByCoordinates(from, to); edge != nil {
-				Debug("%v -> %v: edge", MkVertex(from), MkVertex(to))
+				Debug("%v -> %v: edge (%v)", MkVertex(from), MkVertex(to), edge)
 				fn(edge, done)
 
 				select {

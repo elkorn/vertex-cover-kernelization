@@ -113,7 +113,10 @@ func (self *forest) checkRoot(v Vertex) {
 	}
 }
 
-func (self *forest) Path(treePathEndpoints ...*treePath) (result []int) {
+func (self *forest) Path(treePathEndpoints ...*treePath) (result []*Edge) {
+	// Returning an array of edges (instead of ints - vertex indices)
+	// due to the fact that in the graph, coordinates (a,b) and (b,a)
+	// point to the same instance of an edge.
 	paths := make([][]*Edge, len(treePathEndpoints))
 	totalLength := 0
 	for i, endpoint := range treePathEndpoints {
@@ -125,21 +128,12 @@ func (self *forest) Path(treePathEndpoints ...*treePath) (result []int) {
 
 		Debug("Searching for path %v-%v in %v", endpoint.from, endpoint.to, tree.Root)
 		paths[i] = tree.Path(endpoint.from, endpoint.to)
+		totalLength += len(paths[i])
 	}
 
-	result = make([]int, 0, totalLength)
-
-	for i, path := range paths {
-		first := true
-		for _, edge := range path {
-			Debug("Tree: %v, edge %v-%v", MkVertex(i), edge.from, edge.to)
-			if first {
-				result = append(result, edge.from.toInt(), edge.to.toInt())
-				first = false
-			} else {
-				result = append(result, edge.to.toInt())
-			}
-		}
+	result = make([]*Edge, 0, totalLength)
+	for _, path := range paths {
+		result = append(result, path...)
 	}
 
 	return result
