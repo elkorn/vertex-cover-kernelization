@@ -61,7 +61,7 @@ func matchingAugmentation(path []int, M mapset.Set) mapset.Set {
 func pathToSet(path []int) (P mapset.Set) {
 	P = mapset.NewSet()
 	addedFirst := false
-	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+	forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
 		if !addedFirst {
 			P.Add(MkEdgeValFromInts(prevFrom, prevTo))
 			addedFirst = true

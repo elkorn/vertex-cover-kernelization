@@ -69,9 +69,7 @@ func TestMatchingAugmentation(t *testing.T) {
 		MkEdgeValFromInts(4, 5),
 	}
 
-	inVerboseContext(func() {
-		matchingAugmentation(path, matching)
-	})
+	matchingAugmentation(path, matching)
 	augmentation := matchingAugmentation(path, matching)
 	assert.Equal(t, 3, augmentation.Cardinality(), "Given augmentation should contain 3 edges.")
 	for _, edge := range expected {

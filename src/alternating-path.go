@@ -2,7 +2,8 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
-func forAllCoordsInPath(path []int, fn func(int, int, int, int, chan<- bool)) {
+// TODO Refactor to use shortest-path.
+func forAllCoordPairsInPath(path []int, fn func(int, int, int, int, chan<- bool)) {
 	done := make(chan bool, 1)
 
 	prevFrom, prevTo := path[0], path[1]
@@ -25,7 +26,7 @@ func forAllCoordsInPath(path []int, fn func(int, int, int, int, chan<- bool)) {
 func (self *Graph) isAlternatingPathWithMatching(path []int, matching mapset.Set) (result bool) {
 	// This version of the method compares by pointers!
 	result = true
-	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+	forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
 		previous := self.getEdgeByCoordinates(prevFrom, prevTo)
 		// P is an alternating path if:
 		//  - P is a path in G
@@ -48,7 +49,7 @@ func (self *Graph) isAlternatingPathWithMatching(path []int, matching mapset.Set
 func isAlternatingPathWithMatching(path []int, matching mapset.Set) (result bool) {
 	// This version of the method compares by values!
 	result = true
-	forAllCoordsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+	forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
 		// P is an alternating path if:
 		//  - P is a path in G
 		//  - for each subsequent pair of edges from P one of them

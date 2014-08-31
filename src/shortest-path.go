@@ -4,7 +4,7 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
-// TODO add bool parameter allowing to not compute the path itself
+// TODO migrate to the new logic.
 func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
@@ -61,11 +61,49 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 	}
 
-	// log.Println("Path from", from, "to", to, "in", n)
 	return marked[to.toInt()], pathTo(to), distance
 }
 
-func shortestPathInGraph(g *Graph, from, to Vertex, calculatePath bool) (bool, []*Edge, []int) {
+// TODO merge with forAllCoordPairsInPath.
+func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, int, chan<- bool)) {
+	done := make(chan bool, 1)
+	vi := to.toInt()
+	si := from.toInt()
+	for x := vi; x != si; x = edgeTo[x] {
+		fn(x, edgeTo[x], done)
+		select {
+		case <-done:
+			return
+		default:
+		}
+	}
+}
+
+func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
+	Debug("Looking from path from %v to %v", from, to)
+	exists, edgeTo, distance := shortestPathInGraph(g, from, to)
+	if !exists {
+		return nil
+	}
+
+	length := distance[to.toInt()]
+	path := make([]*Edge, length)
+	index := length - 1
+
+	forEachCoordsInPath(from, to, edgeTo, g, func(coordFrom, coordTo int, done chan<- bool) {
+		path[index] = g.getEdgeByCoordinates(coordFrom, coordTo)
+		index--
+	})
+
+	return path
+}
+
+func ShortestDistanceInGraph(g *Graph, from, to Vertex) int {
+	_, _, distance := shortestPathInGraph(g, from, to)
+	return distance[to.toInt()]
+}
+
+func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 	n := g.currentVertexIndex
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
@@ -76,27 +114,6 @@ func shortestPathInGraph(g *Graph, from, to Vertex, calculatePath bool) (bool, [
 		vi := v.toInt()
 		marked[vi] = true
 		queue.Push(vi)
-	}
-	pathTo := func(v Vertex) []*Edge {
-		vi := v.toInt()
-		si := from.toInt()
-
-		Debug("vi: %v, marked: %v", vi, marked)
-
-		if !marked[vi] {
-			return nil
-		}
-
-		length := distance[v.toInt()]
-		path := make([]*Edge, length)
-		index := length - 1
-
-		for x := vi; x != si; x = edgeTo[x] {
-			path[index] = g.getEdgeByCoordinates(x, edgeTo[x])
-			index--
-		}
-
-		return path
 	}
 
 	mark(from)
@@ -118,20 +135,5 @@ func shortestPathInGraph(g *Graph, from, to Vertex, calculatePath bool) (bool, [
 		})
 	}
 
-	if calculatePath {
-		return marked[to.toInt()], pathTo(to), distance
-	} else {
-		return marked[to.toInt()], nil, distance
-	}
-}
-
-func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
-	Debug("Looking from path from %v to %v", from, to)
-	_, path, _ := shortestPathInGraph(g, from, to, true)
-	return path
-}
-
-func ShortestDistanceInGraph(g *Graph, from, to Vertex) int {
-	_, _, distance := shortestPathInGraph(g, from, to, false)
-	return distance[to.toInt()]
+	return marked[to.toInt()], edgeTo, distance
 }

@@ -62,3 +62,29 @@ func TestPathEndpointsOrdering(t *testing.T) {
 		assert.Equal(t, *expectedEdge, *actual[n-i-1])
 	}
 }
+
+func TestCommonAncestor(t *testing.T) {
+	root := MkVertex(0)
+	tr := MkTree(root, 10)
+	tr.AddEdge(1, 2)
+	tr.AddEdge(1, 10)
+	tr.AddEdge(2, 3)
+	tr.AddEdge(2, 4)
+	tr.AddEdge(2, 9)
+	tr.AddEdge(3, 6)
+	tr.AddEdge(3, 7)
+	tr.AddEdge(4, 5)
+	tr.AddEdge(4, 8)
+
+	// gv := MkGraphVisualizer()
+	// gv.Display(tr.g)
+
+	assert.Equal(t, 3, tr.CommonAncestor(6, 7))
+	assert.Equal(t, 3, tr.CommonAncestor(7, 6))
+	assert.Equal(t, 3, tr.CommonAncestor(6, 3))
+	assert.Equal(t, 2, tr.CommonAncestor(7, 5))
+	assert.Equal(t, 2, tr.CommonAncestor(7, 8))
+	assert.Equal(t, 2, tr.CommonAncestor(3, 4))
+	assert.Equal(t, 2, tr.CommonAncestor(3, 9))
+	assert.Equal(t, 1, tr.CommonAncestor(8, 10))
+}
