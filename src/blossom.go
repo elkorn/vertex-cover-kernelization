@@ -1,10 +1,38 @@
 package graph
 
-import "github.com/deckarep/golang-set"
+import (
+	"errors"
+	"fmt"
+
+	"github.com/deckarep/golang-set"
+)
 
 type blossom struct {
-	Root  Vertex
-	edges Edges
+	Root     Vertex
+	edges    mapset.Set
+	vertices mapset.Set
+}
+
+func MkBlossom(root Vertex, blossomCompletor *Edge, edges ...*Edge) *blossom {
+	result := &blossom{
+		Root:     root,
+		edges:    mapset.NewSet(),
+		vertices: mapset.NewSet(),
+	}
+
+	add := func(edge *Edge) {
+		result.edges.Add(edge)
+		result.vertices.Add(edge.from)
+		result.vertices.Add(edge.to)
+	}
+
+	for _, edge := range edges {
+		add(edge)
+	}
+
+	add(blossomCompletor)
+
+	return result
 }
 
 // func getEndpoints(edges Edges)
@@ -66,67 +94,6 @@ type blossom struct {
 // B31    end while
 // B32    return empty path
 // B33 end function
-
-type edmondsMarker struct {
-	g                      *Graph
-	markedVertex           []bool
-	numberOfMarkedVertices int
-	edgeMarkLookup         [][]bool
-	markedEdgesFromVertex  []int
-}
-
-func mkEdmondsMarker(G *Graph) *edmondsMarker {
-	return &edmondsMarker{
-		markedVertex:           make([]bool, G.currentVertexIndex),
-		numberOfMarkedVertices: 0,
-		edgeMarkLookup:         mkBoolMatrix(G.currentVertexIndex, G.currentVertexIndex),
-		markedEdgesFromVertex:  make([]int, G.currentVertexIndex),
-		g: G,
-	}
-}
-
-func (self *edmondsMarker) SetEdgeMarked(edge *Edge, state bool) {
-	a, b := edge.GetIntEndpoints()
-	if self.edgeMarkLookup[a][b] == state || self.edgeMarkLookup[b][a] == state {
-		return
-	}
-
-	self.edgeMarkLookup[a][b] = state
-	self.edgeMarkLookup[b][a] = state
-	var incr int
-	if state {
-		incr = 1
-	} else {
-		incr = -1
-	}
-
-	self.markedEdgesFromVertex[a] += incr
-	self.markedEdgesFromVertex[b] += incr
-}
-
-func (self *edmondsMarker) IsEdgeMarked(edge *Edge) bool {
-	a, b := edge.GetIntEndpoints()
-	return self.edgeMarkLookup[a][b] || self.edgeMarkLookup[b][a]
-}
-
-func (self *edmondsMarker) IsVertexMarked(v Vertex) bool {
-	return self.markedVertex[v.toInt()]
-}
-
-func (self *edmondsMarker) ExistsUnmarkedEdgeFromVertex(v Vertex) bool {
-	// IDEA: length of neighbors collection for each vertex should be
-	// maintained in graph and used for the edmondsMarker.
-	degree, err := self.g.Degree(v)
-	if err != nil {
-		panic(err)
-	}
-
-	return self.markedEdgesFromVertex[v.toInt()] < degree
-}
-
-func (self *edmondsMarker) SetVertexMarked(v Vertex, state bool) {
-	self.markedVertex[v.toInt()] = state
-}
 
 func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	// TODO what should the capacity be?
@@ -200,10 +167,12 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 						} else {
 							// Contract a blossom in G and look for the path in the contracted graph.
 							// B20 B ← blossom formed by e and edges on the path v → w in T
-							blossomPath := F.Path(MkTreePath(v, w))
-							B := make([]*Edge, 0, len(blossomPath)+1)
-							B = append(B, blossomPath...)
+							// blossomRoot := F.lookup(vRoot).CommonAncestor(v, w)
+							// blossomPath := F.Path(MkTreePath(v, w))
+							// B := MkBlossom(blossomRoot, e, blossomPath...)
 							// B21 G’, M’ ← contract G and M by B
+							// gPrime := G.Copy()
+
 							// B22 P’ ← find_augmenting_path( G’, M’ )
 							// B23 P ← lift P’ to G
 							// B24 return P
@@ -229,4 +198,65 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	}
 
 	return result
+}
+
+func (self *blossom) Contract(g *Graph) {
+	// contractionMap := make(NeighborMap, g.currentVertexIndex)
+	contractedEdges := 0
+	for contractedEdges < self.edges.Cardinality() {
+		g.ForAllNeighbors(self.Root, func(edge *Edge, idx int, done chan<- bool) {
+			neighbor := getOtherVertex(self.Root, edge)
+			if !self.vertices.Contains(neighbor) {
+				return
+			}
+
+			g.ForAllNeighbors(neighbor, func(edge *Edge, idx int, done chan<- bool) {
+				distantNeighbor := getOtherVertex(neighbor, edge)
+				if !self.vertices.Contains(distantNeighbor) ||
+					distantNeighbor == self.Root {
+					return
+				}
+
+				g.rewireEdge(edge, neighbor, self.Root)
+				contractedEdges++
+				Debug("Contracted %v of %v", contractedEdges, self.edges.Cardinality())
+			})
+
+			g.RemoveVertex(neighbor)
+			contractedEdges++
+		})
+	}
+}
+
+func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {
+	self.neighbors[from][to] = value
+	self.neighbors[to][from] = value
+}
+
+func (self *Edge) changeEndpoint(which, newEndpoint Vertex) {
+	if self.from == which {
+		self.from = newEndpoint
+	} else if self.to == which {
+		self.to = newEndpoint
+	}
+}
+
+func (self *Graph) rewireEdge(edge *Edge, from, newAnchor Vertex) {
+	to := getOtherVertex(from, edge)
+
+	if newAnchor == to {
+		panic(errors.New(fmt.Sprintf("Cannot rewire edge %v-%v to %v-%v", from, to, newAnchor, to)))
+	}
+
+	fi := from.toInt()
+	nAi := newAnchor.toInt()
+	ti := to.toInt()
+
+	edge.changeEndpoint(from, newAnchor)
+
+	self.setEdgeAtCoords(fi, ti, nil)
+	self.setEdgeAtCoords(nAi, ti, edge)
+
+	self.degrees[fi]--
+	self.degrees[nAi]++
 }

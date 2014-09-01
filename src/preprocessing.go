@@ -127,22 +127,22 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
-func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
-	fromIndex := from.toInt()
-	toIndex := to.toInt()
-	newAnchorIndex := newAnchor.toInt()
+// func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
+// 	fromIndex := from.toInt()
+// 	toIndex := to.toInt()
+// 	newAnchorIndex := newAnchor.toInt()
 
-	edge := self.getEdgeByCoordinates(fromIndex, toIndex)
-	if nil == edge {
-		return
-	}
+// 	edge := self.getEdgeByCoordinates(fromIndex, toIndex)
+// 	if nil == edge {
+// 		return
+// 	}
 
-	edge.from = newAnchor
-	self.neighbors[newAnchorIndex][toIndex] = edge
-	self.neighbors[toIndex][newAnchorIndex] = edge
-	self.degrees[newAnchorIndex]++
-	self.degrees[fromIndex]--
-}
+// 	edge.from = newAnchor
+// 	self.neighbors[newAnchorIndex][toIndex] = edge
+// 	self.neighbors[toIndex][newAnchorIndex] = edge
+// 	self.degrees[newAnchorIndex]++
+// 	self.degrees[fromIndex]--
+// }
 
 func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	// toRemove is probably redundant given the circumstances under which this will be called.

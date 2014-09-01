@@ -52,7 +52,6 @@ func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, idx int, done chan<- bool) {
 		Debug("Found neighbor edge of %v: %v", v, edge)
-
 		result = result.appendIfNotContains(getOtherVertex(v, edge))
 	})
 
