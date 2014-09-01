@@ -201,31 +201,23 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 }
 
 func (self *blossom) Contract(g *Graph) {
-	// contractionMap := make(NeighborMap, g.currentVertexIndex)
-	contractedEdges := 0
-	for contractedEdges < self.edges.Cardinality() {
-		g.ForAllNeighbors(self.Root, func(edge *Edge, idx int, done chan<- bool) {
-			neighbor := getOtherVertex(self.Root, edge)
-			if !self.vertices.Contains(neighbor) {
+	g.ForAllNeighbors(self.Root, func(edge *Edge, idx int, done chan<- bool) {
+		neighbor := getOtherVertex(self.Root, edge)
+		if !self.vertices.Contains(neighbor) {
+			return
+		}
+
+		g.ForAllNeighbors(neighbor, func(edge *Edge, idx int, done chan<- bool) {
+			distantNeighbor := getOtherVertex(neighbor, edge)
+			if distantNeighbor == self.Root {
 				return
 			}
 
-			g.ForAllNeighbors(neighbor, func(edge *Edge, idx int, done chan<- bool) {
-				distantNeighbor := getOtherVertex(neighbor, edge)
-				if !self.vertices.Contains(distantNeighbor) ||
-					distantNeighbor == self.Root {
-					return
-				}
-
-				g.rewireEdge(edge, neighbor, self.Root)
-				contractedEdges++
-				Debug("Contracted %v of %v", contractedEdges, self.edges.Cardinality())
-			})
-
-			g.RemoveVertex(neighbor)
-			contractedEdges++
+			g.rewireEdge(edge, neighbor, self.Root)
 		})
-	}
+
+		g.RemoveVertex(neighbor)
+	})
 }
 
 func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {
