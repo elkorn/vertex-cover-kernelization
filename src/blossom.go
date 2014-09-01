@@ -35,16 +35,6 @@ func MkBlossom(root Vertex, blossomCompletor *Edge, edges ...*Edge) *blossom {
 	return result
 }
 
-// func getEndpoints(edges Edges)
-
-// func (g *Graph) contractBlossom(b blossom) {
-// 	contractionMap := make(NeighborMap, b.Root.toInt()+1)
-
-// }
-
-// TODO edge contraction within a graph has to be refactored to use rewiring.
-// Thanks to that approach, blossom lifting will be possible.
-
 //    INPUT:  Graph G, initial matching M on G
 //    OUTPUT: maximum matching M* on G
 // A1 function find_maximum_matching( G, M ) : M*
@@ -167,12 +157,12 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 						} else {
 							// Contract a blossom in G and look for the path in the contracted graph.
 							// B20 B ← blossom formed by e and edges on the path v → w in T
-							// blossomRoot := F.lookup(vRoot).CommonAncestor(v, w)
-							// blossomPath := F.Path(MkTreePath(v, w))
-							// B := MkBlossom(blossomRoot, e, blossomPath...)
+							blossomRoot := F.lookup(vRoot).CommonAncestor(v, w)
+							blossomPath := F.Path(MkTreePath(v, w))
+							B := MkBlossom(blossomRoot, e, blossomPath...)
 							// B21 G’, M’ ← contract G and M by B
-							// gPrime := G.Copy()
-
+							gPrime := G.Copy()
+							B.Contract(gPrime)
 							// B22 P’ ← find_augmenting_path( G’, M’ )
 							// B23 P ← lift P’ to G
 							// B24 return P

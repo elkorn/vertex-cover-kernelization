@@ -152,6 +152,7 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 		// TODO @refactor rewire edges from neighbor->distantNeighbor
 		// When refactoring, keep in mind the cases when two neighbors of one
 		// vertex are connected.
+		// TODO @optimize
 		for _, neighbor := range neighbors {
 			distantNeighbors := self.getNeighbors(neighbor)
 			Debug("Neighbor: %v", neighbor)
