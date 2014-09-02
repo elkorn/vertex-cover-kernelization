@@ -110,7 +110,6 @@ func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 	distance := make([]int, n)
 	queue := MkIntQueue(n)
 	mark := func(v Vertex) {
-		Debug("Marking %v", v)
 		vi := v.toInt()
 		marked[vi] = true
 		queue.Push(vi)
@@ -122,7 +121,6 @@ func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 	for !queue.Empty() {
 		vi := queue.Pop()
 		v := MkVertex(vi)
-		Debug("Popped %v", v)
 		g.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
 			w := getOtherVertex(v, edge)
 			wi := w.toInt()

@@ -200,12 +200,47 @@ func TestFindAugmentingPath(t *testing.T) {
 	g.AddEdge(6, 7)
 	g.AddEdge(7, 8)
 
-	showGraph(g)
 	matching := mapset.NewSet()
 	matching.Add(g.getEdgeByCoordinates(0, 1))
 	matching.Add(g.getEdgeByCoordinates(2, 3))
+	findAugmentingPath(g, matching) // Don't know what to expect...
+}
+
+func TestMaximumMatching1(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(1, 5)
+
+	init := mapset.NewSet()
 	inVerboseContext(func() {
-		path := findAugmentingPath(g, matching)
-		Debug("%v", *(path[0]))
+		max := findMaximumMatching(g, init)
+		assert.Equal(t, 2, max.Cardinality())
+		for e := range max.Iter() {
+			edge := e.(*Edge)
+			Debug("%v-%v", edge.from, edge.to)
+		}
+	})
+}
+
+func TestMaximumMatching2(t *testing.T) {
+	g := MkGraph(6)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
+	g.AddEdge(3, 6)
+	g.AddEdge(4, 5)
+	g.AddEdge(1, 5)
+
+	init := mapset.NewSet()
+	max := findMaximumMatching(g, init)
+	assert.Equal(t, 3, max.Cardinality())
+	inVerboseContext(func() {
+		for e := range max.Iter() {
+			edge := e.(*Edge)
+			Debug("%v-%v", edge.from, edge.to)
+		}
 	})
 }

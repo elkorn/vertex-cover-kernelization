@@ -57,6 +57,7 @@ func TestContractBlossom1(t *testing.T) {
 	assert.Equal(t, 2, g.NVertices())
 	assert.True(t, g.hasEdge(1, 2))
 }
+
 func TestContractBlossom2(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 2)

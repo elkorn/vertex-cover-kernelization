@@ -2,7 +2,18 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
+func findMaximumMatching(G *Graph, M mapset.Set) mapset.Set {
+	P := findAugmentingPath(G, M)
+	if len(P) > 0 {
+		return findMaximumMatching(G, matchingAugmentation(P, M))
+	} else {
+		return M
+	}
+}
+
 func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
+	Debug("Augmented matching")
+	PrintSet(M)
 	blossoms := make([]*blossom, G.currentVertexIndex)
 	// TODO what should the capacity be?
 	// B02 F ← empty forest
@@ -35,6 +46,7 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 			return
 		}
 
+		Debug("Is %v marked? %v", v, marker.IsVertexMarked(v))
 		if marker.IsVertexMarked(v) {
 			return
 		}
@@ -51,8 +63,8 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 					return
 				}
 
-				// B10            if w is not in F then
 				w := getOtherVertex(v, e)
+				// B10 if w is not in F then
 				if !F.HasVertex(w) {
 					// w is matched, so add e and w's matched edge to F
 					// B11 x ← vertex matched to w in M
@@ -71,13 +83,13 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 						if vRoot, wRoot := F.Root(v), F.Root(w); vRoot != wRoot {
 							// Report an augmenting path in F \cup { e }.
 							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
-							Debug("Reporting an augmenting path vRoot: %v, v: %v, w: %v, wRoot: %v", vRoot, v, w, wRoot)
 							vPath := F.Path(MkTreePath(vRoot, v))
 							wPath := F.Path(MkTreePath(w, wRoot))
 
 							result = append(result, vPath...)
 							result = append(result, e)
 							result = append(result, wPath...)
+							Debug("Reporting an augmenting path vRoot: %v, v: %v, w: %v, wRoot: %v", vRoot, v, w, wRoot)
 							// B18 return P
 							done <- true
 						} else {
