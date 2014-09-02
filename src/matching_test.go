@@ -77,7 +77,7 @@ func TestMatchingAugmentation(t *testing.T) {
 	}
 }
 
-func TestLift(t *testing.T) {
+func TestLift1(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -125,4 +125,51 @@ func TestLift(t *testing.T) {
 	assert.Equal(t, g.getEdgeByCoordinates(1, 5), liftedPath[1])
 	assert.Equal(t, g.getEdgeByCoordinates(4, 5), liftedPath[2])
 	assert.Equal(t, g.getEdgeByCoordinates(4, 6), liftedPath[3])
+}
+
+func TestLift2(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+
+	b := blossom{
+		Root:     MkVertex(1),
+		edges:    mapset.NewSet(),
+		vertices: mapset.NewSet(),
+	}
+
+	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		if edge.from == 1 {
+			return
+		}
+
+		b.edges.Add(edge)
+		b.vertices.Add(edge.from)
+		b.vertices.Add(edge.to)
+	})
+
+	g.AddEdge(3, 5)
+
+	g1 := g.Copy()
+	b.Contract(g1, nil)
+
+	matching := mapset.NewSet()
+	matching.Add(g.getEdgeByCoordinates(0, 1))
+	matching.Add(g.getEdgeByCoordinates(2, 3))
+
+	blossoms := make([]*blossom, 7)
+	blossoms[1] = &b
+
+	contractedPath := ShortestPathInGraph(g1, MkVertex(0), MkVertex(4))
+	assert.Equal(t, g1.getEdgeByCoordinates(0, 1), contractedPath[0])
+	assert.Equal(t, g1.getEdgeByCoordinates(1, 4), contractedPath[1])
+
+	liftedPath := lift(contractedPath, matching, blossoms, g)
+	assert.Equal(t, 4, len(liftedPath))
+	assert.Equal(t, g.getEdgeByCoordinates(0, 1), liftedPath[0])
+	assert.Equal(t, g.getEdgeByCoordinates(1, 3), liftedPath[1])
+	assert.Equal(t, g.getEdgeByCoordinates(2, 3), liftedPath[2])
+	assert.Equal(t, g.getEdgeByCoordinates(2, 4), liftedPath[3])
 }
