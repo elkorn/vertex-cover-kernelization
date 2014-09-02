@@ -13,7 +13,7 @@ type blossom struct {
 	vertices mapset.Set
 }
 
-func MkBlossom(root Vertex, blossomCompletor *Edge, edges ...*Edge) *blossom {
+func MkBlossom(root Vertex, completor *Edge, edges ...*Edge) *blossom {
 	result := &blossom{
 		Root:     root,
 		edges:    mapset.NewSet(),
@@ -30,7 +30,7 @@ func MkBlossom(root Vertex, blossomCompletor *Edge, edges ...*Edge) *blossom {
 		add(edge)
 	}
 
-	add(blossomCompletor)
+	add(completor)
 
 	return result
 }
@@ -86,6 +86,7 @@ func MkBlossom(root Vertex, blossomCompletor *Edge, edges ...*Edge) *blossom {
 // B33 end function
 
 func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
+	blossoms := make([]*blossom, G.currentVertexIndex)
 	// TODO what should the capacity be?
 	// B02 F ← empty forest
 	F := MkForest(G.currentVertexIndex)
@@ -150,8 +151,8 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 						if vRoot, wRoot := F.Root(v), F.Root(w); vRoot != wRoot {
 							// Report an augmenting path in F \cup { e }.
 							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
-							// B18                        return P
 							result = F.Path(MkTreePath(vRoot, v), MkTreePath(w, wRoot))
+							// B18 return P
 							done <- true
 							return
 						} else {
@@ -164,10 +165,14 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 							gPrime := G.Copy()
 							mPrime := M.Clone()
 							B.Contract(gPrime, mPrime)
+							blossoms[B.Root.toInt()] = B
 							// B22 P’ ← find_augmenting_path( G’, M’ )
-							// pPrime := findAugmentingPath(gPrime, mPrime)
+							pPrime := findAugmentingPath(gPrime, mPrime)
 							// B23 P ← lift P’ to G
+							result = lift(pPrime, M, blossoms, G)
 							// B24 return P
+							done <- true
+							return
 						}
 						// B25 end if
 					}
@@ -213,6 +218,66 @@ func (self *blossom) Contract(g *Graph, matching mapset.Set) {
 
 		g.RemoveVertex(neighbor)
 	})
+}
+
+func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) []*Edge {
+	// the side of B, ( u’ → ... → w’ ),
+	// going from u’ to w’ are chosen to ensure that the new path is still
+	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
+	// TODO: What about 'u’ is exposed with respect to M ∩ B' ?
+	bGraph := MkGraph(g.currentVertexIndex)
+	for e := range self.edges.Iter() {
+		edge := e.(*Edge)
+		bGraph.AddEdge(edge.from, edge.to)
+	}
+
+	gv := MkGraphVisualizer()
+	gv.Display(bGraph)
+
+	var exitVertex Vertex
+
+	g.ForAllNeighbors(target, func(edge *Edge, index int, done chan<- bool) {
+		// { w', w } ∈ E ⧵ M
+		exit := getOtherVertex(target, edge)
+		Debug("Checking %v-%v, matched: %v, in blossom: %v", edge.from, edge.to, matching.Contains(edge), bGraph.hasVertex(exit))
+		if exit != self.Root && !matching.Contains(edge) && bGraph.hasVertex(exit) {
+			Debug("Found exit %v", exit)
+			exitVertex = exit
+			done <- true
+		}
+	})
+
+	return ShortestPathInGraph(bGraph, self.Root, exitVertex)
+}
+
+func lift(path []*Edge, matching mapset.Set, blossoms []*blossom, g *Graph) (result []*Edge) {
+	// If the path contains contracted blossoms, then the size of the result size
+	// must be enlarged for each blossom by (n-1)/2, where n is a blossom's size.
+	// if P’ traverses through a segment u → vB → w in G’,
+	// then this segment is replaced with the segment u → ( u’ → ... → w’ ) → w in G,
+	// where blossom vertices u’ and w’ and the side of B, ( u’ → ... → w’ ),
+	// going from u’ to w’ are chosen to ensure that the new path is still
+	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
+	// TODO: @refactor add a 'checkHasBlossom' function.
+	processedBlossoms := make([]bool, len(blossoms))
+	result = make([]*Edge, 0, cap(blossoms))
+	for i, n := 0, len(path); i < n; i++ {
+		curEdge := path[i]
+		fi := curEdge.from.toInt()
+		ti := curEdge.to.toInt()
+		if nil == blossoms[fi] {
+			result = append(result, curEdge)
+			if b := blossoms[ti]; nil != b {
+			} else {
+				// u := ti
+				w := getOtherVertex(curEdge.to, path[i+1])
+				result = append(result, b.Expand(w, matching, g)...)
+				processedBlossoms[ti] = true
+			}
+		}
+	}
+
+	return result
 }
 
 func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {
