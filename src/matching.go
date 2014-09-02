@@ -2,77 +2,6 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
-// A matching, M , of G is a subset of the edges E, such that no vertex
-// in V is incident to more that one edge in M .
-// Intuitively we can say that no two edges in M have a common vertex.
-
-// A matching M is said to be maximal if M is not properly contained in
-// any other matching.
-// Formally, M !⊂ M' for any matching M' of G.
-// Intuitively, this is equivalent to saying that a matching is maximal if we cannot
-// add any edge to the existing set
-func maximalMatching(g *Graph) (matching mapset.Set, outsiders mapset.Set) {
-	matching = mapset.NewSet()
-	outsiders = mapset.NewSet()
-	added := make([]bool, len(g.Vertices))
-	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
-		if !(added[edge.from.toInt()] || added[edge.to.toInt()]) {
-			matching.Add(edge)
-			added[edge.from.toInt()] = true
-			added[edge.to.toInt()] = true
-		} else {
-			outsiders.Add(edge)
-		}
-	})
-
-	return matching, outsiders
-}
-
-// Given G = (V, E) and a matching M of G, a vertex v is exposed,
-// if no edge of M is incident with v.
-func (self Vertex) isExposed(matching mapset.Set) bool {
-	for element := range matching.Iter() {
-		edge := element.(Edge)
-		if edge.IsCoveredBy(self) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// An augmenting path P is an alternating path that starts and ends
-// at two distinct exposed vertices.
-func isAugmentingPath(path []int, matching mapset.Set) bool {
-	start := MkVertex(path[0])
-	end := MkVertex(path[len(path)-1])
-
-	return start.isExposed(matching) &&
-		end.isExposed(matching) &&
-		isAlternatingPathWithMatching(path, matching)
-}
-
-// A matching augmentation along an augmenting path P
-// is the operation of replacing M with a new matching M1 = M⊕P = (M⧵P)∪(P⧵M).
-func matchingAugmentation(path []int, M mapset.Set) mapset.Set {
-	return M.SymmetricDifference(pathToSet(path))
-}
-
-func pathToSet(path []int) (P mapset.Set) {
-	P = mapset.NewSet()
-	addedFirst := false
-	forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
-		if !addedFirst {
-			P.Add(MkEdgeValFromInts(prevFrom, prevTo))
-			addedFirst = true
-		}
-
-		P.Add(MkEdgeValFromInts(curFrom, curTo))
-	})
-
-	return P
-}
-
 func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	blossoms := make([]*blossom, G.currentVertexIndex)
 	// TODO what should the capacity be?
@@ -82,11 +11,13 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	marker := mkEdmondsMarker(G)
 	matchedEdges := make([]*Edge, G.currentVertexIndex)
 	for e := range M.Iter() {
-		edge := e.(*Edge)
+		matchingEdge := e.(*Edge)
+		edge := G.getEdgeByCoordinates(matchingEdge.from.toInt(), matchingEdge.to.toInt())
 		marker.SetEdgeMarked(edge, true)
 		// There cannot exist two edges beginning in the same vertex in
 		// a matching.
 		matchedEdges[edge.from.toInt()] = edge
+		matchedEdges[edge.to.toInt()] = edge
 	}
 
 	// B05 for each exposed vertex v do
@@ -126,6 +57,7 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 					// w is matched, so add e and w's matched edge to F
 					// B11 x ← vertex matched to w in M
 					matchedEdge := matchedEdges[w.toInt()]
+					Debug("Edge %v-%v is matched", matchedEdge.from, matchedEdge.to)
 					// x := getOtherVertex(w, matchedEdge)
 					// B12 add edges { v, w } and { w, x } to the tree of v
 					F.AddEdge(v, e)           // { v, w }
@@ -139,14 +71,20 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 						if vRoot, wRoot := F.Root(v), F.Root(w); vRoot != wRoot {
 							// Report an augmenting path in F \cup { e }.
 							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
-							result = F.Path(MkTreePath(vRoot, v), MkTreePath(w, wRoot))
+							Debug("Reporting an augmenting path vRoot: %v, v: %v, w: %v, wRoot: %v", vRoot, v, w, wRoot)
+							vPath := F.Path(MkTreePath(vRoot, v))
+							wPath := F.Path(MkTreePath(w, wRoot))
+
+							result = append(result, vPath...)
+							result = append(result, e)
+							result = append(result, wPath...)
 							// B18 return P
 							done <- true
-							return
 						} else {
 							// Contract a blossom in G and look for the path in the contracted graph.
 							// B20 B ← blossom formed by e and edges on the path v → w in T
 							blossomRoot := F.lookup(vRoot).CommonAncestor(v, w)
+							Debug("Getting a blossom path")
 							blossomPath := F.Path(MkTreePath(v, w))
 							B := MkBlossom(blossomRoot, e, blossomPath...)
 							// B21 G’, M’ ← contract G and M by B
@@ -162,7 +100,6 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 							// B24 return P
 							result = lift(pPrime, M, blossoms, G)
 							done <- true
-							return
 						}
 						// B25 end if
 					}
@@ -247,4 +184,68 @@ func lift(path []*Edge, matching mapset.Set, blossoms []*blossom, g *Graph) (res
 	}
 
 	return result
+}
+
+// A matching, M , of G is a subset of the edges E, such that no vertex
+// in V is incident to more that one edge in M .
+// Intuitively we can say that no two edges in M have a common vertex.
+
+// A matching M is said to be maximal if M is not properly contained in
+// any other matching.
+// Formally, M !⊂ M' for any matching M' of G.
+// Intuitively, this is equivalent to saying that a matching is maximal if we cannot
+// add any edge to the existing set
+func maximalMatching(g *Graph) (matching mapset.Set, outsiders mapset.Set) {
+	matching = mapset.NewSet()
+	outsiders = mapset.NewSet()
+	added := make([]bool, len(g.Vertices))
+	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		if !(added[edge.from.toInt()] || added[edge.to.toInt()]) {
+			matching.Add(edge)
+			added[edge.from.toInt()] = true
+			added[edge.to.toInt()] = true
+		} else {
+			outsiders.Add(edge)
+		}
+	})
+
+	return matching, outsiders
+}
+
+// Given G = (V, E) and a matching M of G, a vertex v is exposed,
+// if no edge of M is incident with v.
+func (self Vertex) isExposed(matching mapset.Set) bool {
+	for element := range matching.Iter() {
+		edge := element.(*Edge)
+		if edge.IsCoveredBy(self) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// An augmenting path P is an alternating path that starts and ends
+// at two distinct exposed vertices.
+func isAugmentingPath(path []*Edge, matching mapset.Set) bool {
+	start := path[0]
+	end := path[len(path)-1]
+
+	return (start.from.isExposed(matching) || start.to.isExposed(matching)) &&
+		(end.from.isExposed(matching) || end.to.isExposed(matching)) &&
+		isAlternatingPathWithMatching(path, matching)
+}
+
+// A matching augmentation along an augmenting path P
+// is the operation of replacing M with a new matching M1 = M⊕P = (M⧵P)∪(P⧵M).
+func matchingAugmentation(path []*Edge, M mapset.Set) mapset.Set {
+	return M.SymmetricDifference(pathToSet(path))
+}
+
+func pathToSet(path []*Edge) (P mapset.Set) {
+	P = mapset.NewSet()
+	for _, edge := range path {
+		P.Add(edge)
+	}
+	return P
 }

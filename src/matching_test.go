@@ -28,10 +28,10 @@ func TestMaximalMatching(t *testing.T) {
 
 func TestIsExposed(t *testing.T) {
 	matching := mapset.NewSet()
-	matching.Add(Edge{1, 2, false})
-	matching.Add(Edge{2, 3, false})
-	matching.Add(Edge{4, 5, false})
-	matching.Add(Edge{7, 8, false})
+	matching.Add(&Edge{1, 2, false})
+	matching.Add(&Edge{2, 3, false})
+	matching.Add(&Edge{4, 5, false})
+	matching.Add(&Edge{7, 8, false})
 
 	assert.False(t, Vertex(1).isExposed(matching))
 	assert.False(t, Vertex(2).isExposed(matching))
@@ -46,11 +46,20 @@ func TestIsExposed(t *testing.T) {
 }
 
 func TestIsAugmentingPath(t *testing.T) {
-	path := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	path := []*Edge{
+		MkEdgeFromInts(0, 1),
+		MkEdgeFromInts(1, 2),
+		MkEdgeFromInts(2, 3),
+		MkEdgeFromInts(3, 4),
+		MkEdgeFromInts(4, 5),
+		MkEdgeFromInts(5, 6),
+		MkEdgeFromInts(6, 7),
+	}
+
 	matching := mapset.NewSet()
-	matching.Add(MkEdgeValFromInts(1, 2))
-	matching.Add(MkEdgeValFromInts(3, 4))
-	matching.Add(MkEdgeValFromInts(5, 6))
+	matching.Add(path[1])
+	matching.Add(path[3])
+	matching.Add(path[5])
 
 	assert.True(t, isAlternatingPathWithMatching(path, matching), "The test path should be alternating.")
 	assert.True(t, MkVertex(0).isExposed(matching), "The start point should be exposed.")
@@ -59,17 +68,23 @@ func TestIsAugmentingPath(t *testing.T) {
 }
 
 func TestMatchingAugmentation(t *testing.T) {
-	path := []int{0, 1, 2, 3, 4, 5}
-	matching := mapset.NewSet()
-	matching.Add(MkEdgeValFromInts(1, 2))
-	matching.Add(MkEdgeValFromInts(3, 4))
-	expected := []Edge{
-		MkEdgeValFromInts(0, 1),
-		MkEdgeValFromInts(2, 3),
-		MkEdgeValFromInts(4, 5),
+	path := []*Edge{
+		MkEdgeFromInts(0, 1),
+		MkEdgeFromInts(1, 2),
+		MkEdgeFromInts(2, 3),
+		MkEdgeFromInts(3, 4),
+		MkEdgeFromInts(4, 5),
 	}
 
-	matchingAugmentation(path, matching)
+	matching := mapset.NewSet()
+	matching.Add(path[1])
+	matching.Add(path[3])
+	expected := []*Edge{
+		path[0],
+		path[2],
+		path[4],
+	}
+
 	augmentation := matchingAugmentation(path, matching)
 	assert.Equal(t, 3, augmentation.Cardinality(), "Given augmentation should contain 3 edges.")
 	for _, edge := range expected {
@@ -172,4 +187,25 @@ func TestLift2(t *testing.T) {
 	assert.Equal(t, g.getEdgeByCoordinates(1, 3), liftedPath[1])
 	assert.Equal(t, g.getEdgeByCoordinates(2, 3), liftedPath[2])
 	assert.Equal(t, g.getEdgeByCoordinates(2, 4), liftedPath[3])
+}
+
+func TestFindAugmentingPath(t *testing.T) {
+	g := MkGraph(8)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(5, 6)
+	g.AddEdge(6, 7)
+	g.AddEdge(7, 8)
+
+	showGraph(g)
+	matching := mapset.NewSet()
+	matching.Add(g.getEdgeByCoordinates(0, 1))
+	matching.Add(g.getEdgeByCoordinates(2, 3))
+	inVerboseContext(func() {
+		path := findAugmentingPath(g, matching)
+		Debug("%v", *(path[0]))
+	})
 }

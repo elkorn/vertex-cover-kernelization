@@ -35,6 +35,7 @@ func (self *edmondsMarker) SetEdgeMarked(edge *Edge, state bool) {
 
 	self.markedEdgesFromVertex[a] += incr
 	self.markedEdgesFromVertex[b] += incr
+	Debug("Marked edge %v-%v as %v", edge.from, edge.to, state)
 }
 
 func (self *edmondsMarker) IsEdgeMarked(edge *Edge) bool {
@@ -59,4 +60,5 @@ func (self *edmondsMarker) ExistsUnmarkedEdgeFromVertex(v Vertex) bool {
 
 func (self *edmondsMarker) SetVertexMarked(v Vertex, state bool) {
 	self.markedVertex[v.toInt()] = state
+	Debug("Marked vertex %v as %v", v, state)
 }

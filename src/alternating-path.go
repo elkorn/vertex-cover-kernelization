@@ -46,28 +46,38 @@ func (self *Graph) isAlternatingPathWithMatching(path []int, matching mapset.Set
 	return result
 }
 
-func isAlternatingPathWithMatching(path []int, matching mapset.Set) (result bool) {
-	// This version of the method compares by values!
-	result = true
-	forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
-		// P is an alternating path if:
-		//  - P is a path in G
-		//  - for each subsequent pair of edges from P one of them
-		//    belongs to M and the other one does not.
+func isAlternatingPathWithMatching(path []*Edge, matching mapset.Set) bool {
+	// P is an alternating path if:
+	//  - P is a path in G
+	//  - for each subsequent pair of edges from P one of them
+	//    belongs to M and the other one does not.
 
-		previous := MkEdgeValFromInts(prevFrom, prevTo)
-		current := MkEdgeValFromInts(curFrom, curTo)
-		containsPrevious := matching.Contains(previous)
-		containsCurrent := matching.Contains(current)
-		Debug("Previous: %v, contains: %v", previous, containsPrevious)
-		Debug("Current: %v, contains: %v", current, containsCurrent)
+	containsPrevious := matching.Contains(path[0])
+	for i, n := 1, len(path); i < n; i++ {
+		containsCurrent := matching.Contains(path[i])
 		if containsPrevious == containsCurrent {
-			result = false
-			done <- true
+			return false
 		}
-	})
 
-	return result
+		containsPrevious = containsCurrent
+	}
+
+	return true
+	// forAllCoordPairsInPath(path, func(prevFrom, prevTo, curFrom, curTo int, done chan<- bool) {
+
+	// 	previous := MkEdgeValFromInts(prevFrom, prevTo)
+	// 	current := MkEdgeValFromInts(curFrom, curTo)
+	// 	containsPrevious := matching.Contains(previous)
+	// 	containsCurrent := matching.Contains(current)
+	// 	Debug("Previous: %v, contains: %v", previous, containsPrevious)
+	// 	Debug("Current: %v, contains: %v", current, containsCurrent)
+	// 	if containsPrevious == containsCurrent {
+	// 		result = false
+	// 		done <- true
+	// 	}
+	// })
+
+	// return result
 }
 
 func (from Vertex) isReachableWithMatchingThroughAlternatingPath(to Vertex, netFlow *NetworkFlow, matching mapset.Set) bool {
