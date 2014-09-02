@@ -159,8 +159,8 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 							// B22 P’ ← find_augmenting_path( G’, M’ )
 							pPrime := findAugmentingPath(gPrime, mPrime)
 							// B23 P ← lift P’ to G
-							result = lift(pPrime, M, blossoms, G)
 							// B24 return P
+							result = lift(pPrime, M, blossoms, G)
 							done <- true
 							return
 						}
