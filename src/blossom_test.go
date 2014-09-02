@@ -52,7 +52,7 @@ func TestContractBlossom1(t *testing.T) {
 		b.vertices.Add(edge.to)
 	})
 
-	b.Contract(g)
+	b.Contract(g, nil)
 	assert.Equal(t, 1, g.NEdges())
 	assert.Equal(t, 2, g.NVertices())
 	assert.True(t, g.hasEdge(1, 2))
@@ -83,7 +83,7 @@ func TestContractBlossom2(t *testing.T) {
 		b.vertices.Add(edge.to)
 	})
 
-	b.Contract(g)
+	b.Contract(g, nil)
 	assert.Equal(t, 2, g.NEdges())
 	assert.Equal(t, 3, g.NVertices())
 	assert.True(t, g.hasEdge(1, 2))
@@ -119,16 +119,48 @@ func TestContractBlossom3(t *testing.T) {
 		b.vertices.Add(edge.to)
 	})
 
-	gv := MkGraphVisualizer()
-	gv.Display(g)
-	inVerboseContext(func() {
-		b.Contract(g)
-	})
+	b.Contract(g, nil)
 
 	assert.Equal(t, 2, g.NEdges())
 	assert.Equal(t, 3, g.NVertices())
 	assert.True(t, g.hasEdge(1, 2))
 	assert.True(t, g.hasEdge(2, 9))
+}
 
-	gv.Display(g)
+func TestContractBlossomWithMatching(t *testing.T) {
+	g := MkGraph(6)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(5, 6)
+	g.AddEdge(2, 6)
+
+	b := blossom{
+		Root:     MkVertex(1),
+		edges:    mapset.NewSet(),
+		vertices: mapset.NewSet(),
+	}
+
+	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		if edge.from == 1 {
+			return
+		}
+
+		b.edges.Add(edge)
+		b.vertices.Add(edge.from)
+		b.vertices.Add(edge.to)
+	})
+
+	matching := mapset.NewSet()
+	matching.Add(g.getEdgeByCoordinates(0, 1))
+	matching.Add(g.getEdgeByCoordinates(2, 3))
+	matching.Add(g.getEdgeByCoordinates(4, 5))
+
+	b.Contract(g, matching)
+	assert.Equal(t, 1, g.NEdges())
+	assert.Equal(t, 2, g.NVertices())
+	assert.True(t, g.hasEdge(1, 2))
+	assert.Equal(t, 1, matching.Cardinality())
+	assert.Equal(t, g.getEdgeByCoordinates(0, 1), <-matching.Iter())
 }

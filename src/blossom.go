@@ -162,8 +162,10 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 							B := MkBlossom(blossomRoot, e, blossomPath...)
 							// B21 G’, M’ ← contract G and M by B
 							gPrime := G.Copy()
-							B.Contract(gPrime)
+							mPrime := M.Clone()
+							B.Contract(gPrime, mPrime)
 							// B22 P’ ← find_augmenting_path( G’, M’ )
+							// pPrime := findAugmentingPath(gPrime, mPrime)
 							// B23 P ← lift P’ to G
 							// B24 return P
 						}
@@ -190,7 +192,7 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 	return result
 }
 
-func (self *blossom) Contract(g *Graph) {
+func (self *blossom) Contract(g *Graph, matching mapset.Set) {
 	g.ForAllNeighbors(self.Root, func(edge *Edge, idx int, done chan<- bool) {
 		neighbor := getOtherVertex(self.Root, edge)
 		if !self.vertices.Contains(neighbor) {
@@ -204,6 +206,9 @@ func (self *blossom) Contract(g *Graph) {
 			}
 
 			g.rewireEdge(edge, neighbor, self.Root)
+			if nil != matching && matching.Contains(edge) {
+				matching.Remove(edge)
+			}
 		})
 
 		g.RemoveVertex(neighbor)
