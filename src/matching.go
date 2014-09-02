@@ -185,3 +185,66 @@ func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
 
 	return result
 }
+
+func lift(path []*Edge, matching mapset.Set, blossoms []*blossom, g *Graph) (result []*Edge) {
+	// If the path contains contracted blossoms, then the size of the result size
+	// must be enlarged for each blossom by (n-1)/2, where n is a blossom's size.
+	// if P’ traverses through a segment u → vB → w in G’,
+	// then this segment is replaced with the segment u → ( u’ → ... → w’ ) → w in G,
+	// where blossom vertices u’ and w’ and the side of B, ( u’ → ... → w’ ),
+	// going from u’ to w’ are chosen to ensure that the new path is still
+	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
+
+	processedBlossoms := make([]bool, len(blossoms))
+	isProcessable := func(b *blossom) bool {
+		return nil != b && !processedBlossoms[b.Root.toInt()]
+	}
+	result = make([]*Edge, 0, cap(blossoms))
+	exits := make([]Vertex, g.currentVertexIndex)
+	getLiftedExitEdge := func(edge *Edge) *Edge {
+		fi := edge.from.toInt()
+		ti := edge.to.toInt()
+		if exits[fi] != 0 {
+			return g.getEdgeByCoordinates(exits[fi].toInt(), ti)
+		}
+
+		if exits[ti] != 0 {
+			return g.getEdgeByCoordinates(fi, exits[ti].toInt())
+		}
+
+		// Or just return edge?
+		return g.getEdgeByCoordinates(fi, ti)
+	}
+
+	for i, n := 0, len(path); i < n; i++ {
+		curEdge := path[i]
+		fi := curEdge.from.toInt()
+		ti := curEdge.to.toInt()
+		b := blossoms[fi]
+		Debug("Processing %v", curEdge)
+		var expansion []*Edge
+		if nil == b {
+			Debug("Adding %v", curEdge)
+			result = append(result, getLiftedExitEdge(curEdge))
+			if b = blossoms[ti]; isProcessable(b) {
+				w := getOtherVertex(curEdge.to, path[i+1])
+				expansion, exits[ti] = b.Expand(w, matching, g)
+				Debug("Blossom after edge, adding %v", expansion)
+				result = append(result, expansion...)
+				processedBlossoms[ti] = true
+			}
+		} else if isProcessable(b) {
+			expansion, exits[fi] = b.Expand(curEdge.to, matching, g)
+			Debug("Blossom before edge, adding %v", expansion)
+			result = append(result, expansion...)
+			processedBlossoms[fi] = true
+			Debug("Adding %v", curEdge)
+			result = append(result, getLiftedExitEdge(curEdge))
+		} else {
+			Debug("No blossoms to process, adding %v", *curEdge)
+			result = append(result, getLiftedExitEdge(curEdge))
+		}
+	}
+
+	return result
+}

@@ -58,7 +58,7 @@ func (self *blossom) Contract(g *Graph, matching mapset.Set) {
 	})
 }
 
-func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) []*Edge {
+func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) ([]*Edge, Vertex) {
 	// the side of B, ( u’ → ... → w’ ),
 	// going from u’ to w’ are chosen to ensure that the new path is still
 	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
@@ -83,43 +83,7 @@ func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) []*Edg
 		}
 	})
 
-	return ShortestPathInGraph(bGraph, self.Root, exitVertex)
-}
-
-func lift(path []*Edge, matching mapset.Set, blossoms []*blossom, g *Graph) (result []*Edge) {
-	// If the path contains contracted blossoms, then the size of the result size
-	// must be enlarged for each blossom by (n-1)/2, where n is a blossom's size.
-	// if P’ traverses through a segment u → vB → w in G’,
-	// then this segment is replaced with the segment u → ( u’ → ... → w’ ) → w in G,
-	// where blossom vertices u’ and w’ and the side of B, ( u’ → ... → w’ ),
-	// going from u’ to w’ are chosen to ensure that the new path is still
-	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
-	// TODO: @refactor add a 'checkHasBlossom' function.
-	processedBlossoms := make([]bool, len(blossoms))
-	result = make([]*Edge, 0, cap(blossoms))
-	for i, n := 0, len(path); i < n; i++ {
-		curEdge := path[i]
-		fi := curEdge.from.toInt()
-		ti := curEdge.to.toInt()
-		b := blossoms[fi]
-		if nil == b {
-			result = append(result, curEdge)
-			if b = blossoms[ti]; nil != b && !processedBlossoms[ti] {
-				// u := ti
-				w := getOtherVertex(curEdge.to, path[i+1])
-				result = append(result, b.Expand(w, matching, g)...)
-				processedBlossoms[ti] = true
-			}
-		} else if !processedBlossoms[fi] {
-			result = append(result, b.Expand(curEdge.to, matching, g)...)
-			processedBlossoms[fi] = true
-			result = append(result, curEdge)
-		} else {
-			result = append(result, curEdge)
-		}
-	}
-
-	return result
+	return ShortestPathInGraph(bGraph, self.Root, exitVertex), exitVertex
 }
 
 func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {

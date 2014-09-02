@@ -193,16 +193,13 @@ func TestExpandBlossom(t *testing.T) {
 
 	g.AddEdge(5, 7)
 
-	inVerboseContext(func() {
-		g1 := g.Copy()
-
-		b.Contract(g1, nil)
-		matching := mapset.NewSet()
-		matching.Add(g.getEdgeByCoordinates(0, 1))
-		matching.Add(g.getEdgeByCoordinates(2, 3))
-		matching.Add(g.getEdgeByCoordinates(4, 5))
-		actual := b.Expand(7, matching, g)
-		assert.Equal(t, actual[0], g.getEdgeByCoordinates(1, 5))
-		assert.Equal(t, actual[1], g.getEdgeByCoordinates(5, 4))
-	})
+	g1 := g.Copy()
+	b.Contract(g1, nil)
+	matching := mapset.NewSet()
+	matching.Add(g.getEdgeByCoordinates(0, 1))
+	matching.Add(g.getEdgeByCoordinates(2, 3))
+	matching.Add(g.getEdgeByCoordinates(4, 5))
+	actual, _ := b.Expand(7, matching, g)
+	assert.Equal(t, actual[0], g.getEdgeByCoordinates(1, 5))
+	assert.Equal(t, actual[1], g.getEdgeByCoordinates(5, 4))
 }

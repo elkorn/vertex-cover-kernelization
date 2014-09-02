@@ -24,19 +24,26 @@ func (self *Graph) Copy() *Graph {
 	}
 	result.Vertices = make(Vertices, len(self.Vertices))
 	copy(result.Vertices, self.Vertices)
-
-	result.Edges = make(Edges, len(self.Edges))
-	copy(result.Edges, self.Edges)
 	result.isVertexDeleted = make([]bool, len(self.isVertexDeleted))
 	copy(result.isVertexDeleted, self.isVertexDeleted)
-	result.degrees = make([]int, len(self.degrees))
-	copy(result.degrees, self.degrees)
+	result.Edges = make(Edges, 0, cap(self.Edges))
 	result.neighbors = make([][]*Edge, len(self.neighbors))
+	result.degrees = make([]int, len(self.degrees))
+
 	for x := range self.neighbors {
 		result.neighbors[x] = make([]*Edge, len(self.neighbors[x]))
-		copy(result.neighbors[x], self.neighbors[x])
 	}
 
+	for i, edge := range self.Edges {
+		Debug("%v", edge)
+		if nil == edge {
+			continue
+		}
+		result.AddEdge(edge.from, edge.to)
+		result.Edges[i].isDeleted = edge.isDeleted
+	}
+
+	copy(result.degrees, self.degrees)
 	return result
 }
 
@@ -246,7 +253,7 @@ func mkGraph(vertices, capacity int) *Graph {
 	g.currentVertexIndex = vertices
 	// NOTE: Duplicate edges are not allowed, thus the maximum number of edges in the graph is V^2
 	// (when every vertex is connected to each other)
-	g.Edges = make(Edges, vertices*vertices, capacity*capacity)
+	g.Edges = make(Edges, 0, capacity*capacity)
 	g.degrees = make([]int, vertices, capacity)
 	g.neighbors = make([][]*Edge, vertices, capacity)
 	for y := range g.neighbors {

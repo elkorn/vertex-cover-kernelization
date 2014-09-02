@@ -2,6 +2,8 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
+// TODO: Refactor Path to return a queue.
+
 type tree struct {
 	Root Vertex
 	g    *Graph
