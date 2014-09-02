@@ -72,3 +72,116 @@ func pathToSet(path []int) (P mapset.Set) {
 
 	return P
 }
+
+func findAugmentingPath(G *Graph, M mapset.Set) (result []*Edge) {
+	blossoms := make([]*blossom, G.currentVertexIndex)
+	// TODO what should the capacity be?
+	// B02 F ← empty forest
+	F := MkForest(G.currentVertexIndex)
+	// B03 unmark all vertices and edges in G, mark all edges of M
+	marker := mkEdmondsMarker(G)
+	matchedEdges := make([]*Edge, G.currentVertexIndex)
+	for e := range M.Iter() {
+		edge := e.(*Edge)
+		marker.SetEdgeMarked(edge, true)
+		// There cannot exist two edges beginning in the same vertex in
+		// a matching.
+		matchedEdges[edge.from.toInt()] = edge
+	}
+
+	// B05 for each exposed vertex v do
+	G.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
+		if vertex.isExposed(M) {
+			// B06 create a singleton tree { v } and add the tree to F
+			F.AddTree(MkTree(vertex, G.currentVertexIndex))
+		}
+	})
+
+	// B08 while there is an unmarked vertex v in F with distance( v, root( v ) ) even do
+	F.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if nil != result {
+			done <- true
+			return
+		}
+
+		if marker.IsVertexMarked(v) {
+			return
+		}
+
+		var distance int
+		if distance = F.Distance(v, F.Root(v)); distance%2 != 0 {
+			return
+		}
+
+		// B09 while there exists an unmarked edge e = { v, w } do
+		for marker.ExistsUnmarkedEdgeFromVertex(v) {
+			G.ForAllNeighbors(v, func(e *Edge, index int, done chan<- bool) {
+				if marker.IsEdgeMarked(e) {
+					return
+				}
+
+				// B10            if w is not in F then
+				w := getOtherVertex(v, e)
+				if !F.HasVertex(w) {
+					// w is matched, so add e and w's matched edge to F
+					// B11 x ← vertex matched to w in M
+					matchedEdge := matchedEdges[w.toInt()]
+					// x := getOtherVertex(w, matchedEdge)
+					// B12 add edges { v, w } and { w, x } to the tree of v
+					F.AddEdge(v, e)           // { v, w }
+					F.AddEdge(v, matchedEdge) // { w, x }
+				} else { // B13 else
+					// B14 if distance( w, root( w ) ) is odd then
+					if F.Distance(w, F.Root(w))%2 == 1 {
+						// Do nothing.
+					} else { // B15 else
+						// B16 if root( v ) ≠ root( w ) then
+						if vRoot, wRoot := F.Root(v), F.Root(w); vRoot != wRoot {
+							// Report an augmenting path in F \cup { e }.
+							// B17  P ← path ( root( v ) → ... → v ) → ( w → ... → root( w ) )
+							result = F.Path(MkTreePath(vRoot, v), MkTreePath(w, wRoot))
+							// B18 return P
+							done <- true
+							return
+						} else {
+							// Contract a blossom in G and look for the path in the contracted graph.
+							// B20 B ← blossom formed by e and edges on the path v → w in T
+							blossomRoot := F.lookup(vRoot).CommonAncestor(v, w)
+							blossomPath := F.Path(MkTreePath(v, w))
+							B := MkBlossom(blossomRoot, e, blossomPath...)
+							// B21 G’, M’ ← contract G and M by B
+							// TODO: @refactor possible performance issue
+							// Rewiring should be undoable so there is no need to copy the whole graph each time.
+							gPrime := G.Copy()
+							mPrime := M.Clone()
+							B.Contract(gPrime, mPrime)
+							blossoms[B.Root.toInt()] = B
+							// B22 P’ ← find_augmenting_path( G’, M’ )
+							pPrime := findAugmentingPath(gPrime, mPrime)
+							// B23 P ← lift P’ to G
+							result = lift(pPrime, M, blossoms, G)
+							// B24 return P
+							done <- true
+							return
+						}
+						// B25 end if
+					}
+					// B26 end if
+				}
+				// B27 end if
+				// B28 mark edge e
+				marker.SetEdgeMarked(e, true)
+			})
+		}
+		// B29 end while
+		// B30 mark vertex v
+		marker.SetVertexMarked(v, true)
+	}) // B31 end while
+
+	if nil == result {
+		// B32 return empty path
+		result = make([]*Edge, 0, G.NEdges())
+	}
+
+	return result
+}
