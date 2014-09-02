@@ -62,8 +62,8 @@ func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) ([]*Ed
 	// the side of B, ( u’ → ... → w’ ),
 	// going from u’ to w’ are chosen to ensure that the new path is still
 	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
-	// TODO: What about 'u’ is exposed with respect to M ∩ B'?
-	// Is this guaranteed by the Edmonds logic?
+
+	// the 'u’ is exposed with respect to M ∩ B' invariant must be maintained externally somehow -
 	bGraph := MkGraph(g.currentVertexIndex)
 	for e := range self.edges.Iter() {
 		edge := e.(*Edge)
@@ -71,8 +71,10 @@ func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) ([]*Ed
 	}
 
 	var exitVertex Vertex
+	var exitEdge *Edge
+	// var directionVertex Vertex
 
-	g.ForAllNeighbors(target, func(edge *Edge, index int, done chan<- bool) {
+	g.ForAllNeighbors(target, func(edge *Edge, _ int, done chan<- bool) {
 		// { w', w } ∈ E ⧵ M
 		exit := getOtherVertex(target, edge)
 		Debug("Checking %v-%v, matched: %v, in blossom: %v", edge.from, edge.to, matching.Contains(edge), bGraph.hasVertex(exit))
@@ -83,7 +85,28 @@ func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) ([]*Ed
 		}
 	})
 
-	return ShortestPathInGraph(bGraph, self.Root, exitVertex), exitVertex
+	// The last edge in the blossom taken into the path must be matched.
+	Debug("Looking for blossom exit edge...")
+	bGraph.ForAllNeighbors(exitVertex, func(bEdge *Edge, _ int, done chan<- bool) {
+		Debug("%v-%v", bEdge.from, bEdge.to)
+		edge := g.getEdgeByCoordinates(
+			bEdge.from.toInt(),
+			bEdge.to.toInt())
+		if matching.Contains(
+			edge) {
+			Debug("Found!")
+			exitEdge = bEdge
+			done <- true
+		}
+	})
+
+	path := ShortestPathInGraph(
+		bGraph,
+		self.Root,
+		getOtherVertex(exitVertex, exitEdge))
+
+	return append(path, exitEdge),
+		exitVertex
 }
 
 func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {

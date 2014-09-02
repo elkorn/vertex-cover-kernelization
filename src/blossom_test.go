@@ -166,7 +166,7 @@ func TestContractBlossomWithMatching(t *testing.T) {
 	assert.Equal(t, g.getEdgeByCoordinates(0, 1), <-matching.Iter())
 }
 
-func TestExpandBlossom(t *testing.T) {
+func TestExpandBlossom1(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -202,4 +202,38 @@ func TestExpandBlossom(t *testing.T) {
 	actual, _ := b.Expand(7, matching, g)
 	assert.Equal(t, actual[0], g.getEdgeByCoordinates(1, 5))
 	assert.Equal(t, actual[1], g.getEdgeByCoordinates(5, 4))
+}
+
+func TestExpandBlossom2(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+
+	b := blossom{
+		Root:     MkVertex(1),
+		edges:    mapset.NewSet(),
+		vertices: mapset.NewSet(),
+	}
+
+	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		if edge.from == 1 {
+			return
+		}
+
+		b.edges.Add(edge)
+		b.vertices.Add(edge.from)
+		b.vertices.Add(edge.to)
+	})
+
+	g.AddEdge(3, 5)
+	g1 := g.Copy()
+	b.Contract(g1, nil)
+	matching := mapset.NewSet()
+	matching.Add(g.getEdgeByCoordinates(0, 1))
+	matching.Add(g.getEdgeByCoordinates(2, 3))
+	actual, _ := b.Expand(5, matching, g)
+	assert.Equal(t, actual[0], g.getEdgeByCoordinates(1, 3))
+	assert.Equal(t, actual[1], g.getEdgeByCoordinates(2, 3))
 }
