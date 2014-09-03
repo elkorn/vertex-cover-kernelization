@@ -12,14 +12,14 @@ func TestMaximalMatching(t *testing.T) {
 
 	m, o := FindMaximalMatching(g)
 	assert.Equal(t, 2, m.NEdges(), "The matching of graph1 should contain 2 edges.")
-	assert.Equal(t, 6, o.Cardinality(), "The outsiders of graph1 should contain 6 unmatched edges.")
+	assert.Equal(t, 5, o.Cardinality(), "The outsiders of graph1 should contain 4 unmatched vertices.")
 	assert.True(t, m.hasEdge(1, 2))
 	assert.True(t, m.hasEdge(3, 4))
 
 	g = mkGraph5()
 	m, o = FindMaximalMatching(g)
 	assert.Equal(t, 3, m.NEdges(), "The matching of graph5 should contain 3 edges.")
-	assert.Equal(t, 4, o.Cardinality(), "The outsiders of graph5 should contain 4 unmatched edges.")
+	assert.Equal(t, 6, o.Cardinality(), "The outsiders of graph5 should contain 6 unmatched vertices.")
 	assert.True(t, m.hasEdge(1, 2))
 	assert.True(t, m.hasEdge(4, 5))
 	assert.True(t, m.hasEdge(6, 7))
