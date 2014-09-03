@@ -68,11 +68,6 @@ func rng(args ...int) []int {
 	return c
 }
 
-func showGraph(g *Graph) {
-	gv := MkGraphVisualizer()
-	gv.Display(g)
-}
-
 func mkGraph1() *Graph {
 	/*
 		   1o---o2

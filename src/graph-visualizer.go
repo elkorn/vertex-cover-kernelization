@@ -11,10 +11,31 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
-type graphVisualizer struct{}
+type gvAttr struct {
+	key   string
+	value string
+}
 
-func MkGraphVisualizer() *graphVisualizer {
-	return &graphVisualizer{}
+type graphVisualizer struct {
+	g     *Graph
+	attrs [][]*gvAttr
+}
+
+func showGraph(g *Graph) {
+	MkGraphVisualizer(g).Display()
+}
+
+func MkGraphVisualizer(g *Graph) *graphVisualizer {
+	result := &graphVisualizer{
+		g: g,
+	}
+
+	result.attrs = make([][]*gvAttr, g.currentVertexIndex)
+	for i, _ := range result.attrs {
+		result.attrs[i] = make([]*gvAttr, g.currentVertexIndex)
+	}
+
+	return result
 }
 
 func stob(str string) []byte {
@@ -83,27 +104,27 @@ func (self *graphVisualizer) dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	return res
 }
 
-func (self *graphVisualizer) mkJpg(g *Graph, name string) bytes.Buffer {
-	return self.dotToJpg(self.toDot(g, name))
+func (self *graphVisualizer) mkJpg(name string) bytes.Buffer {
+	return self.dotToJpg(self.toDot(self.g, name))
 }
 
-func (self *graphVisualizer) MkJpg(g *Graph, name string) error {
+func (self *graphVisualizer) MkJpg(name string) error {
 	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
 	if nil != err {
 		return err
 	}
 
 	defer file.Close()
-	buf := self.mkJpg(g, name)
+	buf := self.mkJpg(name)
 	_, err = file.Write(buf.Bytes())
 	return err
 }
 
-func (self *graphVisualizer) Display(g *Graph) {
+func (self *graphVisualizer) Display() {
 	randname := fmt.Sprintf("%v", rand.Int63())
 	filename := fmt.Sprintf("%v.jpg", randname)
 	cmd := exec.Command("feh", filename)
-	err := self.MkJpg(g, randname)
+	err := self.MkJpg(randname)
 	if nil != err {
 		log.Fatal(err)
 	}

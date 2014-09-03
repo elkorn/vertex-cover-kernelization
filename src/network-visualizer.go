@@ -21,9 +21,9 @@ func edgeToBWithColor(edge *Edge, color string) []byte {
 	return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
 }
 
-func MkNetworkVisualizer() *networkVisualizer {
+func MkNetworkVisualizer(g *Graph) *networkVisualizer {
 	return &networkVisualizer{
-		MkGraphVisualizer(),
+		MkGraphVisualizer(g),
 	}
 }
 
