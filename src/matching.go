@@ -76,13 +76,14 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 			return
 		}
 
-		Debug("Adding %v to forest.", v)
+		Debug("%v is exposed, adding to forest.", v)
 		forest[v.toInt()] = mkNodeInformation(INVALID_VERTEX, v, true)
 
 		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
-			Debug("Adding %v-%v to work list", edge.from, edge.to)
+			e := MkEdge(v, getOtherVertex(v, edge))
+			Debug("Adding %v-%v to work list", e.from, e.to)
 			// This ordering has to be enforced.
-			workList.Push(MkEdge(v, getOtherVertex(v, edge)))
+			workList.Push(e)
 		})
 	})
 
@@ -108,6 +109,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 				// and expand the result.
 				Debug("Case 1.: %v-%v", cur.from, cur.to)
 				blossom := findBlossom(forest, cur)
+				Debug("Found blossom %v", blossom.vertices)
 				path := findAugmentingPath(
 					contractGraph(G, blossom),
 					contractGraph(M, blossom))
@@ -168,7 +170,9 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 			forest[endpoint.toInt()] = mkNodeInformation(cur.to, startInfo.Root, true)
 
 			G.ForAllNeighbors(endpoint, func(edge *Edge, index int, done chan<- bool) {
-				workList.Push(edge)
+				e := MkEdge(endpoint, getOtherVertex(endpoint, edge))
+				Debug("Adding fringe edge %v-%v to work list", e.from, e.to)
+				workList.Push(e)
 			})
 		}
 	}
@@ -195,8 +199,10 @@ func updateMatching(path *list.List, matching *Graph) {
 	for e, f := path.Front(), path.Front().Next(); f != nil; e, f = e.Next(), f.Next() {
 		from, to := e.Value.(Vertex), f.Value.(Vertex)
 		if matching.hasEdge(from, to) {
+			Debug("Removing edge %v-%v from matching", from, to)
 			matching.RemoveEdge(from, to)
 		} else {
+			Debug("Adding edge %v-%v to matching", from, to)
 			matching.AddEdge(from, to)
 		}
 	}
@@ -253,6 +259,7 @@ func expandPath(path *list.List, g *Graph, forest []*nodeInformation, blossom *b
 			exitNode := findBlossomExit(g, blossom, p.Next().Value.(Vertex))
 			exitIndex := indexOf(exitNode, blossom.cycle)
 
+			Debug("Exit node : %v, Exit index: %v", exitNode, exitIndex)
 			var start, step int
 			// The path taken to the exit of the cycle must end by following a
 			// matched edge, to maintani the invariant of '{w', w} ∈ E ⧵ M'
@@ -262,7 +269,7 @@ func expandPath(path *list.List, g *Graph, forest []*nodeInformation, blossom *b
 				step = 1
 			} else {
 				// The anti-clockwise path will end in the matched edge.
-				start = blossom.cycle.Len()
+				start = blossom.cycle.Len() - 2
 				step = -1
 			}
 

@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"container/list"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -33,6 +34,7 @@ func TestMaximumMatching1(t *testing.T) {
 	g.AddEdge(1, 5)
 
 	max := FindMaximumMatching(g)
+
 	assert.Equal(t, 2, max.NEdges())
 	assert.True(t, max.hasEdge(1, 2))
 	assert.True(t, max.hasEdge(3, 4))
@@ -48,10 +50,26 @@ func TestMaximumMatching2(t *testing.T) {
 	g.AddEdge(1, 5)
 
 	max := FindMaximumMatching(g)
+
 	assert.Equal(t, 3, max.NEdges())
 	assert.True(t, max.hasEdge(1, 2))
 	assert.True(t, max.hasEdge(3, 6))
 	assert.True(t, max.hasEdge(4, 5))
+}
+
+func TestMaximumMatchingSmallBlossom(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(3, 5)
+
+	max := FindMaximumMatching(g)
+
+	assert.Equal(t, 2, max.NEdges())
+	assert.True(t, max.hasEdge(1, 2))
+	assert.True(t, max.hasEdge(3, 4))
 }
 
 func TestMaximumMatching3(t *testing.T) {
@@ -63,10 +81,20 @@ func TestMaximumMatching3(t *testing.T) {
 	g.AddEdge(2, 5)
 	g.AddEdge(2, 6)
 
-	inVerboseContext(func() {
-		max := FindMaximumMatching(g)
-		assert.Equal(t, 2, max.NEdges())
-		assert.True(t, max.hasEdge(1, 3))
-		assert.True(t, max.hasEdge(2, 4))
-	})
+	max := FindMaximumMatching(g)
+	assert.Equal(t, 2, max.NEdges())
+	assert.True(t, max.hasEdge(1, 3))
+	assert.True(t, max.hasEdge(2, 4))
+}
+
+func TestIndexOf(t *testing.T) {
+	list := list.New()
+
+	list.PushBack(1)
+	list.PushBack(2)
+	list.PushBack(3)
+
+	assert.Equal(t, 0, indexOf(1, list))
+	assert.Equal(t, 1, indexOf(2, list))
+	assert.Equal(t, 2, indexOf(3, list))
 }
