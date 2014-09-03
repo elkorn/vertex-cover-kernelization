@@ -20,20 +20,40 @@ func MkBlossom(root Vertex, cycle *list.List, vertices mapset.Set) *blossom {
 	}
 }
 
+func prepend(slice []Vertex, v Vertex) []Vertex {
+	return append([]Vertex{v}, slice...)
+}
+
+func printForest(forest []*nodeInformation) {
+	for i, f := range forest {
+		Debug("%v - parent: %v, root, %v, outer: %v", MkVertex(i), f.Parent, f.Root, f.IsOuter)
+	}
+}
+
 func findBlossom(forest []*nodeInformation, edge *Edge) *blossom {
-	pathA, pathB := MkStack(len(forest)), MkStack(len(forest))
+	// A maximum matching has cardinality at most n/2.
+	n := len(forest)
+	Debug("Searching for blossom with edge %v in forest", edge)
+	printForest(forest)
+	pathA, pathB := make([]Vertex, 0, n/2), make([]Vertex, 0, n/2)
 	for v := edge.from; v != INVALID_VERTEX; v = forest[v.toInt()].Parent {
-		pathA.Push(v)
+		Debug("Add %v to path A", v)
+		pathA = prepend(pathA, v)
 	}
 
 	for v := edge.to; v != INVALID_VERTEX; v = forest[v.toInt()].Parent {
-		pathB.Push(v)
+		Debug("Add %v to path B", v)
+		pathB = prepend(pathB, v)
 	}
 
 	commonAncestorIdx := 0
-	for diffIdx := 0; diffIdx < pathA.Size() && diffIdx < pathB.Size(); diffIdx++ {
-		if pathA.Peek(diffIdx) != pathB.Peek(diffIdx) {
+	nA, nB := len(pathA), len(pathB)
+	Debug("len(A): %v, len(B): %v", nA, nB)
+	for diffIdx := 0; diffIdx < nA && diffIdx < nB; diffIdx++ {
+		Debug("[Ancestor %v] A: %v, B: %v", diffIdx, pathA[diffIdx], pathB[diffIdx])
+		if pathA[diffIdx] != pathB[diffIdx] {
 			commonAncestorIdx = diffIdx - 1
+			Debug("Common ancestor index: %v", commonAncestorIdx)
 			break
 		}
 	}
@@ -42,17 +62,18 @@ func findBlossom(forest []*nodeInformation, edge *Edge) *blossom {
 	// what guarantees having a non-zero common ancestor index.
 	cycle := list.New()
 	vertices := mapset.NewSet()
-	for i := commonAncestorIdx; i < pathA.Size(); i++ {
-		v := pathA.Peek(i)
+	for i := commonAncestorIdx; i < nA; i++ {
+		v := pathA[i]
 		cycle.PushBack(v)
 		vertices.Add(v)
 	}
 
-	for i := pathB.Size() - 1; i >= commonAncestorIdx; i-- {
-		v := pathB.Peek(i)
+	for i := nB - 1; i >= commonAncestorIdx; i-- {
+		v := pathB[i]
 		cycle.PushBack(v)
 		vertices.Add(v)
 	}
 
-	return MkBlossom((pathA.Peek(commonAncestorIdx)).(Vertex), cycle, vertices)
+	Debug("Blossom cycle: %v", cycle)
+	return MkBlossom(pathA[commonAncestorIdx], cycle, vertices)
 }

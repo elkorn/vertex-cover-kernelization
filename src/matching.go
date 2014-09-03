@@ -206,7 +206,7 @@ func contractGraph(g *Graph, blossom *blossom) *Graph {
 	result := MkGraph(g.currentVertexIndex)
 	// Only the nodes not contained in a blossom belong to the result.
 	g.ForAllVertices(func(v Vertex, index int, done chan<- bool) {
-		if !blossom.vertices.Contains(v) {
+		if blossom.vertices.Contains(v) && v != blossom.Root {
 			result.RemoveVertex(v)
 		}
 	})
