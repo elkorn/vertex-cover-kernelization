@@ -7,18 +7,14 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/deckarep/golang-set"
 )
 
-type gvAttr struct {
-	key   string
-	value string
-}
-
 type graphVisualizer struct {
 	g     *Graph
-	attrs [][]*gvAttr
+	attrs [][]map[string]string
 }
 
 func showGraph(g *Graph) {
@@ -30,9 +26,12 @@ func MkGraphVisualizer(g *Graph) *graphVisualizer {
 		g: g,
 	}
 
-	result.attrs = make([][]*gvAttr, g.currentVertexIndex)
+	result.attrs = make([][]map[string]string, g.currentVertexIndex)
 	for i, _ := range result.attrs {
-		result.attrs[i] = make([]*gvAttr, g.currentVertexIndex)
+		result.attrs[i] = make([]map[string]string, g.currentVertexIndex)
+		for j, _ := range result.attrs[i] {
+			result.attrs[i][j] = make(map[string]string, 0)
+		}
 	}
 
 	return result
@@ -57,8 +56,43 @@ func edgeToB(edge *Edge) []byte {
 	return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
 }
 
+func edgeToBWithAttrs(edge *Edge, attrs map[string]string) []byte {
+	if len(attrs) > 0 {
+		attrsStrs := make([]string, 0, len(attrs))
+
+		for name, value := range attrs {
+			attrsStrs = append(attrsStrs, fmt.Sprintf("%v=\"%v\"", name, value))
+		}
+
+		return tstobn(fmt.Sprintf("%v -- %v [%v];", edge.from, edge.to, strings.Join(attrsStrs, ", ")))
+	} else {
+		return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
+	}
+}
+
 func vertexToB(v Vertex) []byte {
 	return tstobn(fmt.Sprintf("%v;", v))
+}
+
+func (self *graphVisualizer) edgeToB(edge *Edge) []byte {
+	return edgeToBWithAttrs(edge, self.attrs[edge.from.toInt()][edge.to.toInt()])
+}
+
+func (self *graphVisualizer) setEdgeAttr(edge *Edge, name, val string) {
+	self.setEdgeEndpointsAttr(edge.from, edge.to, name, val)
+}
+
+func (self *graphVisualizer) setEdgeEndpointsAttr(from, to Vertex, name, val string) {
+	self.setEdgeCoordsAttr(from.toInt(), to.toInt(), name, val)
+}
+
+func (self *graphVisualizer) setEdgeCoordsAttr(from, to int, name, val string) {
+	self.attrs[from][to][name] = val
+	self.attrs[to][from][name] = val
+}
+
+func (self *graphVisualizer) Highlight(edge *Edge, color string) {
+	self.setEdgeAttr(edge, "color", color)
 }
 
 func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
@@ -71,7 +105,7 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 		// In this context it might be useful to use this range loop and e.g. display
 		// the removed edge as dotted or grayed out.
 		// for _, edge := range g.Edges {
-		res.Write(edgeToB(edge))
+		res.Write(self.edgeToB(edge))
 		connectedVertices.Add(edge.from)
 		connectedVertices.Add(edge.to)
 	})
@@ -116,6 +150,7 @@ func (self *graphVisualizer) MkJpg(name string) error {
 
 	defer file.Close()
 	buf := self.mkJpg(name)
+	Debug(buf.String())
 	_, err = file.Write(buf.Bytes())
 	return err
 }

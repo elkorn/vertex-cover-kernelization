@@ -80,3 +80,17 @@ func TestMkJpg(t *testing.T) {
 	// assert.Equal(t, expected, actual)
 	os.Remove("actual_dot.jpg")
 }
+
+func TestColor(t *testing.T) {
+	g := MkGraph(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+
+	gv := MkGraphVisualizer(g)
+
+	gv.Highlight(g.Edges[0], "red")
+	gv.Highlight(g.Edges[1], "green")
+	gv.Highlight(g.Edges[2], "purple")
+	// gv.Display()
+}
