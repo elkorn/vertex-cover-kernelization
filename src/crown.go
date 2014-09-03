@@ -16,7 +16,7 @@ func (self *Crown) Width() int {
 func findCrown(G *Graph) *Crown {
 	// Step 1.: Find a maximal matching M1 of the graph,
 	// identify the set of all unmatched vertices as the set O of outsiders
-	M1, O := FindMaximalMatching(G)
+	/*M1*/ _, O := FindMaximalMatching(G)
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
 	for vInter := range O.Iter() {
