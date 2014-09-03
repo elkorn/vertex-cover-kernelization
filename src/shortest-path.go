@@ -4,7 +4,7 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
-// TODO migrate to the new logic.
+// TODO: migrate to the new logic.
 func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
@@ -33,7 +33,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 
 		path.Push(si)
-		// TODO introduce Queue.Iter() to get rid of O(N) here.
+		// TODO: introduce Queue.Iter() to get rid of O(N) here.
 		return path.Values()
 	}
 
@@ -64,7 +64,7 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 	return marked[to.toInt()], pathTo(to), distance
 }
 
-// TODO merge with forAllCoordPairsInPath.
+// TODO: merge with forAllCoordPairsInPath.
 func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, int, chan<- bool)) {
 	done := make(chan bool, 1)
 	vi := to.toInt()

@@ -2,7 +2,7 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
-// TODO Refactor to use shortest-path.
+// TODO: Refactor to use shortest-path.
 func forAllCoordPairsInPath(path []int, fn func(int, int, int, int, chan<- bool)) {
 	done := make(chan bool, 1)
 
@@ -83,7 +83,7 @@ func isAlternatingPathWithMatching(path []*Edge, matching mapset.Set) bool {
 func (from Vertex) isReachableWithMatchingThroughAlternatingPath(to Vertex, netFlow *NetworkFlow, matching mapset.Set) bool {
 	exists, path, _ := shortestPath(netFlow.net, from, to)
 	if len(path) <= 2 {
-		// TODO I'm not sure whether in case where only a single edge is in the path,
+		// TODO: I'm not sure whether in case where only a single edge is in the path,
 		// the mere fact of it existing is enough - does it have to belong/not belong to M?
 		return exists
 	}

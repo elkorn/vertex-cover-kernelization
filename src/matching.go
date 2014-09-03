@@ -30,7 +30,7 @@ func mkNodeInformation(parent, root Vertex, isOuter bool) *nodeInformation {
 // Formally, M !⊂ M' for any matching M' of G.
 // Intuitively, this is equivalent to saying that a matching is maximal if we cannot
 // add any edge to the existing set
-func FindMaximalMatching(g *Graph) (matching mapset.Set, outsiders mapset.Set) {
+func FindMaximalMatching(g *Graph) (matching *Graph, outsiders mapset.Set) {
 	matching = mapset.NewSet()
 	outsiders = mapset.NewSet()
 	added := make([]bool, len(g.Vertices))

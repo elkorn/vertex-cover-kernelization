@@ -17,7 +17,7 @@ func MkTreePath(from, to Vertex) *treePath {
 	// This swap is intentional - searching for paths in the tree is not as
 	// unintuitive with 'reverse' arguments order as searching for paths in a
 	// forest would be.
-	// TODO see if it is possible to change for tree path lookup to use the
+	// TODO: see if it is possible to change for tree path lookup to use the
 	// 'straightforward' argument order as well.
 	return &treePath{
 		from: from,
@@ -39,7 +39,7 @@ func MkTree(root Vertex, capacity int) (result *tree) {
 }
 
 func (self *tree) AddEdge(a, b Vertex) {
-	// TODO should the existence of `a` be required?
+	// TODO: should the existence of `a` be required?
 	self.addVertex(a)
 	self.addVertex(b)
 	self.g.AddEdge(a, b)

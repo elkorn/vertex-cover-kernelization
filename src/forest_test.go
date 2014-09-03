@@ -71,7 +71,7 @@ func TestPathInForest1(t *testing.T) {
 
 	assert.Equal(t, 4, len(actual))
 	assert.Equal(t, expected, actual)
-	// TODO what about not-in-tree edges?
+	// TODO: what about not-in-tree edges?
 	expected = []*Edge{edges[0], edges[1], edges[2], edges[3], edges[7], edges[6], edges[5], edges[4]}
 	actual = f.Path(ep1, ep3)
 	assert.Equal(t, 8, len(actual))

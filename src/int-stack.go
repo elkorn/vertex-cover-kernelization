@@ -16,7 +16,7 @@ func (self *IntStack) Pop() int {
 	return self.s.Pop().(int)
 }
 
-// TODO add an Iter method.
+// TODO: add an Iter method.
 // It should return a buffered channel of length self.count
 func (self *IntStack) Iter() <-chan int {
 	iter := make(chan int, self.s.count)

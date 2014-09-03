@@ -146,7 +146,7 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 
 func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	// toRemove is probably redundant given the circumstances under which this will be called.
-	// TODO Reason about this redundancy and introduce changes.
+	// TODO: Reason about this redundancy and introduce changes.
 	toRemove := make(Neighbors, 0, self.NVertices())
 	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
 		// TODO @refactor rewire edges from neighbor->distantNeighbor

@@ -10,7 +10,7 @@ import (
 )
 
 type header struct {
-	name1    string // TODO find out what these names actually are.
+	name1    string // TODO: find out what these names actually are.
 	name2    string
 	vertices int
 	edges    int

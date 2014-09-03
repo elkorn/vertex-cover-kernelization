@@ -35,7 +35,7 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(1, 4)
 
-	// TODO here be errors
+	// TODO: here be errors
 	inVerboseContext(func() {
 		g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
 	})

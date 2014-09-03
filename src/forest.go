@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// TODO refactor to allow adding only vertices and edges through the public interface.
+// TODO: refactor to allow adding only vertices and edges through the public interface.
 
 // The capacity of the forest should be the same as the capacity of each of its
 // trees, to accomodate the graph performance optimizations.
@@ -72,7 +72,7 @@ func (self *forest) HasVertex(v Vertex) bool {
 	return self.lookup(v) != nil
 }
 
-// TODO Create a method AddEdgeFromPtr which reuses provided Edge.
+// TODO: Create a method AddEdgeFromPtr which reuses provided Edge.
 func (self *forest) AddEdge(root Vertex, edge *Edge) {
 	Debug("Adding edge %v-%v to tree %v", edge.from, edge.to, root)
 	tree := self.lookup(root)
