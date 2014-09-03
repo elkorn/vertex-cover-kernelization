@@ -31,16 +31,17 @@ func mkNodeInformation(parent, root Vertex, isOuter bool) *nodeInformation {
 // Intuitively, this is equivalent to saying that a matching is maximal if we cannot
 // add any edge to the existing set
 func FindMaximalMatching(g *Graph) (matching *Graph, outsiders mapset.Set) {
-	matching = mapset.NewSet()
+	matching = MkGraphRememberingDeletedVertices(g.currentVertexIndex, g.isVertexDeleted)
 	outsiders = mapset.NewSet()
-	added := make([]bool, len(g.Vertices))
+	added := make([]bool, g.currentVertexIndex)
 	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
 		if !(added[edge.from.toInt()] || added[edge.to.toInt()]) {
-			matching.Add(edge)
+			matching.AddEdge(edge.from, edge.to)
 			added[edge.from.toInt()] = true
 			added[edge.to.toInt()] = true
 		} else {
-			outsiders.Add(edge)
+			outsiders.Add(edge.from)
+			outsiders.Add(edge.to)
 		}
 	})
 
