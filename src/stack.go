@@ -26,10 +26,6 @@ func (self *Stack) Pop() interface{} {
 	return value
 }
 
-func (self *Stack) Peek(pos int) interface{} {
-	return self.values[self.count-pos]
-}
-
 func (self *Stack) Size() int {
 	return self.count
 }
