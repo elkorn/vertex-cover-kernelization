@@ -19,7 +19,8 @@ func findCrown(G *Graph) *Crown {
 	M1, O := FindMaximalMatching(G)
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
-	for v := range O.Iter() {
+	for vInter := range O.Iter() {
+		v := vInter.(Vertex)
 		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
 			if !outsiderNeighbors.hasEdge(edge.from, edge.to) {
 				outsiderNeighbors.AddEdge(edge.from, edge.to)
@@ -30,8 +31,9 @@ func findCrown(G *Graph) *Crown {
 	M2 := FindMaximumMatching(outsiderNeighbors)
 	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
 	I0 := mapset.NewSet()
-	for v := range O.Iter() {
-		if M2.Degree(v) == 0 {
+	for vInter := range O.Iter() {
+		v := vInter.(Vertex)
+		if deg, _ := M2.Degree(v); deg == 0 {
 			I0.Add(v)
 		}
 	}
@@ -42,7 +44,7 @@ func findCrown(G *Graph) *Crown {
 	for {
 		// 4a. Let Hn = N(In)
 		Hn := mapset.NewSet()
-		for vInter := range I0 {
+		for vInter := range I0.Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
 				Hn.Add(getOtherVertex(v, edge))
@@ -71,4 +73,6 @@ func findCrown(G *Graph) *Crown {
 		I0 = I1
 		n++
 	}
+
+	return nil
 }
