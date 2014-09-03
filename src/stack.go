@@ -26,6 +26,14 @@ func (self *Stack) Pop() interface{} {
 	return value
 }
 
+func (self *Stack) Peek(pos int) interface{} {
+	return self.values[self.count-pos]
+}
+
+func (self *Stack) Size() int {
+	return self.count
+}
+
 func (self *Stack) Iter() <-chan interface{} {
 	iter := make(chan interface{}, self.count)
 	count := self.count - 1

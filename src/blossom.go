@@ -1,143 +1,58 @@
 package graph
 
 import (
-	"errors"
-	"fmt"
+	"container/list"
 
 	"github.com/deckarep/golang-set"
 )
 
 type blossom struct {
 	Root     Vertex
-	edges    mapset.Set
+	cycle    *list.List
 	vertices mapset.Set
 }
 
-func MkBlossom(root Vertex, completor *Edge, edges ...*Edge) *blossom {
-	result := &blossom{
+func MkBlossom(root Vertex, cycle *list.List, vertices mapset.Set) *blossom {
+	return &blossom{
 		Root:     root,
-		edges:    mapset.NewSet(),
-		vertices: mapset.NewSet(),
+		cycle:    cycle,
+		vertices: vertices,
 	}
-
-	add := func(edge *Edge) {
-		result.edges.Add(edge)
-		result.vertices.Add(edge.from)
-		result.vertices.Add(edge.to)
-	}
-
-	for _, edge := range edges {
-		add(edge)
-	}
-
-	add(completor)
-
-	return result
 }
 
-func (self *blossom) Contract(g *Graph, matching mapset.Set) {
-	g.ForAllNeighbors(self.Root, func(edge *Edge, idx int, done chan<- bool) {
-		neighbor := getOtherVertex(self.Root, edge)
-		if !self.vertices.Contains(neighbor) {
-			return
+func findBlossom(forest []*nodeInformation, edge *Edge) *blossom {
+	pathA, pathB := MkStack(len(forest)), MkStack(len(forest))
+	for v := edge.from; v != INVALID_VERTEX; v = forest[v.toInt()].Parent {
+		pathA.Push(v)
+	}
+
+	for v := edge.to; v != INVALID_VERTEX; v = forest[v.toInt()].Parent {
+		pathB.Push(v)
+	}
+
+	commonAncestorIdx := 0
+	for diffIdx := 0; diffIdx < pathA.Size() && diffIdx < pathB.Size(); diffIdx++ {
+		if pathA.Peek(diffIdx) != pathB.Peek(diffIdx) {
+			commonAncestorIdx = diffIdx - 1
+			break
 		}
-
-		g.ForAllNeighbors(neighbor, func(edge *Edge, idx int, done chan<- bool) {
-			distantNeighbor := getOtherVertex(neighbor, edge)
-			if distantNeighbor == self.Root {
-				return
-			}
-
-			g.rewireEdge(edge, neighbor, self.Root)
-			if nil != matching && matching.Contains(edge) {
-				matching.Remove(edge)
-			}
-		})
-
-		g.RemoveVertex(neighbor)
-	})
-}
-
-func (self *blossom) Expand(target Vertex, matching mapset.Set, g *Graph) ([]*Edge, Vertex) {
-	// the side of B, ( u’ → ... → w’ ),
-	// going from u’ to w’ are chosen to ensure that the new path is still
-	// alternating (u’ is exposed with respect to M ∩ B, \{ w', w \} ∈ E ⧵ M).
-
-	// the 'u’ is exposed with respect to M ∩ B' invariant must be maintained externally somehow -
-	bGraph := MkGraph(g.currentVertexIndex)
-	for e := range self.edges.Iter() {
-		edge := e.(*Edge)
-		bGraph.AddEdge(edge.from, edge.to)
 	}
 
-	var exitVertex Vertex
-	var exitEdge *Edge
-	// var directionVertex Vertex
-
-	g.ForAllNeighbors(target, func(edge *Edge, _ int, done chan<- bool) {
-		// { w', w } ∈ E ⧵ M
-		exit := getOtherVertex(target, edge)
-		Debug("Checking %v-%v, matched: %v, in blossom: %v", edge.from, edge.to, matching.Contains(edge), bGraph.hasVertex(exit))
-		if exit != self.Root && !matching.Contains(edge) && bGraph.hasVertex(exit) {
-			Debug("Found exit %v", exit)
-			exitVertex = exit
-			done <- true
-		}
-	})
-
-	// The last edge in the blossom taken into the path must be matched.
-	Debug("Looking for blossom exit edge...")
-	bGraph.ForAllNeighbors(exitVertex, func(bEdge *Edge, _ int, done chan<- bool) {
-		Debug("%v-%v", bEdge.from, bEdge.to)
-		edge := g.getEdgeByCoordinates(
-			bEdge.from.toInt(),
-			bEdge.to.toInt())
-		if matching.Contains(
-			edge) {
-			Debug("Found!")
-			exitEdge = bEdge
-			done <- true
-		}
-	})
-
-	path := ShortestPathInGraph(
-		bGraph,
-		self.Root,
-		getOtherVertex(exitVertex, exitEdge))
-
-	return append(path, exitEdge),
-		exitVertex
-}
-
-func (self *Graph) setEdgeAtCoords(from, to int, value *Edge) {
-	self.neighbors[from][to] = value
-	self.neighbors[to][from] = value
-}
-
-func (self *Edge) changeEndpoint(which, newEndpoint Vertex) {
-	if self.from == which {
-		self.from = newEndpoint
-	} else if self.to == which {
-		self.to = newEndpoint
-	}
-}
-
-func (self *Graph) rewireEdge(edge *Edge, from, newAnchor Vertex) {
-	to := getOtherVertex(from, edge)
-
-	if newAnchor == to {
-		panic(errors.New(fmt.Sprintf("Cannot rewire edge %v-%v to %v-%v", from, to, newAnchor, to)))
+	// Both nodes belong to the same tree, they have the same root,
+	// what guarantees having a non-zero common ancestor index.
+	cycle := list.New()
+	vertices := mapset.NewSet()
+	for i := commonAncestorIdx; i < pathA.Size(); i++ {
+		v := pathA.Peek(i)
+		cycle.PushBack(v)
+		vertices.Add(v)
 	}
 
-	fi := from.toInt()
-	nAi := newAnchor.toInt()
-	ti := to.toInt()
+	for i := pathB.Size() - 1; i >= commonAncestorIdx; i-- {
+		v := pathB.Peek(i)
+		cycle.PushBack(v)
+		vertices.Add(v)
+	}
 
-	edge.changeEndpoint(from, newAnchor)
-
-	self.setEdgeAtCoords(fi, ti, nil)
-	self.setEdgeAtCoords(nAi, ti, edge)
-
-	self.degrees[fi]--
-	self.degrees[nAi]++
+	return MkBlossom((pathA.Peek(commonAncestorIdx)).(Vertex), cycle, vertices)
 }

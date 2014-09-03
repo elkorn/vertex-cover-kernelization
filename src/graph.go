@@ -164,14 +164,33 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 	positions := self.getCoveredEdgePositions(v)
 	for i := len(positions) - 1; i >= 0; i-- {
 		edge := self.Edges[positions[i]]
-		self.degrees[edge.from.toInt()] -= 1
-		self.degrees[edge.to.toInt()] -= 1
+		self.degrees[edge.from.toInt()]--
+		self.degrees[edge.to.toInt()]--
 		edge.isDeleted = true
 		self.numberOfEdges--
 	}
 
 	self.removeVertex(v)
 	return nil
+}
+
+func (self *Graph) RestoreVertex(v Vertex) {
+	vi := v.toInt()
+	if !self.isVertexDeleted[vi] {
+		return
+	}
+
+	for _, edge := range self.neighbors[vi] {
+		if nil == edge {
+			continue
+		}
+
+		edge.isDeleted = false
+		self.neighbors[getOtherVertex(v, edge)][vi].isDeleted = false
+		self.degrees[edge.from.toInt()]++
+		self.degrees[edge.to.toInt()]++
+		self.numberOfEdges++
+	}
 }
 
 func (self *Graph) removeVertex(v Vertex) {
@@ -208,6 +227,15 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	self.degrees[bi]++
 	self.numberOfEdges++
 	return nil
+}
+
+func (self *Graph) RemoveEdge(from, to Vertex) {
+	fi, ti := from.toInt(), to.toInt()
+	edge := self.getEdgeByCoordinates(fi, ti)
+	self.degrees[fi] -= 1
+	self.degrees[ti] -= 1
+	edge.isDeleted = true
+	self.numberOfEdges--
 }
 
 func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
@@ -255,9 +283,9 @@ func mkGraph(vertices, capacity int) *Graph {
 	// (when every vertex is connected to each other)
 	g.Edges = make(Edges, 0, capacity*capacity)
 	g.degrees = make([]int, vertices, capacity)
-	g.neighbors = make([][]*Edge, vertices, capacity)
+	g.neighbors = make([][]*Edge, capacity)
 	for y := range g.neighbors {
-		g.neighbors[y] = make([]*Edge, vertices, capacity)
+		g.neighbors[y] = make([]*Edge, capacity)
 	}
 
 	g.isVertexDeleted = make([]bool, vertices, capacity)
