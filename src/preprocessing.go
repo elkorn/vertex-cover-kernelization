@@ -106,40 +106,14 @@ func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
 		self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
-// func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
-// 	fromIndex := from.toInt()
-// 	toIndex := to.toInt()
-// 	newAnchorIndex := newAnchor.toInt()
-
-// 	edge := self.getEdgeByCoordinates(fromIndex, toIndex)
-// 	if nil == edge {
-// 		return
-// 	}
-
-// 	edge.from = newAnchor
-// 	self.neighbors[newAnchorIndex][toIndex] = edge
-// 	self.neighbors[toIndex][newAnchorIndex] = edge
-// 	self.degrees[newAnchorIndex]++
-// 	self.degrees[fromIndex]--
-// }
-
 func (self *Graph) contractEdges(contractionMap NeighborMap) {
-	// toRemove is probably redundant given the circumstances under which this will be called.
-	// TODO: Reason about this redundancy and introduce changes.
 	toRemove := make(Neighbors, 0, self.NVertices())
 	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
-		// TODO @refactor rewire edges from neighbor->distantNeighbor
-		// When refactoring, keep in mind the cases when two neighbors of one
-		// vertex are connected.
-		// TODO @optimize
 		for _, neighbor := range neighbors {
 			distantNeighbors := self.getNeighbors(neighbor)
 			Debug("Neighbor: %v", neighbor)
 			for _, distantNeighbor := range distantNeighbors {
 				Debug("Distante Neighbor: %v", distantNeighbor)
-				// self.rewireEdge(neighbor, distantNeighbor, vertex)
-				// self.neighbors[vertex][distantNeighbor] = self.neighbors[neighbor][distantNeighbor]
-				// self.neighbors[distantNeighbor][vertex] = self.neighbors[distantNeighbor][neighbor]
 				self.AddEdge(vertex, distantNeighbor)
 			}
 
