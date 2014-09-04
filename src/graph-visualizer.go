@@ -122,7 +122,7 @@ func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
 	self.vertexAttrs[v.toInt()]["fillcolor"] = color
 }
 
-func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
+func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
 	res.Write(stob(name))
@@ -139,7 +139,7 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	}
 
 	connectedVertices := mapset.NewSet()
-	g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
+	self.g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
 		// In this context it might be useful to use this range loop and e.g. display
 		// the removed edge as dotted or grayed out.
 		// for _, edge := range g.Edges {
@@ -148,12 +148,12 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 		connectedVertices.Add(edge.to)
 	})
 
-	for _, v := range g.Vertices {
+	for _, v := range self.g.Vertices {
 		if connectedVertices.Contains(v) || verticesWithAttrs.Contains(v) {
 			continue
 		}
 
-		if g.hasVertex(v) {
+		if self.g.hasVertex(v) {
 			res.Write(self.vertexToB(v))
 		}
 	}
@@ -167,17 +167,19 @@ func (self *graphVisualizer) dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	cmd := exec.Command("dot", "-T", "jpg")
 	cmd.Stdout = &res
 	cmd.Stdin = bytes.NewReader(dot.Bytes())
+	Debug("Converting dot to jpg...")
 	err := cmd.Run()
 	if nil != err {
 		log.Fatal(err)
 		return res
 	}
 
+	Debug("Converted dot to jpg.")
 	return res
 }
 
 func (self *graphVisualizer) mkJpg(name string) bytes.Buffer {
-	return self.dotToJpg(self.toDot(self.g, name))
+	return self.dotToJpg(self.toDot(name))
 }
 
 func (self *graphVisualizer) MkJpg(name string) error {

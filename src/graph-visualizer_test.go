@@ -21,7 +21,7 @@ func TesttoDot(t *testing.T) {
 	2 -- 3;
 }`
 
-	result := gv.toDot(g, "test")
+	result := gv.toDot("test")
 	assert.Equal(t, expected, result.String())
 }
 
@@ -32,7 +32,7 @@ func TestdotToJpg(t *testing.T) {
 	g.AddEdge(2, 3)
 	gv := MkGraphVisualizer(g)
 
-	dot := gv.toDot(g, "test")
+	dot := gv.toDot("test")
 	file, err := os.Open("expected_dot.jpg")
 	expected := make([]byte, 0)
 	if nil != err {
