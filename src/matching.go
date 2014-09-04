@@ -34,7 +34,7 @@ func FindMaximalMatching(g *Graph) (matching *Graph, outsiders mapset.Set) {
 	matching = MkGraphRememberingDeletedVertices(g.currentVertexIndex, g.isVertexDeleted)
 	outsiders = mapset.NewSet()
 	added := make([]bool, g.currentVertexIndex)
-	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		if !(added[edge.from.toInt()] || added[edge.to.toInt()]) {
 			matching.AddEdge(edge.from, edge.to)
 			added[edge.from.toInt()] = true
@@ -69,7 +69,7 @@ func FindMaximumMatching(G *Graph) (result *Graph) {
 func findAugmentingPath(G, M *Graph) (result *list.List) {
 	forest := make([]*nodeInformation, G.currentVertexIndex)
 	workList := MkQueue(G.NEdges())
-	G.ForAllVertices(func(v Vertex, index int, done chan<- bool) {
+	G.ForAllVertices(func(v Vertex, done chan<- bool) {
 		Debug("Checking vertex %v", v)
 		// The forest must be initially seeded with singleton nodes only.
 		if deg, _ := M.Degree(v); deg > 0 {
@@ -80,7 +80,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 		Debug("%v is exposed, adding to forest.", v)
 		forest[v.toInt()] = mkNodeInformation(INVALID_VERTEX, v, true)
 
-		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+		G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			e := MkEdge(v, getOtherVertex(v, edge))
 			Debug("Adding %v-%v to work list", e.from, e.to)
 			// This ordering has to be enforced.
@@ -163,14 +163,14 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 			// The endpoint of the unique matched edge corresp. to this node
 			// will become an outer node of this tree.
 			var endpoint Vertex
-			M.ForAllNeighbors(cur.to, func(edge *Edge, index int, done chan<- bool) {
+			M.ForAllNeighbors(cur.to, func(edge *Edge, done chan<- bool) {
 				endpoint = getOtherVertex(cur.to, edge)
 				done <- true
 			})
 
 			forest[endpoint.toInt()] = mkNodeInformation(cur.to, startInfo.Root, true)
 
-			G.ForAllNeighbors(endpoint, func(edge *Edge, index int, done chan<- bool) {
+			G.ForAllNeighbors(endpoint, func(edge *Edge, done chan<- bool) {
 				e := MkEdge(endpoint, getOtherVertex(endpoint, edge))
 				Debug("Adding fringe edge %v-%v to work list", e.from, e.to)
 				workList.Push(e)
@@ -212,18 +212,18 @@ func updateMatching(path *list.List, matching *Graph) {
 func contractGraph(g *Graph, blossom *blossom) *Graph {
 	result := MkGraph(g.currentVertexIndex)
 	// Only the nodes not contained in a blossom belong to the result.
-	g.ForAllVertices(func(v Vertex, index int, done chan<- bool) {
+	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		if blossom.vertices.Contains(v) && v != blossom.Root {
 			result.RemoveVertex(v)
 		}
 	})
 
-	g.ForAllVertices(func(v Vertex, index int, done chan<- bool) {
+	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		if blossom.vertices.Contains(v) {
 			return
 		}
 
-		g.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			w := getOtherVertex(v, edge)
 			if blossom.vertices.Contains(w) {
 				result.AddEdge(v, blossom.Root)

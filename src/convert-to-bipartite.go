@@ -15,7 +15,7 @@ func getVertices(g *Graph) Vertices {
 }
 
 func addBipartiteEdges(g *Graph, original *Graph, border int) {
-	original.ForAllEdges(func(edge *Edge, idx int, done chan<- bool) {
+	original.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		// Invariant: F = {(A_v,B_u)|(v,u) \in E or (u,v) \in E}
 		g.AddEdge(edge.from, MkVertex(edge.to.toInt()+border))
 	})

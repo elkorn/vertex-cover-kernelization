@@ -1,22 +1,24 @@
 package graph
 
-func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
-	degrees := make(map[Vertex]int)
-	result := Neighbors{}
+import "github.com/deckarep/golang-set"
 
-	self.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
-		degrees[edge.from]++
-		degrees[edge.to]++
+func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
+	toRemove := mapset.NewSet()
+	removed := 0
+
+	self.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if deg, _ := self.Degree(v); deg > k {
+			removed++
+			toRemove.Add(v)
+		}
 	})
 
-	for vertex, degree := range degrees {
-		if degree > k {
-			result = append(result, vertex)
-			self.RemoveVertex(vertex)
-		}
+	result := make(Neighbors, 0, removed)
+	for vInter := range toRemove.Iter() {
+		vertex := vInter.(Vertex)
+		result = append(result, vertex)
+		self.RemoveVertex(vertex)
 	}
 
 	return result
 }
-
-// ILP forumlation is the second mehtod, but it has been moved to a separate file.

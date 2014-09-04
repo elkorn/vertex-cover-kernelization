@@ -57,7 +57,7 @@ func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
 
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
-	self.ForAllNeighbors(v, func(edge *Edge, idx int, done chan<- bool) {
+	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 		Debug("Found neighbor edge of %v: %v", v, edge)
 		result = result.appendIfNotContains(getOtherVertex(v, edge))
 	})
@@ -73,14 +73,14 @@ func (self *Graph) NEdges() int {
 	return self.numberOfEdges
 }
 
-func (self *Graph) ForAllVertices(fn func(Vertex, int, chan<- bool)) {
+func (self *Graph) ForAllVertices(fn func(Vertex, chan<- bool)) {
 	done := make(chan bool, 1)
-	for idx, vertex := range self.Vertices {
+	for _, vertex := range self.Vertices {
 		if self.isVertexDeleted[vertex.toInt()] {
 			continue
 		}
 
-		fn(vertex, idx, done)
+		fn(vertex, done)
 
 		select {
 		case <-done:
@@ -90,14 +90,14 @@ func (self *Graph) ForAllVertices(fn func(Vertex, int, chan<- bool)) {
 	}
 }
 
-func (self *Graph) ForAllEdges(fn func(*Edge, int, chan<- bool)) {
+func (self *Graph) ForAllEdges(fn func(*Edge, chan<- bool)) {
 	done := make(chan bool, 1)
-	for idx, edge := range self.Edges {
+	for _, edge := range self.Edges {
 		if nil == edge || edge.isDeleted {
 			continue
 		}
 
-		fn(edge, idx, done)
+		fn(edge, done)
 
 		select {
 		case <-done:
@@ -107,14 +107,14 @@ func (self *Graph) ForAllEdges(fn func(*Edge, int, chan<- bool)) {
 	}
 }
 
-func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, int, chan<- bool)) {
+func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, chan<- bool)) {
 	done := make(chan bool, 1)
-	for idx, edge := range self.getNeighborEdges(v) {
+	for _, edge := range self.getNeighborEdges(v) {
 		if nil == edge || edge.isDeleted {
 			continue
 		}
 
-		fn(edge, idx, done)
+		fn(edge, done)
 		select {
 		case <-done:
 			return
@@ -126,17 +126,6 @@ func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, int, chan<- bool)) {
 func (self *Graph) hasEdge(a, b Vertex) bool {
 	edge := self.getEdgeByCoordinates(a.toInt(), b.toInt())
 	return edge != nil && !edge.isDeleted
-}
-
-func (self *Graph) getCoveredEdgePositions(v Vertex) []int {
-	result := make([]int, 0)
-	self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
-		if edge.IsCoveredBy(v) {
-			result = append(result, index)
-		}
-	})
-
-	return result
 }
 
 func (g *Graph) addVertex() error {
@@ -161,14 +150,9 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
-	positions := self.getCoveredEdgePositions(v)
-	for i := len(positions) - 1; i >= 0; i-- {
-		edge := self.Edges[positions[i]]
-		self.degrees[edge.from.toInt()]--
-		self.degrees[edge.to.toInt()]--
-		edge.isDeleted = true
-		self.numberOfEdges--
-	}
+	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+		self.RemoveEdge(edge.from, edge.to)
+	})
 
 	self.removeVertex(v)
 	return nil
@@ -248,7 +232,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 
 	for _, vertex := range vertices {
 		Debug("Checking %v for coverage", vertex)
-		self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+		self.ForAllEdges(func(edge *Edge, done chan<- bool) {
 			if edge.IsCoveredBy(vertex) {
 				if !isCovered[edge.from.toInt()][edge.to.toInt()] {
 					Debug("Edge %v -> Covered", *edge)

@@ -41,7 +41,7 @@ func TestNet(t *testing.T) {
 
 	netFlow := mkNetworkFlow(g)
 	assert.Equal(t, netFlow.graph.NVertices(), len(netFlow.net.arcs), "The flow net should be an NxN matrix.")
-	netFlow.graph.ForAllEdges(func(edge *Edge, _ int, _ chan<- bool) {
+	netFlow.graph.ForAllEdges(func(edge *Edge, _ chan<- bool) {
 		arc := netFlow.net.arcs[edge.from-1][edge.to-1]
 		assert.NotNil(t, arc, "Each edge in the network flow must be represented by an Arc.")
 		assert.Equal(t, 1, arc.capacity, "Every arc must have an initial capacity of 1.")

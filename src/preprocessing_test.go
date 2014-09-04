@@ -37,12 +37,7 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(1, 4)
 
-	// TODO: here be errors
-	inVerboseContext(func() {
-		g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
-	})
 	result := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
-
 	assert.Equal(t, Neighbors{2, 3}, result[4])
 	assert.Equal(t, Neighbors{3, 5}, result[1])
 	assert.Equal(t, Neighbors{2, 5}, result[2])
@@ -81,9 +76,7 @@ func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(1, 4)
 
-	inVerboseContext(func() {
-		g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
-	})
+	g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
 
 	assert.False(t, g.hasVertex(2))
 	assert.False(t, g.hasVertex(3))

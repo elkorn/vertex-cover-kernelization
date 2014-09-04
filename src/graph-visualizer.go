@@ -139,7 +139,7 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 	}
 
 	connectedVertices := mapset.NewSet()
-	self.g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
+	self.g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		// In this context it might be useful to use this range loop and e.g. display
 		// the removed edge as dotted or grayed out.
 		// for _, edge := range g.Edges {

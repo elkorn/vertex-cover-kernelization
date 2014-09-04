@@ -31,7 +31,7 @@ func MkTree(root Vertex, capacity int) (result *tree) {
 		g:    MkGraph(capacity),
 	}
 
-	result.g.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
+	result.g.ForAllVertices(func(vertex Vertex, done chan<- bool) {
 		result.g.isVertexDeleted[vertex.toInt()] = vertex != root
 	})
 

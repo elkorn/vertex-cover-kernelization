@@ -32,7 +32,7 @@ func assertAllEdgesEqual(t *testing.T, expected Edges, actual *Graph) {
 
 		assert.True(t, result, "Expected the graph to have edge "+fmt.Sprintf("%v", actual))
 	}
-	actual.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+	actual.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		check(*edge)
 	})
 }

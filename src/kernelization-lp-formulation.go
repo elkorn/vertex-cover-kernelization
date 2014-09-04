@@ -1,6 +1,10 @@
 package graph
 
-import "math/rand"
+import (
+	"math/rand"
+
+	"github.com/deckarep/golang-set"
+)
 
 const MAX_UINT = ^uint(0)
 const MAX_INT = int(MAX_UINT >> 1)
@@ -34,7 +38,7 @@ func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 
 func computeLowerBound(g *Graph, preselected Selection) int {
 	result := 0
-	g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
+	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		// Maintaining the invariant: {u,v} \SUB0 E \==> Xu + Xv >= 1 (use mathematics.vim to write this correctly)
 		if preselected[edge.from] < 1 && preselected[edge.to] < 1 {
 			// Select only one node, preferably with one with the larger degree.
@@ -115,7 +119,7 @@ func (self *Graph) getEdgeEndpoints() Vertices {
 		return result
 	}
 
-	self.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+	self.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		result = appendIfNotContains(edge.from, edge.to)
 	})
 
@@ -125,18 +129,19 @@ func (self *Graph) getEdgeEndpoints() Vertices {
 // Similar to Vertex.degree -> this should be push-based while computing the lower bound.
 func getNumberOfCoveredEdges(g *Graph, s Selection) int {
 	result := 0
-	covered := make(map[int]bool)
+	covered := mapset.NewSet()
 	Debug("Selection %v", s)
 	for val := range s {
 		vertex := Vertex(val)
-		g.ForAllEdges(func(edge *Edge, i int, done chan<- bool) {
-			if !covered[i] && (edge.from == vertex || edge.to == vertex) {
+		g.ForAllNeighbors(vertex, func(edge *Edge, done chan<- bool) {
+			if !covered.Contains(edge) {
 				result++
-				covered[i] = true
+				covered.Add(edge)
 				Debug("%v covers %v -> %v", vertex, edge, result)
 			}
 		})
 	}
+
 	return result
 }
 

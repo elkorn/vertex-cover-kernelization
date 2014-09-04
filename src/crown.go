@@ -40,7 +40,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
-		G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+		G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			if !outsiderNeighbors.hasEdge(edge.from, edge.to) {
 				outsiderNeighbors.AddEdge(edge.from, edge.to)
 			}
@@ -72,7 +72,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		Hn = mapset.NewSet()
 		for vInter := range I0.Iter() {
 			v := vInter.(Vertex)
-			G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 				Hn.Add(getOtherVertex(v, edge))
 			})
 		}
@@ -81,7 +81,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		neighbors := mapset.NewSet()
 		for vInter := range Hn.Iter() {
 			v := vInter.(Vertex)
-			G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 				w := getOtherVertex(v, edge)
 				if !M2.hasEdge(v, w) {
 					return

@@ -9,7 +9,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 	// Create an immutable view of vertices with given degree.
 	vertices := make(Vertices, 0, self.NVertices())
 
-	self.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
+	self.ForAllVertices(func(vertex Vertex, done chan<- bool) {
 		vDegree, err := self.Degree(vertex)
 		if nil != err {
 			panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex)))
@@ -30,7 +30,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
 	result := MkNeighborMap(self.currentVertexIndex)
 	self.forAllVerticesOfDegree(degree, func(v Vertex) {
-		self.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
+		self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			result.AddNeighborOfVertex(v, getOtherVertex(v, edge))
 		})
 	})

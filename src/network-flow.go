@@ -58,7 +58,7 @@ func mkNet(g *Graph) Net {
 		result.arcs[i] = make([]*NetArc, g.NVertices())
 	}
 
-	g.ForAllEdges(func(edge *Edge, index int, done chan<- bool) {
+	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		from := edge.from.toInt()
 		to := edge.to.toInt()
 		result.arcs[from][to] = mkNetArc(edge)
