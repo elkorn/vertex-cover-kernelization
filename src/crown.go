@@ -13,10 +13,29 @@ func (self *Crown) Width() int {
 	return self.H.Cardinality()
 }
 
-func findCrown(G *Graph) *Crown {
+func (self *graphVisualizer) highlightCrown(crown *Crown) {
+	for vInter := range crown.I.Iter() {
+		self.HighlightVertex(vInter.(Vertex), "lightgray")
+	}
+
+	for vInter := range crown.H.Iter() {
+		self.HighlightVertex(vInter.(Vertex), "yellow")
+	}
+}
+
+func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	// Step 1.: Find a maximal matching M1 of the graph,
 	// identify the set of all unmatched vertices as the set O of outsiders
-	/*M1*/ _, O := FindMaximalMatching(G)
+	M1, O := FindMaximalMatching(G)
+	// If a maximum matching of size > k is found then
+	// there is not a vertex cover of size ≤ k and the vertex cover problem
+	// can be solved with a "no" instance.
+	// If either the cardinality of M1 or M2 is > k, the process can be halted.
+	if M1.NEdges() > k {
+		halt <- true
+		return nil
+	}
+
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
 	for vInter := range O.Iter() {
@@ -29,6 +48,12 @@ func findCrown(G *Graph) *Crown {
 	}
 
 	M2 := FindMaximumMatching(outsiderNeighbors)
+	// If either the cardinality of M1 or M2 is > k, the process can be halted.
+	if M2.NEdges() > k {
+		halt <- true
+		return nil
+	}
+
 	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
 	I0 := mapset.NewSet()
 	for vInter := range O.Iter() {
@@ -82,4 +107,33 @@ func findCrown(G *Graph) *Crown {
 		I: I1,
 		H: Hn,
 	}
+}
+
+func reduceCrown(G *Graph, crown *Crown) {
+	// The graph G′ is produced by removing vertices in I and H
+	// along with their adjacent edges.
+	removeVerticesInSet := func(set mapset.Set) {
+		for vInter := range set.Iter() {
+			G.RemoveVertex(vInter.(Vertex))
+		}
+	}
+
+	removeVerticesInSet(crown.I)
+	removeVerticesInSet(crown.H)
+}
+
+func ReduceCrown(G *Graph, halt chan bool, k int) int {
+	crown := findCrown(G, halt, k)
+	select {
+	case <-halt:
+		halt <- true
+		return -1
+	default:
+	}
+
+	reduceCrown(G, crown)
+
+	// The problem size becomes n′= n - (|I|+|H|)
+	// and the parameter size is k′ = k - |H|.
+	return crown.Width()
 }
