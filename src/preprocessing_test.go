@@ -6,6 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var empty_neighborhood = Neighbors{}
+
 func TestRemoveOfDegree(t *testing.T) {
 	g := MkGraph(5)
 
@@ -79,7 +81,10 @@ func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(1, 4)
 
-	g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
+	inVerboseContext(func() {
+		g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
+	})
+
 	assert.False(t, g.hasVertex(2))
 	assert.False(t, g.hasVertex(3))
 	assert.False(t, g.hasVertex(5))
@@ -96,12 +101,12 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	result := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
 	assert.Equal(t, Neighbors{2, 3}, result[0])
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
+	assert.Equal(t, empty_neighborhood, result[1])
+	assert.Equal(t, empty_neighborhood, result[2])
+	assert.Equal(t, empty_neighborhood, result[3])
+	assert.Equal(t, empty_neighborhood, result[4])
+	assert.Equal(t, empty_neighborhood, result[5])
+	assert.Equal(t, empty_neighborhood, result[6])
 
 	g = mkGraph4()
 
@@ -119,14 +124,14 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	*/
 
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(3)
-	assert.Nil(t, result[0])
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
+	assert.Equal(t, empty_neighborhood, result[0])
+	assert.Equal(t, empty_neighborhood, result[1])
+	assert.Equal(t, empty_neighborhood, result[2])
+	assert.Equal(t, empty_neighborhood, result[3])
+	assert.Equal(t, empty_neighborhood, result[4])
+	assert.Equal(t, empty_neighborhood, result[5])
+	assert.Equal(t, empty_neighborhood, result[6])
+	assert.Equal(t, empty_neighborhood, result[7])
 
 	g = mkGraph4()
 
@@ -143,34 +148,34 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(3)
 	assert.Equal(t, Neighbors{2, 3, 8}, result[0])
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
-	assert.Nil(t, result[7])
+	assert.Equal(t, empty_neighborhood, result[1])
+	assert.Equal(t, empty_neighborhood, result[2])
+	assert.Equal(t, empty_neighborhood, result[3])
+	assert.Equal(t, empty_neighborhood, result[4])
+	assert.Equal(t, empty_neighborhood, result[5])
+	assert.Equal(t, empty_neighborhood, result[6])
+	assert.Equal(t, empty_neighborhood, result[7])
 
 	// Edge case: neighbors of a vertex with degree of 1.
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(1)
-	assert.Nil(t, result[0])
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
-	assert.Nil(t, result[5])
-	assert.Nil(t, result[6])
+	assert.Equal(t, empty_neighborhood, result[0])
+	assert.Equal(t, empty_neighborhood, result[1])
+	assert.Equal(t, empty_neighborhood, result[2])
+	assert.Equal(t, empty_neighborhood, result[3])
+	assert.Equal(t, empty_neighborhood, result[4])
+	assert.Equal(t, empty_neighborhood, result[5])
+	assert.Equal(t, empty_neighborhood, result[6])
 	assert.Equal(t, Neighbors{1}, result[7])
 
 	g = mkGraph5()
 	result = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
 	assert.Equal(t, Neighbors{2, 3}, result[0])
-	assert.Nil(t, result[1])
-	assert.Nil(t, result[2])
-	assert.Nil(t, result[3])
-	assert.Nil(t, result[4])
+	assert.Equal(t, empty_neighborhood, result[1])
+	assert.Equal(t, empty_neighborhood, result[2])
+	assert.Equal(t, empty_neighborhood, result[3])
+	assert.Equal(t, empty_neighborhood, result[4])
 	assert.Equal(t, Neighbors{2, 7}, result[5])
-	assert.Nil(t, result[6])
+	assert.Equal(t, empty_neighborhood, result[6])
 }
 
 func TestContractEdges(t *testing.T) {

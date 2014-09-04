@@ -2,6 +2,15 @@ package graph
 
 type NeighborMap []Neighbors
 
+func MkNeighborMap(size int) NeighborMap {
+	result := make(NeighborMap, size)
+	for i, _ := range result {
+		result[i] = make(Neighbors, 0, size)
+	}
+
+	return result
+}
+
 func (self *NeighborMap) AddNeighborOfVertex(v, n Vertex) {
 	index := v.toInt()
 	if (*self)[index] == nil {

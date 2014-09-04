@@ -5,53 +5,34 @@ import (
 	"fmt"
 )
 
-// TODO: copy the graph instead of mutating.
-func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex) error) (result error) {
+func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
+	// Create an immutable view of vertices with given degree.
+	vertices := make(Vertices, 0, self.NVertices())
+
 	self.ForAllVertices(func(vertex Vertex, index int, done chan<- bool) {
 		vDegree, err := self.Degree(vertex)
 		if nil != err {
-			result = errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex))
-			done <- true
+			panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex)))
 		}
 
 		if vDegree == degree {
-			err = action(vertex)
-			if nil != err {
-				result = err
-				done <- true
-			}
+			vertices = append(vertices, vertex)
 		}
 	})
 
-	return result
+	Debug("Vertices of degree %v: %v", degree, vertices)
+
+	for _, vertex := range vertices {
+		action(vertex)
+	}
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) NeighborMap {
-	result := make(NeighborMap, len(self.Vertices))
-	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
+	result := MkNeighborMap(self.currentVertexIndex)
+	self.forAllVerticesOfDegree(degree, func(v Vertex) {
 		self.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
 			result.AddNeighborOfVertex(v, getOtherVertex(v, edge))
 		})
-		// neighbors := self.getNeighbors(v)
-		// length := len(neighbors)
-		// for i := 0; i < length; i++ {
-		// 	for j := 0; j < length; j++ {
-		// 		if i == j {
-		// 			continue
-		// 		}
-		//
-		// 		n1, n2 := neighbors[i], neighbors[j]
-		//
-		//
-		// 		if self.hasEdge(n1, n2) {
-		// 			result.AddNeighborOfVertex(v, n1)
-		// 			result.AddNeighborOfVertex(v, n2)
-		// 			break
-		// 		}
-		// 	}
-		// }
-
-		return nil
 	})
 
 	return result
@@ -59,11 +40,10 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) Neig
 
 func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) NeighborMap {
 	Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
-	result := make(NeighborMap, len(self.Vertices))
-	self.forAllVerticesOfDegree(degree, func(v Vertex) error {
+	result := MkNeighborMap(self.currentVertexIndex)
+	self.forAllVerticesOfDegree(degree, func(v Vertex) {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
-		Debug("OPERATION FOR %v (neighbors: %v)", v, neighbors)
 		hasOnlyDisjoint := true
 		potentiallyToBeAdded := make(Neighbors, 0, length)
 		if length == 1 {
@@ -95,24 +75,22 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) Neig
 			Debug("For %v: adding %v", v, potentiallyToBeAdded)
 			result[v.toInt()] = potentiallyToBeAdded
 		}
-
-		return nil
 	})
 
 	Debug("%v", result)
 	Debug("===== END GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	return result
 }
-func (self *Graph) removeVerticesOfDegree(degree int) error {
-	return self.forAllVerticesOfDegree(degree, func(v Vertex) error {
-		return self.RemoveVertex(v)
+func (self *Graph) removeVerticesOfDegree(degree int) {
+	self.forAllVerticesOfDegree(degree, func(v Vertex) {
+		self.RemoveVertex(v)
 	})
 }
 
 func (self *Graph) removeAllVerticesAccordingToMap(v NeighborMap) {
 	performRemoval := removeOnce(self, make(coverageMap))
 	for center, neighbors := range v {
-		if nil == neighbors {
+		if nil == neighbors || len(neighbors) == 0 {
 			continue
 		}
 
@@ -124,7 +102,8 @@ func (self *Graph) removeAllVerticesAccordingToMap(v NeighborMap) {
 }
 
 func (self *Graph) removeVertivesOfDegreeWithOnlyAdjacentNeighbors(degree int) {
-	self.removeAllVerticesAccordingToMap(self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
+	self.removeAllVerticesAccordingToMap(
+		self.getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree))
 }
 
 // func (self *Graph) rewireEdge(from, to, newAnchor Vertex) {
@@ -175,21 +154,10 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 
 func Preprocessing(g *Graph) error {
 	// 1. Disjoint vertices cannot be in a vertex cover - remove them.
-	err := g.removeVerticesOfDegree(0)
-	if nil != err {
-		return err
-	}
-
+	g.removeVerticesOfDegree(0)
 	// 2. Vertices interconnected with only themselves are useless - remove them.
-	err = g.removeVerticesOfDegree(1)
-	if nil != err {
-		return err
-	}
-
-	err = g.removeVerticesOfDegree(0)
-	if nil != err {
-		return err
-	}
+	g.removeVerticesOfDegree(1)
+	g.removeVerticesOfDegree(0)
 
 	// 3. Remove vertices with degree 2 which have connected neighbors.
 	// Then, remove nodes whose degree has dropped to 0.
