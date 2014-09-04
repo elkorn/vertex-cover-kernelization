@@ -65,7 +65,22 @@ func TestReduceCrown2(t *testing.T) {
 	assert.Equal(t,
 		verticesBefore-crownWidth-independentSetCardinality,
 		g.NVertices())
-	showGraph(g)
+}
+
+func TestStopIfSizeBoundaryReached(t *testing.T) {
+	g := MkGraph(8)
+	g.AddEdge(1, 4)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(6, 5)
+	g.AddEdge(4, 6)
+	g.AddEdge(4, 7)
+	g.AddEdge(8, 7)
+
+	halt := make(chan bool, 1)
+
+	assert.Nil(t, findCrown(g, halt, 1))
 }
 
 // func TestFindCrownBigGraph(t *testing.T) {
