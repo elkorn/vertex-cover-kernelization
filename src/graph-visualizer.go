@@ -13,8 +13,9 @@ import (
 )
 
 type graphVisualizer struct {
-	g     *Graph
-	attrs [][]map[string]string
+	g           *Graph
+	edgeAttrs   [][]map[string]string
+	vertexAttrs []map[string]string
 }
 
 func showGraph(g *Graph) {
@@ -26,12 +27,17 @@ func MkGraphVisualizer(g *Graph) *graphVisualizer {
 		g: g,
 	}
 
-	result.attrs = make([][]map[string]string, g.currentVertexIndex)
-	for i, _ := range result.attrs {
-		result.attrs[i] = make([]map[string]string, g.currentVertexIndex)
-		for j, _ := range result.attrs[i] {
-			result.attrs[i][j] = make(map[string]string, 0)
+	result.edgeAttrs = make([][]map[string]string, g.currentVertexIndex)
+	for i, _ := range result.edgeAttrs {
+		result.edgeAttrs[i] = make([]map[string]string, g.currentVertexIndex)
+		for j, _ := range result.edgeAttrs[i] {
+			result.edgeAttrs[i][j] = make(map[string]string)
 		}
+	}
+
+	result.vertexAttrs = make([]map[string]string, g.currentVertexIndex)
+	for i, _ := range result.vertexAttrs {
+		result.vertexAttrs[i] = make(map[string]string)
 	}
 
 	return result
@@ -66,7 +72,7 @@ func edgeToBWithAttrs(edge *Edge, attrs map[string]string) []byte {
 
 		return tstobn(fmt.Sprintf("%v -- %v [%v];", edge.from, edge.to, strings.Join(attrsStrs, ", ")))
 	} else {
-		return tstobn(fmt.Sprintf("%v -- %v;", edge.from, edge.to))
+		return edgeToB(edge)
 	}
 }
 
@@ -74,8 +80,24 @@ func vertexToB(v Vertex) []byte {
 	return tstobn(fmt.Sprintf("%v;", v))
 }
 
+func (self *graphVisualizer) vertexToB(v Vertex) []byte {
+	if len(self.vertexAttrs[v.toInt()]) > 0 {
+		attrsStrs := make([]string, 0, len(self.vertexAttrs))
+
+		for name, value := range self.vertexAttrs[v.toInt()] {
+			attrsStrs = append(attrsStrs, fmt.Sprintf("%v=\"%v\"", name, value))
+		}
+
+		Debug(strings.Join(attrsStrs, ", "))
+
+		return tstobn(fmt.Sprintf("%v [%v];", v, strings.Join(attrsStrs, ", ")))
+	} else {
+		return vertexToB(v)
+	}
+}
+
 func (self *graphVisualizer) edgeToB(edge *Edge) []byte {
-	return edgeToBWithAttrs(edge, self.attrs[edge.from.toInt()][edge.to.toInt()])
+	return edgeToBWithAttrs(edge, self.edgeAttrs[edge.from.toInt()][edge.to.toInt()])
 }
 
 func (self *graphVisualizer) setEdgeAttr(edge *Edge, name, val string) {
@@ -87,12 +109,17 @@ func (self *graphVisualizer) setEdgeEndpointsAttr(from, to Vertex, name, val str
 }
 
 func (self *graphVisualizer) setEdgeCoordsAttr(from, to int, name, val string) {
-	self.attrs[from][to][name] = val
-	self.attrs[to][from][name] = val
+	self.edgeAttrs[from][to][name] = val
+	self.edgeAttrs[to][from][name] = val
 }
 
-func (self *graphVisualizer) Highlight(edge *Edge, color string) {
+func (self *graphVisualizer) HighlightEdge(edge *Edge, color string) {
 	self.setEdgeAttr(edge, "color", color)
+}
+
+func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
+	self.vertexAttrs[v.toInt()]["style"] = "filled"
+	self.vertexAttrs[v.toInt()]["fillcolor"] = color
 }
 
 func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
@@ -100,6 +127,17 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
+	verticesWithAttrs := mapset.NewSet()
+	for i, attrs := range self.vertexAttrs {
+		if len(attrs) == 0 {
+			continue
+		}
+
+		v := MkVertex(i)
+		verticesWithAttrs.Add(v)
+		res.Write(self.vertexToB(v))
+	}
+
 	connectedVertices := mapset.NewSet()
 	g.ForAllEdges(func(edge *Edge, _ int, done chan<- bool) {
 		// In this context it might be useful to use this range loop and e.g. display
@@ -111,12 +149,12 @@ func (self *graphVisualizer) toDot(g *Graph, name string) bytes.Buffer {
 	})
 
 	for _, v := range g.Vertices {
-		if connectedVertices.Contains(v) {
+		if connectedVertices.Contains(v) || verticesWithAttrs.Contains(v) {
 			continue
 		}
 
 		if g.hasVertex(v) {
-			res.Write(vertexToB(v))
+			res.Write(self.vertexToB(v))
 		}
 	}
 
@@ -150,7 +188,6 @@ func (self *graphVisualizer) MkJpg(name string) error {
 
 	defer file.Close()
 	buf := self.mkJpg(name)
-	Debug(buf.String())
 	_, err = file.Write(buf.Bytes())
 	return err
 }

@@ -89,8 +89,8 @@ func TestColor(t *testing.T) {
 
 	gv := MkGraphVisualizer(g)
 
-	gv.Highlight(g.Edges[0], "red")
-	gv.Highlight(g.Edges[1], "green")
-	gv.Highlight(g.Edges[2], "purple")
+	gv.HighlightEdge(g.Edges[0], "red")
+	gv.HighlightEdge(g.Edges[1], "green")
+	gv.HighlightEdge(g.Edges[2], "purple")
 	// gv.Display()
 }
