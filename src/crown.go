@@ -3,14 +3,14 @@ package graph
 import "github.com/deckarep/golang-set"
 
 type Crown struct {
-	I Vertices // An independent subset of G
-	H Vertices // Head of the crown: N(I) - neighbors of I
+	I mapset.Set // An independent subset of G
+	H mapset.Set // Head of the crown: N(I) - neighbors of I
 	// Also, there must exist a matching M on the edges connecting I and H
 	// such that all elements of H are matched.
 }
 
 func (self *Crown) Width() int {
-	return len(self.H)
+	return self.H.Cardinality()
 }
 
 func findCrown(G *Graph) *Crown {
@@ -41,9 +41,10 @@ func findCrown(G *Graph) *Crown {
 	n := 0
 	// Step 4.:Repeat the following steps until n=N so that I_(N-1)=IN
 	I1 := mapset.NewSet()
+	var Hn mapset.Set
 	for {
 		// 4a. Let Hn = N(In)
-		Hn := mapset.NewSet()
+		Hn = mapset.NewSet()
 		for vInter := range I0.Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, index int, done chan<- bool) {
@@ -66,7 +67,10 @@ func findCrown(G *Graph) *Crown {
 		}
 
 		I1 = I0.Union(neighbors)
-		if I1 == I0 {
+		Debug("I0: %v", I0)
+		Debug("I1: %v", I1)
+		Debug("Hn: %v", Hn)
+		if I1.Equal(I0) {
 			break
 		}
 
@@ -74,5 +78,8 @@ func findCrown(G *Graph) *Crown {
 		n++
 	}
 
-	return nil
+	return &Crown{
+		I: I1,
+		H: Hn,
+	}
 }
