@@ -100,7 +100,7 @@ func TestGetNumberOfCoveredEdges(t *testing.T) {
 	assert.Equal(t, 7, getNumberOfCoveredEdges(g, s))
 }
 
-func TestBranchAndBound(t *testing.T) {
+func TestBranchAndBound1(t *testing.T) {
 	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -109,6 +109,23 @@ func TestBranchAndBound(t *testing.T) {
 
 	g = mkGraph6()
 	optimalSelection = Selection{4: 1, 5: 1}
-
 	assert.Equal(t, optimalSelection, branchAndBound(g))
+
+}
+
+func TestBranchAndBound2(t *testing.T) {
+	g := mkPetersenGraph()
+
+	inVerboseContext(func() {
+		selection := branchAndBound(g)
+		assert.Equal(t, 6, len(selection))
+		// gv := MkGraphVisualizer(g)
+		// for v, val := range selection {
+		// 	if val != 0 {
+		// 		gv.HighlightVertex(v, "yellow")
+		// 	}
+		// }
+
+		// gv.Display()
+	})
 }

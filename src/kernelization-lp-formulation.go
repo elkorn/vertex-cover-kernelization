@@ -28,9 +28,11 @@ type lpNode struct {
 
 func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 	result := new(lpNode)
+	Debug("Selection before computation: %v", selection)
 	result.selection = selection
 	result.lowerBound = computeLowerBound(g, selection)
 	result.level = level
+	Debug("Selection after computation: %v", selection)
 
 	Debug("New lp node\n\tselection: %v\n\tcost: %v\n\tlevel: %v", result.selection, result.lowerBound, result.level)
 	return result
@@ -39,7 +41,7 @@ func mkLpNode(g *Graph, selection Selection, level int) *lpNode {
 func computeLowerBound(g *Graph, preselected Selection) int {
 	result := 0
 	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-		// Maintaining the invariant: {u,v} \SUB0 E \==> Xu + Xv >= 1 (use mathematics.vim to write this correctly)
+		// Maintaining the invariant: {u,v} ∈ E ⇒  Xu + Xv ≥ 1
 		if preselected[edge.from] < 1 && preselected[edge.to] < 1 {
 			// Select only one node, preferably with one with the larger degree.
 			// Maintaining the invariant: Minimize \GS X_v
@@ -55,6 +57,7 @@ func computeLowerBound(g *Graph, preselected Selection) int {
 		result += val
 	}
 
+	Debug("Computed lower bound: %v", result)
 	return result
 }
 
