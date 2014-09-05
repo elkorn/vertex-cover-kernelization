@@ -2,7 +2,6 @@ package graph
 
 import (
 	"fmt"
-	"math/rand"
 	"testing"
 
 	"github.com/deckarep/golang-set"
@@ -25,15 +24,17 @@ func TestResolveConflict(t *testing.T) {
 	n1 := Vertex(1)
 	n2 := Vertex(2)
 
-	assert.Equal(t, n2, resolveConflict(g, n1, n2))
-
-	g.degrees[0] = 4
 	assert.Equal(t, n1, resolveConflict(g, n1, n2))
 
-	// Seeding the rand differently can break this test.
-	rand.Seed(1)
+	g.degrees[n1.toInt()] = 4
+	assert.Equal(t, n1, resolveConflict(g, n1, n2))
+
 	g.degrees[n2.toInt()] = g.degrees[n1.toInt()]
+	assert.Equal(t, n1, resolveConflict(g, n1, n2))
+
+	g.degrees[n2.toInt()] = g.degrees[n1.toInt()] + 1
 	assert.Equal(t, n2, resolveConflict(g, n1, n2))
+
 }
 
 func TestCalculateLowerBound(t *testing.T) {
@@ -122,11 +123,22 @@ func TestBranchAndBound2(t *testing.T) {
 	}
 
 	cover := branchAndBound(g)
+	assert.Equal(t, 6, cover.Cardinality())
+	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
+	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
+}
+
+func TestBranchAndBound3(t *testing.T) {
+	g := mkReversePetersenGraph()
+	innerVertices, outerVertices := mapset.NewSet(), mapset.NewSet()
+	for i := 1; i < 6; i++ {
+		outerVertices.Add(Vertex(i))
+		innerVertices.Add(Vertex(i + 5))
+	}
+
+	cover := branchAndBound(g)
 
 	assert.Equal(t, 6, cover.Cardinality())
 	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
 	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
-	gv := MkGraphVisualizer(g)
-	gv.HighlightCover(cover, "yellow")
-	gv.Display()
 }
