@@ -168,3 +168,23 @@ func mkPetersenGraph() *Graph {
 	g.AddEdge(10, 5)
 	return g
 }
+
+func mkReversePetersenGraph() *Graph {
+	g := MkGraph(10)
+	g.AddEdge(2, 1)
+	g.AddEdge(3, 2)
+	g.AddEdge(4, 3)
+	g.AddEdge(5, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(6, 1)
+	g.AddEdge(9, 6)
+	g.AddEdge(7, 9)
+	g.AddEdge(10, 7)
+	g.AddEdge(8, 10)
+	g.AddEdge(6, 8)
+	g.AddEdge(2, 7)
+	g.AddEdge(3, 8)
+	g.AddEdge(4, 9)
+	g.AddEdge(5, 10)
+	return g
+}
