@@ -122,6 +122,12 @@ func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
 	self.vertexAttrs[v.toInt()]["fillcolor"] = color
 }
 
+func (self *graphVisualizer) HighlightCover(cover mapset.Set, color string) {
+	for vInter := range cover.Iter() {
+		self.HighlightVertex(vInter.(Vertex), color)
+	}
+}
+
 func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 	var res bytes.Buffer
 	res.Write(stob("graph "))
