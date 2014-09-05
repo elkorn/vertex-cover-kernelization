@@ -1,29 +1,23 @@
 package graph
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 
+	"github.com/deckarep/golang-set"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestObjectiveFunction(t *testing.T) {
-	s1 := Selection{}
-	for i := 0; i < 10; i++ {
-		s1[Vertex(i)] = 0
-	}
+	s1 := mapset.NewSet()
+	s1.Add(Vertex(5))
+	s1.Add(Vertex(6))
 
-	s1[Vertex(5)] = 1
-	s1[Vertex(6)] = 1
+	s2 := mapset.NewSet()
+	s2.Add(Vertex(5))
 
-	s2 := Selection{}
-	for i := 0; i < 10; i++ {
-		s2[Vertex(i)] = 0
-	}
-
-	s2[Vertex(5)] = 1
-
-	assert.Equal(t, s2, objectiveFunction([]Selection{s1, s2}))
+	assert.Equal(t, s2, objectiveFunction([]mapset.Set{s1, s2}))
 }
 
 func TestResolveConflict(t *testing.T) {
@@ -53,13 +47,13 @@ func TestCalculateLowerBound(t *testing.T) {
 	g.AddEdge(1, 6)
 	g.AddEdge(8, 9)
 
-	selection := Selection{}
+	selection := mapset.NewSet()
 
 	assert.Equal(t, 3, computeLowerBound(g, selection))
 
-	selection[8] = 1
-	selection[9] = 1
-	selection[5] = 1
+	selection.Add(Vertex(8))
+	selection.Add(Vertex(9))
+	selection.Add(Vertex(5))
 
 	assert.Equal(t, 5, computeLowerBound(g, selection))
 }
@@ -81,7 +75,7 @@ func TestMkLpNode(t *testing.T) {
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
-	selection := Selection{}
+	selection := mapset.NewSet()
 	level := 1
 	node := mkLpNode(g, selection, level)
 	assert.NotNil(t, node)
@@ -92,11 +86,14 @@ func TestMkLpNode(t *testing.T) {
 
 func TestGetNumberOfCoveredEdges(t *testing.T) {
 	g := mkGraph1()
-	s := Selection{1: 1, 2: 1}
+	s := mapset.NewSet()
+	s.Add(Vertex(1))
+	s.Add(Vertex(2))
 	assert.Equal(t, 5, getNumberOfCoveredEdges(g, s))
 
 	g = mkGraph6()
-	s = Selection{4: 1, 5: 1}
+	s.Add(Vertex(4))
+	s.Add(Vertex(5))
 	assert.Equal(t, 7, getNumberOfCoveredEdges(g, s))
 }
 
@@ -104,28 +101,32 @@ func TestBranchAndBound1(t *testing.T) {
 	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
-	optimalSelection := Selection{2: 1}
-	assert.Equal(t, optimalSelection, branchAndBound(g))
+	optimalSelection := mapset.NewSet()
+	optimalSelection.Add(Vertex(2))
+	assert.True(t, optimalSelection.Equal(branchAndBound(g)))
 
 	g = mkGraph6()
-	optimalSelection = Selection{4: 1, 5: 1}
-	assert.Equal(t, optimalSelection, branchAndBound(g))
+	optimalSelection = mapset.NewSet()
+	optimalSelection.Add(Vertex(4))
+	optimalSelection.Add(Vertex(5))
+	assert.True(t, optimalSelection.Equal(branchAndBound(g)))
 
 }
 
 func TestBranchAndBound2(t *testing.T) {
 	g := mkPetersenGraph()
+	innerVertices, outerVertices := mapset.NewSet(), mapset.NewSet()
+	for i := 1; i < 6; i++ {
+		outerVertices.Add(Vertex(i))
+		innerVertices.Add(Vertex(i + 5))
+	}
 
-	inVerboseContext(func() {
-		selection := branchAndBound(g)
-		assert.Equal(t, 6, len(selection))
-		// gv := MkGraphVisualizer(g)
-		// for v, val := range selection {
-		// 	if val != 0 {
-		// 		gv.HighlightVertex(v, "yellow")
-		// 	}
-		// }
+	cover := branchAndBound(g)
 
-		// gv.Display()
-	})
+	assert.Equal(t, 6, cover.Cardinality())
+	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
+	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
+	gv := MkGraphVisualizer(g)
+	gv.HighlightCover(cover, "yellow")
+	gv.Display()
 }
