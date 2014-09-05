@@ -122,12 +122,12 @@ func reduceCrown(G *Graph, crown *Crown) {
 	removeVerticesInSet(crown.H)
 }
 
-func ReduceCrown(G *Graph, halt chan bool, k int) int {
+func ReduceCrown(G *Graph, halt chan bool, k int) (kPrime int, partialCover mapset.Set) {
 	crown := findCrown(G, halt, k)
 	select {
 	case <-halt:
 		halt <- true
-		return -1
+		return -1, nil
 	default:
 	}
 
@@ -135,5 +135,7 @@ func ReduceCrown(G *Graph, halt chan bool, k int) int {
 
 	// The problem size becomes n′= n - (|I|+|H|)
 	// and the parameter size is k′ = k - |H|.
-	return crown.Width()
+	kPrime = k - crown.Width()
+	partialCover = crown.H
+	return kPrime, partialCover
 }

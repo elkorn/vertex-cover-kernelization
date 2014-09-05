@@ -57,8 +57,6 @@ func TestReduceCrown2(t *testing.T) {
 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
 	halt := make(chan bool, 1)
 	verticesBefore := g.NVertices()
-	// crown := findCrown(g, halt, k)
-	// crownWidth, independentSetCardinality := crown.Width(), crown.I.Cardinality()
 	crownWidth, independentSetCardinality := 228, 542
 
 	ReduceCrown(g, halt, k)
@@ -82,10 +80,3 @@ func TestStopIfSizeBoundaryReached(t *testing.T) {
 
 	assert.Nil(t, findCrown(g, halt, 1))
 }
-
-// func TestFindCrownBigGraph(t *testing.T) {
-// 	// This test should not crash. If it does, the algorithm is broken.
-// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
-// 	halt := make(chan bool, 1)
-// 	findCrown(g, halt, MAX_INT)
-// }
