@@ -128,3 +128,51 @@ func BenchmarkPrependSliceWithTemplate(b *testing.B) {
 		p = slice[9999]
 	}
 }
+
+func BenchmarkBSTConflictResolverStraightPetersenLT(b *testing.B) {
+	g := mkPetersenGraph()
+	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+		return d1 < d2
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		branchAndBound(g)
+	}
+}
+
+func BenchmarkBSTConflictResolverStraightPetersenGT(b *testing.B) {
+	g := mkPetersenGraph()
+	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+		return d1 > d2
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		branchAndBound(g)
+	}
+}
+
+func BenchmarkBSTConflictResolverStraightPetersenLTEQ(b *testing.B) {
+	g := mkPetersenGraph()
+	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+		return d1 <= d2
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		branchAndBound(g)
+	}
+}
+
+func BenchmarkBSTConflictResolverStraightPetersenGTEQ(b *testing.B) {
+	g := mkPetersenGraph()
+	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+		return d1 >= d2
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		branchAndBound(g)
+	}
+}
