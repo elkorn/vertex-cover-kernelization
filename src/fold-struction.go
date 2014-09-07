@@ -4,7 +4,7 @@ import "fmt"
 
 type structionVertex struct {
 	v    Vertex
-	i, j int
+	i, j Vertex
 }
 
 func (self *structionVertex) Name() string {
@@ -25,14 +25,14 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 		newVertexLookup[i] = make([]Vertex, g.currentVertexIndex)
 	}
 
-	lookupVertex := func(i, j int) (result Vertex) {
-		result = newVertexLookup[i][j]
-		if INVALID_VERTEX == result {
-			result = newVertexLookup[j][i]
-		}
-
-		return
-	}
+	// lookupVertex := func(i, j int) (result Vertex) {
+	// 	result = newVertexLookup[i][j]
+	// 	if INVALID_VERTEX == result {
+	// 		result = newVertexLookup[j][i]
+	// 	}
+	//
+	// 	return
+	// }
 
 	newDeletions := make([]bool, g.currentVertexIndex)
 	copy(newDeletions, g.isVertexDeleted)
@@ -52,19 +52,12 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 				newGraphCapacity++
 				structionVertex := &structionVertex{
 					v: Vertex(newGraphCapacity),
-					i: i,
-					j: j,
+					i: vi,
+					j: vj,
 				}
 
-				Debug("Adding vertex %v at (%v,%v) for anti-edge %v-%v",
-					structionVertex.v,
-					i,
-					j,
-					vi,
-					vj)
-
 				newVertices = append(newVertices, structionVertex)
-				newVertexLookup[i][j] = structionVertex.v
+				newVertexLookup[vi.toInt()][vj.toInt()] = structionVertex.v
 			}
 		}
 	}
@@ -73,64 +66,57 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 
 	gPrime := MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
 
-	Debug("lookup: %v", newVertexLookup)
 	for _, newVertex := range newVertices {
 		i, j := newVertex.i, newVertex.j
 		Debug("i: %v, j: %v", i, j)
 		// 1. Add an edge (vir, vjs) if i == j and g.hasEdge(vr,vs)
-		if i == j {
-			for vr, nr := range s {
-				for vs, ns := range s {
-					if nr == ns {
-						continue
-					}
-					if g.hasEdge(nr, ns) {
-						vir, vjs := lookupVertex(i, vr), lookupVertex(j, vs)
-						if INVALID_VERTEX == vir || INVALID_VERTEX == vjs {
-							// Don't know what to do here...
-							continue
-						}
-						Debug("i!=j, vir: (%v,%v), vjs: (%v,%v), adding edge %v-%v", i, vr, j, vs, vir, vjs)
-						gPrime.AddEdge(vir, vjs)
-					}
-				}
-			}
-		} else {
-			// Add an edge (vir, vjs) if i != j
-			for vr, nr := range s {
-				for vs, ns := range s {
-					if nr == ns {
-						continue
-					}
+		// if i == j {
+		// for vr, nr := range s {
+		// 	for vs, ns := range s {
+		// 		if nr == ns {
+		// 			continue
+		// 		}
+		// 		if g.hasEdge(nr, ns) {
+		// 			vir, vjs := lookupVertex(i, vr), lookupVertex(j, vs)
+		// 			if INVALID_VERTEX == vir || INVALID_VERTEX == vjs {
+		// 				// Don't know what to do here...
+		// 				continue
+		// 			}
+		// 			Debug("i!=j, vir: (%v,%v), vjs: (%v,%v), adding edge %v-%v", i, vr, j, vs, vir, vjs)
+		// 			gPrime.AddEdge(vir, vjs)
+		// 		}
+		// 	}
+		// }
+		// } else {
+		// Add an edge (vir, vjs) if i != j
+		Debug("%v of %v", i, newVertex.Name())
+		g.ForAllNeighbors(i, func(edge *Edge, done chan<- bool) {
+			Debug("Edge %v-%v", edge.from, edge.to)
+			gPrime.AddEdge(newVertex.v, getOtherVertex(i, edge))
+		})
 
-					Debug("vr: %v, vs:%v", vr, vs)
-					Debug("nr: %v, ns:%v", nr, ns)
-					vir, vjs := lookupVertex(i, vr), lookupVertex(j, vs)
-					if INVALID_VERTEX == vir || INVALID_VERTEX == vjs {
-						// Don't know what to do here...
-						continue
-					}
-					Debug("i!=j, vir: (%v,%v), vjs: (%v,%v), adding edge %v-%v", i, vr, j, vs, vir, vjs)
-					gPrime.AddEdge(vir, vjs)
-				}
-			}
-		}
+		Debug("%v of %v", j, newVertex.Name())
+		g.ForAllNeighbors(j, func(edge *Edge, done chan<- bool) {
+			Debug("Edge %v-%v", edge.from, edge.to)
+			gPrime.AddEdge(newVertex.v, getOtherVertex(j, edge))
+		})
+		// }
 
 		// For every vertex u not in {v0,...,vp},
 		// if g.hasEdge(vi,u) or g.hasEdge(vj,u),
 		// add an edge (vij, u)
-		g.ForAllVertices(func(u Vertex, done chan<- bool) {
-			if u == v0 || sSet.Contains(u) {
-				return
-			}
-
-			if g.hasEdge(s[i], u) || g.hasEdge(s[j], u) {
-				gPrime.AddEdge(newVertex.v, u)
-			}
-		})
+		// g.ForAllVertices(func(u Vertex, done chan<- bool) {
+		// 	if u == v0 || sSet.Contains(u) {
+		// 		return
+		// 	}
+		//
+		// 	if g.hasEdge(s[i], u) || g.hasEdge(s[j], u) {
+		// 		gPrime.AddEdge(newVertex.v, u)
+		// 	}
+		// })
 	}
 
-	return
+	return gPrime
 }
 
 // VC(G, T , k)

@@ -3,6 +3,8 @@ package graph
 import (
 	"errors"
 	"fmt"
+
+	"github.com/deckarep/golang-set"
 )
 
 type Graph struct {
@@ -63,6 +65,21 @@ func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	})
 
 	return result
+}
+
+func (self *Graph) getNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
+	resultSet := mapset.NewSet()
+	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
+	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+		Debug("Found neighbor edge of %v: %v", v, edge)
+		w := getOtherVertex(v, edge)
+		if !resultSet.Contains(w) {
+			resultSet.Add(w)
+			result = append(result, w)
+		}
+	})
+
+	return result, resultSet
 }
 
 func (self *Graph) NVertices() int {
