@@ -26,7 +26,11 @@ func prepend(slice []Vertex, v Vertex) []Vertex {
 
 func printForest(forest []*nodeInformation) {
 	for i, f := range forest {
-		Debug("%v - parent: %v, root, %v, outer: %v", MkVertex(i), f.Parent, f.Root, f.IsOuter)
+		if nil == f {
+			Debug("Vertex %v is not in the forest. ", MkVertex(i))
+		} else {
+			Debug("%v - parent: %v, root, %v, outer: %v", MkVertex(i), f.Parent, f.Root, f.IsOuter)
+		}
 	}
 }
 

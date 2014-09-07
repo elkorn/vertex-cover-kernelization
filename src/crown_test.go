@@ -80,3 +80,36 @@ func TestStopIfSizeBoundaryReached(t *testing.T) {
 
 	assert.Nil(t, findCrown(g, halt, 1))
 }
+
+func TestFindCrownBug(t *testing.T) {
+	g := MkGraph(10)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(6, 7)
+	g.AddEdge(4, 5)
+	g.AddEdge(4, 9)
+	g.AddEdge(4, 10)
+
+	h := make(chan bool, 1)
+	// TODO: @fixme There seems to be a problem in findCrown.
+	inVerboseContext(func() {
+		crown := findCrown(g, h, MAX_INT)
+		gv := MkGraphVisualizer(g)
+		gv.highlightCrown(crown)
+		gv.Display()
+		reduceCrown(g, crown)
+		matching := FindMaximumMatching(g)
+		Debug("MAX MATCH: %v", matching.Edges)
+		// crown = findCrown(g, h, MAX_INT)
+		gv = MkGraphVisualizer(g)
+		matching.ForAllEdges(func(edge *Edge, done chan<- bool) {
+			gv.HighlightEdge(edge, "red")
+		})
+		// gv.highlightCrown(crown)
+		gv.Display()
+	})
+}
