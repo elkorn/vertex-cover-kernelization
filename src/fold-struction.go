@@ -119,6 +119,47 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	return gPrime
 }
 
+func generalFold(g *Graph) *Graph {
+	halt := make(chan bool, 1)
+	crown := findCrown(g, halt, MAX_INT)
+	if nil == crown {
+		return g
+	}
+
+	result := MkGraphRememberingDeletedVertices(g.currentVertexIndex+1, g.isVertexDeleted)
+	foldRoot := Vertex(result.currentVertexIndex)
+
+	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+		if crown.I.Contains(edge.from) ||
+			crown.I.Contains(edge.to) ||
+			crown.H.Contains(edge.from) ||
+			crown.H.Contains(edge.to) {
+			return
+		}
+
+		result.AddEdge(edge.from, edge.to)
+	})
+
+	// for vInter := range crown.I.Iter() {
+	// 	v := vInter.(Vertex)
+	// 	g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+	// 		result.AddEdge(foldRoot, getOtherVertex(v, edge))
+	// 	})
+	// }
+
+	for vInter := range crown.H.Iter() {
+		v := vInter.(Vertex)
+		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+			result.AddEdge(foldRoot, getOtherVertex(v, edge))
+		})
+	}
+
+	reduceCrown(result, crown)
+	Debug("H: %v", crown.H)
+
+	return result
+}
+
 // VC(G, T , k)
 // 	Input: a graph G, a set T of tuples, and a positive integer k.
 // 	Output: the size of a minimum vertex cover of G if the size is bounded by k;
