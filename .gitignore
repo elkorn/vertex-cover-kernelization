@@ -10,3 +10,12 @@ EDIT_COMMITMSG
 coverage.out
 scratchpad*
 *.test
+*.log
+*.aux
+*.dvi
+*.pdf
+*.lof
+*.lop
+*.lot
+*.toc
+

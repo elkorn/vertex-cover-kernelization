@@ -1,0 +1,43 @@
+\chapter{Wstęp}\label{Chapter_Wstep}
+
+  \section{Cel}\label{Section_Aim}
+
+  \section{Układ pracy}\label{Section_Layout}
+
+\chapter{Zagadnienie }\label{Chapter_Domain}
+  \section{Opis dziedziny problemu}\label{Section_Problematyka}
+
+  \section{Podstawowe definicje}\label{Section_Definicje}
+
+  \section{Techniki przetwarzania wstępnego}\label{Section_preprocessing}
+
+  Przed przystąpieniem do właściwego procesu zawężania dziedziny grafu
+  rozpatrywanej w poszukiwaniu pokrywy wierzchołkowej, wykonać można (i~należy)
+  zestaw prostych procedur o~niewielkiej złożoności czasowej.
+  Procedury te pozwalają na pozbycie się z~grafu wierzchołków trywialnych,
+  o~których przynależności do pokrywy decydują proste cechy związane
+  z~najbliższym sąsiedztwem danwego wierzchołka.
+
+
+  Elementy składowe przetwarzania wstępnego:
+  \begin{enumerate}
+    \item Usunięcie wszystkich wierzchołków izolowanych
+      % Are cross-references allowed? E.g. refer here to the definition of an
+      % isolated vertex.
+    \item Usunięcie wsyzstkich wierzchołków stopnia 1., a~następnie usunięcie
+      wszystkich wierzchołków izolowanych.
+    \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
+      połączone, wraz z sąsiedztwem. Następnie, usunięcie wszystkich
+      wierzchołków izolowanych.
+    \item Dopóki istnieją wierzchołki stopnia 2., dla każdego wierzchołka $u$ 
+      stopnia 2. o niepołączonym sąsiedztwie $(w,v)$:
+      \begin{itemize}
+        \item[-] Każdą krawędź $(v,v_i)$ zastąp krawędzią $(u, v_i)$.
+        \item[-] Każdą krawędź $(w,w_i)$ zastąp krawędzią $(u, w_i)$.
+        \item[-] Usuń wierzchołki $v$ oraz $w$.
+      \end{itemize}
+  \end{enumerate}
+
+
+\chapter{Wybrane algorytmy }\label{Chapter_Algorytmy}
+
