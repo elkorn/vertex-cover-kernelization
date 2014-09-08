@@ -9,7 +9,7 @@ import (
 const k = MAX_INT
 
 func TestFindCrown1(t *testing.T) {
-	g := MkGraph(8)
+	g := MkGraph(7)
 	g.AddEdge(1, 4)
 	g.AddEdge(2, 4)
 	g.AddEdge(3, 4)
@@ -17,7 +17,7 @@ func TestFindCrown1(t *testing.T) {
 	g.AddEdge(6, 5)
 	g.AddEdge(4, 6)
 	g.AddEdge(4, 7)
-	g.AddEdge(8, 7)
+	// g.AddEdge(8, 7)
 	halt := make(chan bool, 1)
 
 	crown := findCrown(g, halt, k)
@@ -26,9 +26,10 @@ func TestFindCrown1(t *testing.T) {
 	assert.True(t, crown.I.Contains(Vertex(1)))
 	assert.True(t, crown.I.Contains(Vertex(2)))
 	assert.True(t, crown.I.Contains(Vertex(3)))
-	// gv := MkGraphVisualizer(g)
-	// gv.highlightCrown(crown)
-	// gv.Display()
+	gv := MkGraphVisualizer(g)
+	gv.Display()
+	gv.highlightCrown(crown)
+	gv.Display()
 }
 
 func TestReduceCrown1(t *testing.T) {
