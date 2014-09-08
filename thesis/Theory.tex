@@ -19,7 +19,7 @@
   z~najbliższym sąsiedztwem danwego wierzchołka.
 
 
-  Elementy składowe przetwarzania wstępnego:
+  Procedury składowe przetwarzania wstępnego:
   \begin{enumerate}
     \item Usunięcie wszystkich wierzchołków izolowanych
       % Are cross-references allowed? E.g. refer here to the definition of an
@@ -27,10 +27,10 @@
     \item Usunięcie wsyzstkich wierzchołków stopnia 1., a~następnie usunięcie
       wszystkich wierzchołków izolowanych.
     \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
-      połączone, wraz z sąsiedztwem. Następnie, usunięcie wszystkich
+      połączone, wraz z~sąsiedztwem. Następnie, usunięcie wszystkich
       wierzchołków izolowanych.
     \item Dopóki istnieją wierzchołki stopnia 2., dla każdego wierzchołka $u$ 
-      stopnia 2. o niepołączonym sąsiedztwie $(w,v)$:
+      stopnia 2. o~niepołączonym sąsiedztwie $(w,v)$
       \begin{itemize}
         \item[-] Każdą krawędź $(v,v_i)$ zastąp krawędzią $(u, v_i)$.
         \item[-] Każdą krawędź $(w,w_i)$ zastąp krawędzią $(u, w_i)$.
@@ -38,6 +38,38 @@
       \end{itemize}
   \end{enumerate}
 
+  \begin{lemma}
+    Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
+    jeżeli $u=v \lor w=v$.
+  \end{lemma}
+
+  \begin{lemma}
+    Krawędź $e=(a,b)$ uznaje się za \emph{pokrytą} przez zbiór wierzchołków \\
+    $V=\{a_0, a_1, \ldots, a_p\}$, jeżeli przystaje ona do co najmniej jednego
+    wierzchołka $v \in V$.
+  \end{lemma}
+
+  \begin{lemma}
+    Pokrywą wierzchołkową grafu $G=(V,E)$ nazywa się taki zbiór wierzchołków
+    $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
+  \end{lemma}
+
+  \begin{theorem}
+    Procedura składowa 4. przetwarzania wstępnego usuwa z~grafu wierzchołki nie 
+    mogące przynależeć do optymalnej pokrywy wierzchołkowej.
+  \end{theorem}
+  \begin{proof}
+    W celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
+    grafu $G=(V,E)$, gdzie $V\prime=\{u, v, w\}, V\prime \subseteq V$ oraz 
+    $E\prime=\{(u,v), (u,w)\}$, należy pokryć każdą krawędź $e \in E\prime$. 
+    Łatwo zauważyć, iż jezeli $ve_1=\{u,v\}, ve_2=\{u,w\}$, \\
+    to $VC_1=ve_1 \cup ve_2$ spełnia warunki wymagane do uzyskania statusu
+    pokrywy wierzchołkowej.
+    W celu minimalizacji pokrywy, jeżeli $VC_2=ve_1 \cap ve_2; VC_2 \neq \emptyset$,
+    stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$.
+    Gdyby usunąć wierzchołki należące do $VC_2$, $VC_3=ve_1 \oplus ve_2$ nadal
+    również stanowi pokrywę wierzchołkową, jednak $\|VC_2\| < \|VC_3\|$.
+  \end{proof}
 
 \chapter{Wybrane algorytmy }\label{Chapter_Algorytmy}
 
