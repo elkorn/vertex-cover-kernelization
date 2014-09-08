@@ -1,75 +1,115 @@
 \chapter{Wstęp}\label{Chapter_Wstep}
 
-  \section{Cel}\label{Section_Aim}
+\section{Cel}\label{Section_Aim}
 
-  \section{Układ pracy}\label{Section_Layout}
+\section{Układ pracy}\label{Section_Layout}
 
 \chapter{Zagadnienie }\label{Chapter_Domain}
-  \section{Opis dziedziny problemu}\label{Section_Problematyka}
+\section{Opis dziedziny problemu}\label{Section_Problematyka}
 
-  \section{Podstawowe definicje}\label{Section_Definicje}
+\section{Podstawowe definicje}\label{Section_Definicje}
 
-  \section{Techniki przetwarzania wstępnego}\label{Section_preprocessing}
+\begin{lemma}
+  Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
+  jeżeli $u=v \lor w=v$.
+\end{lemma}
 
-  Przed przystąpieniem do właściwego procesu zawężania dziedziny grafu
-  rozpatrywanej w poszukiwaniu pokrywy wierzchołkowej, wykonać można (i~należy)
-  zestaw prostych procedur o~niewielkiej złożoności czasowej.
-  Procedury te pozwalają na pozbycie się z~grafu wierzchołków trywialnych,
-  o~których przynależności do pokrywy decydują proste cechy związane
-  z~najbliższym sąsiedztwem danwego wierzchołka.
+\begin{lemma}
+  Krawędź $e=(a,b)$ uznaje się za \emph{pokrytą} przez zbiór wierzchołków \\
+  $V=\{a_0, a_1, \ldots, a_p\}$, jeżeli przystaje ona do co najmniej jednego
+  wierzchołka $v \in V$.
+\end{lemma}
+
+\begin{lemma}
+  Pokrywą wierzchołkową grafu $G=(V,E)$ nazywa się taki zbiór wierzchołków
+  $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
+\end{lemma}
+
+\section{Techniki przetwarzania wstępnego}\label{Section_preprocessing}
+
+Przed przystąpieniem do właściwego procesu zawężania dziedziny grafu
+rozpatrywanej w poszukiwaniu pokrywy wierzchołkowej, wykonać można (i~należy)
+zestaw prostych procedur o~niewielkiej złożoności czasowej.
+Procedury te pozwalają na pozbycie się z~grafu wierzchołków trywialnych,
+o~których przynależności do pokrywy decydują proste cechy związane
+z~najbliższym sąsiedztwem danwego wierzchołka.
 
 
-  Procedury składowe przetwarzania wstępnego:
-  \begin{enumerate}
-    \item Usunięcie wszystkich wierzchołków izolowanych
-      % Are cross-references allowed? E.g. refer here to the definition of an
-      % isolated vertex.
-    \item Usunięcie wsyzstkich wierzchołków stopnia 1., a~następnie usunięcie
-      wszystkich wierzchołków izolowanych.
-    \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
-      połączone, wraz z~sąsiedztwem. Następnie, usunięcie wszystkich
-      wierzchołków izolowanych.
-    \item Dopóki istnieją wierzchołki stopnia 2., dla każdego wierzchołka $u$ 
-      stopnia 2. o~niepołączonym sąsiedztwie $(w,v)$
-      \begin{itemize}
-        \item[-] Każdą krawędź $(v,v_i)$ zastąp krawędzią $(u, v_i)$.
-        \item[-] Każdą krawędź $(w,w_i)$ zastąp krawędzią $(u, w_i)$.
-        \item[-] Usuń wierzchołki $v$ oraz $w$.
-      \end{itemize}
-  \end{enumerate}
+Procedury składowe przetwarzania wstępnego:
+\begin{enumerate}
+  \item Usunięcie wszystkich wierzchołków izolowanych
+    % Are cross-references allowed? E.g. refer here to the definition of an
+    % isolated vertex.
+  \item Usunięcie wsyzstkich wierzchołków stopnia 1., a~następnie usunięcie
+    wszystkich wierzchołków izolowanych.
+  \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
+    połączone, wraz z~sąsiedztwem. Następnie, usunięcie wszystkich
+    wierzchołków izolowanych.
+  \item Dopóki istnieją wierzchołki stopnia 2., dla każdego wierzchołka $u$ 
+    stopnia 2. o~niepołączonym sąsiedztwie $(w,v)$
+    \begin{itemize}
+      \item[-] Każdą krawędź $(v,v_i)$ zastąp krawędzią $(u, v_i)$.
+      \item[-] Każdą krawędź $(w,w_i)$ zastąp krawędzią $(u, w_i)$.
+      \item[-] Usuń wierzchołki $v$ oraz $w$.
+    \end{itemize}
+\end{enumerate}
 
-  \begin{lemma}
-    Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
-    jeżeli $u=v \lor w=v$.
-  \end{lemma}
+\begin{theorem}
+  Procedura składowa 4. przetwarzania wstępnego usuwa z~grafu wierzchołki nie 
+  mogące przynależeć do optymalnej pokrywy wierzchołkowej.
+\end{theorem}
+\begin{proof}
+  W celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
+  grafu $G=(V,E)$, gdzie $V\prime=\{u, v, w\}, V\prime \subseteq V$ oraz 
+  $E\prime=\{(u,v), (u,w)\}$, należy pokryć każdą krawędź $e \in E\prime$. 
+  Łatwo zauważyć, iż jezeli $ve_1=\{u,v\}, ve_2=\{u,w\}$, \\
+  to $VC_1=ve_1 \cup ve_2$ spełnia warunki wymagane do uzyskania statusu
+  pokrywy wierzchołkowej.
+  W celu minimalizacji pokrywy, jeżeli $VC_2=ve_1 \cap ve_2; VC_2 \neq \emptyset$,
+  stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$.
+  Gdyby usunąć wierzchołki należące do $VC_2$, $VC_3=ve_1 \oplus ve_2$ nadal
+  również stanowi pokrywę wierzchołkową, jednak $\|VC_2\| < \|VC_3\|$.
+\end{proof}
 
-  \begin{lemma}
-    Krawędź $e=(a,b)$ uznaje się za \emph{pokrytą} przez zbiór wierzchołków \\
-    $V=\{a_0, a_1, \ldots, a_p\}$, jeżeli przystaje ona do co najmniej jednego
-    wierzchołka $v \in V$.
-  \end{lemma}
+\section {Techniki zawężania dziedziny}\label{Section_kernelization}
 
-  \begin{lemma}
-    Pokrywą wierzchołkową grafu $G=(V,E)$ nazywa się taki zbiór wierzchołków
-    $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
-  \end{lemma}
+Proces zawężania dziedziny realizowany jest przed właściwym poszukiwaniem
+pokrywy wierzchołkowej. Polega on na usunięciu z dziedziny problemu
+wierzchołków, które z~pewnością nie należą lub z~pewnością należą do optymalnej
+pokrywy wierzchołkowej grafu wejściowego o~rozmiarze $k\prime \leq k$.
+Dzięki parametryzacji maksymalną wartością oczekiwanego rozmiaru wyniku,
+istnieje możliwość zakończenia przetwarzania z~odpowiedzią negatywną bez
+angażowania właściwej logiki wyszukiwania pokrywy wierzchołkowej, co pozytywnie
+wpływa na średnią złożoność obliczeniową procesu.
 
-  \begin{theorem}
-    Procedura składowa 4. przetwarzania wstępnego usuwa z~grafu wierzchołki nie 
-    mogące przynależeć do optymalnej pokrywy wierzchołkowej.
-  \end{theorem}
-  \begin{proof}
-    W celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
-    grafu $G=(V,E)$, gdzie $V\prime=\{u, v, w\}, V\prime \subseteq V$ oraz 
-    $E\prime=\{(u,v), (u,w)\}$, należy pokryć każdą krawędź $e \in E\prime$. 
-    Łatwo zauważyć, iż jezeli $ve_1=\{u,v\}, ve_2=\{u,w\}$, \\
-    to $VC_1=ve_1 \cup ve_2$ spełnia warunki wymagane do uzyskania statusu
-    pokrywy wierzchołkowej.
-    W celu minimalizacji pokrywy, jeżeli $VC_2=ve_1 \cap ve_2; VC_2 \neq \emptyset$,
-    stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$.
-    Gdyby usunąć wierzchołki należące do $VC_2$, $VC_3=ve_1 \oplus ve_2$ nadal
-    również stanowi pokrywę wierzchołkową, jednak $\|VC_2\| < \|VC_3\|$.
-  \end{proof}
+Opisane algorytmy zawężające dziedzinę problemu są od siebie niezależne.
+Wynikiem działania każdego z~nich jest zbiór wierzchołków nietrywialnych do
+rozpatrzenia z~perspektywy podjęcia decyzji o~przynależności do optymalnej
+pokrywy wierzchołkowej.
+
+\subsection {Usuwanie węzłów wysokiego stopnia}\label{section_kernelization_high-degree}
+
+\begin{theorem}
+  Każdy wierzchołek $v; d(v) > k $ musi należeć do optymalnej pokrywy wierzchołkowej 
+  $VC; \|VC\| \leq k$.
+\end{theorem}
+\begin{proof}
+  W~celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
+  grafu $G=(V,E)$, gdzie $V\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\}, V\prime
+  \subseteq V$ oraz \\
+  $E\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0, v_k), (v_0,v_{k+1})\}$,
+  należy pokryć każdą krawędź $e \in E\prime$.
+  Łatwo zauważyć, iż \\ jeżeli $ve_1=\{v_0,v_1\}, ve_2=\{v_0,v_2\}, \ldots,
+  ve_k=\{v_0,v_k\},ve_{k+1}=\{v_0,v_{k+1}\}$,\\
+  to $VC_1=ve_1 \cup ve_2 \cup \ldots \cup ve_k \cup ve_{k+1}$ spełnia warunki 
+  wymagane do uzyskania statusu pokrywy wierzchołkowej, jednak $\|VC_1\| = k +1$.\\
+  Jeżeli $VC_2=ve_1 \cap ve_2 \cap \ldots \cap ve_k \cap ve_{k+1}; VC_2 \neq \emptyset$,
+  stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$ oraz
+  $\|VC_2\|=1$.
+  Gdyby usunąć wierzchołek należący do $VC_2$, $VC_3=ve_1 \oplus ve_2 \oplus \ldots \oplus ve_k \oplus ve_{k+1}$ nadal
+  również stanowi pokrywę wierzchołkową, jednak $\|VC_3\|=k$, a~zatem $VC_3$ nie
+  może należeć do pokrywy wierzchołkowej o~rozmiarze $k\prime \leq k$.
+\end{proof}
 
 \chapter{Wybrane algorytmy }\label{Chapter_Algorytmy}
 
