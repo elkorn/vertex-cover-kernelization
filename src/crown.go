@@ -3,7 +3,7 @@ package graph
 import "github.com/deckarep/golang-set"
 
 type Crown struct {
-	I mapset.Set // An independent subset of G
+	I mapset.Set // An independent, non-empty subset of G
 	H mapset.Set // Head of the crown: N(I) - neighbors of I
 	// Also, there must exist a matching M on the edges connecting I and H
 	// such that all elements of H are matched.
@@ -55,7 +55,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
-	// Invariant: I0.Cardinality() > 0
+	// TODO: handle the Invariant: I0.Cardinality() > 0
 	if O.Cardinality() == 0 {
 		Debug("Outsiders is empty!")
 	}
