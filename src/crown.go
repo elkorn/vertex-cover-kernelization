@@ -55,6 +55,10 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
+	// Invariant: I0.Cardinality() > 0
+	if O.Cardinality() == 0 {
+		Debug("Outsiders is empty!")
+	}
 	I0 := mapset.NewSet()
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)

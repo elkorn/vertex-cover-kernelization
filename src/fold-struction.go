@@ -58,17 +58,29 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 
 				newVertices = append(newVertices, structionVertex)
 				newVertexLookup[vi.toInt()][vj.toInt()] = structionVertex.v
+				newVertexLookup[vj.toInt()][vi.toInt()] = structionVertex.v
 			}
 		}
 	}
 
 	Debug("Deletions: %v", newDeletions)
 
-	gPrime := MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
+	result = MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
+
+	addStructionNeighbors := func(i, v Vertex) {
+		for _, neighbor := range newVertexLookup[i.toInt()] {
+			if !(neighbor == INVALID_VERTEX || neighbor == v) {
+				Debug("Adding struction edge %v-%v", neighbor, v)
+				result.AddEdge(neighbor, v)
+			}
+		}
+	}
 
 	for _, newVertex := range newVertices {
 		i, j := newVertex.i, newVertex.j
 		Debug("i: %v, j: %v", i, j)
+		addStructionNeighbors(i, newVertex.v)
+		addStructionNeighbors(j, newVertex.v)
 		// 1. Add an edge (vir, vjs) if i == j and g.hasEdge(vr,vs)
 		// if i == j {
 		// for vr, nr := range s {
@@ -83,7 +95,7 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 		// 				continue
 		// 			}
 		// 			Debug("i!=j, vir: (%v,%v), vjs: (%v,%v), adding edge %v-%v", i, vr, j, vs, vir, vjs)
-		// 			gPrime.AddEdge(vir, vjs)
+		// 			result.AddEdge(vir, vjs)
 		// 		}
 		// 	}
 		// }
@@ -92,13 +104,13 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 		Debug("%v of %v", i, newVertex.Name())
 		g.ForAllNeighbors(i, func(edge *Edge, done chan<- bool) {
 			Debug("Edge %v-%v", edge.from, edge.to)
-			gPrime.AddEdge(newVertex.v, getOtherVertex(i, edge))
+			result.AddEdge(newVertex.v, getOtherVertex(i, edge))
 		})
 
 		Debug("%v of %v", j, newVertex.Name())
 		g.ForAllNeighbors(j, func(edge *Edge, done chan<- bool) {
 			Debug("Edge %v-%v", edge.from, edge.to)
-			gPrime.AddEdge(newVertex.v, getOtherVertex(j, edge))
+			result.AddEdge(newVertex.v, getOtherVertex(j, edge))
 		})
 		// }
 
@@ -111,12 +123,12 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 		// 	}
 		//
 		// 	if g.hasEdge(s[i], u) || g.hasEdge(s[j], u) {
-		// 		gPrime.AddEdge(newVertex.v, u)
+		// 		result.AddEdge(newVertex.v, u)
 		// 	}
 		// })
 	}
 
-	return gPrime
+	return
 }
 
 func generalFold(g *Graph) *Graph {

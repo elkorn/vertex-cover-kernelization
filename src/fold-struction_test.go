@@ -1,6 +1,10 @@
 package graph
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestStruction(t *testing.T) {
 	g := MkGraph(9)
@@ -14,10 +18,23 @@ func TestStruction(t *testing.T) {
 	g.AddEdge(4, 8) // 8 is y on the diagram
 	g.AddEdge(4, 9) // 9 is z on the diagram
 
-	// inVerboseContext(func() {
-	/* g1 :=  */ struction(g, Vertex(1))
-	// })
-
+	g1 := struction(g, Vertex(1))
+	assert.Equal(t, 7, g1.NVertices())
+	assert.Equal(t, 8, g1.NEdges())
+	assert.True(t, g1.hasVertex(Vertex(10)))
+	assert.True(t, g1.hasVertex(Vertex(11)))
+	assert.False(t, g1.hasVertex(Vertex(1)))
+	assert.False(t, g1.hasVertex(Vertex(2)))
+	assert.False(t, g1.hasVertex(Vertex(3)))
+	assert.False(t, g1.hasVertex(Vertex(4)))
+	assert.True(t, g1.hasEdge(11, 10))
+	assert.True(t, g1.hasEdge(11, 7))
+	assert.True(t, g1.hasEdge(11, 8))
+	assert.True(t, g1.hasEdge(11, 9))
+	assert.True(t, g1.hasEdge(10, 5))
+	assert.True(t, g1.hasEdge(10, 6))
+	assert.True(t, g1.hasEdge(10, 8))
+	assert.True(t, g1.hasEdge(10, 9))
 }
 
 func TestGeneralFold1(t *testing.T) {
