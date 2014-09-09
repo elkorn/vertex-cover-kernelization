@@ -56,11 +56,19 @@ func TestMakeBipartite(t *testing.T) {
 	assertAllEdgesEqual(t, expectedEdges, actual)
 }
 
-// func TestPrintBipartite(t *testing.T) {
-// 	g := mkGraph1()
-// 	gv := MkGraphVisualizer()
-// 	nf := mkNetworkFlow(g)
+func TestPrintBipartite(t *testing.T) {
+	g := mkGraph1()
+	// g1 := makeBipartite(g)
+	// nf := mkNetworkFlow(g)
+	gv1 := MkGraphVisualizer(g)
+	// gv2 := MkGraphVisualizer(g1)
 
-// 	gv.Display(g)
-// 	gv.Display(nf.graph)
-// }
+	gv1.Display()
+	networkFlowKernelization(g, 3)
+	// max.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 	gv2.HighlightEdge(edge, "red")
+	// })
+	// gv1.HighlightCover(cover, "yellow")
+	gv1.Display()
+
+}
