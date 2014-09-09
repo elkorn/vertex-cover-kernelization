@@ -1,0 +1,126 @@
+\section{Techniki przetwarzania wstępnego}\label{Section_preprocessing}
+
+Przed przystąpieniem do właściwego procesu zawężania dziedziny grafu $G=(V,E)$
+rozpatrywanej w poszukiwaniu optymalnej pokrywy wierzchołkowej, wykonać można 
+(i~należy) zestaw prostych procedur o~złożoności czasowej $O(n^2)$.
+Procedury te pozwalają na pozbycie się z~grafu wierzchołków trywialnych do 
+rozpatrzenia w kontekście przynależności do optymalnej pokrywy wierzchołkowej,
+o~których przynależności do pokrywy decydują proste cechy związane
+z~najbliższym sąsiedztwem danwego wierzchołka.
+Wynikiem każdej z procedur jest graf $G\prime=(V\prime, E\prime); V\prime
+\subseteq V, E\prime \subseteq E$.
+
+
+
+Procedury składowe przetwarzania wstępnego:
+
+\begin{enumerate}
+  \item Usunięcie wszystkich wierzchołków izolowanych. \\
+    W oparciu o~definicję~\ref{def_isolated_vertex} zauważyć można, iż zawarcie
+    izolowanego wierzchołka $u$ w zbiorze pretendującym do miana pokrywy
+    wierzchołkowej nie wpływa na pokrycie krawędzi grafu przez ten zbiór.
+    Nie ma zatem uzasadnienia dla rozpatrywania wierzchołków izolowanych w
+    kontekście dziedziny problemu.
+    Utworzyć zatem należy graf $G\prime$, gdzie $V\prime = V
+    \setminus u$.
+    rozmiar dziedziny problemu zostaje zredukowany do $n\prime=n-1$.
+    Operację należy powtarzać tak dopóki $V$ zawiera wierzchołki izolowane.
+
+    % Are cross-references allowed? E.g. refer here to the definition of an
+    % isolated vertex.
+  \item Usunięcie wsyzstkich wierzchołków stopnia 1.\\
+    Jeżeli w grafie $G$ istnieje wierzchołek $v$ stopnia 1., można 
+    stwierdzić, iż istnieje optymalna taka pokrywa wierzchołkowa $VC_{opt}$, że
+    $v \notin VC{opt}, u \in VC_{opt}; (v,u) \in E$.
+    Graf $G\prime$ utworzyć można zatem przez usunięcie z dziedziny $v$ oraz
+    $u$, zarówno jak i krawędzi $(v,u)$.
+    Po wykonaniu tej operacji usunąć należy również wierzchołki sąsiednie dla
+    $\{v,u\}$, których stopień wyniósł 0.
+    Jedna iteracja redukuje rozmiar dziedziny problemu do $n\prime=n-x$, gdzie
+    $x$ stanowi liczebność~zbioru usuniętych wierzchołków.
+    Ze względu na usuniętą krawędź, rozmiar parametru $k$ ulega zmniejszeniu do
+    $k\prime=k-1$.
+    Operację należy powtarzać do momentu usunięcia z grafu wszystkich
+    wierzchołków stopnia 1.
+
+  \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
+    połączone, wraz z~sąsiedztwem.   
+    \begin{theorem}
+      Procedura usuwa z~grafu wierzchołek zbędny w~optymalnej pokrywie
+      wierzchołkowej.
+    \end{theorem}
+    \begin{proof}
+      W celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
+      grafu ${G=(V,E); V\prime=\{u, v, w\}, V\prime \subseteq V; E\prime=\{(u,v),
+      (u,w), (w,v)\}, E\prime \subseteq E}$, należy pokryć każdą krawędź $e \in
+      E\prime$.\\ 
+      Łatwo zauważyć, iż jezeli ${ve_1=\{u,v\}, ve_2=\{u,w\}, ve_3=\{w,v\}}$,\\ 
+      to ${VC_1=ve_1 \cup ve_2 \cup ve_3}$ spełnia warunki wymagane do uzyskania 
+      statusu pokrywy wierzchołkowej.
+      Usunięcie dowolnego wierzchołka $x \in V\prime$ nie zmienia faktu, iż 
+      ${VC_1=V\prime \setminus \{x\}}$ nadal stanowi pokrywę wierzchołkową
+      $G\prime$.
+      Usunięcie dowolnego wierzchołka $y \in VC$ powoduje jednak, iż zbiór
+      $VC_2=VC_1 \setminus \{y\}$ nie pokrywa jednej z krawędzi $e \in E\prime$.
+      Na tej podstawie stwierdzić można, iż dowolna pokrywa wierzchołkowa
+      $VC$ zawierać musi przynajmniej 2 wierzchołki należące do $V\prime$, oraz
+      że istnieje optymalna pokrywa wierzchołkowa $VC_{opt}$ grafu $G\prime$
+      zawierająca dokładnie 2 wierzchołki należące do $V\prime$.
+      Co więcej, jeżeli $d(u)=2$, zawarcie wierzchołka $u$ w pokrywie
+      wierzchołkowej $VC_{opt}$ gwarantowałoby pokrycie jedynie krawędzi
+      $\{(u,v), (u,w), (v,w)\}$, podczas gdy usunięcie $u$ z pokrywy gwarantuje 
+      pokrycie nie tylko tych krawędzi ale także i wszystkich krawędzi $e \in E$
+      przystających do $\{w, v\}$.
+      Na tej podstawie stwierdzić można, iż istnieje optymalna pokrywa
+      wierzchołkowa $VC_{opt}$ grafu $G$ taka, że $\{v,w\} \in VC_{opt}$.
+    \end{proof}
+    W związku z powyższym, graf $G\prime$ otrzymuje się przez usunięcie z grafu
+    $G$ wierzchołków $\{u,v,w\}$ oraz krawędzi pomiędzy nimi.
+    Następnie, usunąć należy wierzchołki, których stopień wyniósł 0.
+    Jedna iteracja redukuje rozmiar dziedziny problemu do wartości
+    $n\prime=n-x$, gdzie $x$ stanowi liczebność zbioru usuniętych wierzchołków.
+    Ze względu na usunięte krawędzie, rozmiar parametru $k$ ulega zmniejszeniu 
+    do wartości $k\prime=k-2$.
+    Operację należy powtarzać dopóki w~grafie istnieją wierzchołki stopnia 2.\
+    o~połączonym sąsiedztwie.
+
+  \item Zwinięcie rozłącznego sąsiedztwa wierzchołków stopnia 2.
+    \begin{theorem}
+      Procedura usuwa z~grafu wierzchołki nie mogące lub muszące przynależeć do 
+      optymalnej pokrywy wierzchołkowej.
+    \end{theorem}
+    \begin{proof}
+      W celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
+      grafu ${G=(V,E); V\prime=\{u, v, w\}, V\prime \subseteq V; E\prime=\{(u,v),
+      (u,w)\}, E\prime \in E}$,
+      należy pokryć każdą krawędź $e \in E\prime$. 
+      Łatwo zauważyć, iż jezeli $ve_1=\{u,v\}, ve_2=\{u,w\}$, 
+      to $VC_1=ve_1 \cup ve_2$ spełnia warunki wymagane do uzyskania statusu
+      pokrywy wierzchołkowej.
+      W celu minimalizacji pokrywy, jeżeli $VC_2=ve_1 \cap ve_2; VC_2 \neq \emptyset$,
+      stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$.
+      Gdyby usunąć wierzchołki należące do $VC_2$, $VC_3=ve_1 \oplus ve_2$ nadal
+      również stanowi pokrywę wierzchołkową, jednak $\|VC_2\| < \|VC_3\|$.
+      Na tej podstawie stwierdzić można, iż istnieje optymalna pokrywa
+      wierzchołkowa $VC_{opt}; \{v,w\} \notin VC_{opt}, u \in VC_{opt}$.
+    \end{proof}
+
+    W związku z powyższym, graf $G\prime$ otrzymuje się przez wykonywanie
+    następujących operacji do momentu eliminacji wszystkich wierzchołków stopnia
+    2. o rozłącznym sąsiedztwie.
+
+    Dla wierzchołka $u; d(u)=2$ o~rozłącznym sąsiedztwie $(w,v)$:
+    \begin{itemize}
+      \item[-] Każdą krawędź $(v,v_i); v_i \in V \land v_i \neq u$ zastąp 
+        krawędzią $(u, v_i)$.
+      \item[-] Każdą krawędź $(w,w_i); w_i \in V \land w_i \neq u$ zastąp
+        krawędzią $(u, w_i)$.
+      \item[-] Usuń wierzchołki $v$ oraz $w$.
+    \end{itemize}
+    Jedna iteracja redukuje rozmiar dziedziny problemu do wartości
+    $n\prime=n-2$.
+    Ze względu zastąpienie krawędzi stanowiących o sąsiedztwie wierzchołka $u$,
+    wartość parametru $k$ ulega zmniejszeniu do $k\prime=k-1$.
+
+\end{enumerate}
+

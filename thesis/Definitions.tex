@@ -1,0 +1,54 @@
+\section{Podstawowe definicje}\label{Section_Definicje}
+
+\begin{definition}
+  Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
+  jeżeli $u=v \lor w=v$.
+\end{definition}
+
+\begin{definition}
+  Krawędź $e=(a,b)$ uznaje się za \emph{pokrytą} przez zbiór wierzchołków \\
+  $V=\{a_0, a_1, \ldots, a_p\}$, jeżeli przystaje ona do co najmniej jednego
+  wierzchołka $v \in V$.
+\end{definition}
+
+\begin{definition}
+  W grafie $G=(V,E)$, mianem \emph{stopnia} wierzchołka $v \in V$ określa się 
+  liczbę krawędzi $e \in E$ przystających do wierzchołka $v$.
+  Stopień wierzchołka $v$ wyraża się w postaci $d(v)$.
+\end{definition}
+
+\begin{definition}\thlabel{def_isolated_vertex}
+  \emph{Wierzchołkiem izolowanym} nazywa się wierzchołek $v; d(v)=0$.
+\end{definition}
+
+\begin{definition}
+  \emph{Sąsiedztwem} wierzchołka $v; d(v)=p$ w grafie $G=(V,E)$ nazywa się zbiór 
+  wierzchołków $N={v_0, v_1, \ldots, v_p}$ taki, że 
+  $\forall_{v_n \in N}{(v,v_n) \in E \lor (v_n,v) \in E}$.
+  Sąsiedztwo wierzchołka $v$ wyraża się w postaci $N(v)$.
+\end{definition}
+
+\begin{definition}
+  \emph{Sąsiedztwem połączonym} wierzchołka $v; d(v)=p$ w grafie $G=(V,E)$ 
+  nazywa się zbiór wierzchołków $N={v_0, v_1, \ldots, v_p}$ taki, że 
+  $\not \exists_{v_n, v_m \in N}{(v_n,v_n) \in E \lor (v_n,v_m) \in E}$.
+\end{definition}
+
+\begin{definition}
+  \emph{Pokrywą wierzchołkową} grafu $G=(V,E)$ nazywa się taki zbiór wierzchołków
+  $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
+\end{definition}
+
+\begin{definition}
+  Przez \emph{rozmiar} pokrywy wierzchołkowej $VC$ rozumie się liczebność ($\|VC\|$)
+  zbioru wierzchołków reprezentującą tę pokrywę.
+\end{definition}
+
+\begin{definition}
+  \emph{Pokrywą wierzchołkową o optymalnym rozmiarze}, \emph{pokrywą 
+  wierzchołkową optymalnego rozmiaru} lub \emph{optymalną pokrywą wierzchołkową} 
+  grafu $G=(V,E)$ nazywa się pokrywę wierzchołkową $VC_{opt}$ taką, że dla 
+  zbioru $VCS \in G$ wszystkich pokryw wierzchołkowych,
+  $\forall_{VC \in VCS \setminus VC_{opt}}{\|VC_{opt}\| < \|VC\|}$.
+\end{definition}
+
