@@ -5,22 +5,22 @@
 %\elektronicznatrue
 \elektronicznafalse
 
-%\jednostronnafalse
+% \jednostronnafalse
 \jednostronnatrue
 
 \ifjednostronna
-    \def\strony{oneside,openany}
+\def\strony{oneside,openany}
 \else
-    \def\strony{twoside,openright}
+\def\strony{twoside,openright}
 \fi
 
 \ifpdf
-    \documentclass[pdftex,12pt,a4paper,\strony,colorlinks,nocenter,noupper,crosshair]{thesis}
-    \usepackage[pdftex]{graphicx}
-    \pdfcompresslevel=1
+\documentclass[pdftex,12pt,a4paper,\strony,colorlinks,nocenter,noupper,crosshair]{thesis}
+\usepackage[pdftex]{graphicx}
+\pdfcompresslevel=1
 \else
-    \documentclass[12pt,a4paper,\strony,nocenter,noupper,crosshair]{thesis}
-    \usepackage{graphicx}
+\documentclass[12pt,a4paper,\strony,nocenter,noupper,crosshair]{thesis}
+\usepackage{graphicx}
 \fi
 
 \usepackage{url}
@@ -45,15 +45,15 @@
 
 \ifpdf
 \ifelektroniczna
-     \usepackage[
-        pdfusetitle=true,
-        pdfsubject={\tytulpdf},
-        pdfkeywords={\slowakluczowe},
-        pdfcreator={\autor},
-        pdfstartview=FitV,
-        linkcolor=blue,
-        citecolor=red,
-    ]{hyperref}
+\usepackage[
+  pdfusetitle=true,
+  pdfsubject={\tytulpdf},
+  pdfkeywords={\slowakluczowe},
+  pdfcreator={\autor},
+  pdfstartview=FitV,
+  linkcolor=blue,
+  citecolor=red,
+]{hyperref}
 \fi
 \fi
 
@@ -79,6 +79,7 @@
 \textwidth 150mm
 \textheight 225mm
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{subfig}
 \captionsetup[subfigure]{justification=centerfirst}
 \usepackage{cite}
@@ -93,48 +94,50 @@
 \def\e{\ensuremath{\textrm{\normalfont{}e}}}
 \def\degree{\ensuremath{^{\circ}}\protect}
 \def\fixme#1{\marginpar{\tiny{}#1}}
-\newtheorem{theorem}{Twierdzenie}[chapter]
-\newtheorem{property}{Własność}[chapter]
-\newtheorem{lemma}{Lemat}[chapter]
-\newtheorem{corollary}{Wniosek}[chapter]
-\newtheorem{definition}{Definicja}[chapter]
-\newtheorem{proposition}{Założenie}[chapter]
-\newtheorem{conjecture}{Przypuszczenie}[chapter]
+\newtheorem{theorem}{\parindent=0pt{\bf Twierdzenie}}[section]
+\newtheorem{property}{\parindent=0pt{\bf Własność}}[section]
+\newtheorem{lemma}{\parindent=0pt{\bf Lemat}}[section]
+\newtheorem{corollary}{\parindent=0pt{\bf Wniosek}}[section]
+\newtheorem{definition}{\parindent=0pt{\bf Definicja}}
+\newtheorem{proposition}{\parindent=0pt{\bf Założenie}}[section]
+\newtheorem{conjecture}{\parindent=0pt{\bf Przypuszczenie}}[section]
+\newtheorem*{nt*}{\parindent=0pt{\bf Neumhauser-Trotter}}
 \newenvironment{proof}{\parindent=0pt{\bf Dowód. }}{\begin{flushright}$\square$\end{flushright}}
-\def\captionlabeldelim{.}
-\linespread{1}
-\chapterfont{\Huge\bfseries}
-\sectionfont{\bfseries\Large}
-\subsectionfont{\bfseries\large}
-\institutionfont{\bfseries}%\mdseries}
-\def\captionlabelfont{\bfseries}
 
-\renewcommand{\figureshortname}{Rys.}
-\renewcommand{\tableshortname}{Tab.}
+  \def\captionlabeldelim{.}
+  \linespread{1}
+  \chapterfont{\Huge\bfseries}
+  \sectionfont{\bfseries\Large}
+  \subsectionfont{\bfseries\large}
+  \institutionfont{\bfseries}%\mdseries}
+  \def\captionlabelfont{\bfseries}
 
-\renewcommand\floatpagefraction{.9}
-\renewcommand\topfraction{.9}
-\renewcommand\bottomfraction{.9}
-\renewcommand\textfraction{.1}
-\setcounter{totalnumber}{50}
-\setcounter{topnumber}{50}
-\setcounter{bottomnumber}{50}
+  \renewcommand{\figureshortname}{Rys.}
+  \renewcommand{\tableshortname}{Tab.}
 
-\newcommand{\topcaption}{%
-   \setlength{\abovecaptionskip}{0pt}%
-   \setlength{\belowcaptionskip}{10pt}%
-   \caption}
+  \renewcommand\floatpagefraction{.9}
+  \renewcommand\topfraction{.9}
+  \renewcommand\bottomfraction{.9}
+  \renewcommand\textfraction{.1}
+  \setcounter{totalnumber}{50}
+  \setcounter{topnumber}{50}
+  \setcounter{bottomnumber}{50}
 
-\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+  \newcommand{\topcaption}{%
+    \setlength{\abovecaptionskip}{0pt}%
+    \setlength{\belowcaptionskip}{10pt}%
+  \caption}
 
-\hyphenation{wew-nętrz-nej}
+  \newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
 
-\makeatletter
-\renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
-  \def\@fs@pre{\hrule height1.0pt depth0pt \kern2pt}
-  \def\@fs@post{\vskip-1.5\baselineskip\kern2pt\hrule\relax}%
-  \def\@fs@mid{\kern2pt\hrule\kern2pt}
-  \let\@fs@iftopcapt\iftrue}
+  \hyphenation{wew-nętrz-nej}
+
+  \makeatletter
+  \renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+    \def\@fs@pre{\hrule height1.0pt depth0pt \kern2pt}
+    \def\@fs@post{\vskip-1.5\baselineskip\kern2pt\hrule\relax}%
+    \def\@fs@mid{\kern2pt\hrule\kern2pt}
+\let\@fs@iftopcapt\iftrue}
 \makeatother
 
 \floatstyle{ruled}
@@ -160,7 +163,7 @@
 \input{Theory}
 
 \addcontentsline{toc}{chapter}{\bibname}
-\bibliography{MainDocument}
+\bibliography{Main}
 
 % \renewcommand{\appendixname}{Dodatek}
 % \appendix
