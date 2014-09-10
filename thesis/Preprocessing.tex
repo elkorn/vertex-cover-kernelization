@@ -11,7 +11,6 @@ Wynikiem każdej z procedur jest graf $G\prime=(V\prime, E\prime); V\prime
 \subseteq V, E\prime \subseteq E$.
 
 
-
 Procedury składowe przetwarzania wstępnego:
 
 \begin{enumerate}
@@ -26,9 +25,7 @@ Procedury składowe przetwarzania wstępnego:
     rozmiar dziedziny problemu zostaje zredukowany do $n\prime=n-1$.
     Operację należy powtarzać tak dopóki $V$ zawiera wierzchołki izolowane.
 
-    % Are cross-references allowed? E.g. refer here to the definition of an
-    % isolated vertex.
-  \item Usunięcie wsyzstkich wierzchołków stopnia 1.\\
+  \item Usunięcie wszystkich wierzchołków stopnia 1.\\
     Jeżeli w grafie $G$ istnieje wierzchołek $v$ stopnia 1., można 
     stwierdzić, iż istnieje optymalna taka pokrywa wierzchołkowa $VC_{opt}$, że
     $v \notin VC{opt}, u \in VC_{opt}; (v,u) \in E$.
@@ -43,8 +40,8 @@ Procedury składowe przetwarzania wstępnego:
     Operację należy powtarzać do momentu usunięcia z grafu wszystkich
     wierzchołków stopnia 1.
 
-  \item Usunięcie wszystkich wierzchołków stopnia 2., których sąsiedztwo jest
-    połączone, wraz z~sąsiedztwem.   
+  \item Usunięcie wierzchołków stopnia 2., o połączonym sąsiedztwie, wraz 
+    z~sąsiedztwem.   
     \begin{theorem}
       Procedura usuwa z~grafu wierzchołek zbędny w~optymalnej pokrywie
       wierzchołkowej.
