@@ -26,8 +26,9 @@
 \usepackage{url}
 \usepackage{TitlePage}
 \usepackage{theoremref}
+\usepackage{tikz}
+\usetikzlibrary{calc, shapes, backgrounds}
 \usepackage[utf8]{inputenc}
-
 \def\rodzaj{Praca magisterska}
 
 \def\wydzial{Automatyki, Elektroniki i~Informatyki}
@@ -102,6 +103,7 @@
 \newtheorem{proposition}{\parindent=0pt{\bf Założenie}}[section]
 \newtheorem{conjecture}{\parindent=0pt{\bf Przypuszczenie}}[section]
 \newtheorem*{nt*}{\parindent=0pt{\bf Neumhauser-Trotter}}
+
 \newenvironment{proof}{\parindent=0pt{\bf Dowód. }}{\begin{flushright}$\square$\end{flushright}}
 
   \def\captionlabeldelim{.}
@@ -132,41 +134,41 @@
 
   \hyphenation{wew-nętrz-nej}
 
-  \makeatletter
-  \renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
-    \def\@fs@pre{\hrule height1.0pt depth0pt \kern2pt}
-    \def\@fs@post{\vskip-1.5\baselineskip\kern2pt\hrule\relax}%
-    \def\@fs@mid{\kern2pt\hrule\kern2pt}
-\let\@fs@iftopcapt\iftrue}
-\makeatother
+  % \makeatletter
+  % \renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+  %   \def\@fs@pre{\hrule height1.0pt depth0pt \kern2pt}
+  %   \def\@fs@post{\vskip-1.5\baselineskip\kern2pt\hrule\relax}%
+  %   \def\@fs@mid{\kern2pt\hrule\kern2pt}
+  % \let\@fs@iftopcapt\iftrue}
+  % \makeatother
 
-\floatstyle{ruled}
-\newfloat{sample}{thp}{lop}
-\floatname{sample}{Przykład}
+  \floatstyle{ruled}
+  % \newfloat{sample}{thp}{lop}
+  % \floatname{sample}{Przykład}
 
-\begin{document}
+  \begin{document}
 
-\bibliographystyle{unsrt}
-\frontmatter
-\stronatytulowa
-%\cleardoublepage
-%\maketitle
-%\tocbibname
+  \bibliographystyle{unsrt}
+  \frontmatter
+  \stronatytulowa
+  %\cleardoublepage
+  %\maketitle
+  %\tocbibname
 
-\tableofcontents % \listoffigures \listoftables \listof{sample}{Spis przykładów}
-%\listofacros
-%\input{abbrev_body}
-%\newpage
-%\input{spis_oznaczen}
+  \tableofcontents % \listoffigures \listoftables \listof{sample}{Spis przykładów}
+  %\listofacros
+  %\input{abbrev_body}
+  %\newpage
+  %\input{spis_oznaczen}
 
-\mainmatter
-\input{Theory}
+  \mainmatter
+  \input{Theory}
 
-\addcontentsline{toc}{chapter}{\bibname}
-\bibliography{Main}
+  \addcontentsline{toc}{chapter}{\bibname}
+  \bibliography{Main}
 
-% \renewcommand{\appendixname}{Dodatek}
-% \appendix
-% \input{Appendixes}
+  % \renewcommand{\appendixname}{Dodatek}
+  % \appendix
+  % \input{Appendixes}
 
-\end{document}
+  \end{document}

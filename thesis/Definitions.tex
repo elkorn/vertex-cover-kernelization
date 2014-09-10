@@ -1,5 +1,8 @@
 \section{Podstawowe definicje}\label{Section_Definicje}
 
+Jeżeli nie zaznaczono inaczej, każda z nastepujących definicji odnosi się do
+grafu $G=(V,E)$.
+
 \begin{definition}
   Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
   jeżeli $u=v \lor w=v$.
@@ -12,7 +15,7 @@
 \end{definition}
 
 \begin{definition}
-  W grafie $G=(V,E)$, mianem \emph{stopnia} wierzchołka $v \in V$ określa się 
+  Mianem \emph{stopnia} wierzchołka $v \in V$ określa się 
   liczbę krawędzi $e \in E$ przystających do wierzchołka $v$.
   Stopień wierzchołka $v$ wyraża się w postaci $d(v)$.
 \end{definition}
@@ -22,20 +25,20 @@
 \end{definition}
 
 \begin{definition}
-  \emph{Sąsiedztwem} wierzchołka $v; d(v)=p$ w grafie $G=(V,E)$ nazywa się zbiór 
+  \emph{Sąsiedztwem} wierzchołka $v; d(v)=p$ nazywa się zbiór 
   wierzchołków $N={v_0, v_1, \ldots, v_p}$ taki, że 
   $\forall_{v_n \in N}{(v,v_n) \in E \lor (v_n,v) \in E}$.
   Sąsiedztwo wierzchołka $v$ wyraża się w postaci $N(v)$.
 \end{definition}
 
 \begin{definition}
-  \emph{Sąsiedztwem połączonym} wierzchołka $v; d(v)=p$ w grafie $G=(V,E)$ 
-  nazywa się zbiór wierzchołków $N={v_0, v_1, \ldots, v_p}$ taki, że 
+  \emph{Sąsiedztwem połączonym} wierzchołka $v; d(v)=p$ nazywa się zbiór wierzchołków 
+  $N={v_0, v_1, \ldots, v_p}$ spełniający warunek:
   $\not \exists_{v_n, v_m \in N}{(v_n,v_n) \in E \lor (v_n,v_m) \in E}$.
 \end{definition}
 
 \begin{definition}
-  \emph{Pokrywą wierzchołkową} grafu $G=(V,E)$ nazywa się taki zbiór wierzchołków
+  \emph{Pokrywą wierzchołkową} grafu nazywa się taki zbiór wierzchołków
   $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
 \end{definition}
 
@@ -47,14 +50,65 @@
 \begin{definition}
   \emph{Pokrywą wierzchołkową o optymalnym rozmiarze}, \emph{pokrywą 
   wierzchołkową optymalnego rozmiaru} lub \emph{optymalną pokrywą wierzchołkową} 
-  grafu $G=(V,E)$ nazywa się pokrywę wierzchołkową $VC_{opt}$ taką, że dla 
-  zbioru $VCS \in G$ wszystkich pokryw wierzchołkowych,
+  nazywa się pokrywę wierzchołkową $VC_{opt}$ taką, że dla zbioru $VCS \in G$ 
+  wszystkich pokryw wierzchołkowych, 
   $\forall_{VC \in VCS \setminus VC_{opt}}{\|VC_{opt}\| < \|VC\|}$.
 \end{definition}
 
 \begin{definition}
-  \emph{Zbiorem niezależnym} nazywa się taki zbiór wierzchołków\\
-  $V_i=\{v_0, v_1, \ldots, v_p \}, V_i \in V$ grafu $G=(V,E)$, że
+  \emph{Zbiorem niezależnym} nazywa się zbiór wierzchołków\\
+  $V_i=\{v_0, v_1, \ldots, v_p \}, V_i \in V$ spełniający warunek:
   $\forall_{v_i, v_j \in V_i}{(v_i, v_j) \notin E \land (v_j, v_i) \notin E}$.
 \end{definition}
 
+\begin{definition}
+  \emph{Skojarzeniem} nazywa się zbiór krawędzi $M=\{e_0, e_1, \ldots, e_p\}$
+  nie posiadających wspólnych wierzchołków: ${\nexists{\{e_i=(u_i,v_i),
+  e_j=(u_j, v_j)\} \in M}: u_i=u_j \lor u_i=v_j \lor u_j,v_i \lor u_=v_j}$.
+  Za skojarzenie uznać można również cały graf zawierający jedynie krawędzie
+  spełniające powyższy warunek.
+\end{definition}
+
+\begin{definition}
+  Wierzchołek $v$ uznaje się za \emph{skojarzony}, jeżeli pokrywa dowolną
+  krawędź należącą do skojarzenia.
+  W przeciwnym wypadku, wierzchołek jest \emph{nieskojarzony}.
+\end{definition}
+
+\begin{definition}
+  \emph{Największe skojarzenie} $M_\max$ jest skojarzeniem, do którego nie można
+  dołączyć żadnej nowej krawędzi bez złamania warunku wymaganego do istnienia
+  skojarzenia. 
+  Innymi słowy, skojarzenie jest największe, jeżeli wierzchołki zawartych w nim
+  krawędzi pokrywają każdą krawędź $e \in E$.
+\end{definition}
+
+\begin{definition}
+  \emph{Skojarzenie maksymalne} lub \emph{skojarzenie o największej liczebności}
+  $M_{MAX}$ to skojarzenie zawierające największą możliwą liczbę krawędzi.
+  W grafie może istnieć wiele skojarzeń maksymalnych.\\
+  Należy zauważyć, iż $M=M_{MAX} \Rightarrow M=M_\max$.
+\end{definition}
+
+\begin{definition}
+  \emph{Ścieżką} nazywa się skończoną lub nieskończoną sekwencję krawędzi 
+  $P \subseteq E$ łączących ze sobą sekwencję różnych wierzchołków
+  $V_p \subseteq V$.
+  Ścieżka pomiędzy wierzchołkami $v,w$ opisywana może być jako $P_{v,w} = (v
+  \rightarrow \ldots \rightarrow w)$.
+  \begin{example}{Przykład}\\
+    $G=(V,E), V=\{v_0, v_1, \ldots\}, E=\{(v_a, v_b)| \{v_a, v_b\} \in V\}\\
+    P_{v_0, v_n}=\{(v_0, v_1), (v_1, v_2), \ldots, (v_{n-1}, v_n)\}$\\
+
+    W grafie nieskierowanym, ta sama ścieżka może przybrać różne postaci, gdyż
+    skierowanie krawędzi łączących określone wierzchołki nie ma znaczenia.
+  \end{example}
+\end{definition}
+
+\begin{definition}
+  Mając dane skojarzenie ${M=\{e_{M0}, e_{M1}, \ldots, e_{Mp}\}, e \in M \Rightarrow e \in E}$,
+  za \emph{ścieżkę M-przemienną} uznaje się każdą ścieżkę $P=\{e_0, e_1, \ldots,
+  e_{n-1}\}$, spełniającą warunek: 
+  ${\forall{\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_{i} \notin M) \oplus
+  (e_{i-1} \notin M \land e_{i} \in M)}$.
+\end{definition}
