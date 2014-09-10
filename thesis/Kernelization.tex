@@ -17,7 +17,7 @@ pokrywy wierzchołkowej.
 \subsection{Usuwanie węzłów wysokiego stopnia}\label{section_kernelization_high-degree}
 
 \begin{theorem}
-  Każdy wierzchołek $v; d(v) > k $ musi należeć do optymalnej pokrywy wierzchołkowej 
+  Każdy wierzchołek $v; d(v) > k$ musi należeć do optymalnej pokrywy wierzchołkowej 
   $VC; \|VC\| \leq k$.
 \end{theorem}
 \begin{proof}
@@ -28,9 +28,9 @@ pokrywy wierzchołkowej.
   należy pokryć każdą krawędź $e \in E\prime$.
   Łatwo zauważyć, iż \\ jeżeli $ve_1=\{v_0,v_1\}, ve_2=\{v_0,v_2\}, \ldots,
   ve_k=\{v_0,v_k\},ve_{k+1}=\{v_0,v_{k+1}\}$,
-  to ${VC_1=ve_1 \cup ve_2 \cup \ldots \cup ve_k \cup ve_{k+1}}$ spełnia warunki 
+  to ${VC_1=ve_1 \bigcup ve_2 \bigcup \ldots \bigcup ve_k \bigcup ve_{k+1}}$ spełnia warunki 
   wymagane do uzyskania statusu pokrywy wierzchołkowej, jednak $\|VC_1\| = k +1$.\\
-  Jeżeli $VC_2=ve_1 \cap ve_2 \cap \ldots \cap ve_k \cap ve_{k+1}; VC_2 \neq \emptyset$,
+  Jeżeli $VC_2=ve_1 \bigcap ve_2 \bigcap \ldots \bigcap ve_k \bigcap ve_{k+1}; VC_2 \neq \emptyset$,
   stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$ oraz
   $\|VC_2\|=1$.
   Gdyby usunąć wierzchołek należący do $VC_2$, $VC_3=ve_1 \oplus ve_2 \oplus \ldots \oplus ve_k \oplus ve_{k+1}$ nadal
@@ -85,4 +85,86 @@ $3 \leq d(v) \leq k\prime$.
   ${n\prime\leq\frac{k\prime^2}{3}+k\prime}$.
 \end{proof}
 
+\subsection{Formulacja problemu jako instancji przepływu w sieci}\label{Kernelization_network_flow}
+Algorytm ten, zaproponowany w~\cite{KernelizationAlgorithms04}, opiera się na
+algorytmie użytym w~\cite{Niedermeier02} do udowodnienia teorii
+Neumhausera-Trottera.
+
+\begin{nt*}\thlabel{theorem_nt}
+  Dla grafu $G=(V,E), \|V\|=n, \|E\|=m$, dwa rozłączne zbiory $C_0 \subseteq V,
+  V_0 \subseteq V$ mogą zostać oblicone w czasie $O(\sqrt{n}m)$ przy zachowaniu
+  następujących własności.
+  \begin{enumerate}
+    \item Dla podgrafu $G[V_0]$ założyć należy istnienie pokrywy $D \subseteq
+      V_0$. W następstwie, $C := D \bigcup C_0$ stanowi pokrywę wierzchołkową~$G$.
+    \item Istnieje optymalna pokrywa wierzchołkowa $S$ grafu $G$ z $C_0
+      \subseteq S$.
+    \item Podgraf $G[V_0]$ posiada optymalną pokrywę wierzchołkową rozmiaru co
+      najmniej $\frac{[V_0]}{2}$. 
+  \end{enumerate}
+\end{nt*}
+
+Algorytm definiuje graf dwudzielny $B$ na podstawie grafu $G$, odnajduje pokrywę
+wierzchołkową $VC_B$ grafu $B$ poprzez odnalezienie największego skojarzenia $B$,
+a następnie przydziela wartości wierzchołkom $G$ w oparciu o przynależność do
+$VC_B$.
+Implementacja algorytmu z~\cite{Niedermeier02} zrealizowana jest przez
+przekształcenie $B$ w instancję problemu przezpływu w sieci i rozwiązania tejże
+przy pomocy algorytmu Forda-Fulkersona.\footnote{Algorytm Forda-Fulkersona
+  zastosowany został w niniejszej pracy, oryginalna implementacja oparta została
+o algorytm Dinica.}
+Złożoność czasowa algorytmu wynosi $O(\sqrt{n}m)$, zgodnie z~teoria
+Neumhausera-Trottera.
+Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
+
+\begin{enumerate}
+  \item Przekształć graf $G=(V,E)$ w graf dwudzielny $H=(U,F)$ zgodnie z
+    następującymi zasadami:\\
+    $A=\{A_v|v \in V\}\\
+    B=\{B_v|v \in V\}\\
+    U=A_v \bigcup B_v
+    F=\{(A_v, B_v)|(v,u) \in E \lor (u,v) \in E\}$
+  \item Przekształć graf dwudzielny $H$ w graf przepływu w sieci $H\prime$:
+    \begin{itemize}
+      \item[-] dodaj węzeł źródłowy $v_s$, połączony z każdym wierzchołkiem $v_a
+        k\in A$ krawędziami skierowanymi $(v_s, v_a)$,
+      \item[-] dodaj węzeł docelowy $v_z$, połączony z każdym wierzchołkiem $v_b
+        \in B$ krawędziamiy skierowanymi $(v_b, v_z)$,
+      \item[-] wszystkie krawędzie $f \in F$ skieruj $(v_a, v_b)$,
+      \item[-] każdej krawędzi $h \in H\prime$ nadaj pojemność $c(f)=1$.
+    \end{itemize}
+  \item Znajdź maksymalny przepływ $MF$ w $H\prime$.
+  \item Zbiór $M=MF \bigcap F$ stanowi największe skojarzenie $H$.
+  \item Znajdź pokrywę wierzchołkową $H$, bazując na $M$.
+    \begin{itemize}
+      \item[-] Jeżeli $\forall_{v in U}{v \in M}$, pokrywę
+        wierzchołkową~stanowi całość zbioru $A$ lub $B$.
+      \item[-] Przy licznościach zbiorów $A$, $B$ oraz wagach krawędzi w $H\prime$
+        wiadomo, iż ${\forall_{v_A in A}{v_A \in M} \iff \forall_{v_B in B}{v_B \in M}}$.
+        Na tej podstawie można, stwierdzić, że $\exists_{v_A \in A}{v_A \notin
+        M}$.
+        Skonstruuj zatem 3 zbiory $S$, $R$ oraz $T$ wierzchołków. Zbiór
+        $S = \{v_{Au}|v_{Au} \in A \land v_{Au} \notin M\}$ zawiera wszystkie
+        nieskojarzone wierzchołki ze zbioru $A$.
+        $R$ stanowi zbiór wszystkich wierzchołków $v_A \in A$ osiąglnych z $S$
+        poprzez M-przemienne ścieżki. \\
+        $T=\{v_T|v_T \in N(R) \land v_R \in R \land ((v_R,v_M) \in M \lor (v_M,v_R)) \in M\}$ 
+        jest zbiorem zawierającym wierzchołki sąsiednie względem $R$ wzdłuż 
+        ścieżek zawartych w skojarzeniu $M$.
+        Pokrywę wierzchołkową grafu dwudzielnego $H$ stanowi zbiór 
+        ${VC=(A \setminus S \setminus R) \bigcup T}, \|VC\|=\|M\|$.
+    \end{itemize}
+  \item Przypisz wagi wszystkim wierzchołkom $v \in V$ w odniesieniu do $VC$:
+    \begin{itemize}
+      \item[-] $\{A_v, B_v\} \in VC \Rightarrow W_v=1$,
+      \item[-] $A_v \in VC \land B_v \notin VC \lor A_v \notin VC \land B_v \in
+        VC \Rightarrow W_v=0.5$,
+      \item[-] $\{A_v, B_v\} \notin VC \Rightarrow W_v=0$
+    \end{itemize}
+    W przypadku 1., wszystkim wierzchołkom nadać należy wagę $W_v=0.5$.
+  \item Zdefiniuj graf wynikowy jako 
+    $G\prime=(V\prime, E\prime), V\prime=\{v \in V|W_v=0.5\}$.
+    Wynikowy rozmiar dziedziny problemu zdefiniuj jako 
+    ${k\prime=k-x, x=\|\{v\in~V|W_v=1\}}\|$.
+\end{enumerate}
 
