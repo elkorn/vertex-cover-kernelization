@@ -23,7 +23,7 @@ pokrywy wierzchołkowej.
 \begin{proof}
   W~celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
   grafu $G=(V,E)$, gdzie $V\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\}, V\prime
-  \subseteq V$ oraz \\
+  \subseteq V, d(v_0)=k$ oraz \\
   $E\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0, v_k), (v_0,v_{k+1})\}$,
   należy pokryć każdą krawędź $e \in E\prime$.
   Łatwo zauważyć, iż \\ jeżeli $ve_1=\{v_0,v_1\}, ve_2=\{v_0,v_2\}, \ldots,
@@ -34,14 +34,55 @@ pokrywy wierzchołkowej.
   stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$ oraz
   $\|VC_2\|=1$.
   Gdyby usunąć wierzchołek należący do $VC_2$, $VC_3=ve_1 \oplus ve_2 \oplus \ldots \oplus ve_k \oplus ve_{k+1}$ nadal
-  również stanowi pokrywę wierzchołkową, jednak $\|VC_3\|=k$, a~zatem $VC_3$ nie
-  może należeć do pokrywy wierzchołkowej o~rozmiarze $k\prime \leq k$.
+  również stanowi pokrywę wierzchołkową, jednak $\|VC_3\|=k$.
+  Dowolny zbiór $VC_4=VC_3 \setminus \{v\}$ nie spełnia jednak warunków pokrywy
+  wierzchołkowej $G\prime$.
+  Na tej podstawie stwierdzić można, iż dowolna pokrywa wierzchołkowa 
+  $VC, \|VC\| \leq k$ grafu $G$ niezawierająca $v_0$, musi zawierać całe jego
+  sąsiedztwo. Pokrywa ta nie może być jednak optymalna dla $k > 1$.
+  Obserwacja ta prowadzi do wniosku, iż optymalna pokrywa wierzchołkowa
+  $\|VC_{opt}\|$ grafu $G$ musi zawierać każdy wierzchołek $v \in V, d(v) \geq k$.
 \end{proof}
 
 \begin{theorem}
-  Procedura usuwania węzłów wysokiego stopnia zwraca właściwy wynik w czasie
+  Procedura usuwania wierzchołków wysokiego stopnia realizowana jest w czasie
   $O(n^2)$.
 \end{theorem}
 \begin{proof}
-  ...
+  Aby określić stopień dowolnego wierzchołka $v$ w grafie $G=(V,E)$, należy 
+  dokonać $O(n), n=\|V\|$ porównań w celu wyznaczenia jego sąsiedztwa.
+  Operacja musi zostać zrealizowana $n$ razy w celu określenia stopnia
+  wszystkich wierzchołków $G$, co w rezultacie daje złożoność $O (n^2)$.
 \end{proof}
+
+Zastosowanie algorytmu usuwania wierzchołków wysokiego stopnia w połączeniu z
+technikami przetwarzania wstępnego ogranicza rozmiar dziedziny problemu przez
+fakt, iż każdy wierzchołek $v, v \in V\prime$ jest stopnia $d(v)$ takiego, iż
+$3 \leq d(v) \leq k\prime$.
+
+\begin{theorem}
+  Jeżeli mianem $G\prime$ określa się graf o pokrywie wierzchołkowej rozmiaru
+  $k\prime$, który nie zawiera wierzchołka $v, d(v) > k\prime \lor d(v) > 3$, to
+  wtedy $n\prime \leq \frac{k\prime^2}{3} + k\prime$.
+\end{theorem}
+\begin{proof}
+  Przyjąć należy ${VC,\|VC\|=k\prime}$ jako pokrywę wierzchołkową grafu
+  $G\prime$.
+  Dopełnienie $\overline{VC}$ zbioru $VC$ stanowi niezależny zbiór
+  $n\prime-k\prime$ wierzchołków.
+  Przyjąć należy zbiór $F=\{f_0,f_1, \ldots, f_p\}, f \in F \Rightarrow f \in E\prime$
+  krawędzi pokrytych przez $\overline{VC}$.
+  W związku z faktem, iż $\forall_{v \in \overline{VC}}{d(v) \geq 3}$, każdy
+  wierzchołek $v \in \overline{VC}$ musi posiadać przynajmniej 3 wierzchołki sąsiednie
+  $w \in C$.
+  Prowadzi to do wniosku, iż $\|F\| \geq 3(n\prime - k\prime)$.
+  Liczba krawędzi pokrytych przez $C$ nie może być mniejsza niż $\|F\|$ --- nie
+  może być również większa niż $k\prime\|C\|$, ponieważ po wykonaniu
+  przetwarzania wstępnego oraz procedury usuwania węzłów wysokiego stopnia,
+  $\forall_{v \in V}{\|N(v)\|\leq~k\prime}$.
+  Pamiętając, że $\|C\|=k\prime$, można stwierdzić, iż
+  ${3(n\prime-k\prime)\leq\|F\|\leq~k\prime^2}$, co sprowadza się do
+  ${n\prime\leq\frac{k\prime^2}{3}+k\prime}$.
+\end{proof}
+
+
