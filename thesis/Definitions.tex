@@ -62,6 +62,18 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}
+  \emph{Grafem dwudzielnym} lub \emph{bigrafem} nazywa się graf o zbiorze 
+  wierzchołków, który można rozdzielić na dwa zbiory niezależne $U, V$ takie, że
+  $\forall_{u \in U}: \exists_{v \in V}: (u,v) \in E$.
+  Równoważym jest stwierdzenie, iż graf dwudzielny stanowi graf nie posiadający
+  żadnego cyklu o nieparzystej długości.
+
+
+  Graf dwudzielny oznaczać można jako $G=(U,V,E)$, nawiązując do poszczególnych
+  zbiorów wierzchołków oraz krawędzi między nimi.
+\end{definition}
+
+\begin{definition}
   \emph{Skojarzeniem} nazywa się zbiór krawędzi $M=\{e_0, e_1, \ldots, e_p\}$
   nie posiadających wspólnych wierzchołków: ${\nexists{\{e_i=(u_i,v_i),
   e_j=(u_j, v_j)\} \in M}: u_i=u_j \lor u_i=v_j \lor u_j,v_i \lor u_=v_j}$.
@@ -76,7 +88,7 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}
-  \emph{Największe skojarzenie} $M_\max$ jest skojarzeniem, do którego nie można
+  \emph{Największe skojarzenie} $M_{\max}$ jest skojarzeniem, do którego nie można
   dołączyć żadnej nowej krawędzi bez złamania warunku wymaganego do istnienia
   skojarzenia. 
   Innymi słowy, skojarzenie jest największe, jeżeli wierzchołki zawartych w nim
@@ -87,7 +99,7 @@ grafu $G=(V,E)$.
   \emph{Skojarzenie maksymalne} lub \emph{skojarzenie o największej liczebności}
   $M_{MAX}$ to skojarzenie zawierające największą możliwą liczbę krawędzi.
   W grafie może istnieć wiele skojarzeń maksymalnych.\\
-  Należy zauważyć, iż $M=M_{MAX} \Rightarrow M=M_\max$.
+  Należy zauważyć, iż $M=M_{MAX} \Rightarrow M=M_{\max}$.
 \end{definition}
 
 \begin{definition}

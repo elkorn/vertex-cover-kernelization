@@ -17,6 +17,13 @@
 \ifpdf
 \documentclass[pdftex,12pt,a4paper,\strony,colorlinks,nocenter,noupper,crosshair]{thesis}
 \usepackage[pdftex]{graphicx}
+\usepackage[pdftex]{hyperref}
+\hypersetup{colorlinks,%
+  citecolor=black,%
+  filecolor=black,%
+  linkcolor=black,%
+  urlcolor=black,%
+pdftex}
 \pdfcompresslevel=1
 \else
 \documentclass[12pt,a4paper,\strony,nocenter,noupper,crosshair]{thesis}
@@ -95,16 +102,17 @@
 \def\e{\ensuremath{\textrm{\normalfont{}e}}}
 \def\degree{\ensuremath{^{\circ}}\protect}
 \def\fixme#1{\marginpar{\tiny{}#1}}
-\newtheorem{theorem}{\parindent=0pt{\bf Twierdzenie}}[section]
-\newtheorem{property}{\parindent=0pt{\bf Własność}}[section]
-\newtheorem{lemma}{\parindent=0pt{\bf Lemat}}[section]
-\newtheorem{corollary}{\parindent=0pt{\bf Wniosek}}[section]
-\newtheorem{definition}{\parindent=0pt{\bf Definicja}}
-\newtheorem{proposition}{\parindent=0pt{\bf Założenie}}[section]
-\newtheorem{conjecture}{\parindent=0pt{\bf Przypuszczenie}}[section]
-\newtheorem*{nt*}{\parindent=0pt{\bf Neumhauser-Trotter}}
-
-\newenvironment{proof}{\parindent=0pt{\bf Dowód. }}{\begin{flushright}$\square$\end{flushright}}
+\newtheorem{theorem}{\parindent=0pt{\textbf{Twierdzenie}}}[section]
+\newtheorem{property}{\parindent=0pt{\textbf{Własność}}}[section]
+\newtheorem{lemma}{\parindent=0pt{\textbf{Lemat}}}[section]
+\newtheorem{corollary}{\parindent=0pt{\textbf{Wniosek}}}[section]
+\newtheorem{definition}{\parindent=0pt{\textbf{Definicja}}}
+\newtheorem{proposition}{\parindent=0pt{\textbf{Założenie}}}[section]
+\newtheorem{conjecture}{\parindent=0pt{\textbf{Przypuszczenie}}}[section]
+\newtheorem*{nt*}{\parindent=0pt{\textbf{Neumhauser-Trotter}}}
+\newtheorem*{konig*}{\parindent=0pt{\textbf{K\"onig}}}
+\newtheorem{note}{\parindent=0pt{\textbf{Uwaga}}}[chapter]
+\newenvironment{bproof}{\parindent=0pt{\textbf{Dowód.} }}{\begin{flushright}$\square$\end{flushright}}
 
   \def\captionlabeldelim{.}
   \linespread{1}
@@ -165,10 +173,10 @@
   \input{Theory}
 
   \addcontentsline{toc}{chapter}{\bibname}
+  \input{Appendixes}
   \bibliography{Main}
 
   % \renewcommand{\appendixname}{Dodatek}
   % \appendix
-  % \input{Appendixes}
 
   \end{document}
