@@ -9,7 +9,7 @@ tags
 EDIT_COMMITMSG
 coverage.out
 scratchpad*
-*.test
+**/*.test
 *.log
 *.aux
 *.dvi
@@ -18,4 +18,10 @@ scratchpad*
 *.lop
 *.lot
 *.toc
+*.out
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.thm
 
