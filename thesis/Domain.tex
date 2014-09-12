@@ -1,2 +1,160 @@
 \section{Opis dziedziny problemu}\label{Section_Domain}
-\subsection{Klasy problemów P i NP}\label{subsection_p_np}
+\par{
+  Niniejsza praca skupia się na implementacji oraz opisie wybranych metod 
+  rozwiązania problemu pokrycia wierzchołkowego z wykorzystaniem technik
+  zaliczanych do grupy metod parametryzacji.
+
+  Rozpatrywane w ramach niniejszej pracy metody wykorzystują pozostałe techniki, w
+  szczególności z grupy aproksymacji i redukcji, dla podproblemów składowych lub
+  redukcji problemu pokrycia wierzchołkowego.
+}
+\subsection{Wybrane klasy złożoności problemów}\label{subsection_p_np}
+\par{
+  Mianem \emph{klasy złożoności} określa się zbiór problemów o podobnej
+  złożoności. 
+  Proste klasy złożoności określić można przy pomocy podstwowych czynników takich
+  jak rodzaj problemu (obliczeniowy, decyzyjny, obliczeniowy etc.), model
+  obliczeniowy (deterministyczna maszyna Turinga etc.) oraz wymagane do obliczeń
+  zasoby wraz z ich ograniczeniami (czas wielomianowy, stała przestrzeń etc.).
+}
+
+\subsubsection{Wybrane popularne klasy problemów}
+\label{sss_popular_cplx_classes}
+\begin{itemize}
+  \item[-] $\mathcal{P}$, obejmująca problemy decyzyjne rozwiązywalne przez
+    deterministyczną maszynę Turinga w czasie wielomianowym,
+  \item[-] $\mathcal{NP}$, obejmująca problemy decyzyjne, dla których dowody na 
+    odpowiedzi pozytywne są \emph{weryfikowalne} przez deterministyczną maszynę
+    Turinga w czasie wielomianowym.
+  \item[-] $\mathcal{NP}$-trudne, obejmująca problemy, do których w czasie
+    wielomianowym zredukować można wszystkie problemy klasy $\mathcal{NP}$.
+  \item[-] $\mathcal{NP}$-zupełne, obejmująca problemy, które są zarówno
+    $\mathcal{NP}$ jak i $\mathcal{NP}$-trudne.
+    Cechą charakterystyczną problemów $\mathcal{NP}$-zupełnych jest fakt, iż
+    dowolne rozwiązanie problemu $\mathcal{NP}$-zupełnego jest weryfikowalne
+    w~czasie wielomianowym, jednak nie jest znana efektywna metoda odnalezienia
+    rozwiązania w rozsądnym (czyt.\ wielomianowym) czasie. 
+    Na chwilę obecną wszystkie znane algorytmy rozwiązujące problemy 
+    $\mathcal{NP}$-zupełne wymagają czasu ponadwielomianowego względem rozmiaru
+    danych wejściowych.
+    Istnieją jednak ogólne techniki rozwiązywania problemów obliczeniowych,
+    które pozwalają na uzyskanie czasów wielomianowych dla niektórych problemów
+    $\matchal{NP}$-zupełnych przy zachowaniu pewnych ograniczeń:
+    \begin{itemize}
+      \item[-] \underline{Aproksymacja}: poświęcenie dokładności rozwiązania
+        w celu uzyskania przyspieszenia, polegające na zbliżaniu się do
+        optimum zamiast poszukiwania odpowiedzi.
+      \item[-] \underline{Parametryzacja}: często istnieje możliwość rozwiązania
+        problemu w czasie wielomianowym stosując parametry wpływające na warunki
+        poszukiwań odpowiedzi.
+      \item[-] \underline{Heurystyka}: zastosowanie algorytmów działających
+        ``wystarczająco'' dobrze w większości przypadków, jednak co do których
+        nie ma pewności, iż zawsze zapewnią prawidłowy wynik w rozsądnym czasie.
+      \item[-] \underline{Randomizacja}: przy dopuszczeniu niewielkiego
+        prawdopodobieństwa porażki istnieje szansa na poprawienie
+        średniego czasu działania poprzez zastosowanie elementu losowości w
+        logice algorytmu.
+    \end{itemize}
+  \item[-] $\mathcal{FPT}$, obejmująca problemy \emph{łatwe względem
+    stałych parametrów} (fixed-parameter tractable problems). (!\ref{fpt_translation}).
+\end{itemize}
+
+\subsubsection{Kwestia $\mathcal{P}=\mathcal{NP}$}
+\label{sss_problem_p_neq_np}
+\par{
+  Jednym z uzasadnień badań nad problemem pokrycia wierzchołkowego, prócz
+  praktycznych zastosowań, jest próba odpowiedzi na pytanie czy klasa problemów
+  $\mathcal{NP}$ nie jest równoznaczna klasie problemów $\mathcal{P}$.
+  Pytanie to należy do grupy tzw. ``Problemów Milenium'', a za pierwszą
+  prawidłową odpowiedź fundacja Clay Mathematics Institute oferuje nagrodę w
+  wysokości miliona dolarów. 
+  Do tej pory argumenty zarówno za $\mathcal{P}=\mathcal{NP}$ jak i za
+  $\mathcal{P}\neq\mathcal{NP}$ nie są oparte na ścisłym matematycznym
+  rozumowaniu, a raczej na empirycznych obserwacjach otaczającego świata.
+  Głównym argumentem za $\mathcal{P}\neq\mathcal{NP}$ jest fakt braku znaczących
+  postępów w dziedzinie wyszukiwania wyczerpującego oraz stwierdzenia
+  unaoczniające, iż gdyby $\mathcal{P}=\mathcal{NP}$ było spełnione, nie 
+  istniałyby znaczące róznice w trudności pomiędzy rozwiązaniem 
+  problemu $\mathcal{NP}$-zupełnego, a~zweryfikowaniem poprawności gotowego 
+  jego rozwiązania---co wydaje się być sprzeczne z~dotychczasowym doświadczeniem.
+  Konsekwencje $\mathcal{P}=\mathcal{NP}$ byłyby również negatywne dla dziedziny
+  kryptografii, która jawnie czerpie korzyści z $\mathcal{P}\neq\mathcal{NP}$.
+  Odpowiedź ta mogłaby stanowić duże zagrożenie dla bezpieczeństwa cyfrowego.
+}
+
+\subsection{Parametryczna złożoność obliczeniowa}
+\label{sss_parametric_complexity}
+\par{
+  Problemy klasy $\mathcal{FPT}$ są rozwiązywalne w~czasie $f(k)*|x|^{O(1)}$ dla
+  pewnej obliczalnej funkcji $f$---w~praktyce będącej zazwyczaj funkcją 
+  wykładniczą, jak na przykład $2^{O(k)}$.
+  Definicja dopuszcza jednak funkcje jescze bardziej strome.
+  Najważeniejszą przesłanką formulacji klasy $\mathcal{FPT}$ jest wykluczenie
+  postaci funkcji $f(n,k)$, uniemożliwiającej rozwiązanie problemu 
+  $\mathcal{NP}$-zupełnego w~czasie lepszym niż wykładniczy.
+}
+
+\subsection{Problem pokrycia wierzchołkowego}\label{s_vertex_cover_domain}
+\par{
+  Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
+  Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie G istnieje zbiór
+  wierzchołków $VC, \|VC\| \leq k$ stanowiący pokrywę wierzchołkową tego
+  grafu?''.
+
+  Problem pokrycia wierzchołkowego jest $\mathcal{NP}$-zupełny, co udowodniono
+  w~\cite{Kar72}.
+}
+
+\begin{theorem}
+  Optymalna pokrywa wierzchołkowa grafu $G=(V,E), \|V\|=n, \|E\|=m$ może zostać 
+  odnaleziona w czasie $O(2^{n}m)$.
+\end{theorem}
+\begin{bproof}
+  Aby zweryfikować czy dany podzbiór $V_s \subseteq V$ pokrywa każdą krawędź
+  $e \in E$, należy wykonać $O(m)$ porównań.
+  Aby wykonać operację na wszystkich podzbiorach $V_s$, należy wykonać tę
+  czynność dla wszystkich zbiorów należących do zbioru potęgowego 
+  $P(V), \|P(V)\| = 2^{n}$.
+  Aby odnaleźć pokrywę wierzchołkową wśród podzbiorów $V$, należy dla każdego z
+  nich zrealizować operację weryfikacji pokrycia krawędzi, co w rezultacie daje 
+  złożoność $O(2^{n}m)$.
+\end{bproof}
+
+W celu uproszczenia zapisu dalszego rozumowania, wprowadzona zostanie notacja
+$O^{\star}$, pomijająca czynniki wielomianowe w złożoności w oparciu o fakt, 
+iż dla górnej granicy złożoności podstawowego algorytmu rozwiązującego problem 
+pokrycia wierzchołkowe teoretycznie nie mają one znaczenia.
+\begin{equation*}
+  O^{\star}(f(n))=O(f(n) \cdot wielomian(n))
+\end{equation*}
+
+\begin{theorem}
+  Problem pokrycia wierzchołkowego jest rozwiązywalny w czasie $O^{\star}(2^k)$
+  i wielomianowej przestrzeni.
+\end{theorem}
+\begin{bproof}
+  Zakładając zbioru $VC \in V$ kandydującego do miana pokrywy wierzchołkowej,
+  $\forall_{e=(u,v), e \in E}: u \in VC \lor v \in VC$.
+  Jeżeli więc $\exists_{e=(u,v) \in E}: \not(u \in VC \lor v \in VC)$, należy
+  dodać jeden z wierzchołków do $VC$. 
+  Rekurencyjnie realizowane są obydwie możliwości.
+  Kiedy rekurencja dociera do momentu, gdzie $k=0, \exists_{e=(u,v) \in E}:
+  \not(u \in VC \lor v \in VC)$, wiadomo, że rozwiązanie odnalezione w tej
+  gałęzi nie jest akceptowalne i należy je odrzucić.
+
+  \begin{algorithm}
+    \caption{Algorytm rozwiązujący problem pokrycia wierzchołokowego}\label{VC1}
+    \begin{algorithmic}[1]
+      \Function{VC}{G, k}
+      \If {$E=\emptyset$}
+      \Return{true}
+    \EndIf
+    \If {$k=0$}
+    \Return{false}\Comment{Rozwiązanie nieoptymalne}
+  \EndIf
+  \State $(u,v) \gets e \in E$
+  \Return{VC($G\setminus \{u\}$, k-1) lub V~($G\setminus \{v\}$, k-1)}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+\end{bproof}

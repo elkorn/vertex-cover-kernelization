@@ -34,10 +34,17 @@ pdftex}
 \usepackage{TitlePage}
 \usepackage{theoremref}
 \usepackage{tikz}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\makeatletter
+\renewcommand{\ALG@name}{Pseudokod}
+\renewcommand{\listalgorithmname}{Zbiór pseudokodów}
+\makeatother
 \usetikzlibrary{calc, shapes, backgrounds}
 \usepackage[utf8]{inputenc}
 \def\rodzaj{Praca magisterska}
 
+\setcounter{tocdepth}{3}
 \def\wydzial{Automatyki, Elektroniki i~Informatyki}
 
 \def\tytul{Algorytmy FPT}
@@ -112,6 +119,8 @@ pdftex}
 \newtheorem{nt}{\parindent=0pt{\textbf{Neumhauser-Trotter}}}
 \newtheorem*{konig*}{\parindent=0pt{\textbf{K\"onig}}}
 \newtheorem{note}{\parindent=0pt{\textbf{Uwaga}}}[chapter]
+\newtheorem*{weakduality*}{\parindent=0pt{\textbf{Twierdzenie o~słabej dualności}}}
+\newtheorem*{strongduality*}{\parindent=0pt{\textbf{Twierdzenie o~silnej dualności}}}
 \newenvironment{bproof}{\parindent=0pt{\textbf{Dowód.} }}{\begin{flushright}$\square$\end{flushright}}
 
   \def\captionlabeldelim{.}
