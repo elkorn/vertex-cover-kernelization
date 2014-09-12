@@ -1,23 +1,142 @@
-\section{Ogólne metody wykorzystane w algorytmach}\label{section_methods}
+\section{Ogólne metody wykorzystane w algorytmach}\label{s_methods}
 
-\subsection{Programowanie liniowe}\label{subsection_lp}
+\subsection{Programowanie liniowe}\label{ss_lp}
+\par{
+  Programowanie liniowe, zwane również optymalizacją liniową, stanowi sposób
+  osiągania najlepszego możliwego wyniku (zazwyczaj maksimum lub minimum) w modelu 
+  matematycznym o wymaganiach określonych nierównościami liniowymi.
+}
+\par{
+  Formalnie, mianem programowania liniowego określa technikę się optymalizacji 
+  liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w postaci równań 
+  lub nierówności liniowych.
+  \emph{Region dopuszczalnych rozwiązań} stanowi wypukły wielokąt stanowiący 
+  zbiór powstały w wyniku przecięcia skończonej ilości półpłaszczyn wyznaczanych 
+  przez nierówności liniowe.
+  Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie
+  dopuszczalnych rozwiązań.
+  Algorytm programowania liniowego odnajduje punkt na wielościanie,
+  gdzie $z$ osiąga wartość optymalną w kontekście formulacji zadania jeżeli taki
+  punkt istnieje. 
+  Przykładowy zapis kanonicznej formy wyrażania programów liniowych:\\\par
+  Zmaksymalizować funkcję celu:
+  \begin{align*}
+    z(x)={c^T}x
+  \end{align*}\par
+  Przy ograniczeniach: \begin{align*}
+    Ax \leq b\\
+    x\geq 0
+  \end{align*}
 
-Programowanie liniowe, zwane również optymalizacją liniową, stanowi sposób
-osiągania najlepszego możliwego wyniku (zazwyczaj maksimum lub minimum) w modelu 
-matematycznym o wymaganiach określonych nierównościami liniowymi.
+  Gdzie:
+  \begin{itemize}
+    \item[-] $x$ stanowi wektor zmiennych do wyznaczenia,
+    \item[-] $b$ oraz $c$ to wektory znanych współczynników,
+    \item[-] $A$ to macierz znanych współczynników,
+    \item[-] ${(\cdot)}^\mathrm{T}$ oznacza macierz transponowaną,
+    \item[-] $Ax \leq b, x\geq 0$ to ograniczenia określające wypukły wielokąt,
+      na którym optymalizowana jest funkcja celu $c^{T}x$.
+  \end{itemize}
+}
+\par{
+  W celu otrzymania optymalnego rozwiązania problemu programowania liniowego
+  stosuje się jeden z  \emph{algorytmów programowania liniowego}.
+  Do grupy algorytmów programowania liniowego zalicza się m.in.\ algorytm
+  simplex lub algorytm ``na krzyż'' (criss-cross).
+}
+\par{
+  Programowanie liniowe znajduje zastosowanie w wielu dziedzinach nauki i przemysłu. 
+  Przykładem może być biznes i ekonomia zarówno jak i szeroko pojęta inżynieria.
+  Techniki programowania liniowego są użyteczne przy problemach związanych z
+  planowaniem, trasowaniem, harmonogramowaniem, przydziałem zadań oraz
+  projektowaniem.
+  Wynika to z faktu, iż wiele rzeczywistych problemów w dziedzinie badań
+  operacyjnych, mających na celu optymalizację procesów decyzyjnych w praktyce,
+  może zostać wyrażone w postaci zadań programowania liniowego.
+  Wiele algorytmów rozwiązujących większe problemy optymalizacyjne wykorzystuje
+  programowanie liniowe do rozwiązywania podproblemów częściowych jako zadania 
+  programowania liniowego.
+}
+\subsubsection{Dualność problemów programowania liniowego}\label{sss_lp_duality}
+\par{
+  Cechą każdego problemu wyrażonego jako zadanie programowania liniowego,
+  nazywanego problemem \emph{pierwotnym}, jest dwoistość.
+  Oznacza to, że problem pierwotny może zostać przekształcony w odpowiadający mu
+  problem \emph{wtórny}, zapewniający górną granicę optimum problemu
+  pierwotnego. 
+  Przykładowo, pierwotny problem:\par
+  Zmaksymalizować $c^{T}x$ przy ograniczeniach $Ax\leq b, x \geq 0$;\\
+  zastąpić można odpowiadającym mu \emph{symetrycznym} problemem wtórnym,\par
+  Zminimalizować $b^{T}y$ przy ograniczeniach $A^{T}y \geq c, y \geq 0$.\\
+}
+\par{
+  Twierdzenia dualności oparte są na dwóch fundamentalnych koncepcjach:
+  \begin{enumerate}
+    \item Problem wtórny symetrycznego problemu dualnego dwoistego programu
+      liniowego stanowi pierwotny program liniowy.
+    \item Każde prawdopodobne rozwiązanie programu liniowego stanowi
+      ograniczenie optimum funkcji celu jego problemu dualnego.
+  \end{enumerate}
 
-Formalnie, mianem programowania liniowego określa technikę się optymalizacji 
-liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w postaci równań 
-lub nierówności liniowych.
-\emph{Region wykonalności} stanowi wypukły wielościan stanowiący zbiór powstały
-w wyniku przecięcia skończonej ilości półprzestrzeni wyznaczanych przez
-nierówności liniowe.
-Funkcja celu to funkcja liniowa $f(x) \in \mathbb{R}$ zdefiniowana na regionie
-wykonalności. Algorytm programowania liniowego odnajduje punkt na wielościanie,
-gdzie $f$ osiąga wartość optymalną w kontekście formulacji zadania jeżeli taki
-punkt istnieje.
+  \begin{weakduality*}
+    Wartość funkcji celu problemu dualnego dla dowolnego prawdopodobnego
+    rozwiązania jest większa bądź równa wartości funkcji celu pierwotnego dla
+    dowolnego prawdopodobnego rozwiązania.
+  \end{weakduality*}
+  \begin{strongduality*}
+    Jeżeli problem pierwotny posiada rozwiązanie optymalne $x*$, to problem wtórny
+    również posiada rozwiązanie optymalne $y*; c^{T}x*=b^{T}y*$.
+  \end{strongduality*}
+}
 
-Kanoniczna forma wyrażania programów liniowych wygląda następująco:
+\par{
+  W kontekście niniejszej pracy, dualność problemów problemów programowania
+  liniowego jest szczególnie wartościowa ze względu na fakt, iż problemem wtórnym
+  względem problemu pokrycia wierzchołkowego dowolnego grafu jest problem
+  maksymalnego skojarzenia grafu.
+}
+
+\subsubsection{Programowanie całkowitoliczbowe i relaksacje}\label{sss_ilp_relaxations}
+\par{
+  Programem liniowym całkowitoliczbowym nazywa się każdy program liniowy z
+  dodatkowym ograniczeniem aby $\forall_{x_n \in x}: x_n \in
+  \mathbb{Z}~\refstepcounter{equation}(\theequation)\label{ilp_bound}$.
+  Ograniczenie to zwane jest \emph{warukiem całkowitoliczbowości}.
+  Większość problemów NP-trudnych jest wyrażalne w postaci programu liniowego
+  całkowitoliczbowego.
+  Prowadzi to do wniosku, iż sam problem programowania liniowego
+  całkowitoliczbowego jest NP-trudny, co zaproponowano w~\cite{Kar72}.
+}
+\par{  
+  Charakterystyczną poddziedziną programowów całkowitoliczbowych są
+  \emph{binarne programy całkowitoliczbowe}, charakteryzującę się zamianą
+  ograniczenia z programu całkowitoliczbowego~\eqref{ilp_bound}, na następujące:
+  $\forall_{x_n \in x}: x_n \in \{0, 1\}~\refstepcounter{equation}(\theequation)\label{bilp_bound}$.
+  Jedyne problemy programowania całkowitoliczbowego rozpatrywane w niniejszej
+  pracy dotyczyć będą wyłącznie binarnych programów całkowitoliczbowych.
+}
+\par{
+  W celu przekształcenia problemu NP-trudnego, wyrażonego w postaci binarnego 
+  programu całkowitoliczbowego, do problemu rozwiązywalnego w czasie 
+  wielomianowym, wyrażonego w postaci programu liniowego, należy dokonać 
+  \emph{relaksacji}.
+  Istotą relaksacji jest zastąpienie warunku całkowitoliczbowości binarnego
+  programu całkowitoliczbowego~\eqref{bilp_bound} na mniej restrykcyjne
+  ograniczenie $\forall_{x_n\in x}: 0\leq x_n\leq 1$.
+}
+\par {
+  Istotną cechą relaksacji jest jej \emph{dokładność}, która może zostać
+  stwierdzona gdy współrzędne każdego z wierzchołków regionu dopuszczalnych 
+  rozwiązań są liczbami całkowitymi.
+  Mając do czynienia z dokładną relaksacją, można na jej podstawie wprost 
+  rozwiązać odpowiadający program całkowitoliczbowy w czasie wielomianowym.
+  W tym celu wykonać należy następujące kroki:
+  \begin{enumerate}
+    \item otrzymać optimum $x*$ programu liniowego,
+    \item odnaleźć wierzchołek $x\prime, z(x\prime)=z(x*)$,
+      \item zwrócić $x\prime$ jako rozwiązanie programu całkowitoliczbowego.
+    \end{enumerate}
+}
 
 \subsection{Redukcja do jądra problemu}\label{subsection_kernelization}
 \subsection{Drzewa poszukiwań z ograniczeniem}\label{subsection_bound_search_trees}
