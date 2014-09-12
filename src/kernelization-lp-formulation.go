@@ -128,6 +128,9 @@ func branchAndBound(g *Graph) mapset.Set {
 		// 7. If the lower bound is better then the current one...
 		if node.lowerBound <= bestLowerBound {
 			// 8. Set the new level to a parent's + 1.
+			// TODO: Possible optimization - level should reflect the number of
+			// covered edges. Do not compute the number of covered edges, use
+			// level instead and see where it takes you.
 			newLevel := node.level + 1
 			selection = node.selection
 			// 9. If all edges are covered...
