@@ -1,5 +1,30 @@
-\section{Ogólne metody wykorzystane w algorytmach}\label{s_methods}
+\section{Ogólne metody wykorzystane w algorytmach głównych}\label{s_methods}
 
+\subsection{Metoda podziału i ograniczeń}\label{ss_branch_and_bound}
+\par{
+  Metoda podziału i ograniczeń jest paradygmatem projektowania algorytmów
+  rozwiązujących problemy optymalizacyjne z dziedziny kombinatoryki i obliczeń
+  dyskretnych. 
+  Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu
+  poszczególnych \emph{rozwiązań kandydackich} poprzez przeszukiwanie
+  przestrzeni stanów.
+  Zbiór rozwiązań kandydackich tworzony jest w postaci ukorzenionego drzewa,
+  gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem
+  stanów.
+  Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
+  podzbiory zbioru rozwiązań.
+  Zanim jednak dana gałąź drzewa poszukiwań zostanie odwiedzona, dokonywane jest
+  sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji 
+  ograniczającej $f$.
+  W przypadku, gdy wartości te odbiegają od znalezionego dotychczas przez
+  algorytm lub zadanego optimum, cała gałąź jest odrzucana---nie istnieje w
+  niej rozwiązanie spełniające założone wymagania. 
+}
+\par{
+  Koncepcja algorymów działających zgodnie z metodą podziału i ograniczeń
+  została wprowadzona w~\cite{land60} i~stanowi najpopularniejsze podejście
+  w~rowiązywaniu problemów klasy $\mathcal{NP}$-trudnych.
+}
 \subsection{Programowanie liniowe}\label{ss_lp}
 \par{
   Programowanie liniowe, zwane również optymalizacją liniową, stanowi sposób
@@ -163,7 +188,7 @@
   postać podproblemów lub poddziedziny.
   Po uzyskaniu jądra, jeżeli odpowiedź negatywna nie została udzielona w
   międzyczasie, proces rozwiązywania problemu pokrycia wierzchołkowego
-  wykonuje Algorytm~\ref{alg:the_alg} do momentu otrzymania konkretnego
+  wykonuje Algorytm~\ref{alg_VC1}.\ do momentu otrzymania konkretnego
   rezultatu.
 }
 \par{
@@ -182,4 +207,3 @@
       w~\cite{ImprovedBounds10}.
   \end{enumerate}
 }
-\subsection{Drzewa poszukiwań z ograniczeniem}\label{subsection_bound_search_trees}
