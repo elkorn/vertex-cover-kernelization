@@ -138,5 +138,48 @@
     \end{enumerate}
 }
 
-\subsection{Redukcja do jądra problemu}\label{subsection_kernelization}
+\subsection{Redukcja dziedziny do jądra problemu}\label{subsection_kernelization}
+\par{
+  Redukcja dziedziny do jądra problemu jest techniką wykorzystywaną przy
+  rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
+  Istotą redukcji dziedziny do jądra problemu przy problemach dotyczących grafów
+  jest transformacja grafu $G=(V,E), \|V\|=n$, przy danym parametrze $k$, w inny
+  graf $G\prime=(V\prime, E\prime), V\prime \subseteq V, E\prime \subseteq E$
+  wraz z parametrem $k\prime \leq k$.
+  Celem tego procesu jest ograniczenie wartości $n\prime$ przez jak najmniejszą
+  funkcję $f(k\prime)$.
+  Graf $G\prime$ nazywany jest \emph{jądrem}.
+  W przypadku parametryzacji problemu pokrycia wierzchołkowego, w grafie
+  $G\prime$ istnieje pokrywa wierzchołkowa $VC\prime, \|VC\prime\|\leq k\prime$ 
+  wtedy i tylko wtedy, gdy w grafie $G$ istnieje pokrywa wierzchołkowa $VC,
+  \|VC\| \leq k$.
+}
+\par{
+  Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
+  należące do klasy $\mathcal{FPT}$ spośród grupy wszystkich znanych problemów.
+  Rozbicie na podbproblemy lub działanie na zmniejszonej dziedzinie pozwala na
+  rozwiązywanie problemów klasy $\mathcal{FPT}$ w czasie wielomianowym przy
+  ustaleniu ograniczeń dotyczących wartości paramametru $k$, dyktującego z kolei
+  postać podproblemów lub poddziedziny.
+  Po uzyskaniu jądra, jeżeli odpowiedź negatywna nie została udzielona w
+  międzyczasie, proces rozwiązywania problemu pokrycia wierzchołkowego
+  wykonuje Algorytm~\ref{alg:the_alg} do momentu otrzymania konkretnego
+  rezultatu.
+}
+\par{
+  Niniejsza praca koncentruje się na opisie, implementacji oraz porównaniu
+  empirycznych wyników czasu działania następujących metod redukcji dziedziny do
+  jądra problemu:
+  \begin{enumerate}
+    \item redukcja przez usunięcie wierzchołków wysokiego stopnia, zaproponowana
+      w~\cite{KernelizationAlgorithms04},
+    \item algorytm zaproponowany w~\cite{KernelizationAlgorithms04}, polegający
+      na redukcji opartej o programowanie liniowe: formulacji programu
+      całkowitoliczbowego i rozwiązanie jego liniowej relaksacji,
+    \item redukcja poprzez usunięcie koron grafu, zaproponowana
+      w~\cite{abukhzam03},
+    \item redukcja poprzez przebudowę oraz zwijanie koron grafu, zaproponowana
+      w~\cite{ImprovedBounds10}.
+  \end{enumerate}
+}
 \subsection{Drzewa poszukiwań z ograniczeniem}\label{subsection_bound_search_trees}
