@@ -27,6 +27,14 @@
       typu pomyłek.
   \end{itemize}
 \end{note}
+\begin{note}
+  Brakujące definicje:
+  \begin{itemize}
+    \item[-] ścieżka rozszerzająca
+    \item[-] notacja $A \leftrightarrow B$, oznaczająca zbiór krawędzi pomiędzy
+      wierzchołkami zbiorów $A$ oraz $B$.
+  \end{itemize}
+\end{note}
 \begin{note}\thlabel{why_bipartite_are_cool}
   Muszę uzupełnić informacje dot.\ wartościowości przekształcenia w graf
   dwudzielny w kontekście problemu pokrycia wierzchołkowego.
@@ -34,11 +42,13 @@
 \begin{note}\thlabel{lp_impl}
   Na chwilę obecną, rozwiązanie LP nie jest jeszcze zaimplementowane.
   Muszę zaimplementować jak najprostszy mechanizm rozwiązywania formulacji
-  liniowych, najprawdopodobniej w oparciu o~\cite{sedgewick11}.
+  liniowych, najprawdopodobniej w oparciu o algorytm sympleksu, na
+  podstawie~\cite{sedgewick11} oraz~\cite{Cormen:2001:IA:580470}.
 
 
-  Obecnie jednak moja uwaga poświęcona jest implementacji techniki zawężania dziedziny
-  opartej na krotkach z~\cite{ImprovedBounds10}.
+  Obecnie jednak moja uwaga poświęcona jest implementacji algorytmu redukcji 
+  poprzez przebudowę oraz zwijanie koron grafu z wykorzystaniem rozgałęziania w
+  oparciu o krotki, zaproponowanego w~\cite{ImprovedBounds10}. 
 \end{note}
 \begin{note}
   Należy wprowadzic pojęcie algorytmu rozwiązującego formulacje liniowe. 
@@ -53,7 +63,7 @@
   odpowiednika, godnie oddającego istotę sprawy. 
 \end{note}
 \begin{note}
-  W miarę możlwości prosiłbym o~weryfikację jakości dowodów---większość z~nich
+  W miarę możliwości prosiłbym o~weryfikację jakości dowodów---większość z~nich
   jest oczywiście w~bardzo dużym stopniu oparta na cytowanych pracach, jednak
   starałem się sformułować je w~sposób nie pozostawiający wątpliwości co do
   elementów składowych użytych w~toku rozumowania.
