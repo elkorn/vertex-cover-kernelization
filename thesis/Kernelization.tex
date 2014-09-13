@@ -1,9 +1,10 @@
-\section{Techniki zawężania dziedziny}\label{s_kernelization}
+\section{Techniki redukcji dziedziny do jądra problemu}\label{s_kernelization}
 
-Proces zawężania dziedziny realizowany jest przed właściwym poszukiwaniem
-pokrywy wierzchołkowej. Polega on na usunięciu z dziedziny problemu
-wierzchołków, które z~pewnością nie należą lub z~pewnością należą do optymalnej
-pokrywy wierzchołkowej grafu wejściowego o~rozmiarze $k\prime \leq k$.
+Proces redukcji dziedziny do jądra problemu realizowany jest przed właściwym 
+poszukiwaniem pokrywy wierzchołkowej. 
+Polega on na usunięciu z dziedziny problemu wierzchołków, które z~pewnością nie 
+należą lub z~pewnością należą do optymalnej pokrywy wierzchołkowej grafu 
+wejściowego o~rozmiarze $k\prime \leq k$.
 Dzięki parametryzacji maksymalną wartością oczekiwanego rozmiaru wyniku,
 istnieje możliwość zakończenia przetwarzania z~odpowiedzią negatywną bez
 angażowania właściwej logiki wyszukiwania pokrywy wierzchołkowej, co pozytywnie
@@ -17,4 +18,5 @@ pokrywy wierzchołkowej.
 \input{Kernelization-high-degree.tex}
 \input{Kernelization-lp-formulation.tex}
 \input{Kernelization-net-flow.tex}
+\input{Kernelization-crown-reduction.tex}
 
