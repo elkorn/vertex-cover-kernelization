@@ -97,14 +97,28 @@
 \subsection{Problem pokrycia wierzchołkowego}\label{s_vertex_cover_domain}
 \par{
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
-  Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie G istnieje zbiór
-  wierzchołków $VC, \|VC\| \leq k$ stanowiący pokrywę wierzchołkową tego
-  grafu?''.
-
-  Problem pokrycia wierzchołkowego jest $\mathcal{NP}$-zupełny, co udowodniono
-  w~\cite{Kar72}.
+  Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie $G=(V,E)$ istnieje 
+  zbiór wierzchołków $VC \in V, \|VC\| \leq k$ stanowiący pokrywę wierzchołkową
+  tego grafu?''.
+  Problem pokrycia wierzchołkowego należy do klasy problemów 
+  $\mathcal{NP}$-zupełnych, co udowodniono w~\cite{Kar72}.
 }
+\par{
+  Problem pokrycia wierzchołkowego jest popularny w dziedzinie biologii
+  obliczeniowej. 
+  Do praktycznych zastosowań algorytmów rozwiązujących problem pokrycia
+  wierzchołkowego można zaliczyć:
+  \begin{itemize}
+    \item[-] odnajdywanie drzew filogenetycznych na podstawie informacji
+      dotyczących domen białkowych,
+    \item[-] analiza genetycznych cech ilościowych,
+    \item[-] analiza danych na mikromacierzach DNA.\@
+  \end{itemize}
 
+  Jednym z zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym
+  wykrywaniem wyścigów w danych, realizowane
+  w~\cite{O'Callahan:2003:HDD:781498.781528}.
+}
 \begin{theorem}
   Optymalna pokrywa wierzchołkowa grafu $G=(V,E), \|V\|=n, \|E\|=m$ może zostać 
   odnaleziona w czasie $O(2^{n}m)$.
@@ -133,17 +147,17 @@ pokrycia wierzchołkowe teoretycznie nie mają one znaczenia.
   i wielomianowej przestrzeni.
 \end{theorem}
 \begin{bproof}
-  Zakładając zbioru $VC \in V$ kandydującego do miana pokrywy wierzchołkowej,
-  $\forall_{e=(u,v), e \in E}: u \in VC \lor v \in VC$.
-  Jeżeli więc $\exists_{e=(u,v) \in E}: \not(u \in VC \lor v \in VC)$, należy
+  Zakładając istnienie zbioru $VC \in V$ kandydującego do miana pokrywy 
+  wierzchołkowej, $\forall_{e=(u,v), e \in E}: u \in VC \lor v \in VC$.
+  Jeżeli więc $\exists_{e=(u,v) \in E}: \neg(u \in VC \lor v \in VC)$, należy
   dodać jeden z wierzchołków do $VC$. 
   Rekurencyjnie realizowane są obydwie możliwości.
   Kiedy rekurencja dociera do momentu, gdzie $k=0, \exists_{e=(u,v) \in E}:
-  \not(u \in VC \lor v \in VC)$, wiadomo, że rozwiązanie odnalezione w tej
+  \neg(u \in VC \lor v \in VC)$, wiadomo, że rozwiązanie odnalezione w tej
   gałęzi nie jest akceptowalne i należy je odrzucić.
 
   \begin{algorithm}
-    \caption{Algorytm rozwiązujący problem pokrycia wierzchołokowego}\label{VC1}
+    \caption{Algorytm rozwiązujący problem pokrycia wierzchołkowego}\label{VC1}
     \begin{algorithmic}[1]
       \Function{VC}{G, k}
       \If {$E=\emptyset$}
@@ -152,8 +166,8 @@ pokrycia wierzchołkowe teoretycznie nie mają one znaczenia.
     \If {$k=0$}
     \Return{false}\Comment{Rozwiązanie nieoptymalne}
   \EndIf
-  \State $(u,v) \gets e \in E$
-  \Return{VC($G\setminus \{u\}$, k-1) lub V~($G\setminus \{v\}$, k-1)}
+  \State $(u,v) \leftarrow e \in E$
+  \State \textbf{return} {VC($G\setminus \{u\}$, k-1) lub V~($G\setminus \{v\}$, k-1)}
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
