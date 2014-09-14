@@ -137,4 +137,42 @@ $G\prime$.
   \leq 3k$.
 \end{bproof}
 
+Należy zauważyć, że kształt odnalezionej przez algorytm korony podyktowany jest
+strukturą wybranego największego skojarzenia $M_1$.
+Prowadzi to do wniosku, iż pożądane jest wykonywanie algorytmu redukcji korony
+wielokrotnie, wykorzystując różne największe skojarzenia tak, by zlokalizować i
+zredukować jak największą ilość koron, co pozwoli na maksymalną redukcję
+dziedziny problemu.
+Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów przetwarzania
+wstępnego przez każdą kolejną iteracją redukcji korony---usunięcie korony z
+dużym prawdopodobieństwem prowadzić będzie do powstania wierzchołków niskiego
+stopnia.
+Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie skojarzenia
+maksymalnego $M_2$, zrealizowane w niniejszej pracy przy pomocy algorytmu
+kwiatów Edmondsa.
+\footnote{
+  Oryginalna implementacja, opisywana
+  w~\cite{KernelizationAlgorithms04} oparta jest o reformulację problemu do
+  instancji zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica, o
+  wynikowej złożoności czasowej $O(n^{\frac{5}{2}})$.
+}
 
+\begin{theorem}
+  Implementacja algorytmu redukcji korony grafu $G=(V,E); \|V\|=n,\|E\|=m$ 
+  w~oparciu o algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4}m)$.
+\end{theorem}
+\begin{bproof}
+  Z~teoretycznego punktu widzenia, dwie najbardziej obciążające operacje to
+  odnalezienie skojarzenia maksymalnego $M_2$ oraz odnalezienie skojarzenia
+  największego $M_1$.
+  W celu odnalezienia skojarzenia największego $M_1$ grafu należy
+  sprawdzić wszystkie krawędzie $e\in E$ w celu poszukiwania wspólnych
+  wierzchołków.
+  Wykorzystując koncepcję zaznaczania jako odwiedzonych wierzchołków krawędzi 
+  dołączanych do skojarzenia, złożoność operacji sprowadza się do $O(m)$.
+  W celu odnalezienia dopasowanie maksymalnego, zastosowano algorytm Edmondsa,
+  którego złożoność wynosi $O(n^{4})$, co
+  opisano w~podrozdziale~\ref{ss_edmonds}.
+  Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony jest w
+  stanie znaleźć koronę w grafie w czasie $O(n^{4}m)$.
+\end{bproof}
