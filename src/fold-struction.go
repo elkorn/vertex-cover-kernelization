@@ -152,6 +152,12 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 }
 
 func generalFold(g *Graph) (result *Graph) {
+	// TODO: Analyze the correlation with crown reduction algorithm - read both
+	// papers and understand the relationships between the vertex sets, the
+	// algorithm logic and presented pictures.
+	// IDEA: maybe the I, mentioned in ImprovedBounds10 relates rather to the I
+	// constituting the final crown instead of 'just some maximal matching'?
+	// @start-from-here
 	// halt := make(chan bool, 1)
 	M1, O := FindMaximalMatching(g)
 	if options.Verbose {
