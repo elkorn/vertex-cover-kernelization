@@ -52,7 +52,7 @@ func (pq priorityQueue) Less(i, j int) bool {
 	}
 
 	// Nodes on a deeper level have priority.
-	return pq[i].value.level >= pq[j].value.level
+	return pq[i].value.level > pq[j].value.level
 }
 
 func (pq priorityQueue) Swap(i, j int) {
