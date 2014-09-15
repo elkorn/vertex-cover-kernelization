@@ -159,7 +159,7 @@ kwiatów Edmondsa.
 
 \begin{theorem}
   Implementacja algorytmu redukcji korony grafu $G=(V,E); \|V\|=n,\|E\|=m$ 
-  w~oparciu o algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4}m)$.
+  w~oparciu o algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4})$.
 \end{theorem}
 \begin{bproof}
   Z~teoretycznego punktu widzenia, dwie najbardziej obciążające operacje to
@@ -168,11 +168,12 @@ kwiatów Edmondsa.
   W celu odnalezienia skojarzenia największego $M_1$ grafu należy
   sprawdzić wszystkie krawędzie $e\in E$ w celu poszukiwania wspólnych
   wierzchołków.
-  Wykorzystując koncepcję zaznaczania jako odwiedzonych wierzchołków krawędzi 
-  dołączanych do skojarzenia, złożoność operacji sprowadza się do $O(m)$.
-  W celu odnalezienia dopasowanie maksymalnego, zastosowano algorytm Edmondsa,
+  Wykorzystując koncepcję zaznaczania wierzchołków krawędzi dołączanych do 
+  skojarzenia jako odwiedzonych, złożoność operacji sprowadza się do $O(m)$.
+  W grafie może znajdować się maksymalnie $O(n^{2})$ krawędzi.
+  W celu odnalezienia dopasowanie maksymalnego zastosowano algorytm Edmondsa,
   którego złożoność wynosi $O(n^{4})$, co
   opisano w~podrozdziale~\ref{ss_edmonds}.
   Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony jest w
-  stanie znaleźć koronę w grafie w czasie $O(n^{4}m)$.
+  stanie znaleźć koronę w grafie w czasie $O(n^{4} + n^{2})=O(n^{4})$.
 \end{bproof}
