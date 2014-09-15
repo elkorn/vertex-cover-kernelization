@@ -117,6 +117,12 @@ func (self *graphVisualizer) HighlightEdge(edge *Edge, color string) {
 	self.setEdgeAttr(edge, "color", color)
 }
 
+func (self *graphVisualizer) HighlightMatching(matching *Graph, color string) {
+	matching.ForAllEdges(func(edge *Edge, done chan<- bool) {
+		self.HighlightEdge(edge, color)
+	})
+}
+
 func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
 	self.vertexAttrs[v.toInt()]["style"] = "filled"
 	self.vertexAttrs[v.toInt()]["fillcolor"] = color

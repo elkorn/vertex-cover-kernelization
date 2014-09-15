@@ -50,12 +50,10 @@ func (self *Graph) Copy() *Graph {
 }
 
 func (self *Graph) hasVertex(v Vertex) bool {
-	Debug("Checking whether %v >= %v", v.toInt(), self.currentVertexIndex)
 	if v.toInt() >= self.currentVertexIndex {
 		return false
 	}
 
-	Debug("Checking whether %v <= %v", v, len(self.isVertexDeleted))
 	if v.toInt() < len(self.isVertexDeleted) {
 		return !self.isVertexDeleted[v.toInt()]
 	}

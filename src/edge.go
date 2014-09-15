@@ -1,5 +1,7 @@
 package graph
 
+import "fmt"
+
 type Edge struct {
 	from      Vertex
 	to        Vertex
@@ -29,6 +31,10 @@ func MkEdgeFromInts(a, b int) *Edge {
 
 func MkEdgeValFromInts(a, b int) Edge {
 	return Edge{MkVertex(a), MkVertex(b), false}
+}
+
+func (self *Edge) Str() string {
+	return fmt.Sprintf("%v-%v", self.from, self.to)
 }
 
 type Edges []*Edge
