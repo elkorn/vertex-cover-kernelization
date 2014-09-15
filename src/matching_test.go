@@ -12,14 +12,14 @@ func TestMaximalMatching(t *testing.T) {
 
 	m, o := FindMaximalMatching(g)
 	assert.Equal(t, 2, m.NEdges(), "The matching of graph1 should contain 2 edges.")
-	assert.Equal(t, 5, o.Cardinality(), "The outsiders of graph1 should contain 4 unmatched vertices.")
+	assert.Equal(t, 1, o.Cardinality(), "The outsiders of graph1 should contain 1 unmatched vertex.")
 	assert.True(t, m.hasEdge(1, 2))
 	assert.True(t, m.hasEdge(3, 4))
 
 	g = mkGraph5()
 	m, o = FindMaximalMatching(g)
 	assert.Equal(t, 3, m.NEdges(), "The matching of graph5 should contain 3 edges.")
-	assert.Equal(t, 6, o.Cardinality(), "The outsiders of graph5 should contain 6 unmatched vertices.")
+	assert.Equal(t, 1, o.Cardinality(), "The outsiders of graph5 should contain 1 unmatched vertex.")
 	assert.True(t, m.hasEdge(1, 2))
 	assert.True(t, m.hasEdge(4, 5))
 	assert.True(t, m.hasEdge(6, 7))
@@ -97,4 +97,18 @@ func TestIndexOf(t *testing.T) {
 	assert.Equal(t, 0, indexOf(1, list))
 	assert.Equal(t, 1, indexOf(2, list))
 	assert.Equal(t, 2, indexOf(3, list))
+}
+
+func TestMaximumMatching4(t *testing.T) {
+	g := MkGraph(8)
+	g.AddEdge(1, 4)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+	g.AddEdge(6, 5)
+	g.AddEdge(4, 6)
+	g.AddEdge(4, 7)
+	g.AddEdge(8, 7)
+	g1 := FindMaximumMatching(g)
+	assert.Equal(t, 3, g1.NEdges())
 }
