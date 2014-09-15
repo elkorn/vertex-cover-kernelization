@@ -37,6 +37,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
+	// Should this matching contain the neighbors already included in M1?
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)

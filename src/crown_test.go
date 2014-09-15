@@ -17,18 +17,19 @@ func TestFindCrown1(t *testing.T) {
 	g.AddEdge(6, 5)
 	g.AddEdge(4, 6)
 	g.AddEdge(4, 7)
-	// g.AddEdge(8, 7)
 	halt := make(chan bool, 1)
 
+	gv := MkGraphVisualizer(g)
+	m, o := FindMaximalMatching(g)
+	gv.HighlightMatching(m, "red")
+	gv.HighlightCover(o, "green")
 	crown := findCrown(g, halt, k)
 	assert.Equal(t, 1, crown.Width())
 	assert.True(t, crown.H.Contains(Vertex(4)))
-	assert.True(t, crown.I.Contains(Vertex(1)))
 	assert.True(t, crown.I.Contains(Vertex(2)))
 	assert.True(t, crown.I.Contains(Vertex(3)))
-	// gv := MkGraphVisualizer(g)
 	// gv.Display()
-	// gv.highlightCrown(crown)
+	gv.highlightCrown(crown)
 	// gv.Display()
 }
 
@@ -44,7 +45,8 @@ func TestReduceCrown1(t *testing.T) {
 	g.AddEdge(8, 7)
 	halt := make(chan bool, 1)
 	ReduceCrown(g, halt, k)
-	assert.Equal(t, 4, g.NVertices())
+	assert.Equal(t, 5, g.NVertices())
+	assert.True(t, g.hasVertex(1))
 	assert.True(t, g.hasVertex(5))
 	assert.True(t, g.hasVertex(6))
 	assert.True(t, g.hasVertex(7))
@@ -58,7 +60,12 @@ func TestReduceCrown2(t *testing.T) {
 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
 	halt := make(chan bool, 1)
 	verticesBefore := g.NVertices()
-	crownWidth, independentSetCardinality := 228, 542
+	// crown := findCrown(g, halt, k)
+	// inVerboseContext(func() {
+	// 	Debug("independent: %v", g.isIndependentSet(crown.I))
+	// 	Debug("I: %v, H: %v", crown.I.Cardinality(), crown.H.Cardinality())
+	// })
+	crownWidth, independentSetCardinality := 134, 318
 
 	ReduceCrown(g, halt, k)
 	assert.Equal(t,
