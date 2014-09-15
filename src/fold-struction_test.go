@@ -47,7 +47,26 @@ func TestGeneralFold1(t *testing.T) {
 	g.AddEdge(4, 6)
 	g.AddEdge(4, 7)
 	g.AddEdge(8, 7)
+
+	// showGraph(g)
+	// inVerboseContext(func() {
 	generalFold(g)
+	// })
+	// gPrime := generalFold(g)
+	// showGraph(gPrime)
+
+	// // inVerboseContext(func() {
+	// // 	crown := findCrown(gPrime, nil, MAX_INT)
+	// // 	Debug("%v", crown)
+	// // })
+	// // gv.highlightCrown(crown)
+	// // gv.Display()
+
+	// assert.Equal(t, 5, gPrime.NVertices())
+	// assert.True(t, gPrime.hasVertex(9))
+	// assert.True(t, gPrime.hasEdge(9, 5))
+	// assert.True(t, gPrime.hasEdge(9, 6))
+	// assert.True(t, gPrime.hasEdge(9, 7))
 }
 
 func TestGeneralFold2(t *testing.T) {
@@ -57,10 +76,19 @@ func TestGeneralFold2(t *testing.T) {
 	g.AddEdge(2, 4)
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 6)
+	g.AddEdge(3, 8)
 	g.AddEdge(3, 7)
 	g.AddEdge(6, 7)
 	g.AddEdge(4, 5)
 
+	// inVerboseContext(func() {
+	// 	gv := MkGraphVisualizer(g)
+	// 	m, o := FindMaximalMatching(g)
+	// 	gv.HighlightMatching(m, "red")
+	// 	gv.HighlightCover(o, "yellow")
+	// 	gv.Display()
+	// })
+	// showGraph(g)
 	// h := make(chan bool, 1)
 	// showGraph(g)
 	// crown := findCrown(g, h, MAX_INT)
@@ -69,6 +97,42 @@ func TestGeneralFold2(t *testing.T) {
 	// gv.Display()
 	// inVerboseContext(func() {
 	/* g1 :=  */ generalFold(g)
+	// showGraph(g1)
+	// })
+
+}
+
+func TestGeneralFold3(t *testing.T) {
+	g := MkGraph(7)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+
+	showGraph(g)
+	inVerboseContext(func() {
+		x := generalFold(g)
+		showGraph(x)
+	})
+
+	// inVerboseContext(func() {
+	// 	gv := MkGraphVisualizer(g)
+	// 	m, o := FindMaximalMatching(g)
+	// 	gv.HighlightMatching(m, "red")
+	// 	gv.HighlightCover(o, "yellow")
+	// 	gv.Display()
+	// })
+	// showGraph(g)
+	// h := make(chan bool, 1)
+	// showGraph(g)
+	// crown := findCrown(g, h, MAX_INT)
+	// gv := MkGraphVisualizer(g)
+	// gv.highlightCrown(crown)
+	// gv.Display()
+	// inVerboseContext(func() {
+	// /* g1 :=  */ generalFold(g)
 	// showGraph(g1)
 	// })
 

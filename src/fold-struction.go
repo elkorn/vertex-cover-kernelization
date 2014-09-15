@@ -1,6 +1,10 @@
 package graph
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/deckarep/golang-set"
+)
 
 type structionVertex struct {
 	v    Vertex
@@ -131,26 +135,110 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	return
 }
 
-func generalFold(g *Graph) *Graph {
-	halt := make(chan bool, 1)
-	crown := findCrown(g, halt, MAX_INT)
-	if nil == crown {
-		return g
+func (g *Graph) isIndependentSet(set mapset.Set) bool {
+	for v1Inter := range set.Iter() {
+		v1 := v1Inter.(Vertex)
+		for v2Inter := range set.Iter() {
+			v2 := v2Inter.(Vertex)
+			if v1 == v2 {
+				continue
+			}
+			if g.hasEdge(v1, v2) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func generalFold(g *Graph) (result *Graph) {
+	// halt := make(chan bool, 1)
+	M1, O := FindMaximalMatching(g)
+	if options.Verbose {
+		gv := MkGraphVisualizer(g)
+		gv.HighlightMatching(M1, "red")
+		gv.HighlightCover(O, "gray")
+		gv.Display()
+	}
+	// O is an independent set.
+	// Graph induced by N (I)
+	// outsiderNeighbors := MkGraphRememberingDeletedVertices(g.currentVertexIndex, g.isVertexDeleted)
+	neighbors := mapset.NewSet()
+	for vInter := range O.Iter() {
+		v := vInter.(Vertex)
+		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+			neighbors.Add(getOtherVertex(v, edge))
+			// if O.Contains(w) {
+			// 	areNeighborsIndependent = false
+			// 	Debug("Outsider edge %v", edge.Str())
+			// 	outsiderNeighbors.AddEdge(v, w)
+			// }
+			// if M1.hasEdge(v, w) {
+			// 	// These do not count as neighbors of neighbors in this context.
+			// 	// (see Fig. 2.)
+			// 	Debug("Matching edge %v", edge.Str())
+			// 	return
+			// }
+		})
 	}
 
-	result := MkGraphRememberingDeletedVertices(g.currentVertexIndex+1, g.isVertexDeleted)
-	foldRoot := Vertex(result.currentVertexIndex)
+	areNeighborsIndependent := g.isIndependentSet(neighbors)
+	// If the graph induced by N (I) is not an independent set, then there exists a
+	//	minimum vertex cover in G that includes N (I) and excludes I
+	if areNeighborsIndependent {
+		Debug("Independent %v", O)
+		// We are dealing with an almost-crown.
+		result = MkGraphRememberingDeletedVertices(g.currentVertexIndex+1, g.isVertexDeleted)
+		foldRoot := Vertex(result.currentVertexIndex)
 
-	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-		if crown.I.Contains(edge.from) ||
-			crown.I.Contains(edge.to) ||
-			crown.H.Contains(edge.from) ||
-			crown.H.Contains(edge.to) {
-			return
+		g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+			// if hasFrom, hasTo := outsiderNeighbors.hasVertex(edge.from), outsiderNeighbors.hasVertex(edge.to); hasFrom || hasTo {
+			// 	return
+			// }
+
+			Debug("Adding original edge %v", edge.Str())
+
+			result.AddEdge(edge.from, edge.to)
+		})
+
+		for vInter := range neighbors.Iter() {
+			v := vInter.(Vertex)
+			Debug("%v", v)
+			g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+				w := getOtherVertex(v, edge)
+				// if M1.hasEdge(v, w) {
+				// 	// These do not count as neighbors of neighbors in this context.
+				// 	// (see Fig. 2.)
+				// 	return
+				// }
+
+				Debug("Adding fold edge %v-%v", foldRoot, w)
+				result.AddEdge(foldRoot, w)
+			})
+
+			Debug("Removing N(I) %v", v)
+			result.RemoveVertex(v)
 		}
 
-		result.AddEdge(edge.from, edge.to)
-	})
+		for vInter := range O.Iter() {
+			Debug("Removing I %v", vInter.(Vertex))
+			result.RemoveVertex(vInter.(Vertex))
+		}
+	} else {
+		// We are dealing with a crown.
+		Debug("Non-independent %v", O)
+	}
+
+	// g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 	if crown.I.Contains(edge.from) ||
+	// 		crown.I.Contains(edge.to) ||
+	// 		crown.H.Contains(edge.from) ||
+	// 		crown.H.Contains(edge.to) {
+	// 		return
+	// 	}
+
+	// 	result.AddEdge(edge.from, edge.to)
+	// })
 
 	// for vInter := range crown.I.Iter() {
 	// 	v := vInter.(Vertex)
@@ -159,15 +247,15 @@ func generalFold(g *Graph) *Graph {
 	// 	})
 	// }
 
-	for vInter := range crown.H.Iter() {
-		v := vInter.(Vertex)
-		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			result.AddEdge(foldRoot, getOtherVertex(v, edge))
-		})
-	}
+	// for vInter := range crown.H.Iter() {
+	// 	v := vInter.(Vertex)
+	// 	g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+	// 		result.AddEdge(foldRoot, getOtherVertex(v, edge))
+	// 	})
+	// }
 
-	reduceCrown(result, crown)
-	Debug("H: %v", crown.H)
+	// reduceCrown(result, crown)
+	// Debug("H: %v", crown.H)
 
 	return result
 }
