@@ -86,10 +86,13 @@ func (self *Graph) getEdgeEndpoints() mapset.Set {
 // Similar to Vertex.degree -> this should be push-based while computing the lower bound.
 func getNumberOfCoveredEdges(g *Graph, s mapset.Set) int {
 	covered := mapset.NewSet()
+	Debug("From selection %v", s)
 	for val := range s.Iter() {
 		vertex := val.(Vertex)
+		Debug("Vertex %v", vertex)
 		g.ForAllNeighbors(vertex, func(edge *Edge, done chan<- bool) {
 			covered.Add(edge)
+			Debug("\t covers %v-%v (%v)", edge.from, edge.to, covered.Cardinality())
 		})
 	}
 
@@ -121,9 +124,6 @@ func branchAndBound(g *Graph) mapset.Set {
 		// 6. Remove the first element from the PQ and assign it to the parent node.
 		node := queue.Pop()
 		Debug("Working %v ----------", node.selection)
-		if node.selection.Cardinality() == 6 {
-			Debug("		!!! 6 ELEMENTS !!!")
-		}
 		Debug("Lower bound: %v vs %v", node.lowerBound, bestLowerBound)
 		// 7. If the lower bound is better then the current one...
 		if node.lowerBound <= bestLowerBound {
@@ -131,11 +131,10 @@ func branchAndBound(g *Graph) mapset.Set {
 			// TODO: Possible optimization - level should reflect the number of
 			// covered edges. Do not compute the number of covered edges, use
 			// level instead and see where it takes you.
-			newLevel := node.level + 1
 			selection = node.selection
+			newLevel := getNumberOfCoveredEdges(g, selection)
 			// 9. If all edges are covered...
-			nCoveredEdges := getNumberOfCoveredEdges(g, selection)
-			if nCoveredEdges == n {
+			if newLevel == n {
 				// Debug("Covers all edges.")
 				// 10. Compute the cost of the combo.
 				// 11. Set the current lower bound as the best one.

@@ -46,15 +46,13 @@ func (pq priorityQueue) Len() int { return len(pq) }
 func (pq priorityQueue) Empty() bool { return pq.Len() == 0 }
 
 func (pq priorityQueue) Less(i, j int) bool {
-	// If the nodes have the same lower bound (cost),
-	// take the one at the deeper level.
-
-	if pq[i].value.lowerBound == pq[j].value.lowerBound {
-		return pq[i].value.level >= pq[j].value.level
+	// If the nodes are at the same level, take the one with lower cost.
+	if pq[i].value.level == pq[j].value.level {
+		return pq[i].value.lowerBound < pq[j].value.lowerBound
 	}
 
-	// Nodes with the lower cost have priority.
-	return pq[i].value.lowerBound < pq[j].value.lowerBound
+	// Nodes on a deeper level have priority.
+	return pq[i].value.level >= pq[j].value.level
 }
 
 func (pq priorityQueue) Swap(i, j int) {

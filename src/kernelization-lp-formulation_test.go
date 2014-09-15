@@ -104,7 +104,8 @@ func TestBranchAndBound1(t *testing.T) {
 	g.AddEdge(2, 3)
 	optimalSelection := mapset.NewSet()
 	optimalSelection.Add(Vertex(2))
-	assert.True(t, optimalSelection.Equal(branchAndBound(g)))
+	cover := branchAndBound(g)
+	assert.True(t, optimalSelection.Equal(cover))
 
 	g = mkGraph6()
 	optimalSelection = mapset.NewSet()
@@ -126,6 +127,7 @@ func TestBranchAndBound2(t *testing.T) {
 	assert.Equal(t, 6, cover.Cardinality())
 	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
 	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
+
 }
 
 func TestBranchAndBound3(t *testing.T) {
