@@ -108,6 +108,7 @@ func branchAndBound(g *Graph) mapset.Set {
 	// 1. Initial value for the best combination
 	bestSelection := mapset.NewSet()
 	n := g.NEdges()
+	total, discarded := 0, 0
 	// 2. Initialize a priority queue.
 	// The size of the priority queue would be calculated as in ../combinations.go
 	// TODO: Benchmark if it is worth it to pre-calculate the queue capacity.
@@ -118,6 +119,7 @@ func branchAndBound(g *Graph) mapset.Set {
 	// 3. Generate the first node with initial selection and compute its lower bound.
 	// 4. Insert the node into the PQ.
 	queue.Push(mkLpNode(g, selection, 0))
+	total++
 	bestLowerBound := MAX_INT
 	// 5. while there is something in the PQ
 	for !queue.Empty() {
@@ -164,15 +166,18 @@ func branchAndBound(g *Graph) mapset.Set {
 					if newNode.lowerBound < bestLowerBound {
 						// Debug("Looks good, pushing into the queue.")
 						// 19. Insert the node into the priority queue.
+						total++
 						queue.Push(newNode)
 					}
 				}
 			}
 		} else {
+			discarded++
 			Debug("Omitting.")
 		}
 	}
 
 	Debug("Best selection: %v", bestSelection)
+	Debug("Discarded %3.2f%% solutions", (float64(discarded)/float64(total))*100)
 	return bestSelection
 }
