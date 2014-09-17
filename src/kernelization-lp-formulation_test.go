@@ -144,3 +144,17 @@ func TestBranchAndBound3(t *testing.T) {
 	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
 	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
 }
+
+func TestBnBBipartite(t *testing.T) {
+	size := 7
+	g := MkGraph(2 * size)
+	for i := 1; i <= size; i++ {
+		for j := size + 1; j <= 2*size; j++ {
+			g.AddEdge(Vertex(i), Vertex(j))
+		}
+	}
+
+	cover := branchAndBound(g)
+	assert.Equal(t, size, cover.Cardinality())
+
+}

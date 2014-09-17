@@ -2,6 +2,7 @@ package graph
 
 import (
 	"container/list"
+	"fmt"
 	"testing"
 )
 
@@ -175,4 +176,52 @@ func BenchmarkBSTConflictResolverStraightPetersenGTEQ(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		branchAndBound(g)
 	}
+}
+
+func benchBnB(b *testing.B, no int) {
+	g := ScanGraph(fmt.Sprintf("example_%v", no))
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		branchAndBound(g)
+	}
+}
+
+func BenchmarkBnBPessimistic1(b *testing.B) {
+	benchBnB(b, 1)
+}
+
+func BenchmarkBnBPessimistic2(b *testing.B) {
+	benchBnB(b, 2)
+}
+
+func BenchmarkBnBPessimistic3(b *testing.B) {
+	benchBnB(b, 3)
+}
+
+func BenchmarkBnBPessimistic5(b *testing.B) {
+	benchBnB(b, 5)
+}
+
+func BenchmarkBnBPessimistic6(b *testing.B) {
+	benchBnB(b, 6)
+}
+
+func BenchmarkBnBPessimistic7(b *testing.B) {
+	benchBnB(b, 7)
+}
+
+func BenchmarkBnBPessimistic8(b *testing.B) {
+	benchBnB(b, 8)
+}
+
+func BenchmarkBnBPessimistic9(b *testing.B) {
+	benchBnB(b, 9)
+}
+
+func BenchmarkBnBPessimistic10(b *testing.B) {
+	benchBnB(b, 10)
+}
+
+func BenchmarkBnBPessimistic11(b *testing.B) {
+	benchBnB(b, 11)
 }
