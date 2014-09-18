@@ -13,6 +13,10 @@ func (self *Crown) Width() int {
 	return self.H.Cardinality()
 }
 
+func (self *Crown) IsTrivial() bool {
+	return self.Width() == 0 && self.I.Cardinality() == 0
+}
+
 func (self *graphVisualizer) highlightCrown(crown *Crown) {
 	for vInter := range crown.I.Iter() {
 		self.HighlightVertex(vInter.(Vertex), "lightgray")
@@ -31,6 +35,13 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	// there is not a vertex cover of size ≤ k and the vertex cover problem
 	// can be solved with a "no" instance.
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
+	Debug("M1 cardinality: %v", M1.NEdges())
+	Debug("Outsiders: %v", O)
+	if options.Verbose {
+		M1.ForAllEdges(func(edge *Edge, done chan<- bool) {
+			Debug("%v", edge.Str())
+		})
+	}
 	if M1.NEdges() > k {
 		halt <- true
 		return nil
@@ -49,6 +60,13 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	M2 := FindMaximumMatching(outsiderNeighbors)
+	if options.Verbose {
+		M2.ForAllEdges(func(edge *Edge, done chan<- bool) {
+			Debug("%v", edge.Str())
+		})
+	}
+
+	Debug("M2 cardinality: %v", M2.NEdges())
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	if M2.NEdges() > k {
 		halt <- true
