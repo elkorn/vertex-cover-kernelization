@@ -6,6 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TODO: test this thoroughly. @start-from-here
+
 func TestStruction(t *testing.T) {
 	g := MkGraph(9)
 	g.AddEdge(1, 2)
@@ -50,7 +52,7 @@ func TestGeneralFold1(t *testing.T) {
 
 	// showGraph(g)
 	// inVerboseContext(func() {
-	generalFold(g)
+	generalFold(g, 0)
 	// })
 	// gPrime := generalFold(g)
 	// showGraph(gPrime)
@@ -81,24 +83,7 @@ func TestGeneralFold2(t *testing.T) {
 	g.AddEdge(6, 7)
 	g.AddEdge(4, 5)
 
-	// inVerboseContext(func() {
-	// 	gv := MkGraphVisualizer(g)
-	// 	m, o := FindMaximalMatching(g)
-	// 	gv.HighlightMatching(m, "red")
-	// 	gv.HighlightCover(o, "yellow")
-	// 	gv.Display()
-	// })
-	// showGraph(g)
-	// h := make(chan bool, 1)
-	// showGraph(g)
-	// crown := findCrown(g, h, MAX_INT)
-	// gv := MkGraphVisualizer(g)
-	// gv.highlightCrown(crown)
-	// gv.Display()
-	// inVerboseContext(func() {
-	/* g1 :=  */ generalFold(g)
-	// showGraph(g1)
-	// })
+	// g1 :=  generalFold(g, 0)
 
 }
 
@@ -111,29 +96,5 @@ func TestGeneralFold3(t *testing.T) {
 	g.AddEdge(3, 6)
 	g.AddEdge(3, 7)
 
-	showGraph(g)
-	inVerboseContext(func() {
-		x := generalFold(g)
-		showGraph(x)
-	})
-
-	// inVerboseContext(func() {
-	// 	gv := MkGraphVisualizer(g)
-	// 	m, o := FindMaximalMatching(g)
-	// 	gv.HighlightMatching(m, "red")
-	// 	gv.HighlightCover(o, "yellow")
-	// 	gv.Display()
-	// })
-	// showGraph(g)
-	// h := make(chan bool, 1)
-	// showGraph(g)
-	// crown := findCrown(g, h, MAX_INT)
-	// gv := MkGraphVisualizer(g)
-	// gv.highlightCrown(crown)
-	// gv.Display()
-	// inVerboseContext(func() {
-	// /* g1 :=  */ generalFold(g)
-	// showGraph(g1)
-	// })
-
+	// g1 :=  generalFold(g)
 }
