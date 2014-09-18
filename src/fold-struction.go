@@ -151,117 +151,69 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 	return true
 }
 
-func generalFold(g *Graph) (result *Graph) {
-	// TODO: Analyze the correlation with crown reduction algorithm - read both
-	// papers and understand the relationships between the vertex sets, the
-	// algorithm logic and presented pictures.
-	// IDEA: maybe the I, mentioned in ImprovedBounds10 relates rather to the I
-	// constituting the final crown instead of 'just some maximal matching'?
-	// @start-from-here
-	// halt := make(chan bool, 1)
-	M1, O := FindMaximalMatching(g)
-	if options.Verbose {
-		gv := MkGraphVisualizer(g)
-		gv.HighlightMatching(M1, "red")
-		gv.HighlightCover(O, "gray")
-		gv.Display()
-	}
-	// O is an independent set.
-	// Graph induced by N (I)
-	// outsiderNeighbors := MkGraphRememberingDeletedVertices(g.currentVertexIndex, g.isVertexDeleted)
-	neighbors := mapset.NewSet()
-	for vInter := range O.Iter() {
-		v := vInter.(Vertex)
-		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			neighbors.Add(getOtherVertex(v, edge))
-			// if O.Contains(w) {
-			// 	areNeighborsIndependent = false
-			// 	Debug("Outsider edge %v", edge.Str())
-			// 	outsiderNeighbors.AddEdge(v, w)
-			// }
-			// if M1.hasEdge(v, w) {
-			// 	// These do not count as neighbors of neighbors in this context.
-			// 	// (see Fig. 2.)
-			// 	Debug("Matching edge %v", edge.Str())
-			// 	return
-			// }
-		})
+func generalFold(g *Graph, halt chan bool, k int) (result *Graph) {
+	decompositionIsTrivial := false
+	var kPrime int
+	var partialCover mapset.Set
+	var crown *Crown
+	// Apply the NT-decomposition to G until the application of this
+	// decomposition is trivial.
+	// A decomposition is trivial when the crown is (∅, ∅).
+	for {
+		crown = findCrown(g, halt, k)
+		select {
+		case <-halt:
+			halt <- true
+			return nil
+		}
+
+		if crown.IsTrivial() {
+			break
+		}
+
+		reduceCrown(g, crown)
+		kPrime = k - crown.Width()
 	}
 
-	areNeighborsIndependent := g.isIndependentSet(neighbors)
-	// If the graph induced by N (I) is not an independent set, then there exists a
-	//	minimum vertex cover in G that includes N (I) and excludes I
-	if areNeighborsIndependent {
-		Debug("Independent %v", O)
-		// We are dealing with an almost-crown.
-		result = MkGraphRememberingDeletedVertices(g.currentVertexIndex+1, g.isVertexDeleted)
-		foldRoot := Vertex(result.currentVertexIndex)
-
-		g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-			// if hasFrom, hasTo := outsiderNeighbors.hasVertex(edge.from), outsiderNeighbors.hasVertex(edge.to); hasFrom || hasTo {
-			// 	return
-			// }
-
-			Debug("Adding original edge %v", edge.Str())
-
-			result.AddEdge(edge.from, edge.to)
-		})
-
-		for vInter := range neighbors.Iter() {
-			v := vInter.(Vertex)
-			Debug("%v", v)
+	// At this point, the graph is free of any non-trivial crowns.
+	// G′ has an almost-crown if and only if there exists a vertex v ∈ G′ such
+	// that G′ ⧵ {v} has an equal crown.
+	// For every vertex v in G′ , check if G′ ⧵ {v} has a crown.
+	var almostCrownVertex Vertex
+	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+		g.RemoveVertex(v)
+		crown = findCrown(g, halt, kPrime)
+		g.RestoreVertex(v)
+		if !crown.IsTrivial() {
+			// If the NT-decomposition yields a crown,
+			// then this crown must be an equal crown.
+			// Otherwise, the graph would not be crown-free.
+			// Hence, we have constructed an almost-crown structure in G′.
+			almostCrownVertex = v
+			done <- true
+		}
+	})
+	// let G′ be the graph obtained from G by removing I ∪ N (I)
+	// and adding a vertex u_I,
+	// then connecting u_I to every vertex v ∈ G′
+	// such that v was a neighbor of a vertex u ∈ N (I) in G.
+	if !crown.IsTrivial() {
+		g.addVertex()
+		foldRoot := Vertex(g.currentVertexIndex)
+		foldAndRemove := func(v Vertex) {
 			g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-				w := getOtherVertex(v, edge)
-				// if M1.hasEdge(v, w) {
-				// 	// These do not count as neighbors of neighbors in this context.
-				// 	// (see Fig. 2.)
-				// 	return
-				// }
-
-				Debug("Adding fold edge %v-%v", foldRoot, w)
-				result.AddEdge(foldRoot, w)
+				g.AddEdge(foldRoot, getOtherVertex(v, edge))
 			})
 
-			Debug("Removing N(I) %v", v)
-			result.RemoveVertex(v)
+			g.RemoveVertex(v)
 		}
 
-		for vInter := range O.Iter() {
-			Debug("Removing I %v", vInter.(Vertex))
-			result.RemoveVertex(vInter.(Vertex))
+		for vInter := range crown.H.Iter() {
+			foldAndRemove(vInter.(Vertex))
 		}
-	} else {
-		// We are dealing with a crown.
-		Debug("Non-independent %v", O)
+
+		foldAndRemove(almostCrownVertex)
 	}
-
-	// g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-	// 	if crown.I.Contains(edge.from) ||
-	// 		crown.I.Contains(edge.to) ||
-	// 		crown.H.Contains(edge.from) ||
-	// 		crown.H.Contains(edge.to) {
-	// 		return
-	// 	}
-
-	// 	result.AddEdge(edge.from, edge.to)
-	// })
-
-	// for vInter := range crown.I.Iter() {
-	// 	v := vInter.(Vertex)
-	// 	g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-	// 		result.AddEdge(foldRoot, getOtherVertex(v, edge))
-	// 	})
-	// }
-
-	// for vInter := range crown.H.Iter() {
-	// 	v := vInter.(Vertex)
-	// 	g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-	// 		result.AddEdge(foldRoot, getOtherVertex(v, edge))
-	// 	})
-	// }
-
-	// reduceCrown(result, crown)
-	// Debug("H: %v", crown.H)
 
 	return result
 }
