@@ -28,9 +28,7 @@ func TestFindCrown1(t *testing.T) {
 	assert.True(t, crown.H.Contains(Vertex(4)))
 	assert.True(t, crown.I.Contains(Vertex(2)))
 	assert.True(t, crown.I.Contains(Vertex(3)))
-	// gv.Display()
 	gv.highlightCrown(crown)
-	// gv.Display()
 }
 
 func TestReduceCrown1(t *testing.T) {
@@ -60,11 +58,6 @@ func TestReduceCrown2(t *testing.T) {
 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
 	halt := make(chan bool, 1)
 	verticesBefore := g.NVertices()
-	// crown := findCrown(g, halt, k)
-	// inVerboseContext(func() {
-	// 	Debug("independent: %v", g.isIndependentSet(crown.I))
-	// 	Debug("I: %v, H: %v", crown.I.Cardinality(), crown.H.Cardinality())
-	// })
 	crownWidth, independentSetCardinality := 134, 318
 
 	ReduceCrown(g, halt, k)
@@ -103,21 +96,8 @@ func TestFindCrownBug(t *testing.T) {
 	g.AddEdge(4, 10)
 
 	h := make(chan bool, 1)
-	// TODO: @fixme There seems to be a problem in findCrown.
-	// inVerboseContext(func() {
 	crown := findCrown(g, h, MAX_INT)
-	// gv := MkGraphVisualizer(g)
-	// gv.highlightCrown(crown)
-	// gv.Display()
 	reduceCrown(g, crown)
 	matching := FindMaximumMatching(g)
 	Debug("MAX MATCH: %v", matching.Edges)
-	// crown = findCrown(g, h, MAX_INT)
-	// gv = MkGraphVisualizer(g)
-	// matching.ForAllEdges(func(edge *Edge, done chan<- bool) {
-	// 	gv.HighlightEdge(edge, "red")
-	// })
-	// // gv.highlightCrown(crown)
-	// gv.Display()
-	// })
 }
