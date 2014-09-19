@@ -1,21 +1,22 @@
 \section{Opis dziedziny problemu}\label{Section_Domain}
 \par{
   Niniejsza praca skupia się na implementacji oraz opisie wybranych metod 
-  rozwiązania problemu pokrycia wierzchołkowego z wykorzystaniem technik
+  rozwiązywania problemu pokrycia wierzchołkowego z wykorzystaniem technik
   zaliczanych do grupy metod parametryzacji.
 
-  Rozpatrywane w ramach niniejszej pracy metody wykorzystują pozostałe techniki, w
-  szczególności z grupy aproksymacji i redukcji, dla podproblemów składowych lub
-  redukcji problemu pokrycia wierzchołkowego.
+  Rozpatrywane w ramach niniejszej pracy metody wykorzystują pozostałe techniki,
+  w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych
+  lub redukcji problemu pokrycia wierzchołkowego.
 }
 \subsection{Wybrane klasy złożoności problemów}\label{subsection_p_np}
 \par{
-  Mianem \emph{klasy złożoności} określa się zbiór problemów o podobnej
-  złożoności. 
+  Mianem \emph{klasy złożoności} określa się zbiór problemów o~podobnej
+  złożoności w pewnym kontekście. 
   Proste klasy złożoności określić można przy pomocy podstwowych czynników takich
   jak rodzaj problemu (obliczeniowy, decyzyjny, obliczeniowy etc.), model
-  obliczeniowy (deterministyczna maszyna Turinga etc.) oraz wymagane do obliczeń
-  zasoby wraz z ich ograniczeniami (czas wielomianowy, stała przestrzeń etc.).
+  obliczeniowy (deterministyczna lub niedeterministyczna maszyna Turinga etc.)
+  oraz wymagane do obliczeń zasoby wraz z~ich ograniczeniami (czas wielomianowy,
+  liniowa przestrzeń etc.).
 }
 
 \subsubsection{Wybrane popularne klasy problemów}
@@ -97,9 +98,11 @@
 \subsection{Problem pokrycia wierzchołkowego}\label{s_vertex_cover_domain}
 \par{
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
-  Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie $G=(V,E)$ istnieje 
-  zbiór wierzchołków $VC \in V, \|VC\| \leq k$ stanowiący pokrywę wierzchołkową
-  tego grafu?''.
+  Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie $G=(V,E)$
+  istnieje zbiór wierzchołków $VC \in V, \|VC\| \leq k$ stanowiący pokrywę 
+  wierzchołkową tego grafu?''.
+  Mianem pokrywy wierzchołkowej określa się zbiór wierzchołków $VC
+  \subseteq V; \forall_{e=(u,v) \in E}:u\in VC\lor v\in VC$.
   Problem pokrycia wierzchołkowego należy do klasy problemów 
   $\mathcal{NP}$-zupełnych, co udowodniono w~\cite{Kar72}.
 }
@@ -115,9 +118,9 @@
     \item[-] analiza danych na mikromacierzach DNA.\@
   \end{itemize}
 
-  Jednym z zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym
-  wykrywaniem wyścigów w danych, realizowane
-  w~\cite{O'Callahan:2003:HDD:781498.781528}.
+  Jednym z~zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym
+  wykrywaniem wyścigów w danych, realizowane przez 
+  Autorów~\cite{O'Callahan:2003:HDD:781498.781528}.
 }
 \begin{theorem}
   Optymalna pokrywa wierzchołkowa grafu $G=(V,E), \|V\|=n, \|E\|=m$ może zostać 
@@ -133,15 +136,24 @@
   nich zrealizować operację weryfikacji pokrycia krawędzi, co w rezultacie daje 
   złożoność $O(2^{n}m)$.
 \end{bproof}
-
-W celu uproszczenia zapisu dalszego rozumowania, wprowadzona zostanie notacja
-$O^{\star}$, pomijająca czynniki wielomianowe w złożoności w oparciu o fakt, 
-iż dla górnej granicy złożoności podstawowego algorytmu rozwiązującego problem 
-pokrycia wierzchołkowego teoretycznie nie mają one znaczenia.
-\begin{equation*}
-  O^{\star}(f(n))=O(f(n) \cdot wielomian(n))
-\end{equation*}
-
+\par{
+  Jak widać, postać rozwiązania ``wprost'' problemu pokrycia wierzchołkowego
+  wymaga czasu wielomianowego względem rozmiaru grafu wejściowego.
+  Jednak z pomocą opisywanych w niniejszej pracy technik istnieje możliwość
+  takiej preparacji zbioru danych wejściowych, by całkowity czas potrzebny na
+  rozwiązanie ograniczyć pesymistyczną~złożonością wielomianową względem
+  wartości parametru ograniczającego rozmiar poszukiwanej pokrywy
+  wierzchołkowej.
+}
+\par{
+  W celu uproszczenia zapisu dalszego rozumowania, wprowadzona zostanie notacja
+  $O^{\star}$, pomijająca czynniki wielomianowe w złożoności w oparciu o fakt, 
+  iż dla górnej granicy złożoności podstawowego algorytmu rozwiązującego problem 
+  pokrycia wierzchołkowego teoretycznie nie mają one znaczenia.
+  \begin{equation*}
+    O^{\star}(f(n))=O(f(n) \cdot wielomian(n))
+  \end{equation*}
+}
 \begin{theorem}
   Problem pokrycia wierzchołkowego jest rozwiązywalny w czasie $O^{\star}(2^k)$
   i wielomianowej przestrzeni.

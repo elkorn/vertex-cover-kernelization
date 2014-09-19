@@ -1,4 +1,4 @@
-\section{Ogólne metody wykorzystane w algorytmach głównych}\label{s_methods}
+\section{Ogólne metody wykorzystane wdualnalgorytmach głównych}\label{s_methods}
 
 \subsection{Metoda podziału i ograniczeń}\label{ss_branch_and_bound}
 \par{
@@ -8,15 +8,15 @@
   Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu
   poszczególnych \emph{rozwiązań kandydackich} poprzez przeszukiwanie
   przestrzeni stanów.
-  Zbiór rozwiązań kandydackich tworzony jest w postaci ukorzenionego drzewa,
+  Zbiór rozwiązań kandydackich tworzony jest wdualnpostaci ukorzenionego drzewa,
   gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem
   stanów.
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
   podzbiory zbioru rozwiązań.
-  Zanim jednak dana gałąź drzewa poszukiwań zostanie odwiedzona, dokonywane jest
+  Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest
   sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji 
   ograniczającej $f$.
-  W przypadku, gdy wartości te odbiegają od znalezionego dotychczas przez
+  wdualnprzypadku, gdy wartości te odbiegają od znalezionego dotychczas przez
   algorytm lub zadanego optimum, cała gałąź jest odrzucana---nie istnieje w
   niej rozwiązanie spełniające założone wymagania. 
 }
@@ -28,31 +28,40 @@
 \subsection{Programowanie liniowe}\label{ss_lp}
 \par{
   Programowanie liniowe, zwane również optymalizacją liniową, stanowi sposób
-  osiągania najlepszego możliwego wyniku (zazwyczaj maksimum lub minimum) w modelu 
+  osiągania najlepszego możliwego wyniku (zazwyczaj maksimum lub minimum) wdualnmodelu 
   matematycznym o wymaganiach określonych nierównościami liniowymi.
 }
 \par{
-  Formalnie, mianem programowania liniowego określa technikę się optymalizacji 
-  liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w postaci równań 
+  Formalnie, mianem programowania liniowego określa się technikę optymalizacji 
+  liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} wdualnpostaci równań 
   lub nierówności liniowych.
   \emph{Region dopuszczalnych rozwiązań} stanowi wypukły wielokąt stanowiący 
-  zbiór powstały w wyniku przecięcia skończonej ilości półpłaszczyn wyznaczanych 
+  zbiór powstały wdualnwyniku przecięcia skończonej ilości półpłaszczyn wyznaczanych 
   przez nierówności liniowe.
   Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie
   dopuszczalnych rozwiązań.
   Algorytm programowania liniowego odnajduje punkt na wielościanie,
-  gdzie $z$ osiąga wartość optymalną w kontekście formulacji zadania jeżeli taki
+  gdzie $z$ osiąga wartość optymalną wdualnkontekście formulacji zadania jeżeli taki
   punkt istnieje. 
-  Przykładowy zapis kanonicznej formy wyrażania programów liniowych:\\\par
+  Przykładowy zapis kanonicznej formy wyrażania programów liniowych:\\
+  Zmaksymalizować funkcję celu:
+  \begin{align*}
+    \sum_{j=1}^{n} c_j x_j
+  \end{align*}
+  Przy ograniczeniach: \begin{align*}
+    \sum_{j=1}^{n}a_{ij}x_j \leq b_i; i =1, 2, \ldots, m\\
+    x_j \geq 0, j=1, 2, \ldots, n
+  \end{align*}
+  Nieco wygodniejszą~formą zapisu programów liniowych jest tzw.
+  \emph{postać~wektorowa}:\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
     z(x)={c^T}x
-  \end{align*}\par
+  \end{align*}
   Przy ograniczeniach: \begin{align*}
     Ax \leq b\\
     x\geq 0
-  \end{align*}
-
+  \end{align*}\\
   Gdzie:
   \begin{itemize}
     \item[-] $x$ stanowi wektor zmiennych do wyznaczenia,
@@ -64,29 +73,30 @@
   \end{itemize}
 }
 \par{
-  W celu otrzymania optymalnego rozwiązania problemu programowania liniowego
-  stosuje się jeden z  \emph{algorytmów programowania liniowego}.
+  wdualncelu otrzymania optymalnego rozwiązania problemu programowania liniowego
+  stosuje się jeden z~\emph{algorytmów programowania liniowego}.
   Do grupy algorytmów programowania liniowego zalicza się m.in.\ algorytm
   simplex lub algorytm ``na krzyż'' (criss-cross).
 }
 \par{
-  Programowanie liniowe znajduje zastosowanie w wielu dziedzinach nauki i przemysłu. 
-  Przykładem może być biznes i ekonomia zarówno jak i szeroko pojęta inżynieria.
-  Techniki programowania liniowego są użyteczne przy problemach związanych z
-  planowaniem, trasowaniem, harmonogramowaniem, przydziałem zadań oraz
+  Programowanie liniowe znajduje zastosowanie wdualnwielu dziedzinach nauki i~przemysłu. 
+  Przykładem może być biznes i~ekonomia, zarówno jak i szeroko pojęta inżynieria.
+  Techniki programowania liniowego są użyteczne przy problemach związanych 
+  z~planowaniem, trasowaniem, harmonogramowaniem, przydziałem zadań oraz
   projektowaniem.
-  Wynika to z faktu, iż wiele rzeczywistych problemów w dziedzinie badań
-  operacyjnych, mających na celu optymalizację procesów decyzyjnych w praktyce,
-  może zostać wyrażone w postaci zadań programowania liniowego.
+  Wynika to z~faktu, iż wiele rzeczywistych problemów w~dziedzinie badań
+  operacyjnych, mających na celu optymalizację procesów decyzyjnych w~praktyce,
+  może zostać wyrażone w~postaci zadań programowania liniowego.
   Wiele algorytmów rozwiązujących większe problemy optymalizacyjne wykorzystuje
   programowanie liniowe do rozwiązywania podproblemów częściowych jako zadania 
   programowania liniowego.
 }
-\subsubsection{Dualność problemów programowania liniowego}\label{sss_lp_duality}
+\subsubsection{Dualność (dwoistość) problemów programowania liniowego}
+\label{sss_lp_duality}
 \par{
   Cechą każdego problemu wyrażonego jako zadanie programowania liniowego,
   nazywanego problemem \emph{pierwotnym}, jest dwoistość.
-  Oznacza to, że problem pierwotny może zostać przekształcony w odpowiadający mu
+  Oznacza to, że problem pierwotny może zostać przekształcony wdualnodpowiadający mu
   problem \emph{wtórny}, zapewniający górną granicę optimum problemu
   pierwotnego. 
   Przykładowo, pierwotny problem:\par
@@ -109,25 +119,26 @@
     dowolnego prawdopodobnego rozwiązania.
   \end{weakduality*}
   \begin{strongduality*}
-    Jeżeli problem pierwotny posiada rozwiązanie optymalne $x*$, to problem wtórny
-    również posiada rozwiązanie optymalne $y*; c^{T}x*=b^{T}y*$.
+    Jeżeli problem pierwotny posiada rozwiązanie optymalne $x*$, to problem 
+    wtórny również posiada rozwiązanie optymalne $y*; c^{T}x*=b^{T}y*$.
   \end{strongduality*}
 }
 
 \par{
-  W kontekście niniejszej pracy, dualność problemów problemów programowania
-  liniowego jest szczególnie wartościowa ze względu na fakt, iż problemem wtórnym
-  względem problemu pokrycia wierzchołkowego dowolnego grafu jest problem
-  maksymalnego skojarzenia grafu.
+  wdualnkontekście niniejszej pracy, dualność problemów problemów programowania
+  liniowego jest szczególnie wartościowa ze względu na fakt, iż problemem
+  wtórnym względem problemu pokrycia wierzchołkowego dowolnego grafu jest 
+  problem maksymalnego skojarzenia grafu.
 }
 
-\subsubsection{Programowanie całkowitoliczbowe i relaksacje}\label{sss_ilp_relaxations}
+\subsubsection{Programowanie całkowitoliczbowe i relaksacje}
+\label{sss_ilp_relaxations}
 \par{
-  Programem liniowym całkowitoliczbowym nazywa się każdy program liniowy z
-  dodatkowym ograniczeniem aby $\forall_{x_n \in x}: x_n \in
+  Programem liniowym całkowitoliczbowym nazywa się każdy program liniowy 
+  z~dodatkowym ograniczeniem: $\forall_{x_n \in x}: x_n \in
   \mathbb{Z}~\refstepcounter{equation}(\theequation)\label{ilp_bound}$.
   Ograniczenie to zwane jest \emph{warukiem całkowitoliczbowości}.
-  Większość problemów NP-trudnych jest wyrażalne w postaci programu liniowego
+  Większość problemów NP-trudnych jest wyrażalna w~postaci programu liniowego
   całkowitoliczbowego.
   Prowadzi to do wniosku, iż sam problem programowania liniowego
   całkowitoliczbowego jest NP-trudny, co zaproponowano w~\cite{Kar72}.
@@ -135,15 +146,15 @@
 \par{  
   Charakterystyczną poddziedziną programowów całkowitoliczbowych są
   \emph{binarne programy całkowitoliczbowe}, charakteryzującę się zamianą
-  ograniczenia z programu całkowitoliczbowego~\eqref{ilp_bound}, na następujące:
+  ograniczenia z~programu całkowitoliczbowego~\eqref{ilp_bound}, na następujące:
   $\forall_{x_n \in x}: x_n \in \{0, 1\}~\refstepcounter{equation}(\theequation)\label{bilp_bound}$.
-  Jedyne problemy programowania całkowitoliczbowego rozpatrywane w niniejszej
+  Jedyne problemy programowania całkowitoliczbowego rozpatrywane w~niniejszej
   pracy dotyczyć będą wyłącznie binarnych programów całkowitoliczbowych.
 }
 \par{
-  W celu przekształcenia problemu NP-trudnego, wyrażonego w postaci binarnego 
-  programu całkowitoliczbowego, do problemu rozwiązywalnego w czasie 
-  wielomianowym, wyrażonego w postaci programu liniowego, należy dokonać 
+  wdualncelu przekształcenia problemu NP-trudnego, wyrażonego w~postaci binarnego 
+  programu całkowitoliczbowego, do problemu rozwiązywalnego wdualnczasie 
+  wielomianowym, wyrażonego wdualnpostaci programu liniowego, należy dokonać 
   \emph{relaksacji}.
   Istotą relaksacji jest zastąpienie warunku całkowitoliczbowości binarnego
   programu całkowitoliczbowego~\eqref{bilp_bound} na mniej restrykcyjne
@@ -154,8 +165,8 @@
   stwierdzona gdy współrzędne każdego z wierzchołków regionu dopuszczalnych 
   rozwiązań są liczbami całkowitymi.
   Mając do czynienia z dokładną relaksacją, można na jej podstawie wprost 
-  rozwiązać odpowiadający program całkowitoliczbowy w czasie wielomianowym.
-  W tym celu wykonać należy następujące kroki:
+  rozwiązać odpowiadający program całkowitoliczbowy wdualnczasie wielomianowym.
+  wdualntym celu wykonać należy następujące kroki:
   \begin{enumerate}
     \item otrzymać optimum $x*$ programu liniowego,
     \item odnaleźć wierzchołek $x\prime, z(x\prime)=z(x*)$,
@@ -168,26 +179,26 @@
   Redukcja dziedziny do jądra problemu jest techniką wykorzystywaną przy
   rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
   Istotą redukcji dziedziny do jądra problemu przy problemach dotyczących grafów
-  jest transformacja grafu $G=(V,E), \|V\|=n$, przy danym parametrze $k$, w inny
+  jest transformacja grafu $G=(V,E), \|V\|=n$, przy danym parametrze $k$, wdualninny
   graf $G\prime=(V\prime, E\prime), V\prime \subseteq V, E\prime \subseteq E$
   wraz z parametrem $k\prime \leq k$.
   Celem tego procesu jest ograniczenie wartości $n\prime$ przez jak najmniejszą
   funkcję $f(k\prime)$.
   Graf $G\prime$ nazywany jest \emph{jądrem}.
-  W przypadku parametryzacji problemu pokrycia wierzchołkowego, w grafie
+  wdualnprzypadku parametryzacji problemu pokrycia wierzchołkowego, wdualngrafie
   $G\prime$ istnieje pokrywa wierzchołkowa $VC\prime, \|VC\prime\|\leq k\prime$ 
-  wtedy i tylko wtedy, gdy w grafie $G$ istnieje pokrywa wierzchołkowa $VC,
+  wtedy i tylko wtedy, gdy wdualngrafie $G$ istnieje pokrywa wierzchołkowa $VC,
   \|VC\| \leq k$.
 }
 \par{
   Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
   należące do klasy $\mathcal{FPT}$ spośród grupy wszystkich znanych problemów.
   Rozbicie na podbproblemy lub działanie na zmniejszonej dziedzinie pozwala na
-  rozwiązywanie problemów klasy $\mathcal{FPT}$ w czasie wielomianowym przy
+  rozwiązywanie problemów klasy $\mathcal{FPT}$ wdualnczasie wielomianowym przy
   ustaleniu ograniczeń dotyczących wartości paramametru $k$, dyktującego z kolei
   postać podproblemów lub poddziedziny.
-  Po uzyskaniu jądra, jeżeli odpowiedź negatywna nie została udzielona w
-  międzyczasie, proces rozwiązywania problemu pokrycia wierzchołkowego
+  Po uzyskaniu jądra, jeżeli odpowiedź negatywna nie została udzielona
+  w~międzyczasie, proces rozwiązywania problemu pokrycia wierzchołkowego
   wykonuje Algorytm~\ref{alg_VC1}.\ do momentu otrzymania konkretnego
   rezultatu.
 }

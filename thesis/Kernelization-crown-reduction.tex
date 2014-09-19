@@ -26,25 +26,25 @@
   wierzchołkowa $VC$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
   Na tej podstawie stwierdzić można, że $\|VC\|\geq\|H\|$.
   Taki rozmiar pokrywy osiągnąć można przez umieszczenie $VC=VC\bigcup H$.
-  Należy w~tym miejscu zazanczyć, że wierzchołki $v_H$ są użyteczne w~kontekście
+  Należy w~tym miejscu zaznaczyć, że wierzchołki $v_H$ są użyteczne w~kontekście
   możliwości pokrywania krawędzi $e \notin M$, podczas gdy wierzchołki $v_I \in
   I$ nie posiadają tej cechy.
   Mając to na uwadze łatwo zauważyć, że $\|VC \bigcup H\| \leq \|VC \bigcup
   I\|$.
-  Wniosek płynący z tej obserwacji jest jednoznaczny: istnieje optymalna pokrywa
+  Wniosek płynący z~tej obserwacji jest jednoznaczny: istnieje optymalna pokrywa
   wierzchołkowa $VC_{OPT}; H \in VC_{OPT}, I \notin VC_{OPT}$.
 \end{bproof}
-W celu odnalezienia korony w grafie, zastosować można następujący algorytm.
+W celu odnalezienia korony w~grafie, zastosować można następujący algorytm.
 \begin{algorithm}
-  \caption{Algorytm odnajdujący koronę w grafie $G$}\label{alg_findCrown}
+  \caption{Algorytm odnajdujący koronę w~grafie $G$}\label{alg_findCrown}
   \begin{algorithmic}[1]
     \Function{findCrown}{G, k}
-    \State{$M_1\leftarrow$ największe dopasowanie $G$}
+    \State{$M_1\leftarrow$ największe skojarzenie $G$}
     \State{$O\leftarrow v \in V, \neg\exists_{e_{M_1}=(u, w) \in M_1}: u=v \lor w=v$}
     \If{$\|M_1\| \geq k$}
     \State\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: \|VC_{OPT}\| \leq k$}
   \EndIf
-  \State{$M_2 \leftarrow$ maksymalne dopasowanie na krawędziach $O\leftrightarrow N(O)$}
+  \State{$M_2 \leftarrow$ maksymalne skojarzenie na krawędziach $O\leftrightarrow N(O)$}
   \If{$\|M_2\| > k$}
   \State{\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: \|VC_{OPT}\|\leq k$}}
 \EndIf
@@ -58,7 +58,7 @@ W celu odnalezienia korony w grafie, zastosować można następujący algorytm.
 \State{\textbf{return} $(I_n,H_n)$}\Comment{$n=N$}
   \EndFunction
 \end{algorithmic}
-\end{algorithm}
+\end{algorithm}\\
 Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
 
 \begin{theorem}
@@ -67,14 +67,14 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
 \end{theorem}
 \begin{bproof} (Spełnienie własności 1.\ definicji~\ref{def_crown}.)
   \par{
-    Bazując na fakcie, iż $M_1$ stanowi największe dopasowanie $G$, stwierdzić
+    Bazując na fakcie, iż $M_1$ stanowi największe skojarzenie $G$, stwierdzić
     można, że zarówno $O$ jak i $I \subset O$ stanowią zbiory niezależne.
   }
 \end{bproof}
 \begin{bproof} (Spełnienie własności 2.\ definicji~\ref{def_crown}.)
   \par{
     Z definciji wynika $H=N(I_{N-1})$.
-    Z warunku zakończenia pętli\algref{findCrown}{findCrown_while} wynika 
+    Z warunku zakończenia pętli~\algref{alg_findCrown}{findCrown_while} wynika 
     $I=I_N=I_{N-1}$.
     Na tej podsawie widocznym jest, że $H=N(I)$.
   }
@@ -89,36 +89,38 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   $v_O \in O$, stanowiącego początek tejże ścieżki.
   W takim wypadku, wynikiem linii~\ref{findCrown_makeH}.\ algorytmu byłaby
   zawsze krawędź nieskojarzona, podczas gdy wynikiem
-  linii~\ref{findCrown_makeI}.\ byłaby  krawędź stanowiąca część skojarzenia.
+  linii~\ref{findCrown_makeI}.\ byłaby  krawędź stanowiąca część~skojarzenia.
   Proces ten powtarzałby się do momentu osiągnięcia wierzchołka $h$.
   Utworzona ścieżka rozpościera się zatem pomiędzy dwoma nieskojarzonymi
   wierzchołkami, będąc zarazem $M_2$-przemienną.
-  Istnienie takiej ścieżki oznaczałoby możliwość zwiększenia dopasowania $M_2$
+  Istnienie takiej ścieżki oznaczałoby możliwość zwiększenia skojarzenia $M_2$
   poprzez wykonanie operacji $M_2=M_2\oplus P$, co stoi w opozycji do
   założenia, iż $M_2$ stanowi skojarzenie maksymalne.
   Obserwacja ta prowadzi do stwierdzenia, iż każdy wierzchołek $h \in H$ musi
   być skojarzony w $M_2$.
-  Właściwe dopasowanie użyte w strukturze korony to dopasowanie $M_2$, z
+  Właściwe skojarzenie użyte w strukturze korony to skojarzenie $M_2$, z
   dziedziną ograniczoną do krawędzi $H \leftrightarrow I$.
 }
 \end{bproof}
 
-Rezultatem jednej iteracji algorytmu redukcji korony jest graf
-$G\prime=(V\prime, E\prime);\\V\prime=V\setminus H \setminus I, E\prime = E
-\setminus \{H\leftrightarrow I\}$.
+\par{
+  Rezultatem jednej iteracji algorytmu redukcji korony jest graf
+  $G\prime=(V\prime, E\prime);\\V\prime=V\setminus H \setminus I, E\prime = E
+  \setminus \{H\leftrightarrow I\}$.
 
-Rozmiar dziedziny problemu ulega zmniejszeniu do wartości
-$n\prime=n-\|I\|-\|H\|$, natomiast wartość parametru spada do $k\prime=k-\|H\|$,
-z uwagi na fakt, że każdy z wierzchołków $h \in H$ musi należeć do optymalnej
-pokrywy wierzchołkowej, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
-Należy zaobserwować, iż jeżeli w grafie istnieje maksymalne skojarzenie
-$M_{MAX}, \|M_{MAX}\| > k$, wyklucza to istnienie optymalnej pokrywy
-wierzchołkowej $VC_{OPT}, \|VC_{OPT}\|\leq k$. Zatem, jeżeli rozmiar dowolnego 
-z odnalezionych skojarzeń $M_1, M_2$  jest większy niż $k$, algorytm może
-zakończyć działanie, udzielając ekwiwalentu odpowiedzi negatywnej.
-Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu wynikowego
-$G\prime$.
-
+  Rozmiar dziedziny problemu ulega zmniejszeniu do wartości
+  $n\prime=n-\|I\|-\|H\|$, natomiast wartość parametru spada do $k\prime=k-\|H\|$,
+  z~uwagi na fakt, że każdy z wierzchołków $h \in H$ musi należeć do optymalnej
+  pokrywy wierzchołkowej, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
+  Należy zaobserwować, iż jeżeli w~grafie istnieje maksymalne skojarzenie
+  $M_{MAX}, \|M_{MAX}\| > k$, wyklucza to istnienie optymalnej pokrywy
+  wierzchołkowej $VC_{OPT}, \|VC_{OPT}\|\leq k$.
+  Zatem, jeżeli rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest
+  większy niż $k$, algorytm może zakończyć działanie, udzielając ekwiwalentu 
+  odpowiedzi negatywnej.
+  Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu 
+  wynikowego $\|G\prime\|$.
+}
 \begin{theorem}
   $\|M_1\| \leq k, \|M_2\| \leq k \implies \|V\prime \setminus I \setminus H\|
   \leq 3k$.
@@ -128,38 +130,39 @@ $G\prime$.
   można, iż $V_{M_1}=\{v, u|v, u \in V, (u,v)\in M_1 \lor (v,u) \in M_1\}, \|V_{M_1}\| \leq
   2k$.
   Z tego wynika, iż $\|O\| \geq n-2k$.
-  W związku z faktem, iż $\|M_2\| \leq k$ istnieje co najwyżej $k$ wierzchołków
+  W związku z~faktem, że $\|M_2\| \leq k$, istnieje co najwyżej $k$ wierzchołków
   $v_O \in O$ skojarzonych przez $M_2$.
-  Łatwo zauważyć, iż w takim wypadku istnieje co najmniej $n-3k$ wierzchołków
-  $v_O \in O$ nieskojarzonych przez $M_2$---są one zawarte w $I_0$, a zatem
-  także w $I$.
+  Łatwo zauważyć, iż w~takim wypadku istnieje co najmniej $n-3k$ wierzchołków
+  $v_O \in O$ nieskojarzonych przez $M_2$---są one zawarte w $I_0$, a~zatem
+  także w~$I$.
   Ten tok rozumowania prowadzi do wniosku, iż $\|V \setminus I \setminus H\|
   \leq 3k$.
 \end{bproof}
-
-Należy zauważyć, że kształt odnalezionej przez algorytm korony podyktowany jest
-strukturą wybranego największego skojarzenia $M_1$.
-Prowadzi to do wniosku, iż pożądane jest wykonywanie algorytmu redukcji korony
-wielokrotnie, wykorzystując różne największe skojarzenia tak, by zlokalizować i
-zredukować jak największą ilość koron, co pozwoli na maksymalną redukcję
-dziedziny problemu.
-Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów przetwarzania
-wstępnego przez każdą kolejną iteracją redukcji korony---usunięcie korony z
-dużym prawdopodobieństwem prowadzić będzie do powstania wierzchołków niskiego
-stopnia.
-Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie skojarzenia
-maksymalnego $M_2$, zrealizowane w niniejszej pracy przy pomocy algorytmu
-kwiatów Edmondsa.
-\footnote{
-  Oryginalna implementacja, opisywana
-  w~\cite{KernelizationAlgorithms04} oparta jest o reformulację problemu do
-  instancji zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica, o
-  wynikowej złożoności czasowej $O(n^{\frac{5}{2}})$.
+\par{
+  Należy zauważyć, że kształt odnalezionej przez algorytm korony podyktowany
+  jest trukturą wybranego największego skojarzenia $M_1$.
+  Prowadzi to do wniosku, iż pożądane jest wykonywanie algorytmu redukcji korony
+  wielokrotnie, wykorzystując różne największe skojarzenia tak, by zlokalizować 
+  i~zredukować jak największą ilość koron, co pozwoli na maksymalną redukcję
+  dziedziny problemu.
+  Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów 
+  przetwarzania wstępnego przez każdą kolejną iteracją redukcji 
+  korony---usunięcie korony z~dużym prawdopodobieństwem prowadzić będzie do 
+  powstania wierzchołków niskiego stopnia, redukowalnych poprzez przetwarzanie
+  wstępne.
+  Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie
+  skojarzenia maksymalnego $M_2$, zrealizowane w niniejszej pracy przy pomocy 
+  algorytmu kwiatów Edmondsa.\footnote{
+    Oryginalna implementacja, opisywana
+    w~\cite{KernelizationAlgorithms04} oparta jest o~reformulację problemu do
+    instancji zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica,
+    o~wynikowej złożoności czasowej $O(n^{\frac{5}{2}})$.
+  }
 }
 
 \begin{theorem}
   Implementacja algorytmu redukcji korony grafu $G=(V,E); \|V\|=n,\|E\|=m$ 
-  w~oparciu o algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4})$.
+  w~oparciu o~algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4})$.
 \end{theorem}
 \begin{bproof}
   Z~teoretycznego punktu widzenia, dwie najbardziej obciążające operacje to
@@ -171,9 +174,9 @@ kwiatów Edmondsa.
   Wykorzystując koncepcję zaznaczania wierzchołków krawędzi dołączanych do 
   skojarzenia jako odwiedzonych, złożoność operacji sprowadza się do $O(m)$.
   W grafie może znajdować się maksymalnie $O(n^{2})$ krawędzi.
-  W celu odnalezienia dopasowanie maksymalnego zastosowano algorytm Edmondsa,
-  którego złożoność wynosi $O(n^{4})$, co
-  opisano w~podrozdziale~\ref{ss_edmonds}.
-  Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony jest w
-  stanie znaleźć koronę w grafie w czasie $O(n^{4} + n^{2})=O(n^{4})$.
+  W celu odnalezienia skojarzenia maksymalnego zastosowano algorytm Edmondsa,
+  którego złożoność wynosi $O(n^{4})$, co opisano 
+  w~podrozdziale~\ref{ss_edmonds}.
+  Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony jest 
+  w~stanie znaleźć koronę w~grafie w~czasie $O(n^{4} + n^{2})=O(n^{4})$.
 \end{bproof}
