@@ -17,10 +17,10 @@ Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ przypisać należy wartość $
 
 Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrywy 
 wierzchołkowej $\|VC\|$.
-Zbiór rozwiązań prawdopodobnych składa się z funkcji $V \to \{0, 1\}$,
+Zbiór rozwiązań prawdopodobnych składa się z~funkcji $V \to \{0, 1\}$,
 spełniających warunek 2.
-W związku z faktem, iż programowanie całkowitoliczbowe jest problemem
-NP-kompletnym, dokonać należy relaksacji do postaci programu liniowego, co
+W związku z faktem, iż programowanie całkowitoliczbowe samo w sobie stanowi
+problem NP-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
 zapewni szerszy zakres prawdopodobnych rozwiązań.
 
 W~\cite{khuller02} zaproponowana została relaksacja poprzez zamianę wartości 
@@ -29,8 +29,8 @@ Należy zauważyć, iż wartość $OPT_{LP}$ zwracana przez rozwiązanie postaci
 liniowej jest zawsze ograniczona z dołu przez wartość $OPT_{IP}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
 Co więcej, w~\cite{khuller02} udowodniono, że $OPT_{IP} \leq 2*OPT_{LP}$.
-Zależność ta oparta jest na twierdzeniu Neumhausera-Trottera, 
-opartym na własności, że w dowolnym ekstremum rozwiązania relaksacji programu
+Zależność ta oparta jest na twierdzeniu Nemhausera-Trottera korzystającym
+z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
 $X_u \in \{0, \frac{1}{2}, 1\}$.
 
@@ -58,7 +58,7 @@ $R=\{u \in V : X_u<\frac{1}{2}\}$.\\
 
 Istotą redukcji dziedziny problemu do jądra jest dołączenie wszystkich
 wierzchołków $u_P \in P$ do częściowej pokrywy wierzchołkowej $VC$ oraz 
-usunięcie z niej wszystkich wierzchołków $u_R \in R$.
+usunięcie z~niej wszystkich wierzchołków $u_R \in R$.
 Graf wynikowy $G\prime=(V\prime, E\prime)$ zaindukowany jest elementami $Q$: 
 $V\prime=Q; E\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
 
@@ -80,20 +80,20 @@ $V\prime=Q; E\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   tak otrzymaną pokrywę jako rozwiązanie.
   W prypadku gdy $\|A\|>\|B\|$, swiadczyłoby to, że istnieje możliwość
   otrzymania rozwiązania formulacji liniowej lepszego niż $OPT_{IP}$ poprzez
-  ustanowienie $\epsilon = \min\{X_v-\frac{1}{2}: v \in A\}$, a następnie
+  ustanowienie $\epsilon &= \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
   zastąpienie $\forall{u \in B}:X_u \leftarrow X_u + \epsilon$; 
   $\forall{v \in A}: X_v \leftarrow X_v -\epsilon$.
-  Jest to niemożliwe, ze względu na fakt, iż wynik $OPT_{IP}$ stanowi optymalne 
-  rozwiązanie formulacji liniowej w oparciu o twierdzenie
-  Neumhausera-Trottera~\ref{nt_lp}.
+  Jest to niemożliwe ze względu na fakt, iż wynik $OPT_{IP}$ stanowi optymalne 
+  rozwiązanie formulacji liniowej w~oparciu o~twierdzenie
+  Nemhausera-Trottera~\ref{nt_lp}.
 
-  Nasuwa się konkluzja, iż jedyny przypadek z jakim można mieć w tym miejscu do 
+  Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
   czynienia to $\|A\|=\|B\|$.
-  Przypadek ten jest trywialny---w~celu orzymania optymalnej pokrywy wierzchołkowej 
-  wystarczy zastąpić zbiór $A$ zbiorem $B$.
+  Przypadek ten jest trywialny---w~celu orzymania optymalnej pokrywy
+  wierzchołkowej wystarczy zastąpić zbiór $A$ zbiorem $B$.
 \end{bproof}
 
-Prezentowany algorytm redukuje dziedzinę do jądra problemu  o rozmiarze
+Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze
 $n\prime=\|V\|-\|P\|-\|R\|$.
 
 Wartość wynikowa parametru określającego maksymalny rozmiar optymalnej pokrywy
@@ -124,7 +124,7 @@ w~którym liczba warunków ograniczających równa będzie $\|V\|$.
 
 \subsubsection{Rozwiązanie problemu dualnego}
 
-W oparciu o obserwację, iż koszt dowolnego prawdopodobnego rozwiązania problemu
+W oparciu o~obserwację, iż koszt dowolnego prawdopodobnego rozwiązania problemu
 dualnego do oryginalnej formulacji liniowej problemu pokrycia
 wierzchołkowego~\ref{ss_lp_original} stanowi dolną granicę dla optimum
 \ref{ss_lp_original} poprzez słabą dualność. 
