@@ -11,8 +11,64 @@ type structionVertex struct {
 	i, j Vertex
 }
 
+type tuple struct {
+	S mapset.Set
+	q int
+}
+
 func (self *structionVertex) Name() string {
 	return fmt.Sprintf("v%v%v", self.i, self.j)
+}
+
+func (v Vertex) dominates(u Vertex, g *Graph) bool {
+	/*
+		Vertex u is said to be dominated by a vertex v , or alternatively,
+		a vertex v is said to dominate a vertex u, if ( u , v) is an
+		edge in G and N ( u ) ⊆ N [v] .
+	*/
+	if !g.hasEdge(u, v) {
+		return false
+	}
+
+	result := true
+
+	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+		// For the whole N(u)...
+		wu := getOtherVertex(u, edge)
+		contains := false
+
+		// We're dealing with N[v]
+		if v == wu {
+			done <- true
+			return
+		}
+
+		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+			wv := getOtherVertex(v, edge)
+			if wv == wu {
+				contains = true
+				done <- true
+			}
+		})
+
+		// some vertex from N(u) does not belong in N[v].
+		if !contains {
+			done <- true
+			result = false
+		}
+	})
+
+	return result
+}
+
+func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
+	/*
+		1 A vertex u is said to be
+		almost-dominated by a vertex v , or alternatively,
+		a vertex v is said to almost-dominate a vertex u,
+		if u and v are non-adjacent and | N ( u ) − N (v)| ≤ 1.
+	*/
+	return false
 }
 
 func struction(g *Graph, v0 Vertex) (result *Graph) {
@@ -28,16 +84,6 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	for i, _ := range newVertexLookup {
 		newVertexLookup[i] = make([]Vertex, g.currentVertexIndex)
 	}
-
-	// lookupVertex := func(i, j int) (result Vertex) {
-	// 	result = newVertexLookup[i][j]
-	// 	if INVALID_VERTEX == result {
-	// 		result = newVertexLookup[j][i]
-	// 	}
-	//
-	// 	return
-	// }
-
 	newDeletions := make([]bool, g.currentVertexIndex)
 	copy(newDeletions, g.isVertexDeleted)
 
@@ -151,22 +197,25 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 	return true
 }
 
-func generalFold(g *Graph, halt chan bool, k int) (result *Graph) {
-	decompositionIsTrivial := false
-	var kPrime int
-	var partialCover mapset.Set
+func generalFold(g *Graph, halt chan bool, k int) *Graph {
+	kPrime := k
 	var crown *Crown
 	// Apply the NT-decomposition to G until the application of this
 	// decomposition is trivial.
 	// A decomposition is trivial when the crown is (∅, ∅).
 	for {
 		crown = findCrown(g, halt, k)
+		// gv := MkGraphVisualizer(g)
+		// gv.highlightCrown(crown)
+		// gv.Display()
 		select {
 		case <-halt:
 			halt <- true
 			return nil
+		default:
 		}
 
+		Debug("Found crown %v", crown)
 		if crown.IsTrivial() {
 			break
 		}
@@ -182,7 +231,9 @@ func generalFold(g *Graph, halt chan bool, k int) (result *Graph) {
 	var almostCrownVertex Vertex
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		g.RemoveVertex(v)
+		Debug("Removed vertex %v, looking for a crown.", v)
 		crown = findCrown(g, halt, kPrime)
+		Debug("Found crown %v, restoring vertex %v", crown, v)
 		g.RestoreVertex(v)
 		if !crown.IsTrivial() {
 			// If the NT-decomposition yields a crown,
@@ -198,6 +249,7 @@ func generalFold(g *Graph, halt chan bool, k int) (result *Graph) {
 	// then connecting u_I to every vertex v ∈ G′
 	// such that v was a neighbor of a vertex u ∈ N (I) in G.
 	if !crown.IsTrivial() {
+		Debug("Found a non-trivial almost-crown! %v", crown)
 		g.addVertex()
 		foldRoot := Vertex(g.currentVertexIndex)
 		foldAndRemove := func(v Vertex) {
@@ -215,7 +267,30 @@ func generalFold(g *Graph, halt chan bool, k int) (result *Graph) {
 		foldAndRemove(almostCrownVertex)
 	}
 
-	return result
+	return g
+}
+
+func findTuples(G *Graph, k int) *TuplePriorityQueueProxy {
+	/*
+		Conditions for tuples:
+		- Γ is a 2-tuple ({ u , z }, 1 )
+		- Γ is a good pair ( u , z ) where z is almost-dominated by a vertex v ∈ N ( u )
+		- Γ is a vertex z with d ( z ) ≥ 7
+		- Γ is a good pair ( u , z ) where z is not almost-dominated by any vertex in N ( u )
+	*/
+
+	return nil
+}
+
+func foldStructionVC(G *Graph, T *TuplePriorityQueueProxy, k int) {
+	/*
+			Therefore, when the algorithm branches on z, on the side of the branch where z is included,
+		we can restrict our search to a minimum vertex cover that excludes at least two neighbors of N ( z ) , and we know that this
+		is safe because if such a minimum vertex cover does not exist, then on the other side of the branch where N ( z ) has been
+		included the algorithm will still be able to find a minimum vertex cover. Consequently, on the side of the branch where z is
+		included, we can work under the assumption that at least two vertices in N ( z ) must be excluded. This working assumption
+		will be stipulated by creating the tuple ( N ( z ), q = 2 ) .
+	*/
 }
 
 // VC(G, T , k)
