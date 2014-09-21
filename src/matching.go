@@ -39,16 +39,11 @@ func FindMaximalMatching(g *Graph) (matching *Graph, outsiders mapset.Set) {
 			matching.AddEdge(edge.from, edge.to)
 			added[edge.from.toInt()] = true
 			added[edge.to.toInt()] = true
-		} /* else {
-			outsiders.Add(edge.from)
-			outsiders.Add(edge.to)
-		}*/
+		}
 	})
 
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		if !added[v.toInt()] {
-			// TODO: Check whether removing these vertices here would be better.
-			//g.RemoveVertex(v)
 			outsiders.Add(v)
 		}
 	})

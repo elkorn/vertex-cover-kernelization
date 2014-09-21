@@ -51,3 +51,13 @@ func TestNet(t *testing.T) {
 	assert.Equal(t, 2, netFlow.net.length[0], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 	assert.Equal(t, 2, netFlow.net.length[1], "The Net structure must contain information about the number of arcs going out of a specified vertex.")
 }
+
+// func TestNetworkFlowProteins(t *testing.T) {
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+
+// 	inVerboseContext(func() {
+// 		kPrime := networkFlowKernelization(g, 246)
+// 		log.Println(kPrime)
+// 	})
+
+// }

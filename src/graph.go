@@ -161,9 +161,7 @@ func (g *Graph) addVertex() error {
 	g.degrees = append(g.degrees, 0)
 	g.numberOfVertices++
 	for y, neighbor := range g.neighbors {
-		Debug("Before append : %v", g.neighbors[y])
 		g.neighbors[y] = append(neighbor, nil)
-		Debug("After append : %v", g.neighbors[y])
 	}
 
 	g.neighbors = append(g.neighbors, make([]*Edge, g.currentVertexIndex))
@@ -195,7 +193,7 @@ func (self *Graph) RestoreVertex(v Vertex) {
 		}
 
 		edge.isDeleted = false
-		self.neighbors[getOtherVertex(v, edge)][vi].isDeleted = false
+		self.neighbors[getOtherVertex(v, edge).toInt()][vi].isDeleted = false
 		self.degrees[edge.from.toInt()]++
 		self.degrees[edge.to.toInt()]++
 		self.numberOfEdges++

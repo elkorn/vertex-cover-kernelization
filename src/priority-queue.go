@@ -64,7 +64,12 @@ func (pq priorityQueue) Swap(i, j int) {
 func (pq *priorityQueue) Push(x interface{}) {
 	n := len(*pq)
 	item := x.(*pqItem)
-	Debug("Push (%v:%v) %v", item.value.level, item.value.lowerBound, item.value.selection)
+	if item.value.selection == nil {
+		Debug("Pop (%v:%v) nil selection", item.value.level, item.value.lowerBound)
+	} else {
+		Debug("Push (%v:%v) %v elements", item.value.level, item.value.lowerBound, item.value.selection.Cardinality())
+
+	}
 	item.index = n
 	*pq = append(*pq, item)
 }
@@ -79,7 +84,11 @@ func (pq *priorityQueue) Pop() interface{} {
 	old := *pq
 	n := len(old)
 	item := old[n-1]
-	Debug("Pop (%v:%v) %v", item.value.level, item.value.lowerBound, item.value.selection)
+	if item.value.selection == nil {
+		Debug("Pop (%v:%v) nil selection", item.value.level, item.value.lowerBound)
+	} else {
+		Debug("Pop (%v:%v) %v elements", item.value.level, item.value.lowerBound, item.value.selection.Cardinality())
+	}
 	item.index = -1 // for safety
 	*pq = old[0 : n-1]
 	return item

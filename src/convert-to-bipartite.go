@@ -36,3 +36,10 @@ func makeBipartite(g *Graph) *Graph {
 	addBipartiteEdges(result, g, border)
 	return result
 }
+
+func makeBipartiteForNetworkFlow(g *Graph) *Graph {
+	border := len(g.Vertices)
+	result := MkGraphRememberingDeletedVertices(border*2+2, g.isVertexDeleted) // remember deleted vertices
+	addBipartiteEdges(result, g, border)
+	return result
+}

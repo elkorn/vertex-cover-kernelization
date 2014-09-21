@@ -72,14 +72,11 @@ func mkNet(g *Graph) Net {
 func mkNetworkFlow(g *Graph) *NetworkFlow {
 	verticesBefore := g.NVertices()
 	verticesAfter := verticesBefore * 2
-	bipartite := makeBipartite(g)
-	bipartite.addVertex()
+	bipartite := makeBipartiteForNetworkFlow(g)
 	result := &NetworkFlow{
 		graph:  bipartite,
-		source: Vertex(bipartite.currentVertexIndex),
+		source: Vertex(bipartite.currentVertexIndex - 1),
 	}
-
-	bipartite.addVertex()
 
 	result.sink = Vertex(bipartite.currentVertexIndex)
 	for i := 0; i < verticesBefore; i++ {
