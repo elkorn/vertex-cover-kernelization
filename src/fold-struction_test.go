@@ -40,7 +40,7 @@ func TestStruction(t *testing.T) {
 }
 
 func TestGeneralFold1(t *testing.T) {
-	g := MkGraph(8)
+	g := MkGraph(7)
 	g.AddEdge(1, 4)
 	g.AddEdge(2, 4)
 	g.AddEdge(3, 4)
@@ -48,21 +48,20 @@ func TestGeneralFold1(t *testing.T) {
 	g.AddEdge(6, 5)
 	g.AddEdge(4, 6)
 	g.AddEdge(4, 7)
-	g.AddEdge(8, 7)
 
 	// showGraph(g)
 	// inVerboseContext(func() {
-	generalFold(g, 0)
+	// generalFold(g, nil, MAX_INT)
 	// })
-	// gPrime := generalFold(g)
+	// gPrime := generalFold(g, nil, MAX_INT)
 	// showGraph(gPrime)
 
-	// // inVerboseContext(func() {
-	// // 	crown := findCrown(gPrime, nil, MAX_INT)
-	// // 	Debug("%v", crown)
-	// // })
-	// // gv.highlightCrown(crown)
-	// // gv.Display()
+	// inVerboseContext(func() {
+	// 	crown := findCrown(gPrime, nil, MAX_INT)
+	// 	Debug("%v", crown)
+	// })
+	// gv.highlightCrown(crown)
+	// gv.Display()
 
 	// assert.Equal(t, 5, gPrime.NVertices())
 	// assert.True(t, gPrime.hasVertex(9))
@@ -72,17 +71,23 @@ func TestGeneralFold1(t *testing.T) {
 }
 
 func TestGeneralFold2(t *testing.T) {
-	g := MkGraph(8)
+	g := MkGraph(9)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
+	g.AddEdge(1, 8)
+	g.AddEdge(8, 9)
+	g.AddEdge(8, 2)
+	g.AddEdge(8, 3)
+	g.AddEdge(9, 2)
+	g.AddEdge(9, 3)
 	g.AddEdge(2, 4)
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 6)
-	g.AddEdge(3, 8)
 	g.AddEdge(3, 7)
-	g.AddEdge(6, 7)
-	g.AddEdge(4, 5)
 
+	// showGraph(g)
+	generalFold(g, nil, 190)
+	// showGraph(g)
 	// g1 :=  generalFold(g, 0)
 
 }
@@ -97,4 +102,17 @@ func TestGeneralFold3(t *testing.T) {
 	g.AddEdge(3, 7)
 
 	// g1 :=  generalFold(g)
+}
+
+func TestDominates(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(2, 3)
+	g.AddEdge(2, 4)
+	v, u := Vertex(1), Vertex(2)
+
+	assert.True(t, v.dominates(u, g))
 }
