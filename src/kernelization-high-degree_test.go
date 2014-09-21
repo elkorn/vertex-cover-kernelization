@@ -45,5 +45,4 @@ func TestRemoveHighDegree(t *testing.T) {
 	assert.True(t, g1.hasEdge(9, 8))
 
 	assert.Equal(t, vc.Cardinality(), vc2.Cardinality()+remCount)
-
 }

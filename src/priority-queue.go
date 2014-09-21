@@ -5,7 +5,6 @@ import "container/heap"
 // An pqItem is something we manage in a priority queue.
 type pqItem struct {
 	value *lpNode // The value of the item; arbitrary.
-	// priority int     // The priority of the item in the queue.
 	// The index is needed by update and is maintained by the heap.Interface methods.
 	index int // The index of the item in the heap.
 }

@@ -166,52 +166,58 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	for _, neighbor := range toRemove {
 		self.RemoveVertex(neighbor)
 	}
+
+}
+
+func (g *Graph) fold(u Vertex) *fold {
+	neighbors := g.getNeighbors(u)
+	for _, n1 := range neighbors {
+		for _, n2 := range neighbors {
+			if n1 == n2 {
+				continue
+			}
+
+			if g.hasEdge(n1, n2) {
+				return nil
+			}
+		}
+	}
+
+	Debug("Adding vertex")
+	g.addVertex()
+	uPrime := Vertex(g.currentVertexIndex)
+	theFold := &fold{
+		root:        u,
+		replacement: uPrime,
+		neighbors:   neighbors,
+	}
+
+	Debug("Creating fold %v (%v) -> %v", theFold.root, theFold.neighbors, theFold.replacement)
+
+	for _, n := range neighbors {
+		g.ForAllNeighbors(n, func(edge *Edge, done chan<- bool) {
+			v := getOtherVertex(n, edge)
+			g.AddEdge(uPrime, v)
+		})
+	}
+
+	g.RemoveVertex(theFold.root)
+	for _, n := range neighbors {
+		g.RemoveVertex(n)
+	}
+
+	return theFold
 }
 
 func preprocessing4(g *Graph) mapset.Set {
 	folds := mapset.NewSet()
 	// bound := Vertex(g.currentVertexIndex)
 	g.forAllVerticesOfDegree(2, func(u Vertex) {
-		neighbors := g.getNeighbors(u)
-		for _, n1 := range neighbors {
-			// if n1 > bound {
-			// 	return
-			// }
-			for _, n2 := range neighbors {
-				if n1 == n2 {
-					continue
-				}
+		theFold := g.fold(u)
 
-				if g.hasEdge(n1, n2) {
-					return
-				}
-			}
+		if nil != theFold {
+			folds.Add(theFold)
 		}
-
-		Debug("Adding vertex")
-		g.addVertex()
-		uPrime := Vertex(g.currentVertexIndex)
-		theFold := &fold{
-			root:        u,
-			replacement: uPrime,
-			neighbors:   neighbors,
-		}
-
-		Debug("Creating fold %v (%v) -> %v", theFold.root, theFold.neighbors, theFold.replacement)
-
-		for _, n := range neighbors {
-			g.ForAllNeighbors(n, func(edge *Edge, done chan<- bool) {
-				v := getOtherVertex(n, edge)
-				g.AddEdge(uPrime, v)
-			})
-		}
-
-		g.RemoveVertex(theFold.root)
-		for _, n := range neighbors {
-			g.RemoveVertex(n)
-		}
-
-		folds.Add(theFold)
 	})
 
 	// if u′ is not in the opitmal cover of G′, then all its incident edges must

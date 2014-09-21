@@ -230,6 +230,43 @@ func TestContractEdges(t *testing.T) {
 	}
 
 	assert.Equal(t, vc.Cardinality(), size)
+
+	g = MkGraph(7)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+
+	g.fold(Vertex(1))
+	assert.Equal(t, 4, g.NEdges())
+	deg, _ := g.Degree(Vertex(8))
+	assert.Equal(t, 4, deg)
+
+	g = MkGraph(13)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(1, 6)
+	g.AddEdge(2, 5)
+	g.AddEdge(2, 6)
+	g.AddEdge(2, 8)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(3, 8)
+	g.AddEdge(4, 9)
+	g.AddEdge(5, 10)
+	g.AddEdge(6, 11)
+	g.AddEdge(7, 12)
+	g.AddEdge(8, 13)
+
+	g.fold(Vertex(1))
+	g.fold(Vertex(2))
+	g.fold(Vertex(3))
+
+	assert.Equal(t, 5, g.NEdges())
+	deg, _ = g.Degree(Vertex(16))
+	assert.Equal(t, 5, deg)
 }
 
 func TestPreprocessingMainRoutine(t *testing.T) {

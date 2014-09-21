@@ -90,8 +90,8 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 
 	n := 0
 	N := 0
-	Isteps := make([]mapset.Set, 0, 1999)
-	Hsteps := make([]mapset.Set, 0, 1999)
+	Isteps := make([]mapset.Set, 0, G.currentVertexIndex)
+	Hsteps := make([]mapset.Set, 0, G.currentVertexIndex)
 	Isteps = append(Isteps, In)
 	// Step 4.:Repeat the following steps until n=N so that I_(N-1)=IN
 	for {
@@ -121,7 +121,6 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 					// Adding N_M2(Hn)
 					neighbors.Add(w)
 				}
-
 			})
 		}
 

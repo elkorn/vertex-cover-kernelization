@@ -6,8 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: test this thoroughly. @start-from-here
-
 func TestStruction(t *testing.T) {
 	g := MkGraph(9)
 	g.AddEdge(1, 2)
