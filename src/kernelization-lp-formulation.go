@@ -25,7 +25,7 @@ func mkLpNode(g *Graph, selection mapset.Set, level int) *lpNode {
 	result.lowerBound = computeLowerBound(g, selection)
 	result.level = level
 
-	Debug("New lp node on level %v: %v (%v)", result.level, result.selection, result.lowerBound)
+	// Debug("New lp node on level %v: %v (%v)", result.level, result.selection, result.lowerBound)
 	return result
 }
 
@@ -90,13 +90,12 @@ func (self *Graph) getEdgeEndpoints() mapset.Set {
 // Similar to Vertex.degree -> this should be push-based while computing the lower bound.
 func getNumberOfCoveredEdges(g *Graph, s mapset.Set) int {
 	covered := mapset.NewSet()
-	Debug("From selection %v", s)
 	for val := range s.Iter() {
 		vertex := val.(Vertex)
-		Debug("Vertex %v", vertex)
+		// Debug("Vertex %v", vertex)
 		g.ForAllNeighbors(vertex, func(edge *Edge, done chan<- bool) {
 			covered.Add(edge)
-			Debug("\t covers %v-%v (%v)", edge.from, edge.to, covered.Cardinality())
+			// Debug("\t covers %v-%v (%v)", edge.from, edge.to, covered.Cardinality())
 		})
 	}
 
@@ -107,8 +106,11 @@ func getNumberOfCoveredEdges(g *Graph, s mapset.Set) int {
 
 // Takes in all the edges and returns the least-costing combination
 // according to the LP formulation.
-// TODO: Take into the account the
 func branchAndBound(g *Graph) mapset.Set {
+	return BranchAndBound(g, nil, MAX_INT)
+}
+
+func BranchAndBound(g *Graph, halt chan<- bool, k int) mapset.Set {
 	// 1. Initial value for the best combination
 	bestSelection := mapset.NewSet()
 	n := g.NEdges()
@@ -128,10 +130,11 @@ func branchAndBound(g *Graph) mapset.Set {
 	for !queue.Empty() {
 		// 6. Remove the first element from the PQ and assign it to the parent node.
 		node := queue.Pop()
-		Debug("Working %v ----------", node.selection)
-		Debug("Lower bound: %v vs %v", node.lowerBound, bestLowerBound)
+		Debug("Working ----------" /*, node.selection*/)
+		Debug("Lower bound: %v vs %v vs k %v", node.lowerBound, bestLowerBound, k)
 		// 7. If the lower bound is better then the current one...
-		if node.lowerBound <= bestLowerBound {
+		if node.lowerBound < bestLowerBound {
+			worked++
 			// 8. Set the new level to a parent's + 1.
 			// 9. If all edges are covered...
 			if node.level == n {
@@ -141,8 +144,11 @@ func branchAndBound(g *Graph) mapset.Set {
 				bestLowerBound = node.lowerBound
 				// 12. Set the current selection as the best one.
 				bestSelection = node.selection
-				Debug("New best selection - %v", bestSelection)
+				Debug("New best selection - %v elements", bestSelection.Cardinality())
 				Debug("New lower bound - %v", bestLowerBound)
+				if k != MAX_INT && bestLowerBound <= k {
+					break
+				}
 			} else { // 13. If not (9.)...
 				// 14. For all vertices v such that v is not in the selection of the parent...
 				// Debug("Does not cover all edges.")
@@ -163,7 +169,6 @@ func branchAndBound(g *Graph) mapset.Set {
 					// Debug("lower bound %v vs %v", newNode.lowerBound, bestLowerBound)
 					total++
 					if newNode.lowerBound < bestLowerBound {
-						worked++
 						// Debug("Looks good, pushing into the queue.")
 						newNode.level = getNumberOfCoveredEdges(g, newSelection)
 						// 19. Insert the node into the priority queue.
@@ -176,8 +181,16 @@ func branchAndBound(g *Graph) mapset.Set {
 		}
 	}
 
-	Debug("Best selection: %v", bestSelection)
 	log.Printf("For %v edges, %v vertices:\n", g.NEdges(), g.NVertices())
 	log.Printf("Worked through %3.2f%% (%v/%v) solutions\n", (float64(worked)/float64(total))*100, worked, total)
+
+	if bestLowerBound > k {
+		Debug("Cannot find a vertex cover of size \\leq k.")
+		Debug("Best lower bound: %v, cardinality: %v.", bestLowerBound, bestSelection.Cardinality())
+		halt <- true
+		return nil
+	}
+
+	log.Printf("Best selection (%v elements) satisfying k: %v\n", bestSelection.Cardinality(), bestSelection)
 	return bestSelection
 }

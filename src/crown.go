@@ -48,25 +48,22 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
-	// Should this matching contain the neighbors already included in M1?
 	outsiderNeighbors := MkGraph(G.currentVertexIndex)
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
 		G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			if !outsiderNeighbors.hasEdge(edge.from, edge.to) {
-				outsiderNeighbors.AddEdge(edge.from, edge.to)
-			}
+			outsiderNeighbors.AddEdge(edge.from, edge.to)
 		})
 	}
 
 	M2 := FindMaximumMatching(outsiderNeighbors)
+	Debug("M2 cardinality: %v", M2.NEdges())
 	if options.Verbose {
 		M2.ForAllEdges(func(edge *Edge, done chan<- bool) {
 			Debug("%v", edge.Str())
 		})
 	}
 
-	Debug("M2 cardinality: %v", M2.NEdges())
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	if M2.NEdges() > k {
 		halt <- true
@@ -75,64 +72,78 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 
 	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
 	// TODO: handle the Invariant: I0.Cardinality() > 0
-	if O.Cardinality() == 0 {
-		Debug("Outsiders is empty!")
-	}
-	I0 := mapset.NewSet()
+	In := mapset.NewSet()
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
 		if deg, _ := M2.Degree(v); deg == 0 {
-			I0.Add(v)
+			In.Add(v)
+		}
+	}
+
+	if In.Cardinality() == 0 {
+		Debug("I0 is empty!")
+		return &Crown{
+			I: In,
+			H: In,
 		}
 	}
 
 	n := 0
+	N := 0
+	Isteps := make([]mapset.Set, 0, 1999)
+	Hsteps := make([]mapset.Set, 0, 1999)
+	Isteps = append(Isteps, In)
 	// Step 4.:Repeat the following steps until n=N so that I_(N-1)=IN
-	I1 := mapset.NewSet()
-	var Hn mapset.Set
 	for {
 		// 4a. Let Hn = N(In)
-		Hn = mapset.NewSet()
-		for vInter := range I0.Iter() {
+		Hsteps = append(Hsteps, mapset.NewSet())
+		Debug("n: %v, N: %v", n, N)
+		Debug("Isteps: %v", Isteps)
+		for vInter := range In.Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-				Hn.Add(getOtherVertex(v, edge))
+				Hsteps[n].Add(getOtherVertex(v, edge))
 			})
+		}
+
+		Debug("Hsteps: %v", Hsteps)
+		if n > 0 && Isteps[N].Equal(Isteps[N-1]) {
+			break
 		}
 
 		// 4b. Let I_(n+1)= In ∪ N_M2(Hn)
 		neighbors := mapset.NewSet()
-		for vInter := range Hn.Iter() {
+		for vInter := range Hsteps[n].Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 				w := getOtherVertex(v, edge)
-				if !M2.hasEdge(v, w) {
-					return
+				if M2.hasEdge(v, w) {
+					// Adding N_M2(Hn)
+					neighbors.Add(w)
 				}
 
-				neighbors.Add(w)
 			})
 		}
 
-		I1 = I0.Union(neighbors)
-		Debug("I0: %v", I0)
-		Debug("I1: %v", I1)
-		Debug("Hn: %v", Hn)
-		if I1.Equal(I0) {
-			break
-		}
+		// Adding In to I_n+1
+		Isteps = append(Isteps, Isteps[n].Union(neighbors))
+		Debug("In: %v", Isteps[n])
+		Debug("In+1: %v", Isteps[n+1])
+		Debug("Hn: %v", Hsteps[n])
 
-		I0 = I1
 		n++
+		N++
 	}
 
+	// The result is (I_N, H_N).
 	return &Crown{
-		I: I1,
-		H: Hn,
+		I: Isteps[N],
+		H: Hsteps[N],
 	}
 }
 
 func reduceCrown(G *Graph, crown *Crown) {
+	Debug("Removing crown %v", crown)
 	// The graph G′ is produced by removing vertices in I and H
 	// along with their adjacent edges.
 	removeVerticesInSet := func(set mapset.Set) {

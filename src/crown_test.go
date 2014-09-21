@@ -23,6 +23,9 @@ func TestFindCrown1(t *testing.T) {
 	m, o := FindMaximalMatching(g)
 	gv.HighlightMatching(m, "red")
 	gv.HighlightCover(o, "green")
+	// inVerboseContext(func() {
+	// 	findCrown(g, halt, k)
+	// })
 	crown := findCrown(g, halt, k)
 	assert.Equal(t, 1, crown.Width())
 	assert.True(t, crown.H.Contains(Vertex(4)))
@@ -57,13 +60,34 @@ func TestReduceCrown1(t *testing.T) {
 func TestReduceCrown2(t *testing.T) {
 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
 	halt := make(chan bool, 1)
-	verticesBefore := g.NVertices()
-	crownWidth, independentSetCardinality := 134, 318
 
-	ReduceCrown(g, halt, k)
+	verticesBefore := g.NVertices()
+	crown := findCrown(g, halt, 246)
+	crownWidth, independentSetCardinality := crown.Width(), crown.I.Cardinality()
+	ReduceCrown(g, halt, 246)
 	assert.Equal(t,
 		verticesBefore-crownWidth-independentSetCardinality,
 		g.NVertices())
+}
+
+func TestReduceProteins(t *testing.T) {
+	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+	halt := make(chan bool, 1)
+
+	// Test according to F.N.Abu-Khzam et al. paper. (Table 1)
+	kPrimePrev, kPrime := 0, 246
+
+	for {
+		kPrime, _ = ReduceCrown(g, halt, kPrime)
+		if kPrimePrev == kPrime {
+			break
+		}
+
+		kPrimePrev = kPrime
+	}
+
+	assert.Equal(t, 98, kPrime)
+	assert.Equal(t, 328, g.NVertices())
 }
 
 func TestStopIfSizeBoundaryReached(t *testing.T) {
