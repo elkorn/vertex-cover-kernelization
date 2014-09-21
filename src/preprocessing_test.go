@@ -3,6 +3,7 @@ package graph
 import (
 	"testing"
 
+	"github.com/deckarep/golang-set"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -38,9 +39,11 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(1, 4)
 
 	result, _ := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
+	Debug("%v", result)
 	assert.Equal(t, Neighbors{2, 3}, result[4])
 	assert.Equal(t, Neighbors{3, 5}, result[1])
 	assert.Equal(t, Neighbors{2, 5}, result[2])
+
 }
 
 func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
@@ -173,6 +176,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 func TestContractEdges(t *testing.T) {
 	g := mkGraph4()
+	// showGraph(g)
 	contractionMap := make(NeighborMap, 1)
 	contractionMap[0] = Neighbors{2, 3}
 	g.contractEdges(contractionMap)
@@ -199,4 +203,55 @@ func TestContractEdges(t *testing.T) {
 	assert.True(t, g.hasEdge(1, 5))
 	assert.True(t, g.hasEdge(6, 4))
 	assert.True(t, g.hasEdge(6, 5))
+
+	g = MkGraph(7)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 4)
+	g.AddEdge(3, 5)
+	g.AddEdge(4, 6)
+	g.AddEdge(4, 7)
+	g.AddEdge(5, 6)
+	g.AddEdge(5, 7)
+
+	vc := branchAndBound(g)
+	var folds mapset.Set
+	folds = preprocessing4(g)
+
+	vc2 := branchAndBound(g)
+	size := vc2.Cardinality()
+	for foldInter := range folds.Iter() {
+		fold := foldInter.(*fold)
+		if vc2.Contains(fold.replacement) {
+			size += 2
+		}
+	}
+
+	assert.Equal(t, vc.Cardinality(), size)
+}
+
+func TestPreprocessingMainRoutine(t *testing.T) {
+	g := MkGraph(11)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(2, 5)
+	g.AddEdge(3, 4)
+	g.AddEdge(3, 5)
+	g.AddEdge(4, 6)
+	g.AddEdge(4, 7)
+	g.AddEdge(5, 6)
+	g.AddEdge(5, 7)
+	g.AddEdge(5, 8)
+	g.AddEdge(8, 10)
+	g.AddEdge(8, 11)
+	g.AddEdge(10, 11)
+
+	vc := branchAndBound(g)
+	parameterReduction, folds := Preprocessing(g)
+	vc2 := branchAndBound(g)
+	size := computeUnfoldedVertexCoverSize(folds, vc2) + parameterReduction
+	assert.Equal(t, vc.Cardinality(), size)
 }
