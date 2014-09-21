@@ -22,9 +22,11 @@ func TestRemoveHighDegree(t *testing.T) {
 
 	g1.AddEdge(9, 8)
 
-	res := g1.removeVerticesWithDegreeGreaterThan(2)
-	assert.True(t, contains(res, 1))
-	assert.True(t, contains(res, 2))
+	vc := branchAndBound(g1)
+	removed, remCount := g1.removeVerticesWithDegreeGreaterThan(2)
+	vc2 := branchAndBound(g1)
+	assert.True(t, contains(removed, 1))
+	assert.True(t, contains(removed, 2))
 
 	assert.False(t, g1.hasVertex(1))
 	assert.False(t, g1.hasVertex(2))
@@ -41,4 +43,7 @@ func TestRemoveHighDegree(t *testing.T) {
 	assert.False(t, g1.hasEdge(2, 7))
 
 	assert.True(t, g1.hasEdge(9, 8))
+
+	assert.Equal(t, vc.Cardinality(), vc2.Cardinality()+remCount)
+
 }

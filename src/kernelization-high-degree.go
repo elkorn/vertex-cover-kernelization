@@ -2,7 +2,7 @@ package graph
 
 import "github.com/deckarep/golang-set"
 
-func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
+func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) (Neighbors, int) {
 	toRemove := mapset.NewSet()
 	removed := 0
 
@@ -20,5 +20,5 @@ func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) Neighbors {
 		self.RemoveVertex(vertex)
 	}
 
-	return result
+	return result, removed
 }
