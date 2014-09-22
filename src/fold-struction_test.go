@@ -40,32 +40,18 @@ func TestStruction(t *testing.T) {
 func TestGeneralFold1(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
 	g.AddEdge(2, 4)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 5)
-	g.AddEdge(6, 5)
-	g.AddEdge(4, 6)
-	g.AddEdge(4, 7)
+	g.AddEdge(3, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(2, 7)
 
-	// showGraph(g)
-	// inVerboseContext(func() {
-	// generalFold(g, nil, MAX_INT)
-	// })
-	// gPrime := generalFold(g, nil, MAX_INT)
-	// showGraph(gPrime)
+	showGraph(g)
 
-	// inVerboseContext(func() {
-	// 	crown := findCrown(gPrime, nil, MAX_INT)
-	// 	Debug("%v", crown)
-	// })
-	// gv.highlightCrown(crown)
-	// gv.Display()
-
-	// assert.Equal(t, 5, gPrime.NVertices())
-	// assert.True(t, gPrime.hasVertex(9))
-	// assert.True(t, gPrime.hasEdge(9, 5))
-	// assert.True(t, gPrime.hasEdge(9, 6))
-	// assert.True(t, gPrime.hasEdge(9, 7))
+	inVerboseContext(func() {
+		generalFold(g, nil, MAX_INT)
+	})
+	showGraph(g)
 }
 
 func TestGeneralFold2(t *testing.T) {
