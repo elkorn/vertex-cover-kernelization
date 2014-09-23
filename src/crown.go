@@ -70,8 +70,30 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		return nil
 	}
 
-	// Step 3.: Let I0 be the set of vertices in O that are unmatched by M2.
-	// TODO: handle the Invariant: I0.Cardinality() > 0
+	// Step 3: If every vertex in N(O) is matched by M2, then H=N(O) and I=O
+	// form a straight crown, and we are done.
+	straightCrown := true
+	outsiderNeighbors.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if deg, _ := M2.Degree(v); deg == 0 {
+			straightCrown = false
+			done <- true
+		}
+	})
+
+	if straightCrown {
+		H := mapset.NewSet()
+		outsiderNeighbors.ForAllVertices(func(v Vertex, done chan<- bool) {
+			H.Add(v)
+		})
+
+		Debug("Found a straight crown: I: %v, H: %v", O, H)
+		return &Crown{
+			H: H,
+			I: O,
+		}
+	}
+
+	// Step 4: Let I0 be the set of vertices in O that are unmatched by M2.
 	In := mapset.NewSet()
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
@@ -93,9 +115,9 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	Isteps := make([]mapset.Set, 0, G.currentVertexIndex)
 	Hsteps := make([]mapset.Set, 0, G.currentVertexIndex)
 	Isteps = append(Isteps, In)
-	// Step 4.:Repeat the following steps until n=N so that I_(N-1)=IN
+	// Step 5.:Repeat the following steps until n=N so that I_(N-1)=IN
 	for {
-		// 4a. Let Hn = N(In)
+		// 5a. Let Hn = N(In)
 		Hsteps = append(Hsteps, mapset.NewSet())
 		Debug("n: %v, N: %v", n, N)
 		Debug("Isteps: %v", Isteps)
@@ -111,7 +133,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 			break
 		}
 
-		// 4b. Let I_(n+1)= In ∪ N_M2(Hn)
+		// 5b. Let I_(n+1)= In ∪ N_M2(Hn)
 		neighbors := mapset.NewSet()
 		for vInter := range Hsteps[n].Iter() {
 			v := vInter.(Vertex)
@@ -134,7 +156,8 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		N++
 	}
 
-	// The result is (I_N, H_N).
+	// Step 6: I_N, H_N form a flared crown.
+	Debug("Found a flared crown: I: %v, H: %v", Isteps[N], Hsteps[N])
 	return &Crown{
 		I: Isteps[N],
 		H: Hsteps[N],

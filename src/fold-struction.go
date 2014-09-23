@@ -225,21 +225,29 @@ func generalFold(g *Graph, halt chan bool, k int) *Graph {
 	}
 
 	// At this point, the graph is free of any non-trivial crowns.
+	return reduceAlmostCrown(g, halt, kPrime)
+}
+
+func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 	// G′ has an almost-crown if and only if there exists a vertex v ∈ G′ such
 	// that G′ ⧵ {v} has an equal crown.
 	// For every vertex v in G′ , check if G′ ⧵ {v} has a crown.
+	var crown *Crown
 	var almostCrownVertex Vertex
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		g.RemoveVertex(v)
 		Debug("Removed vertex %v, looking for a crown.", v)
 		crown = findCrown(g, halt, kPrime)
 		Debug("Found crown %v, restoring vertex %v", crown, v)
+		showGraph(g)
 		g.RestoreVertex(v)
 		if !crown.IsTrivial() {
 			// If the NT-decomposition yields a crown,
 			// then this crown must be an equal crown.
 			// Otherwise, the graph would not be crown-free.
 			// Hence, we have constructed an almost-crown structure in G′.
+			// According to the paper, this should take O(k^3\sqrt(k)), so there
+			// shoul exist one such structure.
 			almostCrownVertex = v
 			done <- true
 		}
@@ -248,7 +256,7 @@ func generalFold(g *Graph, halt chan bool, k int) *Graph {
 	// and adding a vertex u_I,
 	// then connecting u_I to every vertex v ∈ G′
 	// such that v was a neighbor of a vertex u ∈ N (I) in G.
-	if !crown.IsTrivial() {
+	if almostCrownVertex != INVALID_VERTEX {
 		Debug("Found a non-trivial almost-crown! %v", crown)
 		g.addVertex()
 		foldRoot := Vertex(g.currentVertexIndex)
@@ -261,6 +269,10 @@ func generalFold(g *Graph, halt chan bool, k int) *Graph {
 		}
 
 		for vInter := range crown.H.Iter() {
+			foldAndRemove(vInter.(Vertex))
+		}
+
+		for vInter := range crown.I.Iter() {
 			foldAndRemove(vInter.(Vertex))
 		}
 
