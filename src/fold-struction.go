@@ -75,10 +75,7 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	// Set of neighbors {v1, ... ,vp}
 	s, sSet := g.getNeighborsWithSet(v0)
 	p := sSet.Cardinality()
-	Debug("Neighbors of %v: %v", v0, sSet)
-	// newNodes := mapset.NewSet()
 	newGraphCapacity := g.currentVertexIndex
-	// TODO: this capacity is arbitrary, fix it.
 	newVertices := make([]*structionVertex, 0, g.currentVertexIndex)
 	newVertexLookup := make([][]Vertex, g.currentVertexIndex)
 	for i, _ := range newVertexLookup {
@@ -116,66 +113,35 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	Debug("Deletions: %v", newDeletions)
 
 	result = MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
+	for _, newVertex1 := range newVertices {
+		for _, newVertex2 := range newVertices {
+			if newVertex1 == newVertex2 {
+				continue
+			}
 
-	addStructionNeighbors := func(i, v Vertex) {
-		for _, neighbor := range newVertexLookup[i.toInt()] {
-			if !(neighbor == INVALID_VERTEX || neighbor == v) {
-				Debug("Adding struction edge %v-%v", neighbor, v)
-				result.AddEdge(neighbor, v)
+			// Add an edge (vir, vjs) if i == j and g.hasEdge(vr,vs)
+			if newVertex1.i == newVertex2.i &&
+				g.hasEdge(newVertex1.j, newVertex2.j) ||
+				// Add an edge (vir, vjs) if i != j
+				newVertex1.i != newVertex2.i {
+				result.AddEdge(newVertex1.v, newVertex2.v)
 			}
 		}
-	}
-
-	for _, newVertex := range newVertices {
-		i, j := newVertex.i, newVertex.j
-		Debug("i: %v, j: %v", i, j)
-		addStructionNeighbors(i, newVertex.v)
-		addStructionNeighbors(j, newVertex.v)
-		// 1. Add an edge (vir, vjs) if i == j and g.hasEdge(vr,vs)
-		// if i == j {
-		// for vr, nr := range s {
-		// 	for vs, ns := range s {
-		// 		if nr == ns {
-		// 			continue
-		// 		}
-		// 		if g.hasEdge(nr, ns) {
-		// 			vir, vjs := lookupVertex(i, vr), lookupVertex(j, vs)
-		// 			if INVALID_VERTEX == vir || INVALID_VERTEX == vjs {
-		// 				// Don't know what to do here...
-		// 				continue
-		// 			}
-		// 			Debug("i!=j, vir: (%v,%v), vjs: (%v,%v), adding edge %v-%v", i, vr, j, vs, vir, vjs)
-		// 			result.AddEdge(vir, vjs)
-		// 		}
-		// 	}
-		// }
-		// } else {
-		// Add an edge (vir, vjs) if i != j
-		Debug("%v of %v", i, newVertex.Name())
-		g.ForAllNeighbors(i, func(edge *Edge, done chan<- bool) {
-			Debug("Edge %v-%v", edge.from, edge.to)
-			result.AddEdge(newVertex.v, getOtherVertex(i, edge))
-		})
-
-		Debug("%v of %v", j, newVertex.Name())
-		g.ForAllNeighbors(j, func(edge *Edge, done chan<- bool) {
-			Debug("Edge %v-%v", edge.from, edge.to)
-			result.AddEdge(newVertex.v, getOtherVertex(j, edge))
-		})
-		// }
 
 		// For every vertex u not in {v0,...,vp},
 		// if g.hasEdge(vi,u) or g.hasEdge(vj,u),
 		// add an edge (vij, u)
-		// g.ForAllVertices(func(u Vertex, done chan<- bool) {
-		// 	if u == v0 || sSet.Contains(u) {
-		// 		return
-		// 	}
-		//
-		// 	if g.hasEdge(s[i], u) || g.hasEdge(s[j], u) {
-		// 		result.AddEdge(newVertex.v, u)
-		// 	}
-		// })
+		g.ForAllVertices(func(u Vertex, done chan<- bool) {
+			if sSet.Contains(u) || u == v0 {
+				return
+			}
+
+			for _, newVertex := range newVertices {
+				if g.hasEdge(newVertex.i, u) || g.hasEdge(newVertex.j, u) {
+					result.AddEdge(newVertex.v, u)
+				}
+			}
+		})
 	}
 
 	return
@@ -239,7 +205,6 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 		Debug("Removed vertex %v, looking for a crown.", v)
 		crown = findCrown(g, halt, kPrime)
 		Debug("Found crown %v, restoring vertex %v", crown, v)
-		showGraph(g)
 		g.RestoreVertex(v)
 		if !crown.IsTrivial() {
 			// If the NT-decomposition yields a crown,
