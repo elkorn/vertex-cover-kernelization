@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -142,4 +143,15 @@ func TestDominates(t *testing.T) {
 	v, u := Vertex(1), Vertex(2)
 
 	assert.True(t, v.dominates(u, g))
+}
+
+func TestTag(t *testing.T) {
+	g := mkGraph1()
+	t1 := MkTag(Vertex(2), g)
+	showGraph(g)
+	for i := 1; i < len(t1.neighbors); i++ {
+		d1, _ := g.Degree(t1.neighbors[i-1])
+		d2, _ := g.Degree(t1.neighbors[i])
+		assert.True(t, d1 >= d2, fmt.Sprintf("deg(%v) [%v] must be greater than deg(%v) [%v]", t1.neighbors[i-1], d1, t1.neighbors[i], d2))
+	}
 }

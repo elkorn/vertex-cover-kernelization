@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/deckarep/golang-set"
 )
@@ -14,6 +15,32 @@ type structionVertex struct {
 type tuple struct {
 	S mapset.Set
 	q int
+}
+
+type tag struct {
+	v         Vertex
+	neighbors Neighbors
+	g         *Graph
+}
+
+func (a tag) Len() int      { return len(a.neighbors) }
+func (a tag) Swap(i, j int) { a.neighbors[i], a.neighbors[j] = a.neighbors[j], a.neighbors[i] }
+func (a tag) Less(i, j int) bool {
+	di, _ := a.g.Degree(a.neighbors[i])
+	dj, _ := a.g.Degree(a.neighbors[j])
+
+	return di > dj
+}
+
+func MkTag(v Vertex, g *Graph) *tag {
+	result := &tag{
+		v:         v,
+		g:         g,
+		neighbors: g.getNeighbors(v),
+	}
+
+	sort.Sort(result)
+	return result
 }
 
 func (self *structionVertex) Name() string {
