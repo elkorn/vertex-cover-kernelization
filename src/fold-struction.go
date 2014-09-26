@@ -297,6 +297,55 @@ func foldStructionVC(G *Graph, T *TuplePriorityQueueProxy, k int) {
 	*/
 }
 
+/*
+	---------------- IMPORTANT! ----------------
+	It seems as though the algorithm creates *tuples*, yet T contains
+	*structures*. This leads me to conclude that T should be initialized with
+	a set of good pairs and vertices of degree \geq 7. The priorities have to be
+	used accordingly.
+	--------------------------------------------
+
+	One question remains - if and how does the tuple updating operation affect
+	other structures in T?
+
+	T has structures -> algo creates tuples -> algo generates 2-tuples ->
+	algo processes 2-tuples.
+
+	Tuple
+	What is a working assumption?
+
+	What does 'stipulate', 'vacuously' mean?
+
+	What happens to G when branching? It should be modified - check that in the
+	pseudocode. This is to measure what 'implicit' means in the paper.
+
+	How do structures relate to tuples?
+	A tuple, a good pair or a vertex v with d(v) \geq 7 will be referred to as
+	a structure.
+
+	Conditional_Struction and Conditional_GeneralFold are applied when the
+	reduction in k surpasses that resulting from branching on a certain
+	tuple ( !!! in case it exists !!! ) -> that's what the paper says. Does
+	that mean that when no tuple exists, struction and folding are applied
+	to somehow get new tuples?
+
+	---------------- TECH ----------------
+
+	In the priority queue of tuples, it would be good to maintaina an `index`
+	property for each one. This will be useful when updating tuples after each
+	operation of the algorithm.
+
+	A max. degree variable must be maintained within the graph - this will allow
+	searching for degrees with d(v) \geq 7.
+
+	TuplePriorityQueue should be renamed to StructurePriorityQueue.
+	StructurePriorityQueue should support an `update` operation, since the
+	priority of structures will be changed dynamically.
+
+	Golang enumeration - the structures should be enumerated by their type. The
+		enum should also provide priority values after casting to int.
+*/
+
 // VC(G, T , k)
 // 	Input: a graph G, a set T of tuples, and a positive integer k.
 // 	Output: the size of a minimum vertex cover of G if the size is bounded by k;
