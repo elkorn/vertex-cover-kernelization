@@ -12,7 +12,7 @@ type structionVertex struct {
 	i, j Vertex
 }
 
-type tuple struct {
+type structure struct {
 	S mapset.Set
 	q int
 }
@@ -274,7 +274,7 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 	return g
 }
 
-func findTuples(G *Graph, k int) *TuplePriorityQueueProxy {
+func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 	/*
 		Conditions for tuples:
 		- Γ is a 2-tuple ({ u , z }, 1 )
@@ -286,7 +286,7 @@ func findTuples(G *Graph, k int) *TuplePriorityQueueProxy {
 	return nil
 }
 
-func foldStructionVC(G *Graph, T *TuplePriorityQueueProxy, k int) {
+func foldStructionVC(G *Graph, T *StructurePriorityQueueProxy, k int) {
 	/*
 			Therefore, when the algorithm branches on z, on the side of the branch where z is included,
 		we can restrict our search to a minimum vertex cover that excludes at least two neighbors of N ( z ) , and we know that this
@@ -338,7 +338,6 @@ func foldStructionVC(G *Graph, T *TuplePriorityQueueProxy, k int) {
 	A max. degree variable must be maintained within the graph - this will allow
 	searching for degrees with d(v) \geq 7.
 
-	TuplePriorityQueue should be renamed to StructurePriorityQueue.
 	StructurePriorityQueue should support an `update` operation, since the
 	priority of structures will be changed dynamically.
 
