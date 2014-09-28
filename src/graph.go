@@ -16,6 +16,8 @@ type Graph struct {
 	neighbors          [][]*Edge
 	numberOfVertices   int
 	numberOfEdges      int
+	isRegular bool
+	needToComputeRegularity bool
 }
 
 func (self *Graph) Copy() *Graph {
@@ -46,6 +48,9 @@ func (self *Graph) Copy() *Graph {
 	}
 
 	copy(result.degrees, self.degrees)
+	result.isRegular = self.isRegular
+	result.needToComputeRegularity = self.needToComputeRegularity
+
 	return result
 }
 
@@ -165,6 +170,8 @@ func (g *Graph) addVertex() error {
 	}
 
 	g.neighbors = append(g.neighbors, make([]*Edge, g.currentVertexIndex))
+		g.needToComputeRegularity = true
+
 	return nil
 }
 
@@ -203,6 +210,23 @@ func (self *Graph) RestoreVertex(v Vertex) {
 func (self *Graph) removeVertex(v Vertex) {
 	self.isVertexDeleted[v.toInt()] = true
 	self.numberOfVertices--
+		self.needToComputeRegularity = true
+}
+
+func (self *Graph) computeRegularity() {
+	deg := -1
+	isRegular := true
+	self.ForAllVertices(func(v Vertex, done chan<-bool){
+		if deg == -1 {
+			deg = self.Degree(v)
+		} else if deg != self.Degree(v) {
+			isRegular = false
+			done <- true
+		}
+	})
+
+	self.isRegular = isRegular
+	self.needToComputeRegularity = false
 }
 
 func (self *Graph) AddEdge(a, b Vertex) error {
@@ -233,6 +257,7 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	self.degrees[ai]++
 	self.degrees[bi]++
 	self.numberOfEdges++
+	self.needToComputeRegularity = true
 	return nil
 }
 
@@ -243,6 +268,7 @@ func (self *Graph) RemoveEdge(from, to Vertex) {
 	self.degrees[ti] -= 1
 	edge.isDeleted = true
 	self.numberOfEdges--
+	self.needToComputeRegularity = true
 }
 
 func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
@@ -278,6 +304,14 @@ func (self *Graph) Degree(v Vertex) int {
 	return self.degrees[v.toInt()]
 }
 
+func (self *Graph) IsRegular() bool {
+	if self.needToComputeRegularity {
+		self.computeRegularity()
+	}
+
+	return self.isRegular
+}
+
 func mkGraph(vertices, capacity int) *Graph {
 	g := new(Graph)
 	g.Vertices = make(Vertices, vertices, capacity)
@@ -297,6 +331,7 @@ func mkGraph(vertices, capacity int) *Graph {
 
 	g.isVertexDeleted = make([]bool, vertices, capacity)
 	g.numberOfVertices = vertices
+	g.needToComputeRegularity = true
 	return g
 }
 
