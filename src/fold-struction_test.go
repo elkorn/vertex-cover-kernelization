@@ -145,7 +145,6 @@ func TestDominates(t *testing.T) {
 func TestTag(t *testing.T) {
 	g := mkGraph1()
 	t1 := MkTag(Vertex(2), g)
-	showGraph(g)
 	for i := 1; i < len(t1.neighbors); i++ {
 		d1 := g.Degree(t1.neighbors[i-1])
 		d2 := g.Degree(t1.neighbors[i])
