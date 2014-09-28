@@ -101,6 +101,13 @@ func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
 	return result
 }
 
+
+type domination struct {
+	x, y Vertex
+	g *Graph
+	almost bool
+}
+
 type tag struct {
 	v         Vertex
 	neighbors Neighbors
@@ -457,8 +464,10 @@ func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
-		// TODO: this can be folded into previous operations.
-		
+		// TODO: maintain an array of almost-dominated pairs of neighbors.
+		if possibleGoodPair.numNeighborhoodAlmostDominatedPairs > 0 {
+
+		}
 		// b) the degree of z is max among N(u) satisfying a).
 
 		// c) z is adjacent to the least number of N(u) satisfying a) and b)
