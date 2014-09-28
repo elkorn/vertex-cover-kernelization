@@ -17,6 +17,90 @@ type structure struct {
 	q int
 }
 
+func MkStructure(q int, s ...Vertex) *structure {
+	result := &structure{
+		q: q,
+		S: mapset.NewSet(),
+	}
+
+	for _, s := range s {
+		result.S.Add(s)
+	}
+
+	return result
+}
+
+func MkGoodPair(s ...Vertex) *structure {
+	return MkStructure(-1, s...)
+}
+
+type goodPairInfo struct {
+	pair                                *structure
+	numNeighborhoodAlmostDominatedPairs int
+	numNeighborhoodEdges                int
+}
+
+func mkGoodPairInfo(goodPair *structure) *goodPairInfo {
+	result := &goodPairInfo{
+		pair: goodPair,
+	}
+
+	return result
+}
+
+func (self *goodPairInfo) countAlmostDominatedPairs(g *Graph) int {
+	result := 0
+	var u Vertex
+	for v := range self.pair.S.Iter() {
+		u = v.(Vertex)
+		break
+	}
+
+	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+		x := getOtherVertex(u, edge)
+		g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+			y := getOtherVertex(u, edge)
+			if x == y {
+				return
+			}
+
+			if x.almostDominates(y, g) {
+				result++
+			}
+		})
+	})
+
+	self.numNeighborhoodAlmostDominatedPairs = result
+	return result
+}
+
+func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
+	result := 0
+	var u Vertex
+	for v := range self.pair.S.Iter() {
+		u = v.(Vertex)
+		break
+	}
+
+	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+		x := getOtherVertex(u, edge)
+		g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+			y := getOtherVertex(u, edge)
+			if x == y {
+				return
+			}
+
+			if g.hasEdge(x, y) {
+				result++
+			}
+
+		})
+	})
+
+	self.numNeighborhoodEdges = result
+	return result
+}
+
 type tag struct {
 	v         Vertex
 	neighbors Neighbors
@@ -31,7 +115,7 @@ func (a tag) Less(i, j int) bool {
 
 func (self *tag) Compare(other *tag, g *Graph) int {
 	selfN, otherN := len(self.neighbors), len(other.neighbors)
-	// TODO: In lexicographic comparison, are longer words greater or lesser 
+	// TODO: In lexicographic comparison, are longer words greater or lesser
 	// than shorter ones?
 	if selfN > otherN {
 		return 1
@@ -39,7 +123,7 @@ func (self *tag) Compare(other *tag, g *Graph) int {
 		return -1
 	}
 
-	for i:= 0; i < selfN && i < otherN; i++ {
+	for i := 0; i < selfN && i < otherN; i++ {
 		dSelf, dOther := g.Degree(self.neighbors[i]), g.Degree(other.neighbors[i])
 		if dSelf > dOther {
 			return 1
@@ -71,7 +155,6 @@ func computeTags(g *Graph) []*tag {
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		result[v.toInt()] = MkTag(v, g)
 	})
-
 
 	return result
 }
@@ -124,7 +207,12 @@ func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 		a vertex v is said to almost-dominate a vertex u,
 		if u and v are non-adjacent and | N ( u ) − N (v)| ≤ 1.
 	*/
-	return false
+
+	if g.hasEdge(u, v) {
+		return false
+	}
+
+	return IntAbs(len(g.getNeighbors(u)))-IntAbs(len(g.getNeighbors(v))) <= 1
 }
 
 func struction(g *Graph, v0 Vertex) (result *Graph) {
@@ -288,7 +376,6 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 
 			g.RemoveVertex(v)
 		}
-
 		for vInter := range crown.H.Iter() {
 			foldAndRemove(vInter.(Vertex))
 		}
@@ -304,13 +391,80 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 }
 
 func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
-	// tags := computeTags(G)
-	result := MkStructurePriorityQueue()
+	forAllGoodPairInfos := func(set mapset.Set, action func(*goodPairInfo)) {
+		for gpi := range set.Iter() {
+			action(gpi.(*goodPairInfo))
+		}
+	}
 
-	G.ForAllVertices(func(u Vertex, done chan <- bool) {
-		deg  := G.Degree(u)
-		G.forAllVerticesOfDegree(deg, func(v Vertex) {
+	tags := computeTags(G)
+	result := MkStructurePriorityQueue()
+	// TODO: capacity is arbitrary.
+	// TODO: Create a goodPair struct that has only two vertices.
+	possibleGoodPairs := mapset.NewSet()
+	// The first vertex in a good pair is found as follows:
+	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
+	G.ForAllVertices(func(u Vertex, done chan<- bool) {
+		deg := G.Degree(u)
+		tagU := tags[u.toInt()]
+		foundValidU := true
+		G.forAllVerticesOfDegree(deg, func(w Vertex) {
+			comparison := tagU.Compare(tags[w.toInt()], G)
+			if comparison == -1 {
+				done <- true
+				foundValidU = false
+			}
 		})
+
+		if foundValidU {
+			possibleGoodPairs.Add(mkGoodPairInfo(MkGoodPair(u)))
+		}
+	})
+
+	// 2. If the graph is reguler, the number of pairs {x,y} \subseteq N(u) s.t. 
+	// y is almost-dominated by x is maximized.
+	if G.IsRegular() {
+		maxAlmostDominated := 0
+		forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+			almostDominated := possibleGoodPair.countAlmostDominatedPairs(G)
+			if almostDominated > maxAlmostDominated {
+				maxAlmostDominated = almostDominated
+			}
+		})
+
+		forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+			if possibleGoodPair.numNeighborhoodAlmostDominatedPairs != maxAlmostDominated {
+				possibleGoodPairs.Remove(possibleGoodPair)
+			}
+		})
+	}
+
+	// 3. The number of edges in the subgraph induced by N(u) is maximized.
+	maxNumEdges := 0
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+		if possibleGoodPair.countNeighborhoodEdges(G) > maxNumEdges {
+			maxNumEdges = possibleGoodPair.numNeighborhoodEdges
+		}
+	})
+
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+		if possibleGoodPair.numNeighborhoodEdges < maxNumEdges {
+			possibleGoodPairs.Remove(possibleGoodPair)
+		}
+	})
+
+	// The second vertex is chosen as follows.
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
+		// by w, then z is almost dominated by a neighbor of u.
+		// TODO: this can be folded into previous operations.
+		
+		// b) the degree of z is max among N(u) satisfying a).
+
+		// c) z is adjacent to the least number of N(u) satisfying a) and b)
+
+		// d) The number of edges in a subgraph induced by N(u) is maximized.
+		// TODO: This sounds a bit fishy. Double-check this with the paper.
 	})
 
 	return result

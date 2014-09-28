@@ -67,3 +67,7 @@ func rng(args ...int) []int {
 	copy(c, args)
 	return c
 }
+
+func IntAbs(val int) int {
+	return int(math.Abs(float64(val)))
+}
