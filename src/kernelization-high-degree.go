@@ -7,7 +7,7 @@ func (self *Graph) removeVerticesWithDegreeGreaterThan(k int) (Neighbors, int) {
 	removed := 0
 
 	self.ForAllVertices(func(v Vertex, done chan<- bool) {
-		if deg, _ := self.Degree(v); deg > k {
+		if self.Degree(v) > k {
 			removed++
 			toRemove.Add(v)
 		}

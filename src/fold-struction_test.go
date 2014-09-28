@@ -59,12 +59,9 @@ func TestStruction2(t *testing.T) {
 	g1 := struction(g, Vertex(1))
 	assert.Equal(t, 10, g1.NVertices())
 	assert.Equal(t, 15, g1.NEdges())
-	deg, _ := g1.Degree(13)
-	assert.Equal(t, 6, deg)
-	deg, _ = g1.Degree(14)
-	assert.Equal(t, 5, deg)
-	deg, _ = g1.Degree(15)
-	assert.Equal(t, 7, deg)
+	assert.Equal(t, 6, g1.Degree(13))
+	assert.Equal(t, 5, g1.Degree(14))
+	assert.Equal(t, 7, g1.Degree(15))
 	assert.True(t, g1.hasEdge(13, 14))
 	assert.True(t, g1.hasEdge(13, 15))
 	assert.True(t, g1.hasEdge(13, 6))
@@ -150,8 +147,8 @@ func TestTag(t *testing.T) {
 	t1 := MkTag(Vertex(2), g)
 	showGraph(g)
 	for i := 1; i < len(t1.neighbors); i++ {
-		d1, _ := g.Degree(t1.neighbors[i-1])
-		d2, _ := g.Degree(t1.neighbors[i])
+		d1 := g.Degree(t1.neighbors[i-1])
+		d2 := g.Degree(t1.neighbors[i])
 		assert.True(t, d1 >= d2, fmt.Sprintf("deg(%v) [%v] must be greater than deg(%v) [%v]", t1.neighbors[i-1], d1, t1.neighbors[i], d2))
 	}
 }

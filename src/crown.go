@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/deckarep/golang-set"
+import (
+	"fmt"
+	"github.com/deckarep/golang-set"
+)
 
 type Crown struct {
 	I mapset.Set // An independent, non-empty subset of G
@@ -74,7 +77,11 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	// form a straight crown, and we are done.
 	straightCrown := true
 	outsiderNeighbors.ForAllVertices(func(v Vertex, done chan<- bool) {
-		if deg, _ := M2.Degree(v); deg == 0 {
+		if outsiderNeighbors.isVertexDeleted[v.toInt()] {
+			panic(fmt.Sprintf("Vertex %v is deleted!", v))
+		}
+
+		if !M2.hasVertex(v) || M2.Degree(v) == 0 {
 			straightCrown = false
 			done <- true
 		}
@@ -97,7 +104,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	In := mapset.NewSet()
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
-		if deg, _ := M2.Degree(v); deg == 0 {
+		if !M2.hasVertex(v) || M2.Degree(v) == 0 {
 			In.Add(v)
 		}
 	}

@@ -270,12 +270,12 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 	return amountCovered == n
 }
 
-func (self *Graph) Degree(v Vertex) (int, error) {
+func (self *Graph) Degree(v Vertex) int {
 	if !self.hasVertex(v) {
-		return -1, errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
+		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v)))
 	}
 
-	return self.degrees[v.toInt()], nil
+	return self.degrees[v.toInt()]
 }
 
 func mkGraph(vertices, capacity int) *Graph {

@@ -74,7 +74,8 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 	G.ForAllVertices(func(v Vertex, done chan<- bool) {
 		Debug("Checking vertex %v", v)
 		// The forest must be initially seeded with singleton nodes only.
-		if deg, _ := M.Degree(v); deg > 0 {
+		deg := M.Degree(v)
+		if deg > 0 {
 			Debug("Has %v matched edges.", deg)
 			return
 		}

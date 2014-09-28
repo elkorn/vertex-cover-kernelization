@@ -59,17 +59,7 @@ func objectiveFunction(feasibleSolutions []mapset.Set) mapset.Set {
 }
 
 func resolveConflict(g *Graph, v1, v2 Vertex) Vertex {
-	d1, err := g.Degree(v1)
-	if nil != err {
-		panic(err)
-	}
-
-	d2, err := g.Degree(v2)
-	if nil != err {
-		panic(err)
-	}
-
-	if CONFLICT_RESOLVER(g, d1, d2) {
+	if CONFLICT_RESOLVER(g, g.Degree(v1), g.Degree(v2)) {
 		return v1
 	}
 

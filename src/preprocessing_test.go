@@ -241,8 +241,7 @@ func TestContractEdges(t *testing.T) {
 
 	g.fold(Vertex(1))
 	assert.Equal(t, 4, g.NEdges())
-	deg, _ := g.Degree(Vertex(8))
-	assert.Equal(t, 4, deg)
+	assert.Equal(t, 4, g.Degree(Vertex(8)))
 
 	g = MkGraph(13)
 	g.AddEdge(1, 4)
@@ -265,8 +264,7 @@ func TestContractEdges(t *testing.T) {
 	g.fold(Vertex(3))
 
 	assert.Equal(t, 5, g.NEdges())
-	deg, _ = g.Degree(Vertex(16))
-	assert.Equal(t, 5, deg)
+	assert.Equal(t, 5, g.Degree(Vertex(16)))
 }
 
 func TestPreprocessingMainRoutine(t *testing.T) {

@@ -26,10 +26,7 @@ type tag struct {
 func (a tag) Len() int      { return len(a.neighbors) }
 func (a tag) Swap(i, j int) { a.neighbors[i], a.neighbors[j] = a.neighbors[j], a.neighbors[i] }
 func (a tag) Less(i, j int) bool {
-	di, _ := a.g.Degree(a.neighbors[i])
-	dj, _ := a.g.Degree(a.neighbors[j])
-
-	return di > dj
+	return a.g.Degree(a.neighbors[i]) > a.g.Degree(a.neighbors[j])
 }
 
 func MkTag(v Vertex, g *Graph) *tag {
@@ -285,12 +282,12 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 }
 
 func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
-	tags := computeTags(G)
+	// tags := computeTags(G)
 	result := MkStructurePriorityQueue()
 
-	G.ForAllVertices(func(v1 Vertex, done chan <- bool) {
-		deg, _ := G.Degree(v)
-		G.forAllVerticesOfDegree(deg, func(u Vertex, done chan<-bool){
+	G.ForAllVertices(func(u Vertex, done chan <- bool) {
+		deg  := G.Degree(u)
+		G.forAllVerticesOfDegree(deg, func(v Vertex) {
 		})
 	})
 

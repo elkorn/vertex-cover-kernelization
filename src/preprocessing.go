@@ -1,9 +1,6 @@
 package graph
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/deckarep/golang-set"
 )
 
@@ -18,12 +15,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 	vertices := make(Vertices, 0, self.NVertices())
 
 	self.ForAllVertices(func(vertex Vertex, done chan<- bool) {
-		vDegree, err := self.Degree(vertex)
-		if nil != err {
-			panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", vertex)))
-		}
-
-		if vDegree == degree {
+		if self.Degree(vertex) == degree {
 			vertices = append(vertices, vertex)
 		}
 	})

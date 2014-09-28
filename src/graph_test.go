@@ -87,9 +87,7 @@ func TestVertexCoverNonTrivialGraph2(t *testing.T) {
 func TestVertexDegree(t *testing.T) {
 	g := MkGraph(5)
 	assertDegreeIsCorrect := func(v Vertex, expectedDegree int) {
-		degree, err := g.Degree(v)
-		assert.Nil(t, err)
-		assert.Equal(t, expectedDegree, degree)
+		assert.Equal(t, expectedDegree, g.Degree(v))
 	}
 
 	for i := 1; i <= 5; i++ {

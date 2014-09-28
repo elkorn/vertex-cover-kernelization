@@ -33,7 +33,7 @@ func (s structure) computePriority(g *Graph) structurePriority {
 
 	switch cardinality {
 	case 1:
-		deg, _ := g.Degree(elements[0])
+		deg := g.Degree(elements[0])
 		if deg >= 8 {
 			return 8
 		} else if deg >= 7 {
@@ -43,8 +43,8 @@ func (s structure) computePriority(g *Graph) structurePriority {
 	case 2:
 		// It's a good pair.
 		u, v := elements[0], elements[1]
-		du, _ := g.Degree(u)
-		dv, _ := g.Degree(v)
+		du := g.Degree(u)
+		dv := g.Degree(v)
 		// The tuple case will mostlikely not have to be checked.
 		if s.q == 1 &&
 			dv >= 1 && du >= dv &&
@@ -63,9 +63,7 @@ func (s structure) computePriority(g *Graph) structurePriority {
 		hasOnlyDegree5Neighbors := true
 		degree5NeighborsCount := 0
 		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-			v := getOtherVertex(u, e)
-			deg, _ := g.Degree(v)
-			if deg == 5 {
+			if g.Degree(getOtherVertex(u, e)) == 5 {
 				degree5NeighborsCount++
 			} else {
 				hasOnlyDegree5Neighbors = false
