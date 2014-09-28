@@ -29,6 +29,28 @@ func (a tag) Less(i, j int) bool {
 	return a.g.Degree(a.neighbors[i]) > a.g.Degree(a.neighbors[j])
 }
 
+func (self *tag) Compare(other *tag, g *Graph) int {
+	selfN, otherN := len(self.neighbors), len(other.neighbors)
+	// TODO: In lexicographic comparison, are longer words greater or lesser 
+	// than shorter ones?
+	if selfN > otherN {
+		return 1
+	} else if selfN < otherN {
+		return -1
+	}
+
+	for i:= 0; i < selfN && i < otherN; i++ {
+		dSelf, dOther := g.Degree(self.neighbors[i]), g.Degree(other.neighbors[i])
+		if dSelf > dOther {
+			return 1
+		} else if dSelf < dOther {
+			return -1
+		}
+	}
+
+	return 0
+}
+
 func MkTag(v Vertex, g *Graph) *tag {
 	result := &tag{
 		v:         v,
