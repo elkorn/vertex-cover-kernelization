@@ -47,6 +47,16 @@ func (self *structionVertex) Name() string {
 	return fmt.Sprintf("v%v%v", self.i, self.j)
 }
 
+func computeTags(g *Graph) []*tag {
+	result := make([]*tag, g.currentVertexIndex)
+	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+		result[v.toInt()] = MkTag(v, g)
+	})
+
+
+	return result
+}
+
 func (v Vertex) dominates(u Vertex, g *Graph) bool {
 	/*
 		Vertex u is said to be dominated by a vertex v , or alternatively,
@@ -275,15 +285,16 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 }
 
 func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
-	/*
-		Conditions for tuples:
-		- Γ is a 2-tuple ({ u , z }, 1 )
-		- Γ is a good pair ( u , z ) where z is almost-dominated by a vertex v ∈ N ( u )
-		- Γ is a vertex z with d ( z ) ≥ 7
-		- Γ is a good pair ( u , z ) where z is not almost-dominated by any vertex in N ( u )
-	*/
+	tags := computeTags(G)
+	result := MkStructurePriorityQueue()
 
-	return nil
+	G.ForAllVertices(func(v1 Vertex, done chan <- bool) {
+		deg, _ := G.Degree(v)
+		G.forAllVerticesOfDegree(deg, func(u Vertex, done chan<-bool){
+		})
+	})
+
+	return result
 }
 
 func foldStructionVC(G *Graph, T *StructurePriorityQueueProxy, k int) {
