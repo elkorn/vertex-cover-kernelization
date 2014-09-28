@@ -8,15 +8,15 @@ import (
 )
 
 type Graph struct {
-	Vertices           Vertices
-	Edges              Edges
-	degrees            []int
-	currentVertexIndex int
-	isVertexDeleted    []bool
-	neighbors          [][]*Edge
-	numberOfVertices   int
-	numberOfEdges      int
-	isRegular bool
+	Vertices                Vertices
+	Edges                   Edges
+	degrees                 []int
+	currentVertexIndex      int
+	isVertexDeleted         []bool
+	neighbors               [][]*Edge
+	numberOfVertices        int
+	numberOfEdges           int
+	isRegular               bool
 	needToComputeRegularity bool
 }
 
@@ -170,7 +170,7 @@ func (g *Graph) addVertex() error {
 	}
 
 	g.neighbors = append(g.neighbors, make([]*Edge, g.currentVertexIndex))
-		g.needToComputeRegularity = true
+	g.needToComputeRegularity = true
 
 	return nil
 }
@@ -210,13 +210,13 @@ func (self *Graph) RestoreVertex(v Vertex) {
 func (self *Graph) removeVertex(v Vertex) {
 	self.isVertexDeleted[v.toInt()] = true
 	self.numberOfVertices--
-		self.needToComputeRegularity = true
+	self.needToComputeRegularity = true
 }
 
 func (self *Graph) computeRegularity() {
 	deg := -1
 	isRegular := true
-	self.ForAllVertices(func(v Vertex, done chan<-bool){
+	self.ForAllVertices(func(v Vertex, done chan<- bool) {
 		if deg == -1 {
 			deg = self.Degree(v)
 		} else if deg != self.Degree(v) {

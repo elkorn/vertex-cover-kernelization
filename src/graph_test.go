@@ -139,12 +139,12 @@ func TestaddVertexWithAutoId(t *testing.T) {
 func TestRegularity(t *testing.T) {
 	g := MkGraph(4)
 	assert.True(t, g.IsRegular())
-	g.AddEdge(1,2)
+	g.AddEdge(1, 2)
 	assert.False(t, g.IsRegular())
-	g.AddEdge(3,4)
+	g.AddEdge(3, 4)
 	assert.True(t, g.IsRegular())
-	g.AddEdge(1,4)
+	g.AddEdge(1, 4)
 	assert.False(t, g.IsRegular())
-	g.AddEdge(3,2)
+	g.AddEdge(3, 2)
 	assert.True(t, g.IsRegular())
 }
