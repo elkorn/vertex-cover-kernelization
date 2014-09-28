@@ -24,4 +24,4 @@ scratchpad*
 *.fdb_latexmk
 *.fls
 *.thm
-
+*.synctex.gz
