@@ -1,0 +1,59 @@
+package graph
+
+import "sort"
+
+// Tags are related to fold-struction.go.
+
+type tag struct {
+	v         Vertex
+	neighbors Neighbors
+	g         *Graph
+}
+
+func (a tag) Len() int      { return len(a.neighbors) }
+func (a tag) Swap(i, j int) { a.neighbors[i], a.neighbors[j] = a.neighbors[j], a.neighbors[i] }
+func (a tag) Less(i, j int) bool {
+	return a.g.Degree(a.neighbors[i]) > a.g.Degree(a.neighbors[j])
+}
+
+func (self *tag) Compare(other *tag, g *Graph) int {
+	selfN, otherN := len(self.neighbors), len(other.neighbors)
+	// TODO: In lexicographic comparison, are longer words greater or lesser
+	// than shorter ones?
+	if selfN > otherN {
+		return 1
+	} else if selfN < otherN {
+		return -1
+	}
+
+	for i := 0; i < selfN && i < otherN; i++ {
+		dSelf, dOther := g.Degree(self.neighbors[i]), g.Degree(other.neighbors[i])
+		if dSelf > dOther {
+			return 1
+		} else if dSelf < dOther {
+			return -1
+		}
+	}
+
+	return 0
+}
+
+func MkTag(v Vertex, g *Graph) *tag {
+	result := &tag{
+		v:         v,
+		g:         g,
+		neighbors: g.getNeighbors(v),
+	}
+
+	sort.Sort(result)
+	return result
+}
+
+func computeTags(g *Graph) []*tag {
+	result := make([]*tag, g.currentVertexIndex)
+	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+		result[v.toInt()] = MkTag(v, g)
+	})
+
+	return result
+}

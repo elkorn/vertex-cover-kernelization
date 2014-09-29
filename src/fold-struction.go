@@ -2,7 +2,6 @@ package graph
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/deckarep/golang-set"
 )
@@ -101,69 +100,14 @@ func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
 	return result
 }
 
-
 type domination struct {
-	x, y Vertex
-	g *Graph
+	x, y   Vertex
+	g      *Graph
 	almost bool
-}
-
-type tag struct {
-	v         Vertex
-	neighbors Neighbors
-	g         *Graph
-}
-
-func (a tag) Len() int      { return len(a.neighbors) }
-func (a tag) Swap(i, j int) { a.neighbors[i], a.neighbors[j] = a.neighbors[j], a.neighbors[i] }
-func (a tag) Less(i, j int) bool {
-	return a.g.Degree(a.neighbors[i]) > a.g.Degree(a.neighbors[j])
-}
-
-func (self *tag) Compare(other *tag, g *Graph) int {
-	selfN, otherN := len(self.neighbors), len(other.neighbors)
-	// TODO: In lexicographic comparison, are longer words greater or lesser
-	// than shorter ones?
-	if selfN > otherN {
-		return 1
-	} else if selfN < otherN {
-		return -1
-	}
-
-	for i := 0; i < selfN && i < otherN; i++ {
-		dSelf, dOther := g.Degree(self.neighbors[i]), g.Degree(other.neighbors[i])
-		if dSelf > dOther {
-			return 1
-		} else if dSelf < dOther {
-			return -1
-		}
-	}
-
-	return 0
-}
-
-func MkTag(v Vertex, g *Graph) *tag {
-	result := &tag{
-		v:         v,
-		g:         g,
-		neighbors: g.getNeighbors(v),
-	}
-
-	sort.Sort(result)
-	return result
 }
 
 func (self *structionVertex) Name() string {
 	return fmt.Sprintf("v%v%v", self.i, self.j)
-}
-
-func computeTags(g *Graph) []*tag {
-	result := make([]*tag, g.currentVertexIndex)
-	g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		result[v.toInt()] = MkTag(v, g)
-	})
-
-	return result
 }
 
 func (v Vertex) dominates(u Vertex, g *Graph) bool {
@@ -428,7 +372,7 @@ func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 		}
 	})
 
-	// 2. If the graph is reguler, the number of pairs {x,y} \subseteq N(u) s.t. 
+	// 2. If the graph is reguler, the number of pairs {x,y} \subseteq N(u) s.t.
 	// y is almost-dominated by x is maximized.
 	if G.IsRegular() {
 		maxAlmostDominated := 0
@@ -448,32 +392,33 @@ func findStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 
 	// 3. The number of edges in the subgraph induced by N(u) is maximized.
 	maxNumEdges := 0
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
 		if possibleGoodPair.countNeighborhoodEdges(G) > maxNumEdges {
 			maxNumEdges = possibleGoodPair.numNeighborhoodEdges
 		}
 	})
 
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
 		if possibleGoodPair.numNeighborhoodEdges < maxNumEdges {
 			possibleGoodPairs.Remove(possibleGoodPair)
 		}
 	})
 
 	// The second vertex is chosen as follows.
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo){
+	possibleZ := mapset.NewSet()
+	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
 		// TODO: maintain an array of almost-dominated pairs of neighbors.
 		if possibleGoodPair.numNeighborhoodAlmostDominatedPairs > 0 {
+			// G.ForAllNeighbors(possibleGoodPair
+			// b) the degree of z is max among N(u) satisfying a).
 
+			// c) z is adjacent to the least number of N(u) satisfying a) and b)
+
+			// d) The number of edges in a subgraph induced by N(u) is maximized.
+			// TODO: This sounds a bit fishy. Double-check this with the paper.
 		}
-		// b) the degree of z is max among N(u) satisfying a).
-
-		// c) z is adjacent to the least number of N(u) satisfying a) and b)
-
-		// d) The number of edges in a subgraph induced by N(u) is maximized.
-		// TODO: This sounds a bit fishy. Double-check this with the paper.
 	})
 
 	return result
