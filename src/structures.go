@@ -28,6 +28,7 @@ func MkGoodPair(s ...Vertex) *structure {
 
 type goodPairInfo struct {
 	pair                                *structure
+	u, z                                Vertex
 	numNeighborhoodAlmostDominatedPairs int
 	numNeighborhoodEdges                int
 }
@@ -93,6 +94,30 @@ func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
 	return result
 }
 
+func (self *goodPairInfo) U() Vertex {
+	if INVALID_VERTEX == self.u {
+		iter := self.pair.S.Iter()
+		self.u = (<-iter).(Vertex)
+	}
+
+	return self.u
+}
+
+func (self *goodPairInfo) Z() Vertex {
+	if INVALID_VERTEX == self.z {
+		iter := self.pair.S.Iter()
+		<-iter
+		self.z = (<-iter).(Vertex)
+	}
+
+	return self.z
+}
+
+type degree struct {
+	v   Vertex
+	val int
+}
+
 func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 	forAllGoodPairInfos := func(set mapset.Set, action func(*goodPairInfo)) {
 		for gpi := range set.Iter() {
@@ -156,20 +181,125 @@ func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 		}
 	})
 
-	// The second vertex is chosen as follows.
+	// Having chosen the first vertex u in a good pair, to choose the second
+	// vertex, we pick a neighbor z of u such that the following conditions are
+	// satisfied in their respective order.
 	possibleZ := mapset.NewSet()
 	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
-		// TODO: maintain an array of almost-dominated pairs of neighbors.
+
 		if possibleGoodPair.numNeighborhoodAlmostDominatedPairs > 0 {
-			// G.ForAllNeighbors(possibleGoodPair
+			// TODO: This step can be done earlier to avoid additional loops,
+			// improving average complexity.
+			G.ForAllNeighbors(possibleGoodPair.U(), func(edge *Edge, done chan<- bool) {
+				n := getOtherVertex(possibleGoodPair.U(), edge)
+				G.ForAllNeighbors(possibleGoodPair.U(), func(edge *Edge, done chan<- bool) {
+					z := getOtherVertex(possibleGoodPair.U(), edge)
+					if n == z {
+						return
+					}
+
+					if n.almostDominates(z, G) {
+						possibleZ.Add(z)
+					}
+				})
+			})
 			// b) the degree of z is max among N(u) satisfying a).
+			maxDegreeOfZ := 0
+			for zInter := range possibleZ.Iter() {
+				z := zInter.(Vertex)
+				if deg := G.Degree(z); deg > maxDegreeOfZ {
+					maxDegreeOfZ = deg
+				}
+			}
+
+			for zInter := range possibleZ.Iter() {
+				z := zInter.(Vertex)
+				if G.Degree(z) != maxDegreeOfZ {
+					possibleZ.Remove(zInter)
+				}
+			}
 
 			// c) z is adjacent to the least number of N(u) satisfying a) and b)
+			minAdjacency := MAX_INT
+			// TODO: This should be a priority queue.
+			adjacencies := mapset.NewSet()
+			for zInter := range possibleZ.Iter() {
+				z := zInter.(Vertex)
+				adjacency := 0
+				G.ForAllNeighbors(
+					possibleGoodPair.U(),
+					func(edge *Edge, done chan<- bool) {
+						if G.hasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
+							adjacency++
+						}
+					})
 
-			// d) The number of edges in a subgraph induced by N(u) is maximized.
-			// TODO: This sounds a bit fishy. Double-check this with the paper.
+				if adjacency < minAdjacency {
+					minAdjacency = adjacency
+				}
+
+				adjacencies.Add(&degree{
+					v:   z,
+					val: adjacency,
+				})
+			}
+
+			for adj := range adjacencies.Iter() {
+				adjacency := adj.(*degree)
+				if adjacency.val != minAdjacency {
+					possibleZ.Remove(adjacency.v)
+				}
+			}
+
+			// d) The number of shared neighbors between z and a neighbor of u is
+			// maximized among N(u) satisfying a), b) and c).
+			maxSharedNeighbors := 0
+			sharedNeighbors := mapset.NewSet()
+			for zInter := range possibleZ.Iter() {
+				z := zInter.(Vertex)
+				curSharedNeighbors := 0
+				G.ForAllNeighbors(z, func(edge *Edge, done chan<- bool) {
+					G.ForAllNeighbors(
+						possibleGoodPair.U(),
+						func(edge *Edge, done chan<- bool) {
+							sharedNeighbor := getOtherVertex(
+								possibleGoodPair.U(),
+								edge)
+							if G.hasEdge(z, sharedNeighbor) {
+								curSharedNeighbors++
+							}
+						})
+				})
+
+				if curSharedNeighbors > maxSharedNeighbors {
+					maxSharedNeighbors = curSharedNeighbors
+				}
+
+				sharedNeighbors.Add(&degree{
+					v:   z,
+					val: curSharedNeighbors,
+				})
+			}
+
+			for shnInter := range sharedNeighbors.Iter() {
+				shn := shnInter.(*degree)
+				if shn.val == maxSharedNeighbors {
+					// This is the z we're looking for.
+					possibleGoodPair.pair.S.Add(shn.v)
+					break
+				} else {
+					possibleZ.Remove(shn.v)
+				}
+			}
+
+			// Now, there should be one vertex in possibleZ.
+			// If that's not the case, it means that multiple vertices fulfill
+			// the criteria a,b,c,d.
+			// Is that even possible?
+			// If so, additional good pairs of (u, z_1), (u, z_2)... should
+			// probably be created.
 		}
 	})
 
