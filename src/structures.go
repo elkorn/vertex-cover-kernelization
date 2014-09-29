@@ -118,16 +118,31 @@ type degree struct {
 	val int
 }
 
-func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
-	forAllGoodPairInfos := func(set mapset.Set, action func(*goodPairInfo)) {
-		for gpi := range set.Iter() {
-			action(gpi.(*goodPairInfo))
-		}
+func forAllGoodPairInfos(set mapset.Set, action func(*goodPairInfo)) {
+	for gpi := range set.Iter() {
+		action(gpi.(*goodPairInfo))
 	}
+}
 
+func (self *Graph) forAllVerticesOfDegreeGeq(degree int, action func(Vertex)) {
+	self.ForAllVertices(func(v Vertex, done chan<- bool) {
+		if self.Degree(v) >= degree {
+			action(v)
+		}
+	})
+}
+
+func identifyGoodVertices(G *Graph) mapset.Set {
+	result := mapset.NewSet()
+	G.forAllVerticesOfDegreeGeq(7, func(v Vertex) {
+		result.Add(MkStructure(-1, v))
+	})
+
+	return result
+}
+
+func identifyGoodPairs(G *Graph) mapset.Set {
 	tags := computeTags(G)
-	result := MkStructurePriorityQueue()
-	// TODO: capacity is arbitrary.
 	// TODO: Create a goodPair struct that has only two vertices.
 	possibleGoodPairs := mapset.NewSet()
 	// The first vertex in a good pair is found as follows:
@@ -302,6 +317,17 @@ func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 			// probably be created.
 		}
 	})
+
+	return possibleGoodPairs
+}
+
+func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
+	result := MkStructurePriorityQueue()
+	// goodVertices := identifyGoodVertices(G)
+	// goodPairs := identifyGoodPairs(G)
+
+	// TODO: Compute the priority of the good pairs.
+	// TODO: Put the good pairs in the queue.
 
 	return result
 }
