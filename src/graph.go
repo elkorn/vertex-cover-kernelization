@@ -312,17 +312,6 @@ func (self *Graph) IsRegular() bool {
 	return self.isRegular
 }
 
-func (self *Graph) MaxDegree() (result int) {
-	result = 0
-	for _, deg := range self.degrees {
-		if deg > result {
-			result = deg
-		}
-	}
-
-	return
-}
-
 func mkGraph(vertices, capacity int) *Graph {
 	g := new(Graph)
 	g.Vertices = make(Vertices, vertices, capacity)
