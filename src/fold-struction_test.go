@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -127,44 +126,4 @@ func TestGeneralFold3(t *testing.T) {
 	g.AddEdge(3, 7)
 
 	// g1 :=  generalFold(g)
-}
-
-func TestDominates(t *testing.T) {
-	g := MkGraph(5)
-	g.AddEdge(1, 2)
-	g.AddEdge(1, 3)
-	g.AddEdge(1, 4)
-	g.AddEdge(1, 5)
-	g.AddEdge(2, 3)
-	g.AddEdge(2, 4)
-	v, u := Vertex(1), Vertex(2)
-
-	assert.True(t, v.dominates(u, g))
-}
-
-func TestTag(t *testing.T) {
-	g := mkGraph1()
-	t1 := MkTag(Vertex(2), g)
-	for i := 1; i < len(t1.neighbors); i++ {
-		d1 := g.Degree(t1.neighbors[i-1])
-		d2 := g.Degree(t1.neighbors[i])
-		assert.True(t, d1 >= d2, fmt.Sprintf("deg(%v) [%v] must be greater than deg(%v) [%v]", t1.neighbors[i-1], d1, t1.neighbors[i], d2))
-	}
-}
-
-func TestTagCompare(t *testing.T) {
-	g := MkGraph(7)
-	g.AddEdge(1, 2)
-	g.AddEdge(1, 5)
-	g.AddEdge(1, 6)
-	g.AddEdge(2, 3)
-	g.AddEdge(2, 4)
-	g.AddEdge(5, 7)
-
-	t1, t2 := MkTag(Vertex(1), g), MkTag(Vertex(2), g)
-	assert.Equal(t, 1, t1.Compare(t2, g))
-	assert.Equal(t, -1, t2.Compare(t1, g))
-
-	t1, t2 = MkTag(Vertex(3), g), MkTag(Vertex(6), g)
-	assert.Equal(t, 0, t1.Compare(t2, g))
 }
