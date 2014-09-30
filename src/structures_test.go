@@ -64,7 +64,7 @@ func TestIdentifyGoodPairs(t *testing.T) {
 		pairs := identifyGoodPairs(g)
 		for p := range pairs.Iter() {
 			pp := p.(*goodPair)
-			Debug("Good pair with u: %v, domination: %v, edges: %v", pp.U(), pp.numNeighborhoodAlmostDominatedPairs, pp.numNeighborhoodEdges)
+			Debug("Good pair with u: %v, z: %v, domination: %v, edges: %v", pp.U(), pp.Z(), pp.numNeighborhoodAlmostDominatedPairs, pp.numNeighborhoodEdges)
 			Debug("Tag: %v", tags[pp.U().toInt()])
 		}
 	})

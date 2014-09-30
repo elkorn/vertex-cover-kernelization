@@ -114,6 +114,11 @@ func (self *goodPair) Z() Vertex {
 	return self.z
 }
 
+func (self *goodPair) IsValid() bool {
+	// The pair must have u and z to be valid.
+	return self.pair.S.Cardinality() == 2
+}
+
 type degree struct {
 	v   Vertex
 	val int
@@ -145,6 +150,11 @@ func identifyGoodVertices(G *Graph) mapset.Set {
 func identifyGoodPairs(G *Graph) mapset.Set {
 	tags := computeTags(G)
 	possibleGoodPairs := mapset.NewSet()
+	invalidPairs := mapset.NewSet()
+	updatePossibleGoodPairs := func(toRemove mapset.Set) {
+		possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
+		toRemove.Clear()
+	}
 	// The first vertex in a good pair is found as follows:
 	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
 	Debug("Looking for U...")
@@ -189,8 +199,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 			}
 		})
 
-		possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
-		toRemove.Clear()
+		updatePossibleGoodPairs(toRemove)
 	}
 
 	// 3. The number of edges in the subgraph induced by N(u) is maximized.
@@ -215,8 +224,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 		}
 	})
 
-	possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
-	toRemove.Clear()
+	updatePossibleGoodPairs(toRemove)
 	// Having chosen the first vertex u in a good pair, to choose the second
 	// vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.
@@ -318,6 +326,12 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 				})
 			}
 
+			// Now, there should be one vertex in possibleZ.
+			// If that's not the case, it means that multiple vertices fulfill
+			// the criteria a,b,c,d.
+			// Is that even possible?
+			// If so, additional good pairs of (u, z_1), (u, z_2)... should
+			// probably be created.
 			for shnInter := range sharedNeighbors.Iter() {
 				shn := shnInter.(*degree)
 				if shn.val == maxSharedNeighbors {
@@ -328,17 +342,14 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 					possibleZ.Remove(shn.v)
 				}
 			}
+		}
 
-			// Now, there should be one vertex in possibleZ.
-			// If that's not the case, it means that multiple vertices fulfill
-			// the criteria a,b,c,d.
-			// Is that even possible?
-			// If so, additional good pairs of (u, z_1), (u, z_2)... should
-			// probably be created.
+		if !possibleGoodPair.IsValid() {
+			invalidPairs.Add(possibleGoodPair)
 		}
 	})
 
-	return possibleGoodPairs
+	return possibleGoodPairs.Difference(invalidPairs)
 }
 
 func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
