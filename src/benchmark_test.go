@@ -179,7 +179,7 @@ func BenchmarkBSTConflictResolverStraightPetersenGTEQ(b *testing.B) {
 }
 
 func benchBnB(b *testing.B, no int) {
-	g := ScanGraph(fmt.Sprintf("example_%v", no))
+	g := ScanGraph(fmt.Sprintf("../examples/example_%v", no))
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		branchAndBound(g)
