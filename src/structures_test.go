@@ -60,6 +60,8 @@ func TestIdentifyGoodPairs(t *testing.T) {
 	g.AddEdge(10, 13)
 	g.AddEdge(12, 10)
 	tags := computeTags(g)
+	// TODO: Verify what U's are included.
+	// TODO: Create conditions for finding Z's in the graph.
 	inVerboseContext(func() {
 		pairs := identifyGoodPairs(g)
 		for p := range pairs.Iter() {

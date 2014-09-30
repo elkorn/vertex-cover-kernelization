@@ -43,11 +43,7 @@ func mkGoodPair(s ...Vertex) *goodPair {
 
 func (self *goodPair) countAlmostDominatedPairs(g *Graph) int {
 	result := 0
-	var u Vertex
-	for v := range self.pair.S.Iter() {
-		u = v.(Vertex)
-		break
-	}
+	u := self.U()
 
 	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 		x := getOtherVertex(u, edge)
