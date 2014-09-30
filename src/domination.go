@@ -59,5 +59,7 @@ func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 		return false
 	}
 
-	return IntAbs(len(g.getNeighbors(u)))-IntAbs(len(g.getNeighbors(v))) <= 1
+	vNeighbors, uNeighbors := g.getNeighbors(v), g.getNeighbors(u)
+	Debug("[Neighbors] u: %v, v: %v", uNeighbors, vNeighbors)
+	return IntAbs(len(uNeighbors)-len(vNeighbors)) <= 1
 }
