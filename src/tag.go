@@ -18,14 +18,6 @@ func (a tag) Less(i, j int) bool {
 
 func (self *tag) Compare(other *tag, g *Graph) int {
 	selfN, otherN := len(self.neighbors), len(other.neighbors)
-	// TODO: In lexicographic comparison, are longer words greater or lesser
-	// than shorter ones?
-	if selfN > otherN {
-		return 1
-	} else if selfN < otherN {
-		return -1
-	}
-
 	for i := 0; i < selfN && i < otherN; i++ {
 		dSelf, dOther := g.Degree(self.neighbors[i]), g.Degree(other.neighbors[i])
 		if dSelf > dOther {
@@ -33,6 +25,14 @@ func (self *tag) Compare(other *tag, g *Graph) int {
 		} else if dSelf < dOther {
 			return -1
 		}
+	}
+
+	// In lexicographic comparison, if the words are equal up to this point,
+	// the longer one is greater than the shorter one.
+	if selfN > otherN {
+		return 1
+	} else if selfN < otherN {
+		return -1
 	}
 
 	return 0
