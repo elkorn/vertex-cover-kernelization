@@ -22,26 +22,26 @@ func MkStructure(q int, s ...Vertex) *structure {
 	return result
 }
 
-func MkGoodPair(s ...Vertex) *structure {
+func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }
 
-type goodPairInfo struct {
+type goodPair struct {
 	pair                                *structure
 	u, z                                Vertex
 	numNeighborhoodAlmostDominatedPairs int
 	numNeighborhoodEdges                int
 }
 
-func mkGoodPairInfo(goodPair *structure) *goodPairInfo {
-	result := &goodPairInfo{
-		pair: goodPair,
+func mkGoodPair(s ...Vertex) *goodPair {
+	result := &goodPair{
+		pair: mkGoodPairStruct(s...),
 	}
 
 	return result
 }
 
-func (self *goodPairInfo) countAlmostDominatedPairs(g *Graph) int {
+func (self *goodPair) countAlmostDominatedPairs(g *Graph) int {
 	result := 0
 	var u Vertex
 	for v := range self.pair.S.Iter() {
@@ -67,13 +67,9 @@ func (self *goodPairInfo) countAlmostDominatedPairs(g *Graph) int {
 	return result
 }
 
-func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
+func (self *goodPair) countNeighborhoodEdges(g *Graph) int {
 	result := 0
-	var u Vertex
-	for v := range self.pair.S.Iter() {
-		u = v.(Vertex)
-		break
-	}
+	u := self.U()
 
 	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 		x := getOtherVertex(u, edge)
@@ -83,21 +79,23 @@ func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
 				return
 			}
 
+			Debug("Looking for edge %v-%v", x, y)
 			if g.hasEdge(x, y) {
+				Debug("Found edge %v-%v", x, y)
 				result++
 			}
 
 		})
 	})
 
-	self.numNeighborhoodEdges = result
+	self.numNeighborhoodEdges = result / 2
 	// This is less computationally expensive than maintaining a set of
 	// processed edges and within the neighborhood it's safe - each edge is
 	// counted twice due to the graph being undirected.
-	return result / 2
+	return self.numNeighborhoodEdges
 }
 
-func (self *goodPairInfo) U() Vertex {
+func (self *goodPair) U() Vertex {
 	if INVALID_VERTEX == self.u {
 		iter := self.pair.S.Iter()
 		self.u = (<-iter).(Vertex)
@@ -106,7 +104,7 @@ func (self *goodPairInfo) U() Vertex {
 	return self.u
 }
 
-func (self *goodPairInfo) Z() Vertex {
+func (self *goodPair) Z() Vertex {
 	if INVALID_VERTEX == self.z {
 		iter := self.pair.S.Iter()
 		<-iter
@@ -121,9 +119,9 @@ type degree struct {
 	val int
 }
 
-func forAllGoodPairInfos(set mapset.Set, action func(*goodPairInfo)) {
+func forAllGoodPairs(set mapset.Set, action func(*goodPair)) {
 	for gpi := range set.Iter() {
-		action(gpi.(*goodPairInfo))
+		action(gpi.(*goodPair))
 	}
 }
 
@@ -146,79 +144,98 @@ func identifyGoodVertices(G *Graph) mapset.Set {
 
 func identifyGoodPairs(G *Graph) mapset.Set {
 	tags := computeTags(G)
-	// TODO: Create a goodPair struct that has only two vertices.
 	possibleGoodPairs := mapset.NewSet()
 	// The first vertex in a good pair is found as follows:
 	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
+	Debug("Looking for U...")
 	G.ForAllVertices(func(u Vertex, done chan<- bool) {
 		deg := G.Degree(u)
 		tagU := tags[u.toInt()]
+		Debug("Tag of %v: %v", u, tagU.neighbors)
 		foundValidU := true
 		G.forAllVerticesOfDegree(deg, func(w Vertex) {
+			if !foundValidU {
+				return
+			}
+
 			comparison := tagU.Compare(tags[w.toInt()], G)
 			if comparison == -1 {
-				done <- true
 				foundValidU = false
 			}
 		})
 
 		if foundValidU {
-			possibleGoodPairs.Add(mkGoodPairInfo(MkGoodPair(u)))
+			Debug("1) satisfied, adding possible pair with u: %v", u)
+			possibleGoodPairs.Add(mkGoodPair(u))
 		}
 	})
 
-	// 2. If the graph is reguler, the number of pairs {x,y} \subseteq N(u) s.t.
+	// 2. If the graph is regular, the number of pairs {x,y} \subseteq N(u) s.t.
 	// y is almost-dominated by x is maximized.
+	toRemove := mapset.NewSet()
 	if G.IsRegular() {
 		maxAlmostDominated := 0
-		forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+		forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 			almostDominated := possibleGoodPair.countAlmostDominatedPairs(G)
 			if almostDominated > maxAlmostDominated {
 				maxAlmostDominated = almostDominated
 			}
 		})
 
-		forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+		forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 			if possibleGoodPair.numNeighborhoodAlmostDominatedPairs != maxAlmostDominated {
-				possibleGoodPairs.Remove(possibleGoodPair)
+				Debug("2) not satisfied, removing pair with u: %v", possibleGoodPair.U())
+				toRemove.Add(possibleGoodPair)
 			}
 		})
+
+		possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
+		toRemove.Clear()
 	}
 
 	// 3. The number of edges in the subgraph induced by N(u) is maximized.
 	maxNumEdges := 0
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 		if possibleGoodPair.countNeighborhoodEdges(G) > maxNumEdges {
 			maxNumEdges = possibleGoodPair.numNeighborhoodEdges
 		}
+
+		Debug(
+			"Num. neighborhood edges for %v: %v",
+			possibleGoodPair.U(),
+			possibleGoodPair.numNeighborhoodEdges)
 	})
 
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+	Debug("Max. neighborhood edges: %v", maxNumEdges)
+
+	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 		if possibleGoodPair.numNeighborhoodEdges < maxNumEdges {
-			possibleGoodPairs.Remove(possibleGoodPair)
+			Debug("3) not satisfied, removing pair with u: %v", possibleGoodPair.U())
+			toRemove.Add(possibleGoodPair)
 		}
 	})
 
+	possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
+	toRemove.Clear()
 	// Having chosen the first vertex u in a good pair, to choose the second
 	// vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.
 	possibleZ := mapset.NewSet()
-	forAllGoodPairInfos(possibleGoodPairs, func(possibleGoodPair *goodPairInfo) {
+	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
-
 		if possibleGoodPair.numNeighborhoodAlmostDominatedPairs > 0 {
-			// TODO: This step can be done earlier to avoid additional loops,
-			// improving average complexity.
-			G.ForAllNeighbors(possibleGoodPair.U(), func(edge *Edge, done chan<- bool) {
-				n := getOtherVertex(possibleGoodPair.U(), edge)
-				G.ForAllNeighbors(possibleGoodPair.U(), func(edge *Edge, done chan<- bool) {
-					z := getOtherVertex(possibleGoodPair.U(), edge)
+			u := possibleGoodPair.U()
+			G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+				n := getOtherVertex(u, edge)
+				G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+					z := getOtherVertex(u, edge)
 					if n == z {
 						return
 					}
 
 					if n.almostDominates(z, G) {
+						Debug("a) is satisfied, adding %v as possible z for u %v", z, u)
 						possibleZ.Add(z)
 					}
 				})
