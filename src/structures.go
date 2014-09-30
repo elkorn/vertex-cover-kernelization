@@ -91,7 +91,10 @@ func (self *goodPairInfo) countNeighborhoodEdges(g *Graph) int {
 	})
 
 	self.numNeighborhoodEdges = result
-	return result
+	// This is less computationally expensive than maintaining a set of
+	// processed edges and within the neighborhood it's safe - each edge is
+	// counted twice due to the graph being undirected.
+	return result / 2
 }
 
 func (self *goodPairInfo) U() Vertex {
