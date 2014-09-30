@@ -86,8 +86,8 @@ func TestReduceProteins(t *testing.T) {
 		kPrimePrev = kPrime
 	}
 
-	assert.Equal(t, 98, kPrime)
-	assert.Equal(t, 328, g.NVertices())
+	assert.Equal(t, 99, kPrime)
+	assert.Equal(t, 243, g.NVertices())
 }
 
 func TestStopIfSizeBoundaryReached(t *testing.T) {

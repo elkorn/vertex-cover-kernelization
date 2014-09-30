@@ -1,10 +1,6 @@
 package graph
 
-import (
-	"log"
-
-	"github.com/deckarep/golang-set"
-)
+import "github.com/deckarep/golang-set"
 
 const MAX_UINT = ^uint(0)
 const MAX_INT = int(MAX_UINT >> 1)
@@ -171,8 +167,8 @@ func BranchAndBound(g *Graph, halt chan<- bool, k int) mapset.Set {
 		}
 	}
 
-	log.Printf("For %v edges, %v vertices:\n", g.NEdges(), g.NVertices())
-	log.Printf("Worked through %3.2f%% (%v/%v) solutions\n", (float64(worked)/float64(total))*100, worked, total)
+	Debug("For %v edges, %v vertices:\n", g.NEdges(), g.NVertices())
+	Debug("Worked through %3.2f%% (%v/%v) solutions\n", (float64(worked)/float64(total))*100, worked, total)
 
 	if bestLowerBound > k {
 		Debug("Cannot find a vertex cover of size \\leq k.")
@@ -181,6 +177,6 @@ func BranchAndBound(g *Graph, halt chan<- bool, k int) mapset.Set {
 		return nil
 	}
 
-	log.Printf("Best selection (%v elements) satisfying k: %v\n", bestSelection.Cardinality(), bestSelection)
+	Debug("Best selection (%v elements) satisfying k: %v\n", bestSelection.Cardinality(), bestSelection)
 	return bestSelection
 }
