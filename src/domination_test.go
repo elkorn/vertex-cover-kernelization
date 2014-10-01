@@ -15,8 +15,15 @@ func TestDominates(t *testing.T) {
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
 	v, u := Vertex(1), Vertex(2)
-
 	assert.True(t, v.dominates(u, g))
+	g.RemoveEdge(1, 2)
+	// There is no edge.
+	assert.False(t, v.dominates(u, g))
+	g.AddEdge(1, 2)
+	g.RemoveEdge(1, 3)
+	// 3 is not in common neighborhood.
+	assert.False(t, Vertex(1).dominates(Vertex(2), g))
+
 }
 
 func TestAlmostDominates(t *testing.T) {

@@ -29,14 +29,14 @@ func (v Vertex) dominates(u Vertex, g *Graph) bool {
 
 		// We're dealing with N[v]
 		if v == wu {
-			done <- true
+			Debug("%v is in N[%v]", wu, v)
 			return
 		}
 
 		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			wv := getOtherVertex(v, edge)
 			if wv == wu {
-				Debug("%v is in N(%v)", wv, u)
+				Debug("%v is in N[%v]", wu, v)
 				contains = true
 				done <- true
 			}
@@ -44,10 +44,15 @@ func (v Vertex) dominates(u Vertex, g *Graph) bool {
 
 		// some vertex from N(u) does not belong in N[v].
 		if !contains {
+			Debug("%v does not dominate %v", v, u)
 			done <- true
 			result = false
 		}
 	})
+
+	if result {
+		Debug("%v dominates %v", v, u)
+	}
 
 	return result
 }
