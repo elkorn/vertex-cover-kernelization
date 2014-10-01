@@ -6,6 +6,10 @@ type domination struct {
 	almost bool
 }
 
+func (u Vertex) isDominatedBy(v Vertex, g *Graph) bool {
+	return v.dominates(u, g)
+}
+
 func (v Vertex) dominates(u Vertex, g *Graph) bool {
 	/*
 		Vertex u is said to be dominated by a vertex v , or alternatively,
@@ -32,6 +36,7 @@ func (v Vertex) dominates(u Vertex, g *Graph) bool {
 		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			wv := getOtherVertex(v, edge)
 			if wv == wu {
+				Debug("%v is in N(%v)", wv, u)
 				contains = true
 				done <- true
 			}
@@ -47,11 +52,13 @@ func (v Vertex) dominates(u Vertex, g *Graph) bool {
 	return result
 }
 
+func (u Vertex) isAlmostDominatedBy(v Vertex, g *Graph) bool {
+	return v.almostDominates(u, g)
+}
+
 func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 	/*
-		1 A vertex u is said to be
-		almost-dominated by a vertex v , or alternatively,
-		a vertex v is said to almost-dominate a vertex u,
+		A vertex v is said to almost-dominate a vertex u
 		if u and v are non-adjacent and | N ( u ) − N (v)| ≤ 1.
 	*/
 
@@ -59,7 +66,16 @@ func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 		return false
 	}
 
-	vNeighbors, uNeighbors := g.getNeighbors(v), g.getNeighbors(u)
-	Debug("[ad-neighbors] u: %v, v: %v", uNeighbors, vNeighbors)
-	return IntAbs(len(uNeighbors)-len(vNeighbors)) <= 1
+	_, vNeighbors := g.getNeighborsWithSet(v)
+	_, uNeighbors := g.getNeighborsWithSet(u)
+
+	diff := uNeighbors.Difference(vNeighbors).Cardinality()
+	Debug("[ad-neighbors] u(%v): %v, v(%v): %v, diff: %v", u, uNeighbors, v, vNeighbors, diff)
+	result := diff <= 1
+	if result {
+		Debug("%v almost-dominates %v", v, u)
+	} else {
+		Debug("%v does not almost-dominate %v", v, u)
+	}
+	return result
 }

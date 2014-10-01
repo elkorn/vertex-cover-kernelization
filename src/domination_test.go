@@ -34,6 +34,6 @@ func TestAlmostDominates(t *testing.T) {
 	assert.True(t, Vertex(1).almostDominates(Vertex(5), g))
 	assert.True(t, Vertex(5).almostDominates(Vertex(1), g))
 	g.RemoveEdge(3, 5)
-	assert.False(t, Vertex(1).almostDominates(Vertex(5), g))
+	assert.True(t, Vertex(1).almostDominates(Vertex(5), g))
 	assert.False(t, Vertex(5).almostDominates(Vertex(1), g))
 }
