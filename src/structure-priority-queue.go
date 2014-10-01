@@ -35,8 +35,10 @@ func (s structure) computePriority(g *Graph) structurePriority {
 	case 1:
 		deg := g.Degree(elements[0])
 		if deg >= 8 {
+			// 8 Γ is a vertex z with d ( z ) ≥ 8.
 			return 8
 		} else if deg >= 7 {
+			// 11 Γ is a vertex z such that d ( z ) ≥ 7.
 			return 11
 		}
 
@@ -45,11 +47,23 @@ func (s structure) computePriority(g *Graph) structurePriority {
 		u, v := elements[0], elements[1]
 		du := g.Degree(u)
 		dv := g.Degree(v)
-		// The tuple case will mostlikely not have to be checked.
+		// The tuple case will most likely not have to be checked.
+		/*
+			A tuple ( S , q ) , where S = { u , v} , is called a 2-tuple if it
+			satisfies the following conditions:
+			(1) q = 1,
+			(2) d ( u ) ≥ d (v) ≥ 1,
+			(3) u and v are non-adjacent.
+		*/
 		if s.q == 1 &&
 			dv >= 1 && du >= dv &&
 			!g.hasEdge(u, v) {
 			// It's a 2-tuple.
+			/*
+				A 2-tuple ({ u , v}, 1 ) is a strong-2-tuple if it satisfies the
+				additional condition:
+				d ( u ) ≥ 4 and d (v) ≥ 4, or 2 ≤ d ( u ) ≤ 3 and 2 ≤ d (v) ≤ 3.
+			*/
 			if du >= 4 && dv >= 4 ||
 				du >= 2 && du <= 3 &&
 					dv >= 2 && dv <= 3 {
@@ -88,6 +102,12 @@ func (s structure) computePriority(g *Graph) structurePriority {
 		if du == 3 {
 			if hasOnlyDegree5Neighbors {
 				if neighborsAreDisjoint {
+					// TODO: Possible bug. Does neighbors not sharing common
+					// neighbors mean that they are disjoint?
+
+					// 3 Γ is a good pair ( u , z ) where d ( u ) = 3 and the
+					// neighbors of u are degree-5 vertices such that no two of
+					// them share any common neighbors besides u.
 					return 3
 				}
 
@@ -130,15 +150,20 @@ func (s structure) computePriority(g *Graph) structurePriority {
 					})
 				})
 				if !neighborsShareCommonVertexOtherThanU {
+					// 7 Γ is a good pair ( u , z ) where d ( u ) = 4 and all
+					// the neighbors of u are degree-5 vertices such that no
+					// two of them share a neighbor other than u.
 					return 7
 				}
 			}
 
 			if dv >= 5 {
+				// 4 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 5.
 				return 4
 			}
 
 			if dv >= 4 {
+				// 5 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 4.
 				return 5
 			}
 
@@ -147,19 +172,25 @@ func (s structure) computePriority(g *Graph) structurePriority {
 		if du == 4 {
 			if degree5NeighborsCount >= 3 {
 				if !neighborsAreDisjoint {
+					// 6 Γ is a good pair (u , z) where d(u) = 4, u has at least
+					// 3 degree-5 neighbors, and there is at least one edge
+					// among the neighbors of u.
 					return 6
 				}
 			}
 
 			if dv >= 5 {
+				// 9 Γ is a good pair (u, z) where d(u) = 4 and d(z) ≥ 5.
 				return 9
 			}
 
 			if dv >= 6 {
+				// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
 				return 10
 			}
 		}
 
+		// 12 Γ is any good pair other than the ones appearing in 1–11 above.
 		return 12
 	}
 
