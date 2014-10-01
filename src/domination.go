@@ -75,7 +75,7 @@ func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 	_, uNeighbors := g.getNeighborsWithSet(u)
 
 	diff := uNeighbors.Difference(vNeighbors).Cardinality()
-	Debug("[ad-neighbors] u(%v): %v, v(%v): %v, diff: %v", u, uNeighbors, v, vNeighbors, diff)
+	// Debug("[ad-neighbors] u(%v): %v, v(%v): %v, diff: %v", u, uNeighbors, v, vNeighbors, diff)
 	result := diff <= 1
 	if result {
 		Debug("%v almost-dominates %v", v, u)

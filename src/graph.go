@@ -73,7 +73,6 @@ func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		Debug("Found neighbor edge of %v: %v", v, edge)
 		result = result.appendIfNotContains(getOtherVertex(v, edge))
 	})
 
@@ -84,7 +83,6 @@ func (self *Graph) getNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
 	resultSet := mapset.NewSet()
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		Debug("Found neighbor edge of %v: %v", v, edge)
 		w := getOtherVertex(v, edge)
 		if !resultSet.Contains(w) {
 			resultSet.Add(w)

@@ -20,8 +20,6 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 		}
 	})
 
-	Debug("Vertices of degree %v: %v", degree, vertices)
-
 	for _, vertex := range vertices {
 		action(vertex)
 	}
