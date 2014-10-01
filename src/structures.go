@@ -45,6 +45,7 @@ func (self *goodPair) countAlmostDominatedPairs(g *Graph) int {
 	result := 0
 	u := self.U()
 
+	Debug("Counting almost-dominated pairs for u: %v", u)
 	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 		x := getOtherVertex(u, edge)
 		g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
@@ -60,6 +61,7 @@ func (self *goodPair) countAlmostDominatedPairs(g *Graph) int {
 	})
 
 	self.numNeighborhoodAlmostDominatedPairs = result
+	Debug("%v almost dominated pairs in N(%v)", result, u)
 	return result
 }
 
@@ -143,14 +145,16 @@ func identifyGoodVertices(G *Graph) mapset.Set {
 	return result
 }
 
+func trimSet(source mapset.Set, toRemove *mapset.Set) mapset.Set {
+	result := source.Difference(*toRemove)
+	(*toRemove).Clear()
+	return result
+}
+
 func identifyGoodPairs(G *Graph) mapset.Set {
 	tags := computeTags(G)
 	possibleGoodPairs := mapset.NewSet()
 	invalidPairs := mapset.NewSet()
-	updatePossibleGoodPairs := func(toRemove mapset.Set) {
-		possibleGoodPairs = possibleGoodPairs.Difference(toRemove)
-		toRemove.Clear()
-	}
 	// The first vertex in a good pair is found as follows:
 	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
 	Debug("Looking for U...")
@@ -164,14 +168,13 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 				return
 			}
 
-			comparison := tagU.Compare(tags[w.toInt()], G)
-			if comparison == -1 {
+			if tagU.Compare(tags[w.toInt()], G) == -1 {
 				foundValidU = false
 			}
 		})
 
 		if foundValidU {
-			Debug("1) satisfied, adding possible pair with u: %v", u)
+			Debug("1) satisfied, adding possible pair with u: %v (deg. %v)", u, deg)
 			possibleGoodPairs.Add(mkGoodPair(u))
 		}
 	})
@@ -195,7 +198,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 			}
 		})
 
-		updatePossibleGoodPairs(toRemove)
+		possibleGoodPairs = trimSet(possibleGoodPairs, &toRemove)
 	}
 
 	// 3. The number of edges in the subgraph induced by N(u) is maximized.
@@ -220,15 +223,19 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 		}
 	})
 
-	updatePossibleGoodPairs(toRemove)
+	possibleGoodPairs = trimSet(possibleGoodPairs, &toRemove)
 	// Having chosen the first vertex u in a good pair, to choose the second
 	// vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.
 	possibleZ := mapset.NewSet()
+	// TODO: Verify whether this is feasible.
+	additionalPairs := mapset.NewSet()
 	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
+		Debug("\n")
+		Debug("Looking for Z for %v...", possibleGoodPair.U())
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
-		if possibleGoodPair.numNeighborhoodAlmostDominatedPairs > 0 {
+		if possibleGoodPair.countAlmostDominatedPairs(G) > 0 {
 			u := possibleGoodPair.U()
 			G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 				n := getOtherVertex(u, edge)
@@ -238,12 +245,14 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 						return
 					}
 
-					if n.almostDominates(z, G) {
-						Debug("a) is satisfied, adding %v as possible z for u %v", z, u)
+					if z.isAlmostDominatedBy(n, G) {
+						Debug("a) satisfied, adding %v", z)
 						possibleZ.Add(z)
 					}
 				})
 			})
+
+			Debug("Satisfying a): %v", possibleZ)
 			// b) the degree of z is max among N(u) satisfying a).
 			maxDegreeOfZ := 0
 			for zInter := range possibleZ.Iter() {
@@ -253,12 +262,16 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 				}
 			}
 
+			Debug("Max. degree of z: %v", maxDegreeOfZ)
 			for zInter := range possibleZ.Iter() {
 				z := zInter.(Vertex)
 				if G.Degree(z) != maxDegreeOfZ {
-					possibleZ.Remove(zInter)
+					toRemove.Add(z)
 				}
 			}
+
+			possibleZ = trimSet(possibleZ, &toRemove)
+			Debug("Satisfying a),b): %v", possibleZ)
 
 			// c) z is adjacent to the least number of N(u) satisfying a) and b)
 			minAdjacency := MAX_INT
@@ -279,19 +292,26 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 					minAdjacency = adjacency
 				}
 
-				adjacencies.Add(&degree{
+				adj := &degree{
 					v:   z,
 					val: adjacency,
-				})
+				}
+
+				Debug("Adjacency of %v: %v", adj.v, adj.val)
+				adjacencies.Add(adj)
 			}
+
+			Debug("Min. adjacency of z: %v", minAdjacency)
 
 			for adj := range adjacencies.Iter() {
 				adjacency := adj.(*degree)
 				if adjacency.val != minAdjacency {
-					possibleZ.Remove(adjacency.v)
+					toRemove.Add(adjacency.v)
 				}
 			}
 
+			possibleZ = trimSet(possibleZ, &toRemove)
+			Debug("Satisfying a),b),c): %v", possibleZ)
 			// d) The number of shared neighbors between z and a neighbor of u is
 			// maximized among N(u) satisfying a), b) and c).
 			maxSharedNeighbors := 0
@@ -328,16 +348,24 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 			// Is that even possible?
 			// If so, additional good pairs of (u, z_1), (u, z_2)... should
 			// probably be created.
+			Debug("Shn: %v, maxShn: %v", sharedNeighbors, maxSharedNeighbors)
 			for shnInter := range sharedNeighbors.Iter() {
 				shn := shnInter.(*degree)
 				if shn.val == maxSharedNeighbors {
 					// This is the z we're looking for.
-					possibleGoodPair.pair.S.Add(shn.v)
-					break
+					if possibleGoodPair.IsValid() {
+						// There is a pair with that U already.
+						// Create another one.
+						additionalPairs.Add(mkGoodPair(possibleGoodPair.U(), shn.v))
+					} else {
+						possibleGoodPair.pair.S.Add(shn.v)
+					}
 				} else {
-					possibleZ.Remove(shn.v)
+					toRemove.Add(shn.v)
 				}
 			}
+
+			possibleZ = trimSet(possibleZ, &toRemove)
 		}
 
 		if !possibleGoodPair.IsValid() {
@@ -345,7 +373,10 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 		}
 	})
 
-	return possibleGoodPairs.Difference(invalidPairs)
+	forAllGoodPairs(possibleGoodPairs, func(pgp *goodPair) {
+		Debug("U: %v, pairs: %v, edges: %v", pgp.U(), pgp.numNeighborhoodAlmostDominatedPairs, pgp.numNeighborhoodEdges)
+	})
+	return possibleGoodPairs.Union(additionalPairs).Difference(invalidPairs)
 }
 
 func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {

@@ -57,17 +57,25 @@ func TestIdentifyGoodPairs(t *testing.T) {
 	g.AddEdge(9, 10)
 	g.AddEdge(9, 11)
 	g.AddEdge(9, 12)
+	g.AddEdge(10, 9)
 	g.AddEdge(10, 13)
 	g.AddEdge(12, 10)
-	tags := computeTags(g)
-	// TODO: Verify what U's are included.
-	// TODO: Create conditions for finding Z's in the graph.
-	inVerboseContext(func() {
-		pairs := identifyGoodPairs(g)
-		for p := range pairs.Iter() {
-			pp := p.(*goodPair)
-			Debug("Good pair with u: %v, z: %v, domination: %v, edges: %v", pp.U(), pp.Z(), pp.numNeighborhoodAlmostDominatedPairs, pp.numNeighborhoodEdges)
-			Debug("Tag: %v", tags[pp.U().toInt()])
-		}
-	})
+	pairs := identifyGoodPairs(g)
+	for p := range pairs.Iter() {
+		pp := p.(*goodPair)
+		Debug("Good pair with u: %v, z: %v, domination: %v, edges: %v", pp.U(), pp.Z(), pp.numNeighborhoodAlmostDominatedPairs, pp.numNeighborhoodEdges)
+	}
+
+	assert.Equal(t, 2, pairs.Cardinality())
+	p := pairs.Iter()
+	pp := (<-p).(*goodPair)
+	assert.Equal(t, Vertex(9), pp.U())
+	assert.Equal(t, Vertex(12), pp.Z())
+	assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
+	assert.Equal(t, 1, pp.numNeighborhoodEdges)
+	pp = (<-p).(*goodPair)
+	assert.Equal(t, Vertex(10), pp.U())
+	assert.Equal(t, Vertex(12), pp.Z())
+	assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
+	assert.Equal(t, 1, pp.numNeighborhoodEdges)
 }
