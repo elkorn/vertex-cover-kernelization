@@ -165,15 +165,6 @@ func Test_GoodPair_Du4_Deg5NeighborsGeq3_NeighborsHaveGeq1Edge(t *testing.T) {
 	g.AddEdge(5, 21)
 
 	str := mkGoodPair(Vertex(1), Vertex(2))
-	// TODO: There probably is a bug in neighborsOfUShareCommonVertexOtherThanU. @start-from-here
-	// It manifests itself here in the way that the logic decides that the
-	// neighbors do not share a neighbor other than u when this is clearly not
-	// the case having the edge 2-3.
-	// This does not affect the outcome of this test, because the case for
-	// priority 6 because for this graph hasOnlyDegree5Neighbors is false and
-	// the second condition for priority 7 does not have to be checked.
-
-	// Write a test for that in structures_test.go.
 
 	assert.Equal(t, 6, str.computePriority(g))
 }
