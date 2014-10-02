@@ -26,6 +26,96 @@ func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }
 
+func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *Graph) (neighborsShareCommonVertexOtherThanU bool) {
+	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
+		if neighborsShareCommonVertexOtherThanU {
+			done <- true
+			return
+		}
+
+		v1 := getOtherVertex(u, e)
+
+		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
+			if neighborsShareCommonVertexOtherThanU {
+				done <- true
+				return
+			}
+
+			v2 := getOtherVertex(u, e)
+			if v1 == v2 {
+				return
+			}
+
+			g.ForAllNeighbors(v1, func(e *Edge, done chan<- bool) {
+				if neighborsShareCommonVertexOtherThanU {
+					done <- true
+					return
+				}
+
+				n1 := getOtherVertex(v1, e)
+
+				g.ForAllNeighbors(v2, func(e *Edge, done chan<- bool) {
+					n2 := getOtherVertex(v2, e)
+					if n1 == n2 && n1 != u {
+						neighborsShareCommonVertexOtherThanU = true
+						Debug("N(%v) share common vertex %v", u, n1)
+						done <- true
+					}
+				})
+			})
+		})
+	})
+
+	if !neighborsShareCommonVertexOtherThanU {
+		Debug("N(%v) do not share other common vertices", u)
+	}
+
+	return
+}
+
+func (self *structure) neighborsOfUAreDisjoint(u Vertex, g *Graph) (neighborsAreDisjoint bool) {
+	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
+		v1 := getOtherVertex(u, e)
+		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
+			v2 := getOtherVertex(u, e)
+			if v1 == v2 {
+				return
+			}
+
+			if g.hasEdge(v1, v2) {
+				neighborsAreDisjoint = false
+				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
+				done <- true
+			}
+		})
+	})
+
+	if neighborsAreDisjoint {
+		Debug("All N(%v) are disjoint", u)
+	}
+	return
+}
+
+func (self *structure) countDegree5Neighbors(u Vertex, g *Graph) (degree5NeighborsCount int, hasOnlyDegree5Neighbors bool) {
+	hasOnlyDegree5Neighbors = true
+	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
+		w := getOtherVertex(u, e)
+		deg := g.Degree(w)
+		if deg == 5 {
+			degree5NeighborsCount++
+		} else {
+			Debug("N(%v): %v is of deg. %v", u, w, deg)
+			hasOnlyDegree5Neighbors = false
+		}
+	})
+
+	Debug("There are %v N(%v) of deg. 5", degree5NeighborsCount, u)
+	if hasOnlyDegree5Neighbors {
+		Debug("All N(%v) are of deg. 5", u)
+	}
+	return
+}
+
 type goodPair struct {
 	pair                                *structure
 	u, z                                Vertex

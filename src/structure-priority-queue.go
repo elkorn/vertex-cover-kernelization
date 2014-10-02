@@ -4,7 +4,7 @@ import "container/heap"
 
 type structurePriority int
 
-func (s structure) computePriority(g *Graph) structurePriority {
+func (s *structure) computePriority(g *Graph) structurePriority {
 	/*
 		This will reflect the ideas from the paper:
 		1 Γ is a strong 2-tuple.
@@ -74,127 +74,67 @@ func (s structure) computePriority(g *Graph) structurePriority {
 			return 2
 		}
 
-		hasOnlyDegree5Neighbors := true
-		degree5NeighborsCount := 0
-		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-			if g.Degree(getOtherVertex(u, e)) == 5 {
-				degree5NeighborsCount++
-			} else {
-				hasOnlyDegree5Neighbors = false
-			}
-		})
-
-		neighborsAreDisjoint := true
-		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-			v1 := getOtherVertex(u, e)
-			g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-				v2 := getOtherVertex(u, e)
-				if v1 == v2 {
-					return
-				}
-
-				if g.hasEdge(v1, v2) {
-					neighborsAreDisjoint = false
-					done <- true
-				}
-			})
-		})
-		if du == 3 {
-			if hasOnlyDegree5Neighbors {
-				if neighborsAreDisjoint {
-					// TODO: Possible bug. Does neighbors not sharing common
-					// neighbors mean that they are disjoint?
-
+		degree5NeighborsCount, hasOnlyDegree5Neighbors := s.countDegree5Neighbors(u, g)
+		if du == 3 || du == 4 {
+			neighborsShareCommonVertexOtherThanU := s.neighborsOfUShareCommonVertexOtherThanU(u, v, g)
+			if du == 3 {
+				if hasOnlyDegree5Neighbors &&
+					!neighborsShareCommonVertexOtherThanU {
 					// 3 Γ is a good pair ( u , z ) where d ( u ) = 3 and the
 					// neighbors of u are degree-5 vertices such that no two of
 					// them share any common neighbors besides u.
 					return 3
 				}
 
-				neighborsShareCommonVertexOtherThanU := false
-				g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-					if neighborsShareCommonVertexOtherThanU {
-						done <- true
-						return
-					}
+				if dv >= 5 {
+					// 4 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 5.
+					return 4
+				}
 
-					v1 := getOtherVertex(u, e)
+				if dv >= 4 {
+					// 5 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 4.
+					return 5
+				}
+			}
 
-					g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-						if neighborsShareCommonVertexOtherThanU {
-							done <- true
-							return
-						}
-
-						v2 := getOtherVertex(u, e)
-						if v1 == v2 {
-							return
-						}
-
-						g.ForAllNeighbors(v1, func(e *Edge, done chan<- bool) {
-							if neighborsShareCommonVertexOtherThanU {
-								done <- true
-								return
-							}
-
-							n1 := getOtherVertex(v1, e)
-
-							g.ForAllNeighbors(v2, func(e *Edge, done chan<- bool) {
-								n2 := getOtherVertex(v2, e)
-								if n1 == n2 && n1 != u {
-									neighborsShareCommonVertexOtherThanU = true
-									done <- true
-								}
-							})
-						})
-					})
-				})
+			if du == 4 {
 				if !neighborsShareCommonVertexOtherThanU {
 					// 7 Γ is a good pair ( u , z ) where d ( u ) = 4 and all
 					// the neighbors of u are degree-5 vertices such that no
 					// two of them share a neighbor other than u.
 					return 7
 				}
-			}
 
-			if dv >= 5 {
-				// 4 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 5.
-				return 4
-			}
+				neighborsAreDisjoint := s.neighborsOfUAreDisjoint(u, g)
+				if degree5NeighborsCount >= 3 {
+					if !neighborsAreDisjoint {
+						// 6 Γ is a good pair (u , z) where d(u) = 4, u has at least
+						// 3 degree-5 neighbors, and there is at least one edge
+						// among the neighbors of u.
+						return 6
+					}
+				}
 
-			if dv >= 4 {
-				// 5 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 4.
-				return 5
-			}
+				if dv >= 5 {
+					// 9 Γ is a good pair (u, z) where d(u) = 4 and d(z) ≥ 5.
+					return 9
+				}
 
-		}
-
-		if du == 4 {
-			if degree5NeighborsCount >= 3 {
-				if !neighborsAreDisjoint {
-					// 6 Γ is a good pair (u , z) where d(u) = 4, u has at least
-					// 3 degree-5 neighbors, and there is at least one edge
-					// among the neighbors of u.
-					return 6
+				if dv >= 6 {
+					// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
+					return 10
 				}
 			}
-
-			if dv >= 5 {
-				// 9 Γ is a good pair (u, z) where d(u) = 4 and d(z) ≥ 5.
-				return 9
-			}
-
-			if dv >= 6 {
-				// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
-				return 10
-			}
 		}
-
 		// 12 Γ is any good pair other than the ones appearing in 1–11 above.
 		return 12
 	}
 
 	panic("Unrecognized structure!")
+}
+
+func (self *goodPair) computePriority(g *Graph) structurePriority {
+	return (*(self.pair)).computePriority(g)
 }
 
 type structurePqItem struct {
