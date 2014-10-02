@@ -98,7 +98,8 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 			}
 
 			if du == 4 {
-				if !neighborsShareCommonVertexOtherThanU {
+				if hasOnlyDegree5Neighbors &&
+					!neighborsShareCommonVertexOtherThanU {
 					// 7 Γ is a good pair ( u , z ) where d ( u ) = 4 and all
 					// the neighbors of u are degree-5 vertices such that no
 					// two of them share a neighbor other than u.
