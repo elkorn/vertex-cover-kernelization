@@ -6,8 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: Analyze and create test cases for each structure type. @start-from-here
-
 func TestStrong2TuplePriority(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 3)
