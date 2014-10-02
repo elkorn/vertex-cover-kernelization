@@ -227,6 +227,40 @@ func Test_Vertex_DegGeq8(t *testing.T) {
 	assert.Equal(t, 8, str.computePriority(g))
 }
 
+func Test_GoodPair_Du4_DzGeq5(t *testing.T) {
+	g := MkGraph(9)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+
+	g.AddEdge(2, 6)
+	g.AddEdge(2, 7)
+	g.AddEdge(2, 8)
+	g.AddEdge(2, 9)
+
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 9, str.computePriority(g))
+}
+
+func Test_GoodPair_Du5_DzGeq6(t *testing.T) {
+	g := MkGraph(11)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(1, 6)
+
+	g.AddEdge(2, 7)
+	g.AddEdge(2, 8)
+	g.AddEdge(2, 9)
+	g.AddEdge(2, 10)
+	g.AddEdge(2, 11)
+
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 10, str.computePriority(g))
+}
+
 func Test_Vertex_DegGeq7(t *testing.T) {
 	g := MkGraph(8)
 	g.AddEdge(1, 2)
@@ -239,4 +273,23 @@ func Test_Vertex_DegGeq7(t *testing.T) {
 
 	str := mkGoodPair(Vertex(1))
 	assert.Equal(t, 11, str.computePriority(g))
+}
+
+func Test_GoodPair_Other(t *testing.T) {
+	g := MkGraph(12)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(1, 6)
+	g.AddEdge(1, 7)
+
+	g.AddEdge(2, 8)
+	g.AddEdge(2, 9)
+	g.AddEdge(2, 10)
+	g.AddEdge(2, 11)
+	g.AddEdge(2, 12)
+
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 12, str.computePriority(g))
 }

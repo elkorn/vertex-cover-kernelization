@@ -119,13 +119,14 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 					// 9 Γ is a good pair (u, z) where d(u) = 4 and d(z) ≥ 5.
 					return 9
 				}
-
-				if dz >= 6 {
-					// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
-					return 10
-				}
 			}
 		}
+
+		if du == 5 && dz >= 6 {
+			// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
+			return 10
+		}
+
 		// 12 Γ is any good pair other than the ones appearing in 1–11 above.
 		return 12
 	}
