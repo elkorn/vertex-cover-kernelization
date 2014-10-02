@@ -44,29 +44,29 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 
 	case 2:
 		// It's a good pair.
-		u, v := elements[0], elements[1]
+		u, z := elements[0], elements[1]
 		du := g.Degree(u)
-		dv := g.Degree(v)
+		dz := g.Degree(z)
 		// The tuple case will most likely not have to be checked.
 		/*
 			A tuple ( S , q ) , where S = { u , v} , is called a 2-tuple if it
 			satisfies the following conditions:
 			(1) q = 1,
-			(2) d ( u ) ≥ d (v) ≥ 1,
-			(3) u and v are non-adjacent.
+			(2) d (u) ≥ d (z) ≥ 1,
+			(3) u and z are non-adjacent.
 		*/
 		if s.q == 1 &&
-			dv >= 1 && du >= dv &&
-			!g.hasEdge(u, v) {
+			dz >= 1 && du >= dz &&
+			!g.hasEdge(u, z) {
 			// It's a 2-tuple.
 			/*
 				A 2-tuple ({ u , v}, 1 ) is a strong-2-tuple if it satisfies the
 				additional condition:
 				d ( u ) ≥ 4 and d (v) ≥ 4, or 2 ≤ d ( u ) ≤ 3 and 2 ≤ d (v) ≤ 3.
 			*/
-			if du >= 4 && dv >= 4 ||
+			if du >= 4 && dz >= 4 ||
 				du >= 2 && du <= 3 &&
-					dv >= 2 && dv <= 3 {
+					dz >= 2 && dz <= 3 {
 				// It's a strong 2-tuple.
 				return 1
 			}
@@ -76,7 +76,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 
 		degree5NeighborsCount, hasOnlyDegree5Neighbors := s.countDegree5Neighbors(u, g)
 		if du == 3 || du == 4 {
-			neighborsShareCommonVertexOtherThanU := s.neighborsOfUShareCommonVertexOtherThanU(u, v, g)
+			neighborsShareCommonVertexOtherThanU := s.neighborsOfUShareCommonVertexOtherThanU(u, z, g)
 			if du == 3 {
 				if hasOnlyDegree5Neighbors &&
 					!neighborsShareCommonVertexOtherThanU {
@@ -86,12 +86,12 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 					return 3
 				}
 
-				if dv >= 5 {
+				if dz >= 5 {
 					// 4 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 5.
 					return 4
 				}
 
-				if dv >= 4 {
+				if dz >= 4 {
 					// 5 Γ is a good pair (u, z) where d(u) = 3 and d(z) ≥ 4.
 					return 5
 				}
@@ -115,12 +115,12 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 					}
 				}
 
-				if dv >= 5 {
+				if dz >= 5 {
 					// 9 Γ is a good pair (u, z) where d(u) = 4 and d(z) ≥ 5.
 					return 9
 				}
 
-				if dv >= 6 {
+				if dz >= 6 {
 					// 10 Γ is a good pair (u,  z) where d(u) = 5 and d(z) ≥ 6.
 					return 10
 				}
