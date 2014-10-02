@@ -76,7 +76,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 
 		degree5NeighborsCount, hasOnlyDegree5Neighbors := s.countDegree5Neighbors(u, g)
 		if du == 3 || du == 4 {
-			neighborsShareCommonVertexOtherThanU := s.neighborsOfUShareCommonVertexOtherThanU(u, z, g)
+			neighborsShareCommonVertexOtherThanU, neighborsAreDisjoint := s.neighborsOfUShareCommonVertexOtherThanU(u, z, g)
 			if du == 3 {
 				if hasOnlyDegree5Neighbors &&
 					!neighborsShareCommonVertexOtherThanU {
@@ -106,7 +106,6 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 					return 7
 				}
 
-				neighborsAreDisjoint := s.neighborsOfUAreDisjoint(u, g)
 				if degree5NeighborsCount >= 3 {
 					if !neighborsAreDisjoint {
 						// 6 Γ is a good pair (u , z) where d(u) = 4, u has at least

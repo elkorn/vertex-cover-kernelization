@@ -8,17 +8,6 @@ import (
 
 // TODO: Analyze and create test cases for each structure type. @start-from-here
 
-func Test2TuplePriority(t *testing.T) {
-	g := MkGraph(5)
-	g.AddEdge(1, 3)
-	g.AddEdge(1, 4)
-	g.AddEdge(1, 5)
-	g.AddEdge(2, 3)
-	str := MkStructure(1, Vertex(1), Vertex(2))
-
-	assert.Equal(t, 2, str.computePriority(g))
-}
-
 func TestStrong2TuplePriority(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 3)
@@ -43,6 +32,17 @@ func TestStrong2TuplePriority(t *testing.T) {
 	g.RemoveEdge(2, 6)
 	// Does not fit the cases.
 	assert.NotEqual(t, 1, str.computePriority(g))
+}
+
+func Test2TuplePriority(t *testing.T) {
+	g := MkGraph(5)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(2, 3)
+	str := MkStructure(1, Vertex(1), Vertex(2))
+
+	assert.Equal(t, 2, str.computePriority(g))
 }
 
 func Test_GoodPair_Du3_Deg5NeighborsWithoutCommonNeighbors(t *testing.T) {

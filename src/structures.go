@@ -26,7 +26,8 @@ func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }
 
-func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *Graph) (neighborsShareCommonVertexOtherThanU bool) {
+func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *Graph) (neighborsShareCommonVertexOtherThanU, neighborsAreDisjoint bool) {
+	neighborsAreDisjoint = true
 	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
 		if neighborsShareCommonVertexOtherThanU {
 			done <- true
@@ -44,6 +45,11 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 			v2 := getOtherVertex(u, e)
 			if v1 == v2 {
 				return
+			}
+
+			if g.hasEdge(v1, v2) {
+				neighborsAreDisjoint = false
+				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
 			}
 
 			g.ForAllNeighbors(v1, func(e *Edge, done chan<- bool) {
@@ -68,6 +74,10 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 
 	if !neighborsShareCommonVertexOtherThanU {
 		Debug("N(%v) do not share other common vertices", u)
+	}
+
+	if neighborsAreDisjoint {
+		Debug("All N(%v) are disjoint", u)
 	}
 
 	return
