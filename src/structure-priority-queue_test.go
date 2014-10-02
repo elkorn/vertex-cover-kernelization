@@ -210,3 +210,33 @@ func Test_GoodPair_Du4_NeighborsWithoutCommonNeighbors(t *testing.T) {
 	str := mkGoodPair(Vertex(1), Vertex(2))
 	assert.Equal(t, 7, str.computePriority(g))
 }
+
+func Test_Vertex_DegGeq8(t *testing.T) {
+	g := MkGraph(21)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(1, 6)
+	g.AddEdge(1, 7)
+	g.AddEdge(1, 8)
+	g.AddEdge(1, 9)
+	g.AddEdge(1, 10)
+
+	str := mkGoodPair(Vertex(1))
+	assert.Equal(t, 8, str.computePriority(g))
+}
+
+func Test_Vertex_DegGeq7(t *testing.T) {
+	g := MkGraph(8)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(1, 6)
+	g.AddEdge(1, 7)
+	g.AddEdge(1, 8)
+
+	str := mkGoodPair(Vertex(1))
+	assert.Equal(t, 11, str.computePriority(g))
+}
