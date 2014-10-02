@@ -83,29 +83,6 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 	return
 }
 
-func (self *structure) neighborsOfUAreDisjoint(u Vertex, g *Graph) (neighborsAreDisjoint bool) {
-	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-		v1 := getOtherVertex(u, e)
-		g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
-			v2 := getOtherVertex(u, e)
-			if v1 == v2 {
-				return
-			}
-
-			if g.hasEdge(v1, v2) {
-				neighborsAreDisjoint = false
-				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
-				done <- true
-			}
-		})
-	})
-
-	if neighborsAreDisjoint {
-		Debug("All N(%v) are disjoint", u)
-	}
-	return
-}
-
 func (self *structure) countDegree5Neighbors(u Vertex, g *Graph) (degree5NeighborsCount int, hasOnlyDegree5Neighbors bool) {
 	hasOnlyDegree5Neighbors = true
 	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {
