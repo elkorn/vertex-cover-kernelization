@@ -45,7 +45,7 @@ func TestStrong2TuplePriority(t *testing.T) {
 	assert.NotEqual(t, 1, str.computePriority(g))
 }
 
-func TestGoodPairDu3Deg5NeighborsWithoutCommonNeighbors(t *testing.T) {
+func Test_GoodPair_Du3_Deg5NeighborsWithoutCommonNeighbors(t *testing.T) {
 	// u := 1
 	// z := 2
 	// The simplest case.
@@ -92,4 +92,86 @@ func TestGoodPairDu3Deg5NeighborsWithoutCommonNeighbors(t *testing.T) {
 	g.AddEdge(4, 11)
 	g.AddEdge(4, 12)
 	assert.NotEqual(t, 3, str.computePriority(g))
+}
+
+func Tes_tGoodPair_Du3_DzGeq5(t *testing.T) {
+	g := MkGraph(15)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+
+	g.AddEdge(2, 13)
+	g.AddEdge(2, 14)
+	g.AddEdge(2, 15)
+	g.AddEdge(2, 8)
+
+	g.AddEdge(3, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(3, 8)
+
+	g.AddEdge(4, 9)
+	g.AddEdge(4, 10)
+	g.AddEdge(4, 11)
+	g.AddEdge(4, 12)
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 4, str.computePriority(g))
+}
+
+func Test_GoodPair_Du3_DzGeq4(t *testing.T) {
+	g := MkGraph(15)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+
+	g.AddEdge(2, 13)
+	g.AddEdge(2, 14)
+	g.AddEdge(2, 15)
+
+	g.AddEdge(3, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(3, 8)
+
+	g.AddEdge(4, 9)
+	g.AddEdge(4, 10)
+	g.AddEdge(4, 11)
+	g.AddEdge(4, 12)
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 5, str.computePriority(g))
+}
+
+func Test_GoodPair_Du4_NeighborsWithoutCommonNeighbors(t *testing.T) {
+	g := MkGraph(16)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 16)
+
+	g.AddEdge(2, 13)
+	g.AddEdge(2, 14)
+	g.AddEdge(2, 15)
+
+	g.AddEdge(3, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(3, 8)
+
+	g.AddEdge(4, 9)
+	g.AddEdge(4, 10)
+	g.AddEdge(4, 11)
+	g.AddEdge(4, 12)
+	str := mkGoodPair(Vertex(1), Vertex(2))
+	assert.Equal(t, 7, str.computePriority(g))
+	// Simpler case.
+	g = MkGraph(9)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+	g.AddEdge(2, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(4, 8)
+	g.AddEdge(5, 9)
+	assert.Equal(t, 7, str.computePriority(g))
 }
