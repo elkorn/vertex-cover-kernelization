@@ -50,6 +50,10 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 			if g.hasEdge(v1, v2) {
 				neighborsAreDisjoint = false
 				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
+				neighborsShareCommonVertexOtherThanU = true
+				Debug("N(%v) share common vertices %v, %v", u, v1, v2)
+				done <- true
+				return
 			}
 
 			g.ForAllNeighbors(v1, func(e *Edge, done chan<- bool) {
@@ -61,6 +65,7 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 				n1 := getOtherVertex(v1, e)
 
 				g.ForAllNeighbors(v2, func(e *Edge, done chan<- bool) {
+					Debug("Checking %v|%v", v1, v2)
 					n2 := getOtherVertex(v2, e)
 					if n1 == n2 && n1 != u {
 						neighborsShareCommonVertexOtherThanU = true
@@ -301,6 +306,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 	})
 
 	possibleGoodPairs = trimSet(possibleGoodPairs, &toRemove)
+
 	// Having chosen the first vertex u in a good pair, to choose the second
 	// vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.

@@ -81,11 +81,60 @@ func TestIdentifyGoodPairs(t *testing.T) {
 }
 
 func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
-	// TODO: There probably is a bug in neighborsOfUShareCommonVertexOtherThanU. @start-from-here
-	// It manifests itself here in the way that the logic decides that the
+	str := MkStructure(-1, Vertex(1), Vertex(2))
+
+	g := MkGraph(6)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+
+	share, _ := str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.False(t, share)
+
+	g.AddEdge(3, 5)
+
+	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.True(t, share)
+
+	g.RemoveEdge(3, 5)
+	g.AddEdge(3, 6)
+	g.AddEdge(4, 6)
+
+	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.True(t, share)
+
+	g = MkGraph(21)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(1, 4)
+	g.AddEdge(1, 5)
+
+	g.AddEdge(2, 10)
+	g.AddEdge(2, 11)
+	g.AddEdge(2, 12)
+
+	g.AddEdge(3, 6)
+	g.AddEdge(3, 7)
+	g.AddEdge(3, 8)
+
+	g.AddEdge(4, 14)
+	g.AddEdge(4, 15)
+	g.AddEdge(4, 17)
+
+	g.AddEdge(5, 18)
+	g.AddEdge(5, 19)
+	g.AddEdge(5, 20)
+	g.AddEdge(5, 21)
+
+	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.False(t, share)
+
+	// TODO: There was a bug in neighborsOfUShareCommonVertexOtherThanU.
+	// It manifested itself here in the way that the logic decides that the
 	// neighbors do not share a neighbor other than u when this is clearly not
 	// the case having the edge 2-3.
-	g := MkGraph(21)
+	g = MkGraph(21)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(1, 4)
@@ -109,9 +158,6 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 	g.AddEdge(5, 20)
 	g.AddEdge(5, 21)
 
-	str := MkStructure(-1, Vertex(1), Vertex(2))
-	inVerboseContext(func() {
-		share, _ := str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
-		assert.True(t, share)
-	})
+	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.True(t, share)
 }
