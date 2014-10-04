@@ -46,7 +46,7 @@ func structionWithGivenNeighbors(g *Graph, v0 Vertex, s Neighbors, sSet mapset.S
 			Debug("vj: %v, j: %v", vj, j)
 			// For each anti-edge (vi,vj) in G, where 0 < i < j <= p
 			// introduce a new node vij.
-			if !g.hasEdge(vi, vj) {
+			if !g.HasEdge(vi, vj) {
 				newGraphCapacity++
 				reduction--
 				structionVertex := &structionVertex{
@@ -71,9 +71,9 @@ func structionWithGivenNeighbors(g *Graph, v0 Vertex, s Neighbors, sSet mapset.S
 				continue
 			}
 
-			// Add an edge (vir, vjs) if i == j and g.hasEdge(vr,vs)
+			// Add an edge (vir, vjs) if i == j and g.HasEdge(vr,vs)
 			if newVertex1.i == newVertex2.i &&
-				g.hasEdge(newVertex1.j, newVertex2.j) ||
+				g.HasEdge(newVertex1.j, newVertex2.j) ||
 				// Add an edge (vir, vjs) if i != j
 				newVertex1.i != newVertex2.i {
 				result.AddEdge(newVertex1.v, newVertex2.v)
@@ -81,7 +81,7 @@ func structionWithGivenNeighbors(g *Graph, v0 Vertex, s Neighbors, sSet mapset.S
 		}
 
 		// For every vertex u not in {v0,...,vp},
-		// if g.hasEdge(vi,u) or g.hasEdge(vj,u),
+		// if g.HasEdge(vi,u) or g.HasEdge(vj,u),
 		// add an edge (vij, u)
 		g.ForAllVertices(func(u Vertex, done chan<- bool) {
 			if sSet.Contains(u) || u == v0 {
@@ -89,7 +89,7 @@ func structionWithGivenNeighbors(g *Graph, v0 Vertex, s Neighbors, sSet mapset.S
 			}
 
 			for _, newVertex := range newVertices {
-				if g.hasEdge(newVertex.i, u) || g.hasEdge(newVertex.j, u) {
+				if g.HasEdge(newVertex.i, u) || g.HasEdge(newVertex.j, u) {
 					result.AddEdge(newVertex.v, u)
 				}
 			}
@@ -111,7 +111,7 @@ func (self Vertex) isStructionApplicable(g *Graph, neighbors mapset.Set) bool {
 				continue
 			}
 
-			if !g.hasEdge(n1, n2) {
+			if !g.HasEdge(n1, n2) {
 				numAntiEdges++
 				if numAntiEdges > maxAllowedAntiEdges {
 					return false
@@ -131,7 +131,7 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 			if v1 == v2 {
 				continue
 			}
-			if g.hasEdge(v1, v2) {
+			if g.HasEdge(v1, v2) {
 				return false
 			}
 		}

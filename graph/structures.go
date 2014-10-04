@@ -47,7 +47,7 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 				return
 			}
 
-			if g.hasEdge(v1, v2) {
+			if g.HasEdge(v1, v2) {
 				neighborsAreDisjoint = false
 				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
 				neighborsShareCommonVertexOtherThanU = true
@@ -160,7 +160,7 @@ func (self *goodPair) countNeighborhoodEdges(g *Graph) int {
 			}
 
 			Debug("Looking for edge %v-%v", x, y)
-			if g.hasEdge(x, y) {
+			if g.HasEdge(x, y) {
 				Debug("Found edge %v-%v", x, y)
 				result++
 			}
@@ -366,7 +366,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 				G.ForAllNeighbors(
 					possibleGoodPair.U(),
 					func(edge *Edge, done chan<- bool) {
-						if G.hasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
+						if G.HasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
 							adjacency++
 						}
 					})
@@ -409,7 +409,7 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 							sharedNeighbor := getOtherVertex(
 								possibleGoodPair.U(),
 								edge)
-							if G.hasEdge(z, sharedNeighbor) {
+							if G.HasEdge(z, sharedNeighbor) {
 								curSharedNeighbors++
 							}
 						})

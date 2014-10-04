@@ -14,7 +14,7 @@ func MkVertex(src int) Vertex {
 
 func (self *Graph) generateVertex() Vertex {
 	candidate := Vertex(self.currentVertexIndex)
-	for self.hasVertex(candidate) {
+	for self.HasVertex(candidate) {
 		candidate = Vertex(candidate + 1)
 	}
 

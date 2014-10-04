@@ -34,7 +34,7 @@ func end(name string, args ...interface{}) {
 	Debug("end: "+name, args...)
 }
 
-func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
+func NetworkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 	// Step 1: Convert graphg G to a bipartite graph H.
 	// Step 2: Convert H to a network flow problem instance H'.
 	start("mkNetworkFlow")
@@ -56,13 +56,13 @@ func networkFlowKernelization(G *Graph, k int) /*(*Graph,*/ int /*)*/ {
 	for _, edge := range maxFlowPath {
 		if edge.from != hPrime.source && edge.to != hPrime.sink {
 			M.Add(*edge)
-			if G.hasVertex(edge.from) {
+			if G.HasVertex(edge.from) {
 				matchedVertices.Add(edge.from)
 			} else {
 				S.Add(edge.from)
 			}
 
-			if G.hasVertex(edge.to) {
+			if G.HasVertex(edge.to) {
 				matchedVertices.Add(edge.to)
 			} else {
 				S.Add(edge.to)

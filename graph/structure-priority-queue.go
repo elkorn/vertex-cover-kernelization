@@ -61,7 +61,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 		*/
 		if s.q == 1 &&
 			dz >= 1 && du >= dz &&
-			!g.hasEdge(u, z) {
+			!g.HasEdge(u, z) {
 			// It's a 2-tuple.
 			/*
 				A 2-tuple ({ u , v}, 1 ) is a strong-2-tuple if it satisfies the

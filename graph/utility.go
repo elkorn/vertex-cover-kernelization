@@ -56,7 +56,7 @@ func Debug(format string, args ...interface{}) {
 	}
 }
 
-func inVerboseContext(fn func()) {
+func InVerboseContext(fn func()) {
 	SetOptions(Options{Verbose: true})
 	fn()
 	SetOptions(Options{Verbose: false})

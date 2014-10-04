@@ -16,7 +16,7 @@ func (v Vertex) dominates(u Vertex, g *Graph) bool {
 		a vertex v is said to dominate a vertex u, if ( u , v) is an
 		edge in G and N ( u ) ⊆ N [v] .
 	*/
-	if !g.hasEdge(u, v) {
+	if !g.HasEdge(u, v) {
 		return false
 	}
 
@@ -67,7 +67,7 @@ func (v Vertex) almostDominates(u Vertex, g *Graph) bool {
 		if u and v are non-adjacent and | N ( u ) − N (v)| ≤ 1.
 	*/
 
-	if g.hasEdge(u, v) {
+	if g.HasEdge(u, v) {
 		return false
 	}
 

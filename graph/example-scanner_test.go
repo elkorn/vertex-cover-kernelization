@@ -19,10 +19,10 @@ func TestScanGraph(t *testing.T) {
 	g := ScanGraph("../examples/sh2-fake.dim.sh")
 
 	for _, vertex := range expected.vertices {
-		assert.True(t, g.hasVertex(vertex))
+		assert.True(t, g.HasVertex(vertex))
 	}
 
 	for _, edge := range expected.edges {
-		assert.True(t, g.hasEdge(edge.from, edge.to), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.from, edge.to))
+		assert.True(t, g.HasEdge(edge.from, edge.to), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.from, edge.to))
 	}
 }

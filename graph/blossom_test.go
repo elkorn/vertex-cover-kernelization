@@ -32,8 +32,8 @@ func TestContractBlossom(t *testing.T) {
 	blossom := MkBlossom(1, cycle, vertices)
 	g1 := contractGraph(g, blossom)
 	assert.Equal(t, 2, g1.NVertices())
-	assert.True(t, g1.hasVertex(1))
-	assert.True(t, g1.hasVertex(6))
+	assert.True(t, g1.HasVertex(1))
+	assert.True(t, g1.HasVertex(6))
 	assert.Equal(t, 1, g1.NEdges())
-	assert.True(t, g1.hasEdge(1, 6))
+	assert.True(t, g1.HasEdge(1, 6))
 }

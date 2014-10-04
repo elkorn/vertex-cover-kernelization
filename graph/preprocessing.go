@@ -36,7 +36,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) (Nei
 					continue
 				}
 
-				if !self.hasEdge(n1, n2) {
+				if !self.HasEdge(n1, n2) {
 					return
 				}
 			}
@@ -70,7 +70,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (Nei
 
 					n2 := neighbors[j]
 
-					if self.hasEdge(n1, n2) {
+					if self.HasEdge(n1, n2) {
 						Debug("%v and %v are NOT disjoint", n1, n2)
 						hasOnlyDisjoint = false
 						break
@@ -167,7 +167,7 @@ func (g *Graph) fold(u Vertex) *fold {
 				continue
 			}
 
-			if g.hasEdge(n1, n2) {
+			if g.HasEdge(n1, n2) {
 				return nil
 			}
 		}

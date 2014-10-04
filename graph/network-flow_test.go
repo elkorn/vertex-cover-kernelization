@@ -17,18 +17,18 @@ func TestMkToNetworkFlow(t *testing.T) {
 	result := mkNetworkFlow(g)
 
 	// 1. we need source and sink nodes.
-	assert.True(t, result.graph.hasVertex(7))
-	assert.True(t, result.graph.hasVertex(8))
+	assert.True(t, result.graph.HasVertex(7))
+	assert.True(t, result.graph.HasVertex(8))
 	assert.Equal(t, source, result.source)
 	assert.Equal(t, sink, result.sink)
 	// 2. Source has to be connected to every vertex in set A.
 	for i := 1; i <= 3; i++ {
-		assert.True(t, result.graph.hasEdge(source, Vertex(i)), "Source has to be connected to all edges in set A.")
+		assert.True(t, result.graph.HasEdge(source, Vertex(i)), "Source has to be connected to all edges in set A.")
 	}
 
 	// 3. Sink has to be connected to every vertex in set B.
 	for i := 4; i <= 6; i++ {
-		assert.True(t, result.graph.hasEdge(Vertex(i), sink), "Sink has to be connected to all edges in set B.")
+		assert.True(t, result.graph.HasEdge(Vertex(i), sink), "Sink has to be connected to all edges in set B.")
 	}
 }
 
@@ -55,7 +55,7 @@ func TestNet(t *testing.T) {
 // func TestNetworkFlowProteins(t *testing.T) {
 // 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
 
-// 	inVerboseContext(func() {
+// 	InVerboseContext(func() {
 // 		kPrime := networkFlowKernelization(g, 246)
 // 		log.Println(kPrime)
 // 	})

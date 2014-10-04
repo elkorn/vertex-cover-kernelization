@@ -18,7 +18,7 @@ type graphVisualizer struct {
 	vertexAttrs []map[string]string
 }
 
-func showGraph(g *Graph) {
+func ShowGraph(g *Graph) {
 	MkGraphVisualizer(g).Display()
 }
 
@@ -165,7 +165,7 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 			continue
 		}
 
-		if self.g.hasVertex(v) {
+		if self.g.HasVertex(v) {
 			res.Write(self.vertexToB(v))
 		}
 	}

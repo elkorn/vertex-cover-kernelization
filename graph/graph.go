@@ -54,7 +54,7 @@ func (self *Graph) Copy() *Graph {
 	return result
 }
 
-func (self *Graph) hasVertex(v Vertex) bool {
+func (self *Graph) HasVertex(v Vertex) bool {
 	if v.toInt() >= self.currentVertexIndex {
 		return false
 	}
@@ -151,7 +151,7 @@ func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, chan<- bool)) {
 	}
 }
 
-func (self *Graph) hasEdge(a, b Vertex) bool {
+func (self *Graph) HasEdge(a, b Vertex) bool {
 	edge := self.getEdgeByCoordinates(a.toInt(), b.toInt())
 	return edge != nil && !edge.isDeleted
 }
@@ -174,7 +174,7 @@ func (g *Graph) addVertex() error {
 }
 
 func (self *Graph) RemoveVertex(v Vertex) error {
-	if !self.hasVertex(v) {
+	if !self.HasVertex(v) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
 	}
 
@@ -232,15 +232,15 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 		return errors.New(fmt.Sprintf("Cannot connect vertex %v with itself.", a))
 	}
 
-	if !self.hasVertex(a) {
+	if !self.HasVertex(a) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", a))
 	}
 
-	if !self.hasVertex(b) {
+	if !self.HasVertex(b) {
 		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", b))
 	}
 
-	if self.hasEdge(a, b) {
+	if self.HasEdge(a, b) {
 		return errors.New(fmt.Sprintf("An edge between %v and %v already exists.", a, b))
 	}
 
@@ -294,7 +294,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 }
 
 func (self *Graph) Degree(v Vertex) int {
-	if !self.hasVertex(v) {
+	if !self.HasVertex(v) {
 		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v)))
 	}
 

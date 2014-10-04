@@ -15,7 +15,7 @@ func TestMkGraph(t *testing.T) {
 func TestaddVertex(t *testing.T) {
 	g := MkGraph(0)
 	g.addVertex()
-	assert.True(t, g.hasVertex(MkVertex(0)))
+	assert.True(t, g.HasVertex(MkVertex(0)))
 }
 
 func TestRemoveVertex(t *testing.T) {
@@ -23,7 +23,7 @@ func TestRemoveVertex(t *testing.T) {
 
 	err := g.RemoveVertex(2)
 	assert.Nil(t, err)
-	assert.False(t, g.hasVertex(2))
+	assert.False(t, g.HasVertex(2))
 	g.addVertex()
 	g.AddEdge(1, 4)
 	g.AddEdge(1, 3)
@@ -31,9 +31,9 @@ func TestRemoveVertex(t *testing.T) {
 
 	err = g.RemoveVertex(4)
 	assert.Nil(t, err)
-	assert.Equal(t, false, g.hasEdge(1, 4))
-	assert.Equal(t, false, g.hasEdge(4, 3))
-	assert.Equal(t, true, g.hasEdge(1, 3))
+	assert.Equal(t, false, g.HasEdge(1, 4))
+	assert.Equal(t, false, g.HasEdge(4, 3))
+	assert.Equal(t, true, g.HasEdge(1, 3))
 }
 
 func TestAddEdge(t *testing.T) {

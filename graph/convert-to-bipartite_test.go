@@ -50,7 +50,7 @@ func TestMakeBipartite(t *testing.T) {
 
 	actual := makeBipartite(g)
 	for _, v := range expectedVertices {
-		assert.True(t, actual.hasVertex(v))
+		assert.True(t, actual.HasVertex(v))
 	}
 
 	assertAllEdgesEqual(t, expectedEdges, actual)

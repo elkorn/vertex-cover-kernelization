@@ -95,7 +95,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 	for !workList.Empty() {
 		cur := (workList.Pop()).(*Edge)
 		Debug("Processing edge %v-%v.", cur.from, cur.to)
-		if M.hasEdge(cur.from, cur.to) {
+		if M.HasEdge(cur.from, cur.to) {
 			continue
 		}
 
@@ -202,7 +202,7 @@ func updateMatching(path *list.List, matching *Graph) {
 	// P ⊕ M
 	for e, f := path.Front(), path.Front().Next(); f != nil; e, f = e.Next(), f.Next() {
 		from, to := e.Value.(Vertex), f.Value.(Vertex)
-		if matching.hasEdge(from, to) {
+		if matching.HasEdge(from, to) {
 			Debug("Removing edge %v-%v from matching", from, to)
 			matching.RemoveEdge(from, to)
 		} else {
@@ -309,7 +309,7 @@ func reverse(input *list.List) (result *list.List) {
 func findBlossomExit(g *Graph, blossom *blossom, v Vertex) Vertex {
 	for cv := range blossom.vertices.Iter() {
 		cycleVertex := cv.(Vertex)
-		if g.hasEdge(cycleVertex, v) {
+		if g.HasEdge(cycleVertex, v) {
 			return cycleVertex
 		}
 	}

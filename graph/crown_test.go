@@ -23,7 +23,7 @@ func TestFindCrown1(t *testing.T) {
 	m, o := FindMaximalMatching(g)
 	gv.HighlightMatching(m, "red")
 	gv.HighlightCover(o, "green")
-	// inVerboseContext(func() {
+	// InVerboseContext(func() {
 	// 	findCrown(g, halt, k)
 	// })
 	crown := findCrown(g, halt, k)
@@ -47,14 +47,14 @@ func TestReduceCrown1(t *testing.T) {
 	halt := make(chan bool, 1)
 	ReduceCrown(g, halt, k)
 	assert.Equal(t, 5, g.NVertices())
-	assert.True(t, g.hasVertex(1))
-	assert.True(t, g.hasVertex(5))
-	assert.True(t, g.hasVertex(6))
-	assert.True(t, g.hasVertex(7))
-	assert.True(t, g.hasVertex(8))
+	assert.True(t, g.HasVertex(1))
+	assert.True(t, g.HasVertex(5))
+	assert.True(t, g.HasVertex(6))
+	assert.True(t, g.HasVertex(7))
+	assert.True(t, g.HasVertex(8))
 	assert.Equal(t, 2, g.NEdges())
-	assert.True(t, g.hasEdge(5, 6))
-	assert.True(t, g.hasEdge(7, 8))
+	assert.True(t, g.HasEdge(5, 6))
+	assert.True(t, g.HasEdge(7, 8))
 }
 
 func TestReduceCrown2(t *testing.T) {

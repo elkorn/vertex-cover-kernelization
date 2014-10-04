@@ -18,16 +18,16 @@ func TestRemoveOfDegree(t *testing.T) {
 	g.AddEdge(5, 2)
 
 	g.removeVerticesOfDegree(4)
-	assert.True(t, g.hasVertex(1))
-	assert.False(t, g.hasVertex(2))
-	assert.True(t, g.hasVertex(3))
-	assert.True(t, g.hasVertex(4))
-	assert.True(t, g.hasVertex(5))
+	assert.True(t, g.HasVertex(1))
+	assert.False(t, g.HasVertex(2))
+	assert.True(t, g.HasVertex(3))
+	assert.True(t, g.HasVertex(4))
+	assert.True(t, g.HasVertex(5))
 
-	assert.False(t, g.hasEdge(1, 2))
-	assert.False(t, g.hasEdge(2, 3))
-	assert.False(t, g.hasEdge(4, 2))
-	assert.False(t, g.hasEdge(5, 2))
+	assert.False(t, g.HasEdge(1, 2))
+	assert.False(t, g.HasEdge(2, 3))
+	assert.False(t, g.HasEdge(4, 2))
+	assert.False(t, g.HasEdge(5, 2))
 }
 
 func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
@@ -60,15 +60,15 @@ func TestRemoveAllVerticesAccordingToMap(t *testing.T) {
 	theMap[2] = Neighbors{2, 5}
 
 	g.removeAllVerticesAccordingToMap(theMap)
-	assert.False(t, g.hasVertex(2))
-	assert.False(t, g.hasVertex(3))
-	assert.False(t, g.hasVertex(5))
-	assert.True(t, g.hasVertex(4))
-	assert.True(t, g.hasVertex(1))
+	assert.False(t, g.HasVertex(2))
+	assert.False(t, g.HasVertex(3))
+	assert.False(t, g.HasVertex(5))
+	assert.True(t, g.HasVertex(4))
+	assert.True(t, g.HasVertex(1))
 
-	assert.False(t, g.hasEdge(2, 3))
-	assert.False(t, g.hasEdge(3, 5))
-	assert.True(t, g.hasEdge(1, 4))
+	assert.False(t, g.HasEdge(2, 3))
+	assert.False(t, g.HasEdge(3, 5))
+	assert.True(t, g.HasEdge(1, 4))
 }
 
 func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
@@ -81,15 +81,15 @@ func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 
 	g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
 
-	assert.False(t, g.hasVertex(2))
-	assert.False(t, g.hasVertex(3))
-	assert.False(t, g.hasVertex(5))
-	assert.True(t, g.hasVertex(4))
-	assert.True(t, g.hasVertex(1))
+	assert.False(t, g.HasVertex(2))
+	assert.False(t, g.HasVertex(3))
+	assert.False(t, g.HasVertex(5))
+	assert.True(t, g.HasVertex(4))
+	assert.True(t, g.HasVertex(1))
 
-	assert.False(t, g.hasEdge(2, 3))
-	assert.False(t, g.hasEdge(3, 5))
-	assert.True(t, g.hasEdge(1, 4))
+	assert.False(t, g.HasEdge(2, 3))
+	assert.False(t, g.HasEdge(3, 5))
+	assert.True(t, g.HasEdge(1, 4))
 }
 
 func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
@@ -176,18 +176,18 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 func TestContractEdges(t *testing.T) {
 	g := mkGraph4()
-	// showGraph(g)
+	// ShowGraph(g)
 	contractionMap := make(NeighborMap, 1)
 	contractionMap[0] = Neighbors{2, 3}
 	g.contractEdges(contractionMap)
 
-	assert.False(t, g.hasVertex(2))
-	assert.False(t, g.hasVertex(3))
+	assert.False(t, g.HasVertex(2))
+	assert.False(t, g.HasVertex(3))
 
-	assert.True(t, g.hasEdge(1, 4))
-	assert.True(t, g.hasEdge(1, 5))
-	assert.True(t, g.hasEdge(1, 6))
-	assert.True(t, g.hasEdge(1, 7))
+	assert.True(t, g.HasEdge(1, 4))
+	assert.True(t, g.HasEdge(1, 5))
+	assert.True(t, g.HasEdge(1, 6))
+	assert.True(t, g.HasEdge(1, 7))
 
 	g = mkGraph5()
 	contractionMap = make(NeighborMap, 6)
@@ -195,14 +195,14 @@ func TestContractEdges(t *testing.T) {
 	contractionMap[5] = Neighbors{2, 7}
 	g.contractEdges(contractionMap)
 
-	assert.False(t, g.hasVertex(2))
-	assert.False(t, g.hasVertex(3))
-	assert.False(t, g.hasVertex(7))
+	assert.False(t, g.HasVertex(2))
+	assert.False(t, g.HasVertex(3))
+	assert.False(t, g.HasVertex(7))
 
-	assert.True(t, g.hasEdge(1, 4))
-	assert.True(t, g.hasEdge(1, 5))
-	assert.True(t, g.hasEdge(6, 4))
-	assert.True(t, g.hasEdge(6, 5))
+	assert.True(t, g.HasEdge(1, 4))
+	assert.True(t, g.HasEdge(1, 5))
+	assert.True(t, g.HasEdge(6, 4))
+	assert.True(t, g.HasEdge(6, 5))
 
 	g = MkGraph(7)
 	g.AddEdge(1, 2)

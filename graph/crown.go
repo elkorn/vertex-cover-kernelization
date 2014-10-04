@@ -82,7 +82,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 			panic(fmt.Sprintf("Vertex %v is deleted!", v))
 		}
 
-		if !M2.hasVertex(v) || M2.Degree(v) == 0 {
+		if !M2.HasVertex(v) || M2.Degree(v) == 0 {
 			straightCrown = false
 			done <- true
 		}
@@ -105,7 +105,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	In := mapset.NewSet()
 	for vInter := range O.Iter() {
 		v := vInter.(Vertex)
-		if !M2.hasVertex(v) || M2.Degree(v) == 0 {
+		if !M2.HasVertex(v) || M2.Degree(v) == 0 {
 			In.Add(v)
 		}
 	}
@@ -147,7 +147,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 				w := getOtherVertex(v, edge)
-				if M2.hasEdge(v, w) {
+				if M2.HasEdge(v, w) {
 					// Adding N_M2(Hn)
 					neighbors.Add(w)
 				}
