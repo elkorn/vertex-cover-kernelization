@@ -249,7 +249,6 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	self.neighbors[a.toInt()][b.toInt()] = edge
 	self.neighbors[b.toInt()][a.toInt()] = edge
 
-	Debug("Added neighbor %v->%v: %v", a, b, *edge)
 	ai := a.toInt()
 	bi := b.toInt()
 	self.degrees[ai]++

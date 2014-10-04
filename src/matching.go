@@ -72,20 +72,20 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 	forest := make([]*nodeInformation, G.currentVertexIndex)
 	workList := MkQueue(G.NEdges())
 	G.ForAllVertices(func(v Vertex, done chan<- bool) {
-		Debug("Checking vertex %v", v)
+		// Debug("Checking vertex %v", v)
 		// The forest must be initially seeded with singleton nodes only.
 		deg := M.Degree(v)
 		if deg > 0 {
-			Debug("Has %v matched edges.", deg)
+			// Debug("Has %v matched edges.", deg)
 			return
 		}
 
-		Debug("%v is exposed, adding to forest.", v)
+		// Debug("%v is exposed, adding to forest.", v)
 		forest[v.toInt()] = mkNodeInformation(INVALID_VERTEX, v, true)
 
 		G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			e := MkEdge(v, getOtherVertex(v, edge))
-			Debug("Adding %v-%v to work list", e.from, e.to)
+			// Debug("Adding %v-%v to work list", e.from, e.to)
 			// This ordering has to be enforced.
 			workList.Push(e)
 		})
