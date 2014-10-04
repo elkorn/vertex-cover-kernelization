@@ -1,6 +1,10 @@
 package graph
 
-import "container/heap"
+import (
+	"container/heap"
+
+	"github.com/deckarep/golang-set"
+)
 
 type structurePriority int
 
@@ -135,20 +139,12 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 }
 
 func (self *goodPair) computePriority(g *Graph) structurePriority {
-	return (*(self.pair)).computePriority(g)
+	return self.pair.computePriority(g)
 }
-
-type structurePqItem struct {
-	value    *structure
-	index    int
-	priority structurePriority
-}
-
-// A StructurePriorityQueue implements heap.Interface and holds structurePqItems.
-type StructurePriorityQueue []*structurePqItem
 
 type StructurePriorityQueueProxy struct {
-	pq *StructurePriorityQueue
+	pq                    *StructurePriorityQueue
+	numberOfStrong2Tuples int
 }
 
 func MkStructurePriorityQueue() *StructurePriorityQueueProxy {
@@ -160,20 +156,55 @@ func MkStructurePriorityQueue() *StructurePriorityQueueProxy {
 	return result
 }
 
-func (self *StructurePriorityQueueProxy) Push(node *structure) {
+func (self *StructurePriorityQueueProxy) Push(node *structure, g *Graph) {
+	priority := node.computePriority(g)
+	if 1 == priority {
+		self.numberOfStrong2Tuples++
+		node.q = 1
+	}
+
 	heap.Push(self.pq, &structurePqItem{
-		value: node,
+		value:    node,
+		priority: node.computePriority(g),
 	})
+
 }
 
-func (self *StructurePriorityQueueProxy) Pop() *structure {
+func (self *StructurePriorityQueueProxy) Pop() (*structure, structurePriority) {
 	result := heap.Pop(self.pq).(*structurePqItem)
-	return result.value
+	if 1 == result.priority {
+		self.numberOfStrong2Tuples--
+	}
+
+	return result.value, result.priority
 }
 
 func (self *StructurePriorityQueueProxy) Empty() bool {
 	return self.pq.Empty()
 }
+
+func (self *StructurePriorityQueueProxy) ContainsStrong2Tuple() bool {
+	return self.numberOfStrong2Tuples > 0
+}
+
+func (self *StructurePriorityQueueProxy) PopAllStrong2Tuples() mapset.Set {
+	result := mapset.NewSet()
+	for self.ContainsStrong2Tuple() {
+		s2t, _ := self.Pop()
+		result.Add(s2t)
+	}
+
+	return result
+}
+
+type structurePqItem struct {
+	value    *structure
+	index    int
+	priority structurePriority
+}
+
+// A StructurePriorityQueue implements heap.Interface and holds structurePqItems.
+type StructurePriorityQueue []*structurePqItem
 
 func (pq StructurePriorityQueue) Len() int { return len(pq) }
 

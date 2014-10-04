@@ -464,11 +464,16 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 
 func identifyStructures(G *Graph, k int) *StructurePriorityQueueProxy {
 	result := MkStructurePriorityQueue()
-	// goodVertices := identifyGoodVertices(G)
-	// goodPairs := identifyGoodPairs(G)
+	goodVertices := identifyGoodVertices(G)
+	goodPairs := identifyGoodPairs(G)
 
-	// TODO: Compute the priority of the good pairs.
-	// TODO: Put the good pairs in the queue.
+	for gvInter := range goodVertices.Iter() {
+		result.Push(gvInter.(*structure), G)
+	}
+
+	for gpInter := range goodPairs.Iter() {
+		result.Push((gpInter.(*goodPair)).pair, G)
+	}
 
 	return result
 }

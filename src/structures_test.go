@@ -161,3 +161,10 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
 	assert.True(t, share)
 }
+
+func TestIdentifyStructuresInProteins(t *testing.T) {
+	// TODO: Devise better test cases.
+	// For now, this should not fail.
+	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+	identifyStructures(g, MAX_INT)
+}
