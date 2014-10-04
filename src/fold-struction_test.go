@@ -97,6 +97,8 @@ func TestReduceAlmostCrown(t *testing.T) {
 }
 
 func TestGeneralFold2(t *testing.T) {
+	// TODO: There probably is a bug when connecting the almost-crown vertices to
+	// the fold-root. Investigate.
 	g := MkGraph(9)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -113,7 +115,6 @@ func TestGeneralFold2(t *testing.T) {
 
 	generalFold(g, nil, 190)
 	// g1 :=  generalFold(g, 0)
-
 }
 
 func TestGeneralFold3(t *testing.T) {
@@ -126,4 +127,36 @@ func TestGeneralFold3(t *testing.T) {
 	g.AddEdge(3, 7)
 
 	// g1 :=  generalFold(g)
+}
+
+func TestGeneralFold4(t *testing.T) {
+	g := MkGraph(3)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	gPrime, kPrime := generalFold(g, nil, 1)
+	assert.Equal(t, 1, gPrime.NVertices())
+	assert.Equal(t, -1, kPrime)
+	assert.True(t, g.hasVertex(Vertex(4)))
+}
+
+func TestGeneralFold5(t *testing.T) {
+	g := MkGraph(9)
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 3)
+	g.AddEdge(3, 5)
+	g.AddEdge(4, 5)
+	g.AddEdge(4, 6)
+	g.AddEdge(5, 6)
+	g.AddEdge(6, 8)
+	g.AddEdge(7, 8)
+	g.AddEdge(7, 9)
+	g.AddEdge(8, 9)
+	g.AddEdge(9, 2)
+	gPrime, _ := generalFold(g, nil, MAX_INT)
+	// TODO: There are bugs in generalFold or findCrown.
+	// 1) nothing gets folded in this graph. According to Lemma 5.2, there
+	// should be a parameter reduction of at least 2.
+	// 2) Doing a consecutive fold on the graph causes a crash.
+	generalFold(gPrime, nil, MAX_INT)
 }

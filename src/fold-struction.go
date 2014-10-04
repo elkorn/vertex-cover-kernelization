@@ -107,7 +107,7 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 	return true
 }
 
-func generalFold(g *Graph, halt chan bool, k int) *Graph {
+func generalFold(g *Graph, halt chan bool, k int) (*Graph, int) {
 	kPrime := k
 	var crown *Crown
 	// Apply the NT-decomposition to G until the application of this
@@ -121,7 +121,7 @@ func generalFold(g *Graph, halt chan bool, k int) *Graph {
 		select {
 		case <-halt:
 			halt <- true
-			return nil
+			return nil, k
 		default:
 		}
 
@@ -138,12 +138,15 @@ func generalFold(g *Graph, halt chan bool, k int) *Graph {
 	return reduceAlmostCrown(g, halt, kPrime)
 }
 
-func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
+func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) (*Graph, int) {
 	// G′ has an almost-crown if and only if there exists a vertex v ∈ G′ such
 	// that G′ ⧵ {v} has an equal crown.
 	// For every vertex v in G′ , check if G′ ⧵ {v} has a crown.
 	var crown *Crown
 	var almostCrownVertex Vertex
+	if g.NVertices() == 0 {
+		panic("No vertices to search!")
+	}
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		g.RemoveVertex(v)
 		Debug("Removed vertex %v, looking for a crown.", v)
@@ -166,7 +169,13 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 	// then connecting u_I to every vertex v ∈ G′
 	// such that v was a neighbor of a vertex u ∈ N (I) in G.
 	if almostCrownVertex != INVALID_VERTEX {
-		Debug("Found a non-trivial almost-crown! %v", crown)
+		// TODO: This is how it should look like as the result. Not sure if such
+		// treatment is correct.
+		// It might be OK, since as the result we are always removing I and N(I).
+		// crown.H = crown.I.Clone()
+		// crown.I.Clear()
+		// crown.I.Add(almostCrownVertex)
+		Debug("Found a non-trivial almost-crown! H: %v, I: %v", crown.H, crown.I)
 		g.addVertex()
 		foldRoot := Vertex(g.currentVertexIndex)
 		foldAndRemove := func(v Vertex) {
@@ -186,8 +195,8 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) *Graph {
 
 		foldAndRemove(almostCrownVertex)
 	}
-
-	return g
+	// Then τ( G\prime)=τ(G)−|I|.
+	return g, kPrime - crown.I.Cardinality()
 }
 
 func foldStructionVC(G *Graph, T *StructurePriorityQueueProxy, k int) {

@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+
 	"github.com/deckarep/golang-set"
 )
 
@@ -163,6 +164,15 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		N++
 	}
 
+	// This fixes the issues related to reducing a graph too much in some cases.
+	// if Hsteps[N].Cardinality() == 0 {
+	// 	Debug("HN is empty!")
+	// 	return &Crown{
+	// 		I: Hsteps[N],
+	// 		H: Hsteps[N],
+	// 	}
+	// }
+
 	// Step 6: I_N, H_N form a flared crown.
 	Debug("Found a flared crown: I: %v, H: %v", Isteps[N], Hsteps[N])
 	return &Crown{
@@ -172,6 +182,11 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 }
 
 func reduceCrown(G *Graph, crown *Crown) {
+	// TODO: There is a bug here - the algorithm keeps finding and reducing
+	// crowns even if |I|=1 and |H|=0. This leads to a degradation of the graph
+	// up to the point of having no vertices inside.
+	// 1) Read Chlebik's paper for more details on how to fix this.
+	// 2) Try using LP kernelization for finding crowns.
 	Debug("Removing crown %v", crown)
 	// The graph G′ is produced by removing vertices in I and H
 	// along with their adjacent edges.
