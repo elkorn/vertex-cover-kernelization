@@ -55,7 +55,9 @@ func TestStruction2(t *testing.T) {
 	g.AddEdge(5, 11)
 	g.AddEdge(5, 12)
 
+	showGraph(g)
 	g1 := struction(g, Vertex(1))
+	showGraph(g1)
 	assert.Equal(t, 10, g1.NVertices())
 	assert.Equal(t, 15, g1.NEdges())
 	assert.Equal(t, 6, g1.Degree(13))

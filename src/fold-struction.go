@@ -15,9 +15,14 @@ func (self *structionVertex) Name() string {
 	return fmt.Sprintf("v%v%v", self.i, self.j)
 }
 
-func struction(g *Graph, v0 Vertex) (result *Graph) {
+func struction(g *Graph, v0 Vertex) *Graph {
 	// Set of neighbors {v1, ... ,vp}
 	s, sSet := g.getNeighborsWithSet(v0)
+	result, _ := structionWithGivenNeighbors(g, v0, s, sSet)
+	return result
+}
+
+func structionWithGivenNeighbors(g *Graph, v0 Vertex, s Neighbors, sSet mapset.Set) (result *Graph, reduction int) {
 	p := sSet.Cardinality()
 	newGraphCapacity := g.currentVertexIndex
 	newVertices := make([]*structionVertex, 0, g.currentVertexIndex)
@@ -30,10 +35,12 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 
 	// Remove vertices {v0, ... ,vp}
 	newDeletions[v0.toInt()] = true
+	reduction = 1
 	for i := 0; i < p; i++ {
 		vi := s[i]
 		Debug("vi: %v, i: %v", vi, i)
 		newDeletions[vi.toInt()] = true
+		reduction++
 		for j := i + 1; j < p; j++ {
 			vj := s[j]
 			Debug("vj: %v, j: %v", vj, j)
@@ -41,6 +48,7 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 			// introduce a new node vij.
 			if !g.hasEdge(vi, vj) {
 				newGraphCapacity++
+				reduction--
 				structionVertex := &structionVertex{
 					v: Vertex(newGraphCapacity),
 					i: vi,
@@ -89,6 +97,30 @@ func struction(g *Graph, v0 Vertex) (result *Graph) {
 	}
 
 	return
+}
+
+func (self Vertex) isStructionApplicable(g *Graph, neighbors mapset.Set) bool {
+	p := neighbors.Cardinality()
+	maxAllowedAntiEdges := p - 1
+	numAntiEdges := 0
+	for n := range neighbors.Iter() {
+		n1 := n.(Vertex)
+		for n := range neighbors.Iter() {
+			n2 := n.(Vertex)
+			if n1 == n2 {
+				continue
+			}
+
+			if !g.hasEdge(n1, n2) {
+				numAntiEdges++
+				if numAntiEdges > maxAllowedAntiEdges {
+					return false
+				}
+			}
+		}
+	}
+
+	return true
 }
 
 func (g *Graph) isIndependentSet(set mapset.Set) bool {

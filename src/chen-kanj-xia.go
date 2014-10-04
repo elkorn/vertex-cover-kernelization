@@ -76,4 +76,41 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 	return
 }
 
-// func conditionalStruction(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph
+func conditionalStruction(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, kPrime int) {
+	reduction := 0
+	// if there exists a strong 2-tuple { u , z} in T then
+	if T.ContainsStrong2Tuple() {
+		s2t, _ := T.Pop()
+		gp := &goodPair{
+			pair: s2t,
+		}
+
+		// if there exists w ∈ { u , z} such that d (w) = 3 and the Struction is applicable to w then apply it;
+		if nu, nuSet := G.getNeighborsWithSet(gp.U()); G.Degree(gp.U()) == 3 && gp.U().isStructionApplicable(G, nuSet) {
+			gPrime, reduction = structionWithGivenNeighbors(G, gp.U(), nu, nuSet)
+		} else if nz, nzSet := G.getNeighborsWithSet(gp.Z()); G.Degree(gp.Z()) == 3 && gp.Z().isStructionApplicable(G, nzSet) {
+			gPrime, reduction = structionWithGivenNeighbors(G, gp.Z(), nz, nzSet)
+		}
+
+		kPrime = k - reduction
+
+		return
+	} else {
+		// else if there exists a vertex u ∈ G where d ( u ) = 3 or d ( u ) = 4 and such that the Struction is applicable to u
+		G.ForAllVertices(func(u Vertex, done chan<- bool) {
+			deg := G.Degree(u)
+			if deg == 3 || deg == 4 {
+				nv, nvSet := G.getNeighborsWithSet(u)
+				if u.isStructionApplicable(G, nvSet) {
+					// then apply it;
+					gPrime, reduction = structionWithGivenNeighbors(G, u, nv, nvSet)
+					done <- true
+					return
+				}
+			}
+		})
+
+		kPrime = k - reduction
+		return
+	}
+}
