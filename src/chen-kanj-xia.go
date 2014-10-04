@@ -1,18 +1,18 @@
 package graph
 
-func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, totalReduction int) {
+func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, kPrime int) {
 	// TODO: Handle halting.
 	// See the proof of Lemma 5.2 and 5.3 for examples.
 	gPrime, kPrime1 := generalFold(G, halt, k)
 	reduction := k - kPrime1
-	totalReduction = reduction
+	kPrime = k - reduction
 	var kPrime2 int
 	// if there exists a strong 2-tuple ({ u , z }, 1 ) in T then
 	if T.ContainsStrong2Tuple() {
 		if reduction >= 1 {
 			gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			totalReduction += reduction
+			kPrime -= reduction
 			kPrime1 = kPrime2
 
 			if reduction >= 1 {
@@ -20,7 +20,7 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 				for reduction >= 1 {
 					gPrime, kPrime2 = generalFold(gPrime, halt, kPrime2)
 					reduction = kPrime1 - kPrime2
-					totalReduction += reduction
+					kPrime -= reduction
 					kPrime1 = kPrime2
 				}
 
@@ -48,12 +48,12 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 					// then apply it until it is no longer applicable;
 					gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
 					reduction = kPrime1 - kPrime2
-					totalReduction += reduction
+					kPrime -= reduction
 					for reduction >= 1 {
 						kPrime1 = kPrime2
 						gPrime, kPrime2 = generalFold(gPrime, halt, kPrime2)
 						reduction = kPrime1 - kPrime2
-						totalReduction += reduction
+						kPrime -= reduction
 					}
 				}
 
@@ -68,10 +68,12 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 		for reduction >= 1 {
 			gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			totalReduction += reduction
+			kPrime -= reduction
 			kPrime1 = kPrime2
 		}
 	}
 
 	return
 }
+
+// func conditionalStruction(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph
