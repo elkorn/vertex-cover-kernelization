@@ -145,6 +145,7 @@ func (self *goodPair) computePriority(g *Graph) structurePriority {
 type StructurePriorityQueueProxy struct {
 	pq                    *StructurePriorityQueue
 	numberOfStrong2Tuples int
+	numberOf2Tuples       int
 }
 
 func MkStructurePriorityQueue() *StructurePriorityQueueProxy {
@@ -158,22 +159,27 @@ func MkStructurePriorityQueue() *StructurePriorityQueueProxy {
 
 func (self *StructurePriorityQueueProxy) Push(node *structure, g *Graph) {
 	priority := node.computePriority(g)
-	if 1 == priority {
-		self.numberOfStrong2Tuples++
+	if priority <= 2 {
+		self.numberOf2Tuples++
 		node.q = 1
+		if priority == 1 {
+			self.numberOfStrong2Tuples++
+		}
 	}
 
 	heap.Push(self.pq, &structurePqItem{
 		value:    node,
-		priority: node.computePriority(g),
+		priority: priority,
 	})
-
 }
 
 func (self *StructurePriorityQueueProxy) Pop() (*structure, structurePriority) {
 	result := heap.Pop(self.pq).(*structurePqItem)
-	if 1 == result.priority {
-		self.numberOfStrong2Tuples--
+	if result.priority <= 2 {
+		self.numberOf2Tuples--
+		if 1 == result.priority {
+			self.numberOfStrong2Tuples--
+		}
 	}
 
 	return result.value, result.priority
@@ -187,9 +193,23 @@ func (self *StructurePriorityQueueProxy) ContainsStrong2Tuple() bool {
 	return self.numberOfStrong2Tuples > 0
 }
 
+func (self *StructurePriorityQueueProxy) Contains2Tuple() bool {
+	return self.numberOf2Tuples > 0
+}
+
 func (self *StructurePriorityQueueProxy) PopAllStrong2Tuples() mapset.Set {
 	result := mapset.NewSet()
 	for self.ContainsStrong2Tuple() {
+		s2t, _ := self.Pop()
+		result.Add(s2t)
+	}
+
+	return result
+}
+
+func (self *StructurePriorityQueueProxy) PopAll2Tuples() mapset.Set {
+	result := mapset.NewSet()
+	for self.Contains2Tuple() {
 		s2t, _ := self.Pop()
 		result.Add(s2t)
 	}
