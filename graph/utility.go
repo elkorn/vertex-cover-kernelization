@@ -72,3 +72,24 @@ func rng(args ...int) []int {
 func IntAbs(val int) int {
 	return int(math.Abs(float64(val)))
 }
+
+func isIndependentSet(set mapset.Set, g *Graph) (result bool, dependent Edges) {
+	dependent = make(Edges, 0, g.NEdges())
+	result = true
+	for vi := range set.Iter() {
+		v1 := vi.(Vertex)
+		for vi := range set.Iter() {
+			v2 := vi.(Vertex)
+			if v1 == v2 {
+				continue
+			}
+
+			if g.HasEdge(v1, v2) {
+				result = false
+				dependent = append(dependent, MkEdge(v1, v2))
+			}
+		}
+	}
+
+	return
+}

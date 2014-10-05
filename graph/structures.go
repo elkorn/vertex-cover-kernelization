@@ -22,6 +22,13 @@ func MkStructure(q int, s ...Vertex) *structure {
 	return result
 }
 
+func MkStructureWithSet(q int, S mapset.Set) *structure {
+	return &structure{
+		q: q,
+		S: S,
+	}
+}
+
 func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }

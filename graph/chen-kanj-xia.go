@@ -138,11 +138,43 @@ func (self *ChenKanjXiaVC) reducing() int {
 	// NOTE: If Reducing is not applicable, it might as well return 0,
 	// since no reduction could be achieved.
 
+	rejectedTuples := mapset.NewSet()
 	// a. for each tuple ( S , q ) ∈ T do
-	// a.1. if | S | < q then reject;
-	// a.2. for every vertex u ∈ S do T = T ∪ {( S − { u }, S
-	// q − 1 )} ;
-	// a.3. if S is not an independent set then T = T ∪ ( ( u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
+	for s := range self.tuples {
+		tuple := s.(*structure)
+		// a.1. if | S | < q then reject;
+		if tuple.S.Cardinality() < tuple.q {
+			rejectedTuples.Add(tuple)
+			continue
+		}
+		// a.2. for every vertex u ∈ S do
+		for vi := range tuple.S.Iter() {
+			if q == 1 {
+				// most likely won't happen
+				rejectedTuples.Add(tuple)
+				continue
+			}
+
+			// T = T ∪ {( S − { u }, q − 1 )};
+			S := tuple.S.Clone()
+			S.Remove(vi.(Vertex))
+			self.T.Push(MkStructureWithSet(tuple.q-1, S), self.G)
+		}
+
+		// a.3. if S is not an independent set then
+		isIndependent, edges := isIndependentSet(tuple.S, self.G)
+		if !isIndependent {
+			// T = T ∪ (\forall(u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
+			S := tuple.S.Clone()
+			for _, edge := range edges {
+				S.Remove(edge.from)
+				S.Remove(edge.to)
+			}
+
+			self.T.Push(MkStructureWithSet(tuple.q-1, S))
+		}
+	}
+
 	// a.4. if there exists v ∈ self.G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
 	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the self.given order is applicable then
 	// apply it; exit;
