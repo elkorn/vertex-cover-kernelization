@@ -1,37 +1,54 @@
 package graph
 
+import "github.com/deckarep/golang-set"
+
 const REDUCING_EMPTY_RESULT = -128
 
-func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, kPrime int) {
-	// TODO: Handle halting.
-	// See the proof of Lemma 5.2 and 5.3 for examples.
-	gPrime, kPrime1 := generalFold(G, halt, k)
-	reduction := k - kPrime1
-	kPrime = k - reduction
+type ChenKanjXiaVC struct {
+	G *Graph
+	// This will contain the tuples being decomposed by Reducing.
+	// The paper states that they are supposed to reside in T, but nowhere does
+	// it state what priority should they have.
+	// TODO: Find a case that will render this solution impossible - such as one
+	// requiring to maintain a specific orderd of the tuples, specifically one
+	// where tuples are not being invalidated between 2 recursive calls.
+	// (b/c Reducing is not applicable)
+	tuples mapset.Set
+	T      *StructurePriorityQueueProxy
+	k      int
+	kPrime int
+	halt   chan bool
+}
+
+func (self *ChenKanjXiaVC) conditionalGeneralFold() {
+	gPrime, kPrime1 := generalFold(self.G, self.halt, self.k)
+	reduction := self.k - kPrime1
+	self.kPrime = self.k - reduction
+
 	var kPrime2 int
 	// if there exists a strong 2-tuple ({ u , z }, 1 ) in T then
 	if T.ContainsStrong2Tuple() {
 		if reduction >= 1 {
-			gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
+			gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			kPrime -= reduction
+			self.kPrime -= reduction
 			kPrime1 = kPrime2
 
 			if reduction >= 1 {
-				// if the repeated application of General_Fold reduces the parameter by at least 2 then apply it repeatedly;
+				// if the repeated application of self.General_Fold reduces the parameter by at least 2 then apply it repeatedly;
 				for reduction >= 1 {
-					gPrime, kPrime2 = generalFold(gPrime, halt, kPrime2)
+					gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime2)
 					reduction = kPrime1 - kPrime2
-					kPrime -= reduction
+					self.kPrime -= reduction
 					kPrime1 = kPrime2
 				}
 
-				// General-Fold is no longer applicable.
+				// self.General-Fold is no longer applicable.
 				return
 			} else {
-				// else if the application of General-Fold reduces
+				// else if the application of self.General-Fold reduces
 				// the parameter by 1 and (d ( u ) < 4)
-				strong2Tuples := T.PopAllStrong2Tuples()
+				strong2Tuples := self.T.PopAllStrong2Tuples()
 				var theTuple *structure
 				for s2tInter := range strong2Tuples.Iter() {
 					s2t := s2tInter.(*structure)
@@ -39,8 +56,8 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 						pair: s2t,
 					}
 					// According to preliminaries, the notation d(v) means the
-					// degree of the vertex in G.
-					if G.Degree(gp.U()) < 4 {
+					// degree of the vertex in self.G.
+					if self.G.Degree(gp.U()) < 4 {
 						theTuple = s2t
 						break
 					}
@@ -48,14 +65,14 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 
 				if theTuple != nil {
 					// then apply it until it is no longer applicable;
-					gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
+					gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 					reduction = kPrime1 - kPrime2
-					kPrime -= reduction
+					self.kPrime -= reduction
 					for reduction >= 1 {
 						kPrime1 = kPrime2
-						gPrime, kPrime2 = generalFold(gPrime, halt, kPrime2)
+						gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime2)
 						reduction = kPrime1 - kPrime2
-						kPrime -= reduction
+						self.kPrime -= reduction
 					}
 				}
 
@@ -68,9 +85,9 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 	} else {
 		// else apply General-Fold until it is no longer applicable;
 		for reduction >= 1 {
-			gPrime, kPrime2 = generalFold(gPrime, halt, kPrime1)
+			gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			kPrime -= reduction
+			self.kPrime -= reduction
 			kPrime1 = kPrime2
 		}
 	}
@@ -78,46 +95,46 @@ func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan 
 	return
 }
 
-func conditionalStruction(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, kPrime int) {
+func (self *ChenKanjXiaVC) conditionalStruction() {
 	reduction := 0
 	// if there exists a strong 2-tuple { u , z} in T then
-	if T.ContainsStrong2Tuple() {
-		s2t, _ := T.Pop()
+	if self.T.ContainsStrong2Tuple() {
+		s2t, _ := self.T.Pop()
 		gp := &goodPair{
 			pair: s2t,
 		}
 
 		// if there exists w ∈ { u , z} such that d (w) = 3 and the Struction is applicable to w then apply it;
-		if nu, nuSet := G.getNeighborsWithSet(gp.U()); G.Degree(gp.U()) == 3 && gp.U().isStructionApplicable(G, nuSet) {
-			gPrime, reduction = structionWithGivenNeighbors(G, gp.U(), nu, nuSet)
-		} else if nz, nzSet := G.getNeighborsWithSet(gp.Z()); G.Degree(gp.Z()) == 3 && gp.Z().isStructionApplicable(G, nzSet) {
-			gPrime, reduction = structionWithGivenNeighbors(G, gp.Z(), nz, nzSet)
+		if nu, nuSet := self.G.getNeighborsWithSet(gp.U()); self.G.Degree(gp.U()) == 3 && self.gp.U().isStructionApplicable(self.G, nuSet) {
+			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.U(), nu, nuSet)
+		} else if nz, nzSet := self.G.getNeighborsWithSet(gp.Z()); self.G.Degree(gp.Z()) == 3 && self.gp.Z().isStructionApplicable(self.G, nzSet) {
+			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.Z(), nz, nzSet)
 		}
 
-		kPrime = k - reduction
+		self.kPrime = k - reduction
 
 		return
 	} else {
-		// else if there exists a vertex u ∈ G where d ( u ) = 3 or d ( u ) = 4 and such that the Struction is applicable to u
-		G.ForAllVertices(func(u Vertex, done chan<- bool) {
-			deg := G.Degree(u)
+		// else if there exists a vertex u ∈ self.G where d ( u ) = 3 or d ( u ) = 4 and such that the Struction is applicable to u
+		self.G.ForAllVertices(func(u Vertex, done chan<- bool) {
+			deg := self.G.Degree(u)
 			if deg == 3 || deg == 4 {
-				nv, nvSet := G.getNeighborsWithSet(u)
-				if u.isStructionApplicable(G, nvSet) {
+				nv, nvSet := self.G.getNeighborsWithSet(u)
+				if u.isStructionApplicable(self.G, nvSet) {
 					// then apply it;
-					gPrime, reduction = structionWithGivenNeighbors(G, u, nv, nvSet)
+					gPrime, reduction = structionWithGivenNeighbors(self.G, u, nv, nvSet)
 					done <- true
 					return
 				}
 			}
 		})
 
-		kPrime = k - reduction
+		self.kPrime = k - reduction
 		return
 	}
 }
 
-func reducing(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) int {
+func (self *ChenKanjXiaVC) reducing() int {
 	// NOTE: If Reducing is not applicable, it might as well return 0,
 	// since no reduction could be achieved.
 
@@ -126,9 +143,9 @@ func reducing(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) i
 	// a.2. for every vertex u ∈ S do T = T ∪ {( S − { u }, S
 	// q − 1 )} ;
 	// a.3. if S is not an independent set then T = T ∪ ( ( u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
-	// a.4. if there exists v ∈ G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( G − v, T , k − 1 ) ); exit;
-	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the given order is applicable then
+	// a.4. if there exists v ∈ self.G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
+	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the self.given order is applicable then
 	// apply it; exit;
-	// c. if there are vertices u and v in G such that v dominates u then return (1 + VC ( G − v, T , k − 1 ) ); exit;
+	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
 
 }
