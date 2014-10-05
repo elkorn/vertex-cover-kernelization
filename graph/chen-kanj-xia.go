@@ -1,5 +1,7 @@
 package graph
 
+const REDUCING_EMPTY_RESULT = -128
+
 func conditionalGeneralFold(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) (gPrime *Graph, kPrime int) {
 	// TODO: Handle halting.
 	// See the proof of Lemma 5.2 and 5.3 for examples.
@@ -113,4 +115,20 @@ func conditionalStruction(G *Graph, T *StructurePriorityQueueProxy, halt chan bo
 		kPrime = k - reduction
 		return
 	}
+}
+
+func reducing(G *Graph, T *StructurePriorityQueueProxy, halt chan bool, k int) int {
+	// NOTE: If Reducing is not applicable, it might as well return 0,
+	// since no reduction could be achieved.
+
+	// a. for each tuple ( S , q ) ∈ T do
+	// a.1. if | S | < q then reject;
+	// a.2. for every vertex u ∈ S do T = T ∪ {( S − { u }, S
+	// q − 1 )} ;
+	// a.3. if S is not an independent set then T = T ∪ ( ( u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
+	// a.4. if there exists v ∈ G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( G − v, T , k − 1 ) ); exit;
+	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the given order is applicable then
+	// apply it; exit;
+	// c. if there are vertices u and v in G such that v dominates u then return (1 + VC ( G − v, T , k − 1 ) ); exit;
+
 }
