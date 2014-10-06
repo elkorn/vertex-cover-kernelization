@@ -33,6 +33,16 @@ func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }
 
+// In Part 6. of the proof states that when having a good pair where
+// d(u)=3 and N(u) are all deg. 5 verts that do not share any common neighbors
+// besides u, 2 vertices in N(u) may be connected (it seems to be a valid case),
+// and then CS applies.
+// SOLUTION:
+// A vertex cannot be its own neighbor. It means that when having
+// e.g. a set {v,w,z} where if v,w are adj., then if z is not adj. to v or w,
+// the structure remains valid (v is a neighbor of w and w is a neighbor of v,
+// neither of which are shared with z).
+// An if statement has to be written for that.
 func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *Graph) (neighborsShareCommonVertexOtherThanU, neighborsAreDisjoint bool) {
 	neighborsAreDisjoint = true
 	g.ForAllNeighbors(u, func(e *Edge, done chan<- bool) {

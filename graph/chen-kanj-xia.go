@@ -175,7 +175,9 @@ func (self *ChenKanjXiaVC) reducing() int {
 		}
 	}
 
+	// This condition means that v has to be adjacent to a vertex in S - if it is, it is included in the cover.
 	// a.4. if there exists v ∈ self.G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
+	// TODO: Look for operations based on Lemma 5.1. and see if all vertices in G have to actually be checked, or just a neighborhodd.
 	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the self.given order is applicable then
 	// apply it; exit;
 	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
