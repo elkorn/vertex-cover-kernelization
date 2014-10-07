@@ -10,40 +10,39 @@ type ChenKanjXiaVC struct {
 	// The paper states that they are supposed to reside in T, but nowhere does
 	// it state what priority should they have.
 	// TODO: Find a case that will render this solution impossible - such as one
-	// requiring to maintain a specific orderd of the tuples, specifically one
+	// requiring to maintain a specific order of the tuples, particularly one
 	// where tuples are not being invalidated between 2 recursive calls.
-	// (b/c Reducing is not applicable)
+	// (because a.4, b and c is not applicable)
 	tuples mapset.Set
 	T      *StructurePriorityQueueProxy
 	k      int
-	kPrime int
 	halt   chan bool
 }
 
-func (self *ChenKanjXiaVC) conditionalGeneralFold() {
+func (self *ChenKanjXiaVC) conditionalGeneralFold() (wasApplicable bool) {
 	gPrime, kPrime1 := generalFold(self.G, self.halt, self.k)
 	reduction := self.k - kPrime1
-	self.kPrime = self.k - reduction
+	self.k -= reduction
 
 	var kPrime2 int
 	// if there exists a strong 2-tuple ({ u , z }, 1 ) in T then
-	if T.ContainsStrong2Tuple() {
+	if self.T.ContainsStrong2Tuple() {
 		if reduction >= 1 {
-			gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
+			wasApplicable = true
+			_, kPrime2 = generalFold(self.G, self.halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			self.kPrime -= reduction
-			kPrime1 = kPrime2
+			self.k -= reduction
 
 			if reduction >= 1 {
 				// if the repeated application of self.General_Fold reduces the parameter by at least 2 then apply it repeatedly;
 				for reduction >= 1 {
-					gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime2)
-					reduction = kPrime1 - kPrime2
-					self.kPrime -= reduction
 					kPrime1 = kPrime2
+					_, kPrime2 = generalFold(self.G, self.halt, kPrime2)
+					reduction = kPrime1 - kPrime2
+					self.k -= reduction
 				}
 
-				// self.General-Fold is no longer applicable.
+				// General-Fold is no longer applicable.
 				return
 			} else {
 				// else if the application of self.General-Fold reduces
@@ -67,12 +66,12 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() {
 					// then apply it until it is no longer applicable;
 					gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 					reduction = kPrime1 - kPrime2
-					self.kPrime -= reduction
+					self.k -= reduction
 					for reduction >= 1 {
 						kPrime1 = kPrime2
 						gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime2)
 						reduction = kPrime1 - kPrime2
-						self.kPrime -= reduction
+						self.k -= reduction
 					}
 				}
 
@@ -85,9 +84,10 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() {
 	} else {
 		// else apply General-Fold until it is no longer applicable;
 		for reduction >= 1 {
+			wasApplicable = true
 			gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 			reduction = kPrime1 - kPrime2
-			self.kPrime -= reduction
+			self.k -= reduction
 			kPrime1 = kPrime2
 		}
 	}
@@ -95,9 +95,8 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() {
 	return
 }
 
-func (self *ChenKanjXiaVC) conditionalStruction() {
+func (self *ChenKanjXiaVC) conditionalStruction() (wasApplicable bool) {
 	reduction := 0
-	structionApplied := false
 	// if there exists a strong 2-tuple { u , z} in T then
 	if self.T.ContainsStrong2Tuple() {
 		s2t, _ := self.T.Pop()
@@ -106,15 +105,21 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 		}
 
 		// if there exists w ∈ { u , z} such that d (w) = 3 and the Struction is applicable to w then apply it;
-		if nu, nuSet := self.G.getNeighborsWithSet(gp.U()); self.G.Degree(gp.U()) == 3 && self.gp.U().isStructionApplicable(self.G, nuSet) {
-			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.U(), nu, nuSet)
-			structionApplied := true
-		} else if nz, nzSet := self.G.getNeighborsWithSet(gp.Z()); self.G.Degree(gp.Z()) == 3 && self.gp.Z().isStructionApplicable(self.G, nzSet) {
-			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.Z(), nz, nzSet)
-			structionApplied := true
-		}
+		nu, nuSet := self.G.getNeighborsWithSet(gp.U())
+		if self.G.Degree(gp.U()) == 3 &&
+			gp.U().isStructionApplicable(self.G, nuSet) {
+			_, reduction = structionWithGivenNeighbors(self.G, gp.U(), nu, nuSet)
+			wasApplicable = reduction > 0
+		} else {
+			nz, nzSet := self.G.getNeighborsWithSet(gp.Z())
+			if self.G.Degree(gp.Z()) == 3 &&
+				gp.Z().isStructionApplicable(self.G, nzSet) {
+				_, reduction = structionWithGivenNeighbors(self.G, gp.Z(), nz, nzSet)
+				wasApplicable = reduction > 0
+			}
 
-		self.kPrime = k - reduction
+			self.k -= reduction
+		}
 
 		return
 	} else {
@@ -125,28 +130,24 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 				nv, nvSet := self.G.getNeighborsWithSet(u)
 				if u.isStructionApplicable(self.G, nvSet) {
 					// then apply it;
-					gPrime, reduction = structionWithGivenNeighbors(self.G, u, nv, nvSet)
-					structionApplied := true
+					_, reduction = structionWithGivenNeighbors(self.G, u, nv, nvSet)
+					wasApplicable = reduction > 0
 					done <- true
-					return
 				}
 			}
 		})
 
-		self.kPrime = k - reduction
-		if structionApplied {
-			self.tuples.Clear()
-		}
-
-		return
+		self.k -= reduction
 	}
+
+	return
 }
 
 func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
-	for _,includedVertex := range includedVertices {
+	for _, includedVertex := range includedVertices {
 		for t := range self.tuples.Iter() {
 			tuple := t.(*structure)
-			// If a vertex u ∈ S is removed from the graph by including it 
+			// If a vertex u ∈ S is removed from the graph by including it
 			// in the cover, the vertex is removed from S and q is unchanged.
 			if tuple.q > 0 && tuple.S.Contains(includedVertex) {
 				tuple.S.Remove(includedVertex)
@@ -158,7 +159,7 @@ func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
 func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...Vertex) {
 	toRemove := mapset.NewSet()
 
-	for _,excludedVertex := range excludedVertices {
+	for _, excludedVertex := range excludedVertices {
 		for t := range self.tuples.Iter() {
 			tuple := t.(*structure)
 			// If one of the vertices in S is removed and is excluded from the
@@ -167,7 +168,7 @@ func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...Vertex) {
 			if tuple.S.Contains(excludedVertex) {
 				tuple.q -= 1
 				if tuple.q == 0 {
-					// If q = 0 then the tuple S will be removed because the 
+					// If q = 0 then the tuple S will be removed because the
 					// information represented by ( S , q ) is satisfied by
 					// any minimum vertex cover.
 					toRemove.Add(tuple)
