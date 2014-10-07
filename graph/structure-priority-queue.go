@@ -37,11 +37,14 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 
 	switch cardinality {
 	case 1:
+		Debug("1 vertex: %v", elements[0])
 		deg := g.Degree(elements[0])
 		if deg >= 8 {
+			Debug("deg >= 8")
 			// 8 Γ is a vertex z with d ( z ) ≥ 8.
 			return 8
 		} else if deg >= 7 {
+			Debug("deg >= 7")
 			// 11 Γ is a vertex z such that d ( z ) ≥ 7.
 			return 11
 		}
@@ -51,6 +54,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 		u, z := elements[0], elements[1]
 		du := g.Degree(u)
 		dz := g.Degree(z)
+		Debug("Good pair (%v, %v), d(%v)=%v, d(%v)=%v", u, z, u, du, z, dz)
 		// The tuple case will most likely not have to be checked.
 		/*
 			A tuple ( S , q ) , where S = { u , v} , is called a 2-tuple if it
@@ -62,6 +66,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 		if s.q == 1 &&
 			dz >= 1 && du >= dz &&
 			!g.HasEdge(u, z) {
+			Debug("%v, %v are disjoint", u, z)
 			// It's a 2-tuple.
 			/*
 				A 2-tuple ({ u , v}, 1 ) is a strong-2-tuple if it satisfies the
@@ -80,6 +85,11 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 
 		degree5NeighborsCount, hasOnlyDegree5Neighbors := s.countDegree5Neighbors(u, g)
 		if du == 3 || du == 4 {
+			Debug("%v neighbors of deg. 5", degree5NeighborsCount)
+			if hasOnlyDegree5Neighbors {
+				Debug("has only neighbors of deg. 5", degree5NeighborsCount)
+			}
+
 			neighborsShareCommonNeighborOtherThanU, neighborsAreDisjoint := s.neighborsOfUShareCommonVertexOtherThanU(u, z, g)
 			if du == 3 {
 				if hasOnlyDegree5Neighbors &&
