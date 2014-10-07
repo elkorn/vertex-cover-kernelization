@@ -97,6 +97,7 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() {
 
 func (self *ChenKanjXiaVC) conditionalStruction() {
 	reduction := 0
+	structionApplied := false
 	// if there exists a strong 2-tuple { u , z} in T then
 	if self.T.ContainsStrong2Tuple() {
 		s2t, _ := self.T.Pop()
@@ -107,8 +108,10 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 		// if there exists w ∈ { u , z} such that d (w) = 3 and the Struction is applicable to w then apply it;
 		if nu, nuSet := self.G.getNeighborsWithSet(gp.U()); self.G.Degree(gp.U()) == 3 && self.gp.U().isStructionApplicable(self.G, nuSet) {
 			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.U(), nu, nuSet)
+			structionApplied := true
 		} else if nz, nzSet := self.G.getNeighborsWithSet(gp.Z()); self.G.Degree(gp.Z()) == 3 && self.gp.Z().isStructionApplicable(self.G, nzSet) {
 			gPrime, reduction = structionWithGivenNeighbors(G, self.gp.Z(), nz, nzSet)
+			structionApplied := true
 		}
 
 		self.kPrime = k - reduction
@@ -123,6 +126,7 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 				if u.isStructionApplicable(self.G, nvSet) {
 					// then apply it;
 					gPrime, reduction = structionWithGivenNeighbors(self.G, u, nv, nvSet)
+					structionApplied := true
 					done <- true
 					return
 				}
@@ -130,7 +134,48 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 		})
 
 		self.kPrime = k - reduction
+		if structionApplied {
+			self.tuples.Clear()
+		}
+
 		return
+	}
+}
+
+func (self *ChenKanjXiaVC) updateTuples(excludedVertices, includedVertices mapset.Set) {
+	toRemove := mapset.NewSet()
+	for excl := range excludedVertices.Iter() {
+		excludedVertex = excl.(Vertex)
+		for t := range self.tuples.Iter() {
+			tuple := t.(*structure)
+			// If one of the vertices in S is removed and is excluded from the
+			// cover, then the tuple is modified by removing the vertex from S
+			// and decrementing q by 1.
+			if tuple.S.Contains(excl) {
+				if tuple.q == 1 {
+					// q will become 0 here.
+					// If q = 0 then the tuple S will be removed because the 
+					// information represented by ( S , q ) is satisfied by
+					// any minimum vertex cover.
+					toRemove.Add(tuple)
+				}
+
+				tuple.q -= 1
+				tuple.S.Remove(excl)
+			}
+		}
+	}
+
+	for incl := range includedVertices.Iter() {
+		includedVertex := incl.(Vertex)
+		for t := range self.tuples.Iter() {
+			tuple := t.(*structure)
+			// If a vertex u ∈ S is removed from the graph by including it 
+			// in the cover, the vertex is removed from S and q is unchanged.
+			if tuple.q > 0 && tuple.S.Contains(includedVertex) {
+				tuple.S.Remove(includedVertex)
+			}
+		}
 	}
 }
 
