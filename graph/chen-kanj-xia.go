@@ -187,12 +187,11 @@ func (self *ChenKanjXiaVC) invalidateTuples() {
 }
 
 func (self *ChenKanjXiaVC) reducing() int {
-	// NOTE: If Reducing is not applicable, it might as well return 0,
+	// NOTE: If Reducing is not applicable, it might as well return self,
 	// since no reduction could be achieved.
-
 	rejectedTuples := mapset.NewSet()
 	// a. for each tuple ( S , q ) ∈ T do
-	for s := range self.tuples {
+	for s := range self.tuples.Iter() {
 		tuple := s.(*structure)
 		// a.1. if | S | < q then reject;
 		if tuple.S.Cardinality() < tuple.q {
@@ -200,8 +199,8 @@ func (self *ChenKanjXiaVC) reducing() int {
 			continue
 		}
 		// a.2. for every vertex u ∈ S do
-		for vi := range tuple.S.Iter() {
-			if q == 1 {
+		for u := range tuple.S.Iter() {
+			if tuple.q == 1 {
 				// most likely won't happen
 				rejectedTuples.Add(tuple)
 				continue
@@ -209,8 +208,35 @@ func (self *ChenKanjXiaVC) reducing() int {
 
 			// T = T ∪ {( S − { u }, q − 1 )};
 			S := tuple.S.Clone()
-			S.Remove(vi.(Vertex))
-			self.T.Push(MkStructureWithSet(tuple.q-1, S), self.G)
+			S.Remove(u.(Vertex))
+			newTuple := MkStructureWithSet(tuple.q-1, S)
+			if newTuple.computePriority(self.G) < 3 {
+				// It's a 2-tuple.
+				// When the algorithm branches on a vertex in a 2-tuple, this
+				// vertex is picked as follows.
+				// If there is a vertex w ∈ S = { u , z } such that w has a
+				// neighbor u where u is almost-dominated by the vertex in
+				// S − {w} , then the algorithm will branch on the vertex in
+				// S − {w} (that is, if there is a vertex in S with a neighbor
+				// that is almost-dominated by the other vertex in S, then the
+				// algorithm will pick the other vertex in S).
+				// Otherwise, it will pick a vertex in S arbitrarily and
+				// branch on it.
+				// We will always assume that the vertex in the 2-tuple S={u, z}
+				// that the algorithm branches on is z.
+				// The algorithm can be made oblivious to this choice
+				// by ordering the vertices in a 2-tuple as described above
+				// whenever the 2-tuple is created.
+				verts := newTuple.S.Iter()
+				v1, v2 := (<-verts).(Vertex), (<-verts).(Vertex)
+				newTuple.S.Remove(v1)
+				newTuple.S.Remove(v2)
+				newTuple.S.Add(v2)
+				newTuple.S.Add(v1)
+				// TODO: Verify that the vertex order is retained.
+			}
+
+			self.T.Push(newTuple, self.G)
 		}
 
 		// a.3. if S is not an independent set then
@@ -223,15 +249,73 @@ func (self *ChenKanjXiaVC) reducing() int {
 				S.Remove(edge.to)
 			}
 
-			self.T.Push(MkStructureWithSet(tuple.q-1, S))
+			self.T.Push(MkStructureWithSet(tuple.q-1, S), self.G)
 		}
+
+		// Some vertices might be determined to be in a minimum vertex cover by
+		// step a.4 of Reducing.
+		// a.4. if there exists v ∈ self.G such that |N(v) ∩ S|≥|S|−q+1 then
+		// return (1 + VC (self.G−v, T, k−1)); exit;
+		// This condition means that v has to be adjacent to a vertex in S -
+		// if it is, it is included in the cover.
+		var includedVertex Vertex
+		self.G.ForAllVertices(func(v Vertex, done chan<- bool) {
+			_, Nv := self.G.getNeighborsWithSet(v)
+			if Nv.Intersect(tuple.S).Cardinality() >= tuple.S.Cardinality()-tuple.q+1 {
+				// v can be included in the cover, a new instance of the problem
+				// has to be run.
+				includedVertex = v
+				done <- true
+			}
+		})
+
+		newProblemInstance := self.Copy()
+		newProblemInstance.updateTuplesByInclusion(includedVertex)
+		newProblemInstance.k--
+		return newProblemInstance.VC()
 	}
 
-	// This condition means that v has to be adjacent to a vertex in S - if it is, it is included in the cover.
-	// a.4. if there exists v ∈ self.G such that | N (v) ∩ S | ≥ | S | − q + 1 then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
+	// If we maintain existing tuples, then the constraints imposed by the newly
+	// generated tuples may conflict with those imposed by existing ones.
+	// To overcome this, and since the algorithm only processes 2-tuples, when
+	// the subroutine Reducing finishes processing the tuples in step a, we will
+	// maintain only one 2-tuple and invalidate the rest.
+	// Therefore, if 2-tuples exist after step a of Reducing, we will pick any
+	// strong 2-tuple in case a strong 2-tuple exists and invalidate the rest,
+	// or we will pick any 2-tuple and invalidate
+	// the rest, otherwise.
+
 	// TODO: Look for operations based on Lemma 5.1. and see if all vertices in G have to actually be checked, or just a neighborhodd.
+
+	// To be on the safe side with regard to conflicting constraints imposed by
+	// tuples and CS/CGF, when we decide to apply the S or the GF operations, we
+	// will invalidate all the constraints imposed by the tuples.
+	// That is, we will basically remove all the tuples.
+
 	// b. if Conditional_General_Fold(G) or Conditional_Struction(G) in the self.given order is applicable then
 	// apply it; exit;
-	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
+	if self.conditionalGeneralFold() || self.conditionalStruction() {
+		self.invalidateTuples()
+		return self.k
+	}
 
+	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
+	self.G.ForAllVertices(func(v Vertex, done chan<- bool) {
+
+	})
+
+	return self.k
+}
+
+func (self *ChenKanjXiaVC) Copy() *ChenKanjXiaVC {
+	return &ChenKanjXiaVC{
+		G:      self.G.Copy(),
+		tuples: self.tuples.Clone(),
+		k:      self.k,
+		halt:   self.halt,
+	}
+}
+
+func (self *ChenKanjXiaVC) VC() int {
+	panic( /*errors.New(*/ "Not implemented." /*)*/)
 }
