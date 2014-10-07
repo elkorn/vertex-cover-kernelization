@@ -142,32 +142,8 @@ func (self *ChenKanjXiaVC) conditionalStruction() {
 	}
 }
 
-func (self *ChenKanjXiaVC) updateTuples(excludedVertices, includedVertices mapset.Set) {
-	toRemove := mapset.NewSet()
-	for excl := range excludedVertices.Iter() {
-		excludedVertex = excl.(Vertex)
-		for t := range self.tuples.Iter() {
-			tuple := t.(*structure)
-			// If one of the vertices in S is removed and is excluded from the
-			// cover, then the tuple is modified by removing the vertex from S
-			// and decrementing q by 1.
-			if tuple.S.Contains(excl) {
-				if tuple.q == 1 {
-					// q will become 0 here.
-					// If q = 0 then the tuple S will be removed because the 
-					// information represented by ( S , q ) is satisfied by
-					// any minimum vertex cover.
-					toRemove.Add(tuple)
-				}
-
-				tuple.q -= 1
-				tuple.S.Remove(excl)
-			}
-		}
-	}
-
-	for incl := range includedVertices.Iter() {
-		includedVertex := incl.(Vertex)
+func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
+	for _,includedVertex := range includedVertices {
 		for t := range self.tuples.Iter() {
 			tuple := t.(*structure)
 			// If a vertex u ∈ S is removed from the graph by including it 
@@ -177,6 +153,36 @@ func (self *ChenKanjXiaVC) updateTuples(excludedVertices, includedVertices mapse
 			}
 		}
 	}
+}
+
+func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...Vertex) {
+	toRemove := mapset.NewSet()
+
+	for _,excludedVertex := range excludedVertices {
+		for t := range self.tuples.Iter() {
+			tuple := t.(*structure)
+			// If one of the vertices in S is removed and is excluded from the
+			// cover, then the tuple is modified by removing the vertex from S
+			// and decrementing q by 1.
+			if tuple.S.Contains(excludedVertex) {
+				tuple.q -= 1
+				if tuple.q == 0 {
+					// If q = 0 then the tuple S will be removed because the 
+					// information represented by ( S , q ) is satisfied by
+					// any minimum vertex cover.
+					toRemove.Add(tuple)
+				} else {
+					tuple.S.Remove(excludedVertex)
+				}
+			}
+		}
+	}
+
+	self.tuples = self.tuples.Difference(toRemove)
+}
+
+func (self *ChenKanjXiaVC) invalidateTuples() {
+	self.tuples.Clear()
 }
 
 func (self *ChenKanjXiaVC) reducing() int {
