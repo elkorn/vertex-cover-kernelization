@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/deckarep/golang-set"
+import (
+	"errors"
+	"github.com/deckarep/golang-set"
+)
 
 const REDUCING_EMPTY_RESULT = -128
 
@@ -258,7 +261,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 		// return (1 + VC (self.G−v, T, k−1)); exit;
 		// This condition means that v has to be adjacent to a vertex in S -
 		// if it is, it is included in the cover.
-		var includedVertex Vertex
+		includedVertex := INVALID_VERTEX
 		self.G.ForAllVertices(func(v Vertex, done chan<- bool) {
 			_, Nv := self.G.getNeighborsWithSet(v)
 			if Nv.Intersect(tuple.S).Cardinality() >= tuple.S.Cardinality()-tuple.q+1 {
@@ -269,10 +272,15 @@ func (self *ChenKanjXiaVC) reducing() int {
 			}
 		})
 
-		newProblemInstance := self.Copy()
-		newProblemInstance.updateTuplesByInclusion(includedVertex)
-		newProblemInstance.k--
-		return newProblemInstance.VC()
+		if includedVertex == INVALID_VERTEX {
+			// Equivalent of 'nothing happened at this point'.
+			return self.k
+		} else {
+			newProblemInstance := self.Copy()
+			newProblemInstance.updateTuplesByInclusion(includedVertex)
+			newProblemInstance.k--
+			return newProblemInstance.VC()
+		}
 	}
 
 	// If we maintain existing tuples, then the constraints imposed by the newly
@@ -296,15 +304,33 @@ func (self *ChenKanjXiaVC) reducing() int {
 	// apply it; exit;
 	if self.conditionalGeneralFold() || self.conditionalStruction() {
 		self.invalidateTuples()
+		// Equivalent of 'nothing happened at this point'.
 		return self.k
 	}
 
 	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
-	self.G.ForAllVertices(func(v Vertex, done chan<- bool) {
-
+	// By Observation 3.3., vertex v is included in the cover in this step.
+	includedVertex := INVALID_VERTEX
+	self.G.ForAllVertices(func(v Vertex, done1 chan<- bool) {
+		self.G.ForAllVertices(func(u Vertex, done2 chan<- bool) {
+			if v.dominates(u, self.G) {
+				includedVertex = v
+				done1 <- true
+				done2 <- true
+			}
+		})
 	})
 
-	return self.k
+	if includedVertex == INVALID_VERTEX {
+		// Equivalent of 'nothing happened at this point'.
+		return self.k
+	} else {
+		newProblemInstance := self.Copy()
+		newProblemInstance.updateTuplesByInclusion(includedVertex)
+		newProblemInstance.k--
+		return newProblemInstance.VC()
+	}
+
 }
 
 func (self *ChenKanjXiaVC) Copy() *ChenKanjXiaVC {
@@ -317,5 +343,5 @@ func (self *ChenKanjXiaVC) Copy() *ChenKanjXiaVC {
 }
 
 func (self *ChenKanjXiaVC) VC() int {
-	panic( /*errors.New(*/ "Not implemented." /*)*/)
+	panic(errors.New("Not implemented."))
 }
