@@ -29,6 +29,10 @@ func MkStructureWithSet(q int, S mapset.Set) *structure {
 	}
 }
 
+// TODO: @start-from-here Refactor constructing good pairs to maintain the
+// vertex ordering - this causes chaos in the tests.
+// The underlying structure should not be a set, but two separate vertices so
+// that order is preserved.
 func mkGoodPairStruct(s ...Vertex) *structure {
 	return MkStructure(-1, s...)
 }

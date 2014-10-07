@@ -6,6 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TODO: The tests fail because of using a set as S in a good pair. Verify that
+// the failing tests return the correct priority for the discovered structures.
+// (pen and paper will be needed)
+
 func TestStrong2TuplePriority(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 3)
@@ -16,20 +20,22 @@ func TestStrong2TuplePriority(t *testing.T) {
 	str := MkStructure(1, Vertex(1), Vertex(2))
 
 	// 2 ≤ d ( u ) ≤ 3 and 2 ≤ d (v) ≤ 3
-	assert.Equal(t, 1, str.computePriority(g))
+	InVerboseContext(func() {
+		assert.Equal(t, 1, str.computePriority(g))
 
-	g.AddEdge(1, 6)
-	g.AddEdge(1, 7)
-	g.AddEdge(2, 5)
-	g.AddEdge(2, 6)
-	// d ( u ) ≥ 4 and d (v) ≥ 4
-	assert.Equal(t, 1, str.computePriority(g))
+		g.AddEdge(1, 6)
+		g.AddEdge(1, 7)
+		g.AddEdge(2, 5)
+		g.AddEdge(2, 6)
+		// d ( u ) ≥ 4 and d (v) ≥ 4
+		assert.Equal(t, 1, str.computePriority(g))
 
-	g.RemoveEdge(2, 3)
-	g.RemoveEdge(2, 5)
-	g.RemoveEdge(2, 6)
-	// Does not fit the cases.
-	assert.NotEqual(t, 1, str.computePriority(g))
+		g.RemoveEdge(2, 3)
+		g.RemoveEdge(2, 5)
+		g.RemoveEdge(2, 6)
+		// Does not fit the cases.
+		assert.NotEqual(t, 1, str.computePriority(g))
+	})
 }
 
 func Test2TuplePriority(t *testing.T) {
