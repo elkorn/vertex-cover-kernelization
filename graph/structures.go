@@ -339,6 +339,10 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 		Debug("Looking for Z for %v...", possibleGoodPair.U())
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
+		// TODO: Implement the logic described below.
+		// If no vertex in N ( u ) is almost-dominated by another vertex in
+		// N ( u ) , then (a) is vacuously satisfied by every vertex in N ( u ),
+		// and z will be a neighbor of u of maximum degree.
 		if possibleGoodPair.countAlmostDominatedPairs(G) > 0 {
 			u := possibleGoodPair.U()
 			G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
