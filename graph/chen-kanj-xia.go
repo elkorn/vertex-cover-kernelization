@@ -310,7 +310,13 @@ func (self *ChenKanjXiaVC) reducing() int {
 	// or we will pick any 2-tuple and invalidate
 	// the rest, otherwise.
 
-	// TODO: Look for operations based on Lemma 5.1. and see if all vertices in G have to actually be checked, or just a neighborhodd.
+	twoTuples := self.T.PopAll2Tuples()
+	if twoTuples.Cardinality() > 0 {
+		self.T.Push((<-(twoTuples.Iter())).(*structure), self.G)
+	}
+
+	// TODO: Look for operations based on Lemma 5.1. and see if all vertices in
+	// G have to actually be checked, or just a neighborhodd.
 
 	// To be on the safe side with regard to conflicting constraints imposed by
 	// tuples and CS/CGF, when we decide to apply the S or the GF operations, we
