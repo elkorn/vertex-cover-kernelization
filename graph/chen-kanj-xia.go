@@ -2,6 +2,7 @@ package graph
 
 import (
 	"errors"
+
 	"github.com/deckarep/golang-set"
 )
 
@@ -146,6 +147,14 @@ func (self *ChenKanjXiaVC) conditionalStruction() (wasApplicable bool) {
 	return
 }
 
+func (self *ChenKanjXiaVC) includeVertices(vs ...Vertex) {
+	for _, includedVertex := range vs {
+		self.G.RemoveVertex(includedVertex)
+	}
+
+	self.updateTuplesByInclusion(vs...)
+}
+
 func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
 	for _, includedVertex := range includedVertices {
 		for t := range self.tuples.Iter() {
@@ -157,6 +166,14 @@ func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
 			}
 		}
 	}
+}
+
+func (self *ChenKanjXiaVC) excludeVertices(vs ...Vertex) {
+	for _, excludedVertex := range vs {
+		self.G.RemoveVertex(excludedVertex)
+	}
+
+	self.updateTuplesByExclusion(vs...)
 }
 
 func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...Vertex) {
@@ -343,5 +360,63 @@ func (self *ChenKanjXiaVC) Copy() *ChenKanjXiaVC {
 }
 
 func (self *ChenKanjXiaVC) VC() int {
-	panic(errors.New("Not implemented."))
+	// 0. if k ≤ 7 then solve the instance by brute-force and stop;
+	if self.k <= 7 {
+		panic(errors.New("Not implemented."))
+	}
+
+	// 1. apply Reducing;
+	self.reducing()
+	// 2. pick a structure Γ of highest priority;
+	str, priority := self.T.Pop()
+
+	// Prepare the algorithm branches that will follow.
+	zIncludedBranch := self.Copy()
+	nZIncludedBranch := self.Copy()
+	iter := str.S.Iter()
+	u := INVALID_VERTEX
+	if priority != 8 &&
+		priority != 11 {
+		// It's a good pair.
+		u = (<-iter).(Vertex)
+	}
+
+	z := (<-iter).(Vertex)
+	dz := self.G.Degree(z)
+	neighbors, Nz := self.G.getNeighborsWithSet(z)
+
+	zIncludedBranch.includeVertices(z)
+	zIncludedBranch.k--
+
+	nZIncludedBranch.excludeVertices(z)
+	nZIncludedBranch.includeVertices(neighbors...)
+	nZIncludedBranch.k -= dz
+
+	// 3. if ( Γ is a 2-tuple ({ u , z }, 1 ) ) or
+	// ( Γ is a good pair ( u , z ) where z is almost-dominated by a vertex
+	// v ∈ N ( u ) ) or
+	// ( Γ is a vertex z with d ( z ) ≥ 7) then
+	if priority <= 2 ||
+		priority == structurePriority(MAX_INT) || // TODO: Check the proofs to see which good pairs qualify for this.
+		priority == 8 || // Vertex z with d(z) \geq 8
+		priority == 11 { // Vertex z with d(z) \geq 7
+
+		// return min {1+VC(G−z, T ∪ (N(z), 2), k−1), d(z)+VC(G−N[z], T, k−d(z))};
+		zIncludedBranch.tuples.Add(MkStructureWithSet(2, Nz))
+
+	} else {
+		//Γ is a good pair (u, z) where z is not almost-dominated by any vertex
+		// in N(u).
+		// return min{1+VC(G−z, T, k−1) , d(z)+VC(G−N[z], T ∪ (N(u), 2), k−d(z))};
+		_, Nu := self.G.getNeighborsWithSet(u)
+		nZIncludedBranch.tuples.Add(MkStructureWithSet(2, Nu))
+	}
+
+	zIncludedResult, nZIncludedResult := 1+zIncludedBranch.VC(), dz+nZIncludedBranch.VC()
+	if zIncludedResult < nZIncludedResult {
+		return zIncludedResult
+	} else {
+		return nZIncludedResult
+	}
+
 }
