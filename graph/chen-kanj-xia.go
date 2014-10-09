@@ -35,38 +35,22 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() (wasApplicable bool) {
 			wasApplicable = true
 			_, kPrime2 = generalFold(self.G, self.halt, kPrime1)
 			reduction = kPrime1 - kPrime2
+			Debug("Reduction: %v", reduction)
 			self.k -= reduction
 
 			if reduction >= 1 {
 				// if the repeated application of self.General_Fold reduces the parameter by at least 2 then apply it repeatedly;
-				for reduction >= 1 {
-					kPrime1 = kPrime2
-					_, kPrime2 = generalFold(self.G, self.halt, kPrime2)
-					reduction = kPrime1 - kPrime2
-					self.k -= reduction
-				}
-
-				// General-Fold is no longer applicable.
 				return
 			} else {
 				// else if the application of self.General-Fold reduces
 				// the parameter by 1 and (d ( u ) < 4)
-				strong2Tuples := self.T.PopAllStrong2Tuples()
-				var theTuple *structure
-				for s2tInter := range strong2Tuples.Iter() {
-					s2t := s2tInter.(*structure)
-					gp := &goodPair{
-						pair: s2t,
-					}
-					// According to preliminaries, the notation d(v) means the
-					// degree of the vertex in self.G.
-					if self.G.Degree(gp.U()) < 4 {
-						theTuple = s2t
-						break
-					}
+				s2t, _ := self.T.Pop()
+				gp := &goodPair{
+					pair: s2t,
 				}
-
-				if theTuple != nil {
+				// According to preliminaries, the notation d(v) means the
+				// degree of the vertex in self.G.
+				if self.G.Degree(gp.U()) < 4 {
 					// then apply it until it is no longer applicable;
 					gPrime, kPrime2 = generalFold(gPrime, self.halt, kPrime1)
 					reduction = kPrime1 - kPrime2
@@ -82,6 +66,8 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() (wasApplicable bool) {
 				return
 
 			}
+
+			return
 		}
 
 		panic("2-tuple exists but no reduction could be achieved - there must be a bug in generalFold.")
