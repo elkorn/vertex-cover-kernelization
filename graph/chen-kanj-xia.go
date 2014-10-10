@@ -227,7 +227,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 			// T = T ∪ {( S − { u }, q − 1 )};
 			S := tuple.S.Clone()
 			S.Remove(u.(Vertex))
-			newTuple := MkStructureWithSet(tuple.q-1, S)
+			newTuple := MkStructure(tuple.q-1, tuple.Elements...)
 			if newTuple.computePriority(self.G) < 3 {
 				// It's a 2-tuple.
 				// When the algorithm branches on a vertex in a 2-tuple, this
@@ -245,13 +245,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 				// The algorithm can be made oblivious to this choice
 				// by ordering the vertices in a 2-tuple as described above
 				// whenever the 2-tuple is created.
-				verts := newTuple.S.Iter()
-				v1, v2 := (<-verts).(Vertex), (<-verts).(Vertex)
-				newTuple.S.Remove(v1)
-				newTuple.S.Remove(v2)
-				newTuple.S.Add(v2)
-				newTuple.S.Add(v1)
-				// TODO: Verify that the vertex order is retained.
+				newTuple.Elements[1], newTuple.Elements[0] = newTuple.Elements[0], newTuple.Elements[1]
 			}
 
 			self.T.Push(newTuple, self.G)
@@ -262,6 +256,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 		if !isIndependent {
 			// T = T ∪ (\forall(u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
 			S := tuple.S.Clone()
+
 			for _, edge := range edges {
 				S.Remove(edge.from)
 				S.Remove(edge.to)
@@ -404,16 +399,15 @@ func (self *ChenKanjXiaVC) VC() int {
 		priority == structurePriority(MAX_INT) || // TODO: Check the proofs to see which good pairs qualify for this.
 		priority == 8 || // Vertex z with d(z) \geq 8
 		priority == 11 { // Vertex z with d(z) \geq 7
-
 		// return min {1+VC(G−z, T ∪ (N(z), 2), k−1), d(z)+VC(G−N[z], T, k−d(z))};
-		zIncludedBranch.tuples.Add(MkStructureWithSet(2, Nz))
+		zIncludedBranch.tuples.Add(MkStructureWithSet(2, Nz, neighbors...))
 
 	} else {
 		//Γ is a good pair (u, z) where z is not almost-dominated by any vertex
 		// in N(u).
 		// return min{1+VC(G−z, T, k−1) , d(z)+VC(G−N[z], T ∪ (N(u), 2), k−d(z))};
-		_, Nu := self.G.getNeighborsWithSet(u)
-		nZIncludedBranch.tuples.Add(MkStructureWithSet(2, Nu))
+		nu, Nu := self.G.getNeighborsWithSet(u)
+		nZIncludedBranch.tuples.Add(MkStructureWithSet(2, Nu, nu...))
 	}
 
 	zIncludedResult, nZIncludedResult := 1+zIncludedBranch.VC(), dz+nZIncludedBranch.VC()

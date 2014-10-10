@@ -60,6 +60,7 @@ func TestIdentifyGoodPairs(t *testing.T) {
 	g.AddEdge(10, 9)
 	g.AddEdge(10, 13)
 	g.AddEdge(12, 10)
+	// InVerboseContext(func() {
 	pairs := identifyGoodPairs(g)
 	for p := range pairs.Iter() {
 		pp := p.(*goodPair)
@@ -78,6 +79,7 @@ func TestIdentifyGoodPairs(t *testing.T) {
 	assert.Equal(t, Vertex(12), pp.Z())
 	assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
 	assert.Equal(t, 1, pp.numNeighborhoodEdges)
+	// })
 }
 
 func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
@@ -130,10 +132,6 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
 	assert.False(t, share)
 
-	// TODO: There was a bug in neighborsOfUShareCommonVertexOtherThanU.
-	// It manifested itself here in the way that the logic decides that the
-	// neighbors do not share a neighbor other than u when this is clearly not
-	// the case having the edge 2-3.
 	g = MkGraph(21)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -165,6 +163,12 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 func TestIdentifyStructuresInProteins(t *testing.T) {
 	// TODO: Devise better test cases.
 	// For now, this should not fail.
-	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
-	identifyStructures(g, MAX_INT)
+	// g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+	// pq := identifyStructures(g, MAX_INT)
+	// for !pq.Empty() {
+	// 	s, priority := pq.Pop()
+	// InVerboseContext(func() {
+	// Debug("%v, %v", s.S, priority)
+	// })
+	// }
 }

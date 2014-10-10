@@ -5,14 +5,16 @@ import "github.com/deckarep/golang-set"
 // Structures are related to fold-struction.go.
 
 type structure struct {
-	S mapset.Set
-	q int
+	S        mapset.Set
+	Elements Vertices
+	q        int
 }
 
 func MkStructure(q int, s ...Vertex) *structure {
 	result := &structure{
-		q: q,
-		S: mapset.NewSet(),
+		q:        q,
+		S:        mapset.NewSet(),
+		Elements: s,
 	}
 
 	for _, s := range s {
@@ -22,19 +24,32 @@ func MkStructure(q int, s ...Vertex) *structure {
 	return result
 }
 
-func MkStructureWithSet(q int, S mapset.Set) *structure {
+func MkStructureWithSet(q int, S mapset.Set, s ...Vertex) *structure {
 	return &structure{
-		q: q,
-		S: S,
+		q:        q,
+		S:        S,
+		Elements: s,
 	}
 }
 
-// TODO: @start-from-here Refactor constructing good pairs to maintain the
-// vertex ordering - this causes chaos in the tests.
-// The underlying structure should not be a set, but two separate vertices so
-// that order is preserved.
+func MkStructureWithCapacity(q, capacity int, s ...Vertex) *structure {
+	result := &structure{
+		q:        q,
+		S:        mapset.NewSet(),
+		Elements: make(Vertices, len(s), capacity),
+	}
+
+	copy(result.Elements, s)
+
+	for _, s := range s {
+		result.S.Add(s)
+	}
+
+	return result
+}
+
 func mkGoodPairStruct(s ...Vertex) *structure {
-	return MkStructure(-1, s...)
+	return MkStructureWithCapacity(-1, 2, s...)
 }
 
 // In Part 6. of the proof states that when having a good pair where
@@ -131,7 +146,6 @@ func (self *structure) countDegree5Neighbors(u Vertex, g *Graph) (degree5Neighbo
 
 type goodPair struct {
 	pair                                *structure
-	u, z                                Vertex
 	numNeighborhoodAlmostDominatedPairs int
 	numNeighborhoodEdges                int
 }
@@ -197,22 +211,26 @@ func (self *goodPair) countNeighborhoodEdges(g *Graph) int {
 }
 
 func (self *goodPair) U() Vertex {
-	if INVALID_VERTEX == self.u {
-		iter := self.pair.S.Iter()
-		self.u = (<-iter).(Vertex)
-	}
-
-	return self.u
+	return self.pair.Elements[0]
 }
 
 func (self *goodPair) Z() Vertex {
-	if INVALID_VERTEX == self.z {
-		iter := self.pair.S.Iter()
-		<-iter
-		self.z = (<-iter).(Vertex)
+	return self.pair.Elements[1]
+}
+
+func (self *goodPair) setZ(z Vertex) {
+	n := len(self.pair.Elements)
+	if n != 1 && n != 2 {
+		panic("Invalid good pair!")
 	}
 
-	return self.z
+	if n == 1 {
+		self.pair.Elements = append(self.pair.Elements, z)
+	} else if n == 2 {
+		self.pair.Elements[1] = z
+	}
+
+	self.pair.S.Add(z)
 }
 
 func (self *goodPair) IsValid() bool {
@@ -331,20 +349,17 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 	// Having chosen the first vertex u in a good pair, to choose the second
 	// vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.
-	possibleZ := mapset.NewSet()
 	// TODO: Verify whether this is feasible.
 	additionalPairs := mapset.NewSet()
 	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 		Debug("\n")
 		Debug("Looking for Z for %v...", possibleGoodPair.U())
+		var possibleZ mapset.Set
 		// a) If there exist 2 neighbors of u: w,v s.t. v is almost-dominated
 		// by w, then z is almost dominated by a neighbor of u.
-		// TODO: Implement the logic described below.
-		// If no vertex in N ( u ) is almost-dominated by another vertex in
-		// N ( u ) , then (a) is vacuously satisfied by every vertex in N ( u ),
-		// and z will be a neighbor of u of maximum degree.
+		u := possibleGoodPair.U()
 		if possibleGoodPair.countAlmostDominatedPairs(G) > 0 {
-			u := possibleGoodPair.U()
+			possibleZ = mapset.NewSet()
 			G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 				n := getOtherVertex(u, edge)
 				G.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
@@ -359,122 +374,127 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 					}
 				})
 			})
+		} else {
+			// If no vertex in N ( u ) is almost-dominated by another vertex in
+			// N ( u ) , then (a) is vacuously satisfied by every vertex in N ( u ),
+			// and z will be a neighbor of u of maximum degree.
+			_, possibleZ = G.getNeighborsWithSet(u)
+		}
 
-			Debug("Satisfying a): %v", possibleZ)
-			// b) the degree of z is max among N(u) satisfying a).
-			maxDegreeOfZ := 0
-			for zInter := range possibleZ.Iter() {
-				z := zInter.(Vertex)
-				if deg := G.Degree(z); deg > maxDegreeOfZ {
-					maxDegreeOfZ = deg
-				}
+		Debug("Satisfying a): %v", possibleZ)
+		// b) the degree of z is max among N(u) satisfying a).
+		maxDegreeOfZ := 0
+		for zInter := range possibleZ.Iter() {
+			z := zInter.(Vertex)
+			if deg := G.Degree(z); deg > maxDegreeOfZ {
+				maxDegreeOfZ = deg
+			}
+		}
+
+		Debug("Max. degree of z: %v", maxDegreeOfZ)
+		for zInter := range possibleZ.Iter() {
+			z := zInter.(Vertex)
+			if G.Degree(z) != maxDegreeOfZ {
+				toRemove.Add(z)
+			}
+		}
+
+		possibleZ = trimSet(possibleZ, &toRemove)
+		Debug("Satisfying a),b): %v", possibleZ)
+
+		// c) z is adjacent to the least number of N(u) satisfying a) and b)
+		minAdjacency := MAX_INT
+		// TODO: This should be a priority queue.
+		adjacencies := mapset.NewSet()
+		for zInter := range possibleZ.Iter() {
+			z := zInter.(Vertex)
+			adjacency := 0
+			G.ForAllNeighbors(
+				possibleGoodPair.U(),
+				func(edge *Edge, done chan<- bool) {
+					if G.HasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
+						adjacency++
+					}
+				})
+
+			if adjacency < minAdjacency {
+				minAdjacency = adjacency
 			}
 
-			Debug("Max. degree of z: %v", maxDegreeOfZ)
-			for zInter := range possibleZ.Iter() {
-				z := zInter.(Vertex)
-				if G.Degree(z) != maxDegreeOfZ {
-					toRemove.Add(z)
-				}
+			adj := &degree{
+				v:   z,
+				val: adjacency,
 			}
 
-			possibleZ = trimSet(possibleZ, &toRemove)
-			Debug("Satisfying a),b): %v", possibleZ)
+			Debug("Adjacency of %v: %v", adj.v, adj.val)
+			adjacencies.Add(adj)
+		}
 
-			// c) z is adjacent to the least number of N(u) satisfying a) and b)
-			minAdjacency := MAX_INT
-			// TODO: This should be a priority queue.
-			adjacencies := mapset.NewSet()
-			for zInter := range possibleZ.Iter() {
-				z := zInter.(Vertex)
-				adjacency := 0
+		Debug("Min. adjacency of z: %v", minAdjacency)
+
+		for adj := range adjacencies.Iter() {
+			adjacency := adj.(*degree)
+			if adjacency.val != minAdjacency {
+				toRemove.Add(adjacency.v)
+			}
+		}
+
+		possibleZ = trimSet(possibleZ, &toRemove)
+		Debug("Satisfying a),b),c): %v", possibleZ)
+		// d) The number of shared neighbors between z and a neighbor of u is
+		// maximized among N(u) satisfying a), b) and c).
+		maxSharedNeighbors := 0
+		sharedNeighbors := mapset.NewSet()
+		for zInter := range possibleZ.Iter() {
+			z := zInter.(Vertex)
+			curSharedNeighbors := 0
+			G.ForAllNeighbors(z, func(edge *Edge, done chan<- bool) {
 				G.ForAllNeighbors(
 					possibleGoodPair.U(),
 					func(edge *Edge, done chan<- bool) {
-						if G.HasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
-							adjacency++
+						sharedNeighbor := getOtherVertex(
+							possibleGoodPair.U(),
+							edge)
+						if G.HasEdge(z, sharedNeighbor) {
+							curSharedNeighbors++
 						}
 					})
+			})
 
-				if adjacency < minAdjacency {
-					minAdjacency = adjacency
-				}
-
-				adj := &degree{
-					v:   z,
-					val: adjacency,
-				}
-
-				Debug("Adjacency of %v: %v", adj.v, adj.val)
-				adjacencies.Add(adj)
+			if curSharedNeighbors > maxSharedNeighbors {
+				maxSharedNeighbors = curSharedNeighbors
 			}
 
-			Debug("Min. adjacency of z: %v", minAdjacency)
-
-			for adj := range adjacencies.Iter() {
-				adjacency := adj.(*degree)
-				if adjacency.val != minAdjacency {
-					toRemove.Add(adjacency.v)
-				}
-			}
-
-			possibleZ = trimSet(possibleZ, &toRemove)
-			Debug("Satisfying a),b),c): %v", possibleZ)
-			// d) The number of shared neighbors between z and a neighbor of u is
-			// maximized among N(u) satisfying a), b) and c).
-			maxSharedNeighbors := 0
-			sharedNeighbors := mapset.NewSet()
-			for zInter := range possibleZ.Iter() {
-				z := zInter.(Vertex)
-				curSharedNeighbors := 0
-				G.ForAllNeighbors(z, func(edge *Edge, done chan<- bool) {
-					G.ForAllNeighbors(
-						possibleGoodPair.U(),
-						func(edge *Edge, done chan<- bool) {
-							sharedNeighbor := getOtherVertex(
-								possibleGoodPair.U(),
-								edge)
-							if G.HasEdge(z, sharedNeighbor) {
-								curSharedNeighbors++
-							}
-						})
-				})
-
-				if curSharedNeighbors > maxSharedNeighbors {
-					maxSharedNeighbors = curSharedNeighbors
-				}
-
-				sharedNeighbors.Add(&degree{
-					v:   z,
-					val: curSharedNeighbors,
-				})
-			}
-
-			// Now, there should be one vertex in possibleZ.
-			// If that's not the case, it means that multiple vertices fulfill
-			// the criteria a,b,c,d.
-			// Is that even possible?
-			// If so, additional good pairs of (u, z_1), (u, z_2)... should
-			// probably be created.
-			Debug("Shn: %v, maxShn: %v", sharedNeighbors, maxSharedNeighbors)
-			for shnInter := range sharedNeighbors.Iter() {
-				shn := shnInter.(*degree)
-				if shn.val == maxSharedNeighbors {
-					// This is the z we're looking for.
-					if possibleGoodPair.IsValid() {
-						// There is a pair with that U already.
-						// Create another one.
-						additionalPairs.Add(mkGoodPair(possibleGoodPair.U(), shn.v))
-					} else {
-						possibleGoodPair.pair.S.Add(shn.v)
-					}
-				} else {
-					toRemove.Add(shn.v)
-				}
-			}
-
-			possibleZ = trimSet(possibleZ, &toRemove)
+			sharedNeighbors.Add(&degree{
+				v:   z,
+				val: curSharedNeighbors,
+			})
 		}
+
+		// Now, there should be one vertex in possibleZ.
+		// If that's not the case, it means that multiple vertices fulfill
+		// the criteria a,b,c,d.
+		// Is that even possible?
+		// If so, additional good pairs of (u, z_1), (u, z_2)... should
+		// probably be created.
+		Debug("Shn: %v, maxShn: %v", sharedNeighbors, maxSharedNeighbors)
+		for shnInter := range sharedNeighbors.Iter() {
+			shn := shnInter.(*degree)
+			if shn.val == maxSharedNeighbors {
+				// This is the z we're looking for.
+				if possibleGoodPair.IsValid() {
+					// There is a pair with that U already.
+					// Create another one.
+					additionalPairs.Add(mkGoodPair(possibleGoodPair.U(), shn.v))
+				} else {
+					possibleGoodPair.setZ(shn.v)
+				}
+			} else {
+				toRemove.Add(shn.v)
+			}
+		}
+
+		possibleZ = trimSet(possibleZ, &toRemove)
 
 		if !possibleGoodPair.IsValid() {
 			invalidPairs.Add(possibleGoodPair)

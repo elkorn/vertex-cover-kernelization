@@ -28,12 +28,7 @@ func (s *structure) computePriority(g *Graph) structurePriority {
 		12 Γ is any good pair other than the ones appearing in 1–11 above.
 	*/
 	cardinality := s.S.Cardinality()
-	elements := make([]Vertex, cardinality)
-	i := 0
-	for elem := range s.S.Iter() {
-		elements[i] = elem.(Vertex)
-		i++
-	}
+	elements := s.Elements
 
 	switch cardinality {
 	case 1:
