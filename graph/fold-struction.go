@@ -140,6 +140,9 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 }
 
 func generalFold(g *Graph, halt chan bool, k int) (*Graph, int) {
+	// If the subroutine General-Fold() is not applicable to the
+	// graph it means that its application does not change the structure of the
+	// graph.
 	kPrime := k
 	var crown *Crown
 	// Apply the NT-decomposition to G until the application of this
@@ -157,7 +160,6 @@ func generalFold(g *Graph, halt chan bool, k int) (*Graph, int) {
 		default:
 		}
 
-		Debug("Found crown %v", crown)
 		if crown.IsTrivial() {
 			break
 		}
@@ -177,13 +179,14 @@ func reduceAlmostCrown(g *Graph, halt chan<- bool, kPrime int) (*Graph, int) {
 	var crown *Crown
 	var almostCrownVertex Vertex
 	if g.NVertices() == 0 {
-		panic("No vertices to search!")
+		Debug("No vertices to search!")
+		return g, kPrime
 	}
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
 		g.RemoveVertex(v)
 		Debug("Removed vertex %v, looking for a crown.", v)
 		crown = findCrown(g, halt, kPrime)
-		Debug("Found crown %v, restoring vertex %v", crown, v)
+		Debug("restoring vertex %v", v)
 		g.RestoreVertex(v)
 		if !crown.IsTrivial() {
 			// If the NT-decomposition yields a crown,
