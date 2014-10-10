@@ -41,11 +41,11 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	Debug("M1 cardinality: %v", M1.NEdges())
 	Debug("Outsiders: %v", O)
-	if options.Verbose {
-		M1.ForAllEdges(func(edge *Edge, done chan<- bool) {
-			Debug("%v", edge.Str())
-		})
-	}
+	// if options.Verbose {
+	// 	M1.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 		Debug("%v", edge.Str())
+	// 	})
+	// }
 	if M1.NEdges() > k {
 		halt <- true
 		return nil
@@ -62,11 +62,11 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 
 	M2 := FindMaximumMatching(outsiderNeighbors)
 	Debug("M2 cardinality: %v", M2.NEdges())
-	if options.Verbose {
-		M2.ForAllEdges(func(edge *Edge, done chan<- bool) {
-			Debug("%v", edge.Str())
-		})
-	}
+	// if options.Verbose {
+	// 	M2.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 		Debug("%v", edge.Str())
+	// 	})
+	// }
 
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	if M2.NEdges() > k {
@@ -186,6 +186,8 @@ func reduceCrown(G *Graph, crown *Crown) {
 	// crowns even if |I|=1 and |H|=0. This leads to a degradation of the graph
 	// up to the point of having no vertices inside.
 	// 1) Read Chlebik's paper for more details on how to fix this.
+	//		- the paper proved to be inconclusive. Nothing is being said
+	//		  about H, only that H=N(I) and I is not empty.
 	// 2) Try using LP kernelization for finding crowns.
 	Debug("Removing crown %v", crown)
 	// The graph G′ is produced by removing vertices in I and H
