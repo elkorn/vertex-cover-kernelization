@@ -39,7 +39,19 @@ func (self *ChenKanjXiaVC) conditionalGeneralFold() (wasApplicable bool) {
 			self.k -= reduction
 
 			if reduction >= 1 {
-				// if the repeated application of self.General_Fold reduces the parameter by at least 2 then apply it repeatedly;
+				for reduction >= 1 {
+					// If the repeated application of General-Fold
+					// reduces the parameter by at least 2, then
+					// Conditional_General_Fold will invoke General-Fold
+					// repeatedly until it is not applicable, thus reducing
+					// the parameter by at least two.
+					kPrime1 = kPrime2
+					_, kPrime2 = generalFold(self.G, self.halt, kPrime1)
+					reduction = kPrime1 - kPrime2
+					Debug("Reduction: %v", reduction)
+					self.k -= reduction
+				}
+
 				return
 			} else {
 				// else if the application of self.General-Fold reduces
