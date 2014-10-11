@@ -60,26 +60,32 @@ func TestIdentifyGoodPairs(t *testing.T) {
 	g.AddEdge(10, 9)
 	g.AddEdge(10, 13)
 	g.AddEdge(12, 10)
-	// InVerboseContext(func() {
-	pairs := identifyGoodPairs(g)
-	for p := range pairs.Iter() {
-		pp := p.(*goodPair)
-		Debug("Good pair with u: %v, z: %v, domination: %v, edges: %v", pp.U(), pp.Z(), pp.numNeighborhoodAlmostDominatedPairs, pp.numNeighborhoodEdges)
-	}
 
-	assert.Equal(t, 2, pairs.Cardinality())
-	p := pairs.Iter()
-	pp := (<-p).(*goodPair)
-	assert.Equal(t, Vertex(9), pp.U())
-	assert.Equal(t, Vertex(12), pp.Z())
-	assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
-	assert.Equal(t, 1, pp.numNeighborhoodEdges)
-	pp = (<-p).(*goodPair)
-	assert.Equal(t, Vertex(10), pp.U())
-	assert.Equal(t, Vertex(12), pp.Z())
-	assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
-	assert.Equal(t, 1, pp.numNeighborhoodEdges)
-	// })
+	pairs := identifyGoodPairs(g)
+	assert.Equal(t, 4, pairs.Cardinality())
+
+	// Specifics cannot be tested due to the non-deterministic nature of the set
+	// p := pairs.Iter()
+	// pp := (<-p).(*goodPair)
+	// assert.Equal(t, Vertex(9), pp.U())
+	// assert.Equal(t, Vertex(12), pp.Z())
+	// assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
+	// assert.Equal(t, 1, pp.numNeighborhoodEdges)
+	// pp = (<-p).(*goodPair)
+	// assert.Equal(t, Vertex(10), pp.U())
+	// assert.Equal(t, Vertex(12), pp.Z())
+	// assert.Equal(t, 3, pp.numNeighborhoodAlmostDominatedPairs)
+	// assert.Equal(t, 1, pp.numNeighborhoodEdges)
+	// pp = (<-p).(*goodPair)
+	// assert.Equal(t, Vertex(12), pp.U())
+	// assert.Equal(t, Vertex(9), pp.Z())
+	// assert.Equal(t, 0, pp.numNeighborhoodAlmostDominatedPairs)
+	// assert.Equal(t, 1, pp.numNeighborhoodEdges)
+	// pp = (<-p).(*goodPair)
+	// assert.Equal(t, Vertex(12), pp.U())
+	// assert.Equal(t, Vertex(10), pp.Z())
+	// assert.Equal(t, 0, pp.numNeighborhoodAlmostDominatedPairs)
+	// assert.Equal(t, 0, pp.numNeighborhoodEdges)
 }
 
 func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
@@ -160,15 +166,15 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 	assert.True(t, share)
 }
 
-func TestIdentifyStructuresInProteins(t *testing.T) {
-	// TODO: Devise better test cases.
-	// For now, this should not fail.
-	// g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
-	// pq := identifyStructures(g, MAX_INT)
-	// for !pq.Empty() {
-	// 	s, priority := pq.Pop()
-	// InVerboseContext(func() {
-	// Debug("%v, %v", s.S, priority)
-	// })
-	// }
-}
+// func TestIdentifyStructuresInProteins(t *testing.T) {
+// 	// TODO: Devise better test cases.
+// 	// For now, this should not fail.
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	pq := identifyStructures(g, MAX_INT)
+// 	for !pq.Empty() {
+// 		s, priority := pq.Pop()
+// 		InVerboseContext(func() {
+// 			Debug("%v, %v", s.S, priority)
+// 		})
+// 	}
+// }

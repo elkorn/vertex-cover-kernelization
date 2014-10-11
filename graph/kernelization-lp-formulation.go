@@ -5,6 +5,7 @@ import "github.com/deckarep/golang-set"
 const MAX_UINT = ^uint(0)
 const MAX_INT = int(MAX_UINT >> 1)
 
+// TODO: @start-from-here implement the lp-relaxation solver for the dual using glpk.
 type lpNode struct {
 	selection  mapset.Set
 	level      int

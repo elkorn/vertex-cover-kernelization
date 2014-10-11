@@ -59,7 +59,7 @@ func FindMaximumMatching(G *Graph) (result *Graph) {
 
 	for {
 		path := findAugmentingPath(G, result)
-		Debug("Found aug. path: %v", path)
+		// Debug("Found aug. path: %v", path)
 		if nil == path {
 			return result // maximum is found.
 		}
@@ -91,10 +91,10 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 		})
 	})
 
-	Debug("Looking for an augmenting path.")
+	// Debug("Looking for an augmenting path.")
 	for !workList.Empty() {
 		cur := (workList.Pop()).(*Edge)
-		Debug("Processing edge %v-%v.", cur.from, cur.to)
+		// Debug("Processing edge %v-%v.", cur.from, cur.to)
 		if M.HasEdge(cur.from, cur.to) {
 			continue
 		}
@@ -102,7 +102,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 		startInfo := forest[cur.from.toInt()]
 		endInfo := forest[cur.to.toInt()]
 
-		Debug("Got startInfo: %v, endInfo: %v", startInfo, endInfo)
+		// Debug("Got startInfo: %v, endInfo: %v", startInfo, endInfo)
 
 		if nil != endInfo {
 			if endInfo.IsOuter && startInfo.Root == endInfo.Root {
@@ -111,9 +111,9 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 				// a blossom is present.
 				// Contract the blossom, repeat the search in the contracted graph
 				// and expand the result.
-				Debug("Case 1.: %v-%v", cur.from, cur.to)
+				// Debug("Case 1.: %v-%v", cur.from, cur.to)
 				blossom := findBlossom(forest, cur)
-				Debug("Found blossom %v", blossom.vertices)
+				// Debug("Found blossom %v", blossom.vertices)
 				path := findAugmentingPath(
 					contractGraph(G, blossom),
 					contractGraph(M, blossom))
@@ -130,7 +130,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 				// down through the other.
 				// (root(v) → … → v) → (w → … → root(w))
 
-				Debug("Case 2.: %v-%v", cur.from, cur.to)
+				// Debug("Case 2.: %v-%v", cur.from, cur.to)
 				result = list.New()
 				for v := cur.from; v != INVALID_VERTEX; v = forest[v.toInt()].Parent {
 					// The path has to be added in reverse order.
@@ -151,7 +151,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 				// the only way it could be done while alternating would trail away from
 				// the root.
 				// This edge can be skipped.
-				Debug("Case 3.: %v-%v", cur.from, cur.to)
+				// Debug("Case 3.: %v-%v", cur.from, cur.to)
 			}
 		} else {
 			// There is no info on this edge - it must correspond to a matched
@@ -160,7 +160,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 			// containing the start of the endpoint, then add the node for its
 			// endpoint to the tree as an outer node.
 
-			Debug("Corresponds to a matched vertex: %v-%v", cur.from, cur.to)
+			// Debug("Corresponds to a matched vertex: %v-%v", cur.from, cur.to)
 			forest[cur.to.toInt()] = mkNodeInformation(cur.from, startInfo.Root, false)
 
 			// The endpoint of the unique matched edge corresp. to this node
@@ -175,7 +175,7 @@ func findAugmentingPath(G, M *Graph) (result *list.List) {
 
 			G.ForAllNeighbors(endpoint, func(edge *Edge, done chan<- bool) {
 				e := MkEdge(endpoint, getOtherVertex(endpoint, edge))
-				Debug("Adding fringe edge %v-%v to work list", e.from, e.to)
+				// Debug("Adding fringe edge %v-%v to work list", e.from, e.to)
 				workList.Push(e)
 			})
 		}
@@ -203,10 +203,10 @@ func updateMatching(path *list.List, matching *Graph) {
 	for e, f := path.Front(), path.Front().Next(); f != nil; e, f = e.Next(), f.Next() {
 		from, to := e.Value.(Vertex), f.Value.(Vertex)
 		if matching.HasEdge(from, to) {
-			Debug("Removing edge %v-%v from matching", from, to)
+			// Debug("Removing edge %v-%v from matching", from, to)
 			matching.RemoveEdge(from, to)
 		} else {
-			Debug("Adding edge %v-%v to matching", from, to)
+			// Debug("Adding edge %v-%v to matching", from, to)
 			matching.AddEdge(from, to)
 		}
 	}
@@ -263,7 +263,7 @@ func expandPath(path *list.List, g *Graph, forest []*nodeInformation, blossom *b
 			exitNode := findBlossomExit(g, blossom, p.Next().Value.(Vertex))
 			exitIndex := indexOf(exitNode, blossom.cycle)
 
-			Debug("Exit node : %v, Exit index: %v", exitNode, exitIndex)
+			// Debug("Exit node : %v, Exit index: %v", exitNode, exitIndex)
 			var start, step int
 			// The path taken to the exit of the cycle must end by following a
 			// matched edge, to maintani the invariant of '{w', w} ∈ E ⧵ M'

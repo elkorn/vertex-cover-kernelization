@@ -6,10 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: The tests fail because of using a set as S in a good pair. Verify that
-// the failing tests return the correct priority for the discovered structures.
-// (pen and paper will be needed)
-
 func TestStrong2TuplePriority(t *testing.T) {
 	g := MkGraph(7)
 	g.AddEdge(1, 3)
@@ -98,7 +94,7 @@ func Test_GoodPair_Du3_Deg5NeighborsWithoutCommonNeighbors(t *testing.T) {
 	assert.NotEqual(t, 3, str.computePriority(g))
 }
 
-func Tes_tGoodPair_Du3_DzGeq5(t *testing.T) {
+func Test_GoodPair_Du3_DzGeq5(t *testing.T) {
 	g := MkGraph(15)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)

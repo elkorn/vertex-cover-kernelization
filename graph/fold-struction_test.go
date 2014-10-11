@@ -82,18 +82,19 @@ func TestStruction2(t *testing.T) {
 }
 
 func TestReduceAlmostCrown(t *testing.T) {
-	g := MkGraph(7)
+	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
-	g.AddEdge(2, 4)
-	g.AddEdge(2, 5)
-	g.AddEdge(3, 6)
-	g.AddEdge(3, 7)
 
-	g.AddEdge(4, 5)
-	g.AddEdge(6, 7)
+	ShowGraph(g)
 
-	reduceAlmostCrown(g, nil, MAX_INT)
+	InVerboseContext(func() {
+		findCrown(g, nil, MAX_INT)
+		Debug("\n")
+		reduceAlmostCrown(g, nil, MAX_INT)
+	})
+
+	ShowGraph(g)
 }
 
 func TestGeneralFold2(t *testing.T) {

@@ -194,9 +194,9 @@ func (self *goodPair) countNeighborhoodEdges(g *Graph) int {
 				return
 			}
 
-			Debug("Looking for edge %v-%v", x, y)
+			// Debug("Looking for edge %v-%v", x, y)
 			if g.HasEdge(x, y) {
-				Debug("Found edge %v-%v", x, y)
+				// Debug("Found edge %v-%v", x, y)
 				result++
 			}
 
@@ -504,6 +504,8 @@ func identifyGoodPairs(G *Graph) mapset.Set {
 	forAllGoodPairs(possibleGoodPairs, func(pgp *goodPair) {
 		Debug("U: %v, pairs: %v, edges: %v", pgp.U(), pgp.numNeighborhoodAlmostDominatedPairs, pgp.numNeighborhoodEdges)
 	})
+
+	Debug("additional pairs: %v", additionalPairs)
 	return possibleGoodPairs.Union(additionalPairs).Difference(invalidPairs)
 }
 
