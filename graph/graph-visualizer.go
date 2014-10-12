@@ -123,6 +123,12 @@ func (self *graphVisualizer) HighlightMatching(matching *Graph, color string) {
 	})
 }
 
+func (self *graphVisualizer) HighlightMatchingSet(matching mapset.Set, color string) {
+	for e := range matching.Iter() {
+		self.HighlightEdge(e.(*Edge), color)
+	}
+}
+
 func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
 	self.vertexAttrs[v.toInt()]["style"] = "filled"
 	self.vertexAttrs[v.toInt()]["fillcolor"] = color
