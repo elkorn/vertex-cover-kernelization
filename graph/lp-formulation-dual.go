@@ -6,7 +6,7 @@ import (
 	"github.com/lukpank/go-glpk/glpk"
 )
 
-type ntDualReduction struct {
+type lpDualFormulation struct {
 	g            *Graph
 	k            int
 	lp           *glpk.Prob
@@ -31,8 +31,8 @@ func (self *Edge) lpVarStr() string {
 // y(3,4) <= 1
 // y(1,2), y(1,3), y(2,3), y(3,4) >= 0
 
-func mkNtDualReduction(g *Graph, k int) (result *ntDualReduction) {
-	result = &ntDualReduction{
+func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
+	result = &lpDualFormulation{
 		g:  g,
 		k:  k,
 		lp: glpk.New(),
@@ -96,7 +96,7 @@ func mkNtDualReduction(g *Graph, k int) (result *ntDualReduction) {
 	return
 }
 
-func (self *ntDualReduction) solve() (err error) {
+func (self *lpDualFormulation) solve() (err error) {
 	err = self.lp.Simplex(nil)
 	Debug("%s = %g", self.lp.ObjName(), self.lp.ObjVal())
 	if options.Verbose {

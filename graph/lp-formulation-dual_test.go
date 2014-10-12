@@ -9,7 +9,7 @@ import (
 func TestDualReduction(t *testing.T) {
 	g := mkGraph1()
 	InVerboseContext(func() {
-		nt := mkNtDualReduction(g, 10)
+		nt := mklpDualFormulation(g, 10)
 		err := nt.solve()
 		assert.Nil(t, err)
 	})
