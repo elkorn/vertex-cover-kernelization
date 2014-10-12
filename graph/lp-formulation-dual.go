@@ -49,7 +49,7 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 	result.lp.SetObjName("sum:Y(u,v)")
 	result.lp.SetObjDir(glpk.MAX)
 
-	result.coefficients = make([][]float64, g.currentVertexIndex+1)
+	result.coefficients = make([][]float64, g.currentVertexIndex)
 	for i, _ := range result.coefficients {
 		result.coefficients[i] = make([]float64, g.NEdges()+1)
 	}
@@ -63,7 +63,7 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 		j := 1
 		g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 			if edge.IsCoveredBy(v) {
-				result.coefficients[v][j] = 1
+				result.coefficients[v.toInt()][j] = 1
 			}
 
 			j++
@@ -93,8 +93,8 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 	// Set the coefficients for the constraints.
 	i = 1
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		result.lp.SetMatRow(i, ind, result.coefficients[v])
-		Debug("Matrix[%v]:\n%v", i, result.coefficients[v])
+		result.lp.SetMatRow(i, ind, result.coefficients[v.toInt()])
+		Debug("Matrix[%v]:\n%v", i, result.coefficients[v.toInt()])
 		i++
 	})
 
@@ -102,7 +102,9 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 }
 
 func (self *lpDualFormulation) solve() (matching mapset.Set, err error) {
-	err = self.lp.Simplex(nil)
+	smcp := glpk.NewSmcp()
+	smcp.SetMsgLev(glpk.MSG_ERR)
+	err = self.lp.Simplex(smcp)
 	matching = mapset.NewSet()
 	Debug("%s = %g", self.lp.ObjName(), self.lp.ObjVal())
 	for i := 1; i <= self.g.NEdges(); i++ {
