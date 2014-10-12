@@ -6,11 +6,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDualReduction(t *testing.T) {
+func TestDualformulation1(t *testing.T) {
 	g := mkGraph1()
-	InVerboseContext(func() {
-		nt := mklpDualFormulation(g, 10)
-		err := nt.solve()
-		assert.Nil(t, err)
-	})
+	formulation := mklpDualFormulation(g, 10)
+	matching, err := formulation.solve()
+	assert.Nil(t, err)
+	assert.Equal(t, 2, matching.Cardinality())
+	gv := MkGraphVisualizer(g)
+	gv.HighlightMatchingSet(matching, "red")
+	gv.Display()
+}
+
+func TestDualformulation2(t *testing.T) {
+	g := mkPetersenGraph()
+	formulation := mklpDualFormulation(g, 10)
+	_, err := formulation.solve()
+	assert.Nil(t, err)
 }

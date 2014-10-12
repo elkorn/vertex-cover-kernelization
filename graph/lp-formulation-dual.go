@@ -3,14 +3,19 @@ package graph
 import (
 	"fmt"
 
+	"github.com/deckarep/golang-set"
 	"github.com/lukpank/go-glpk/glpk"
 )
 
-type lpDualFormulation struct {
+type lpFormulation struct {
 	g            *Graph
 	k            int
 	lp           *glpk.Prob
 	coefficients [][]float64
+}
+
+type lpDualFormulation struct {
+	lpFormulation
 }
 
 func (self *Edge) lpVarStr() string {
@@ -33,31 +38,32 @@ func (self *Edge) lpVarStr() string {
 
 func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 	result = &lpDualFormulation{
-		g:  g,
-		k:  k,
-		lp: glpk.New(),
+		lpFormulation{
+			g:  g,
+			k:  k,
+			lp: glpk.New(),
+		},
 	}
 
 	result.lp.SetProbName("NT reduction")
 	result.lp.SetObjName("sum:Y(u,v)")
 	result.lp.SetObjDir(glpk.MAX)
 
-	result.coefficients = make([][]float64, g.currentVertexIndex)
+	result.coefficients = make([][]float64, g.currentVertexIndex+1)
 	for i, _ := range result.coefficients {
-		result.coefficients[i] = make([]float64, g.NEdges())
+		result.coefficients[i] = make([]float64, g.NEdges()+1)
 	}
 
 	result.lp.AddRows(g.NVertices())
 	i := 1
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		// is GLPK 1-based? Seems so from the example.
 		Debug("Adding row %v (v%v)", i, v)
 		result.lp.SetRowName(i, fmt.Sprintf("v%v", v))
 		result.lp.SetRowBnds(i, glpk.UP, 0, 1)
-		j := 0
+		j := 1
 		g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 			if edge.IsCoveredBy(v) {
-				result.coefficients[v.toInt()][j] = 1
+				result.coefficients[v][j] = 1
 			}
 
 			j++
@@ -68,7 +74,6 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 	Debug("Coefficients:\n%v", result.coefficients)
 
 	result.lp.AddCols(g.NEdges())
-	// is GLPK 1-based? Seems so from the example.
 	j := 1
 	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		result.lp.SetColName(j, edge.lpVarStr())
@@ -80,28 +85,31 @@ func mklpDualFormulation(g *Graph, k int) (result *lpDualFormulation) {
 	})
 
 	// Set the indices for the y(u,v) variables in the constraints.
-	ind := make([]int32, j-1)
+	ind := make([]int32, j)
 	for idx, _ := range ind {
 		ind[idx] = int32(idx)
 	}
 
 	// Set the coefficients for the constraints.
-	i = 0
+	i = 1
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		result.lp.SetMatRow(i+1, ind, result.coefficients[v.toInt()])
-		Debug("Matrix[%v]:\n%v", i+1, result.coefficients[v.toInt()])
+		result.lp.SetMatRow(i, ind, result.coefficients[v])
+		Debug("Matrix[%v]:\n%v", i, result.coefficients[v])
 		i++
 	})
 
 	return
 }
 
-func (self *lpDualFormulation) solve() (err error) {
+func (self *lpDualFormulation) solve() (matching mapset.Set, err error) {
 	err = self.lp.Simplex(nil)
+	matching = mapset.NewSet()
 	Debug("%s = %g", self.lp.ObjName(), self.lp.ObjVal())
-	if options.Verbose {
-		for i := 0; i < self.g.NEdges(); i++ {
-			Debug("; %s = %g", self.lp.ColName(i+1), self.lp.ColPrim(i+1))
+	for i := 1; i <= self.g.NEdges(); i++ {
+		val := self.lp.ColPrim(i)
+		Debug("; %s = %g", self.lp.ColName(i), val)
+		if val > 0 {
+			matching.Add(self.g.Edges[i-1])
 		}
 	}
 
