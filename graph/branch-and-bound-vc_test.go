@@ -70,7 +70,7 @@ func TestgetEdgeEndpoints(t *testing.T) {
 	assert.Equal(t, expected, g.getEdgeEndpoints())
 }
 
-func TestMkLpNode(t *testing.T) {
+func TestMkBnbNode(t *testing.T) {
 	g := MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -78,7 +78,7 @@ func TestMkLpNode(t *testing.T) {
 	g.AddEdge(2, 4)
 	selection := mapset.NewSet()
 	level := 1
-	node := mkLpNode(g, selection, level)
+	node := mkBnbNode(g, selection, level)
 	assert.NotNil(t, node)
 	assert.Equal(t, selection, node.selection)
 	assert.Equal(t, 2, node.lowerBound)

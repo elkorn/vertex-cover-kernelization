@@ -5,7 +5,7 @@ import "github.com/deckarep/golang-set"
 const MAX_UINT = ^uint(0)
 const MAX_INT = int(MAX_UINT >> 1)
 
-type lpNode struct {
+type bnbNode struct {
 	selection  mapset.Set
 	level      int
 	lowerBound int
@@ -15,8 +15,8 @@ var CONFLICT_RESOLVER func(*Graph, int, int) bool = func(g *Graph, d1, d2 int) b
 	return d1 >= d2
 }
 
-func mkLpNode(g *Graph, selection mapset.Set, level int) *lpNode {
-	result := new(lpNode)
+func mkBnbNode(g *Graph, selection mapset.Set, level int) *bnbNode {
+	result := new(bnbNode)
 	result.selection = selection
 	result.lowerBound = computeLowerBound(g, selection)
 	result.level = level
@@ -109,7 +109,7 @@ func BranchAndBound(g *Graph, halt chan<- bool, k int) mapset.Set {
 	Debug("Edge endpoints: %v", vertices)
 	// 3. Generate the first node with initial selection and compute its lower bound.
 	// 4. Insert the node into the PQ.
-	queue.Push(mkLpNode(g, bestSelection, 0))
+	queue.Push(mkBnbNode(g, bestSelection, 0))
 	total++
 	bestLowerBound := MAX_INT
 	// 5. while there is something in the PQ
@@ -149,7 +149,7 @@ func BranchAndBound(g *Graph, halt chan<- bool, k int) mapset.Set {
 					// 16. Add v to the selection.
 					newSelection.Add(v)
 					// 17. Compute the lower bound.
-					newNode := mkLpNode(g, newSelection, node.level)
+					newNode := mkBnbNode(g, newSelection, node.level)
 					// 18. If the new lower bound is better...
 					// Debug("new selection: %v", newNode.selection)
 					// Debug("lower bound %v vs %v", newNode.lowerBound, bestLowerBound)

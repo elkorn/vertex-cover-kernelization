@@ -4,7 +4,7 @@ import "container/heap"
 
 // An pqItem is something we manage in a priority queue.
 type pqItem struct {
-	value *lpNode // The value of the item; arbitrary.
+	value *bnbNode // The value of the item; arbitrary.
 	// The index is needed by update and is maintained by the heap.Interface methods.
 	index int // The index of the item in the heap.
 }
@@ -25,13 +25,13 @@ func MkPriorityQueue() *PriorityQueueProxy {
 	return result
 }
 
-func (self *PriorityQueueProxy) Push(node *lpNode) {
+func (self *PriorityQueueProxy) Push(node *bnbNode) {
 	heap.Push(self.pq, &pqItem{
 		value: node,
 	})
 }
 
-func (self *PriorityQueueProxy) Pop() *lpNode {
+func (self *PriorityQueueProxy) Pop() *bnbNode {
 	result := heap.Pop(self.pq).(*pqItem)
 	return result.value
 }
@@ -75,7 +75,7 @@ func (pq *priorityQueue) Push(x interface{}) {
 
 func (pq *priorityQueue) PushVal(x interface{}) {
 	pq.Push(&pqItem{
-		value: x.(*lpNode),
+		value: x.(*bnbNode),
 	})
 }
 
