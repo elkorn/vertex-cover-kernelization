@@ -86,15 +86,11 @@ func TestReduceAlmostCrown(t *testing.T) {
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 
-	ShowGraph(g)
-
 	InVerboseContext(func() {
 		findCrown(g, nil, MAX_INT)
 		Debug("\n")
 		reduceAlmostCrown(g, nil, MAX_INT)
 	})
-
-	ShowGraph(g)
 }
 
 func TestGeneralFold2(t *testing.T) {
