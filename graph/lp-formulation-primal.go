@@ -3,7 +3,6 @@ package graph
 import (
 	"fmt"
 
-	"github.com/deckarep/golang-set"
 	"github.com/lukpank/go-glpk/glpk"
 )
 
@@ -44,7 +43,7 @@ func mklpPrimalFormulation(g *Graph, k int) (result *lpPrimalFormulation) {
 	result.lp.SetObjName("sum X(u)")
 	result.lp.SetObjDir(glpk.MIN)
 
-	result.coefficients = make([][]float64, g.NEdges()+1)
+	result.coefficients = make([][]float64, g.NEdges())
 	for i, _ := range result.coefficients {
 		result.coefficients[i] = make([]float64, g.currentVertexIndex+1)
 	}
@@ -55,9 +54,9 @@ func mklpPrimalFormulation(g *Graph, k int) (result *lpPrimalFormulation) {
 		Debug("Constraint: %v", asPrimalLpConstraint(edge))
 		result.lp.SetRowName(i, fmt.Sprintf("%v + %v >= 1", asPrimalLpVar(edge.from), asPrimalLpVar(edge.to)))
 		result.lp.SetRowBnds(i, glpk.LO, 1, 1)
-		result.coefficients[i][edge.from] = 1
-		result.coefficients[i][edge.to] = 1
-		Debug("Coeff.: %v", result.coefficients[i])
+		result.coefficients[i-1][edge.from] = 1
+		result.coefficients[i-1][edge.to] = 1
+		Debug("Coeff.: %v", result.coefficients[i-1])
 		i++
 	})
 
@@ -90,40 +89,18 @@ func mklpPrimalFormulation(g *Graph, k int) (result *lpPrimalFormulation) {
 		// for j=1..len(ind). ind[0] and val[0] are ignored. Requires
 		// len(ind) = len(val).
 		// !!!! ind[0] and val[0] are ignored !!!!
-		result.lp.SetMatRow(i, ind, result.coefficients[i])
-		Debug("Coeff.[%v (%v)]:\n%v", i, asPrimalLpConstraint(edge), result.coefficients[i])
+		result.lp.SetMatRow(i, ind, result.coefficients[i-1])
+		Debug("Coeff.[%v (%v)]:\n%v", i, asPrimalLpConstraint(edge), result.coefficients[i-1])
 		i++
 	})
 
 	return
 }
 
-func (self *lpPrimalFormulation) solve() (P, Q, R mapset.Set, err error) {
-	err = self.lp.Simplex(nil)
-	P, Q, R = mapset.NewSet(), mapset.NewSet(), mapset.NewSet()
+func (self *lpPrimalFormulation) solve() (err error) {
+	smcp := glpk.NewSmcp()
+	smcp.SetMsgLev(glpk.MSG_ERR)
+	err = self.lp.Simplex(smcp)
 	Debug("%s = %g", self.lp.ObjName(), self.lp.ObjVal())
-	self.g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		i := int(v)
-		val := self.lp.ColPrim(i)
-		Debug("; %s = %g", self.lp.ColName(i), val)
-		switch true {
-		case val > 0.5:
-			P.Add(v)
-			break
-		case val == 0.5:
-			Q.Add(v)
-			break
-		case val < 0.5:
-			R.Add(v)
-			break
-		default:
-			panic(
-				fmt.Sprintf(
-					"Undefined case for val: %v (%v)",
-					val,
-					asPrimalLpVar(v)))
-		}
-	})
-
 	return
 }
