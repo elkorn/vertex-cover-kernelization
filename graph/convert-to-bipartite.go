@@ -30,8 +30,7 @@ func makeBipartite(g *Graph) *Graph {
 		F = {(A_v,B_u)|(v,u) \in E or (u,v) \in E}
 	*/
 
-	// TODO: this is going to cause problems if there are discontinuities in the vertex collection.
-	border := len(g.Vertices)
+	border := g.currentVertexIndex
 	result := MkGraphRememberingDeletedVertices(border*2, g.isVertexDeleted) // remember deleted vertices
 	addBipartiteEdges(result, g, border)
 	return result
