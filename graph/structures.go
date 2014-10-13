@@ -86,10 +86,6 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z Vertex, g *G
 			if g.HasEdge(v1, v2) {
 				neighborsAreDisjoint = false
 				Debug("N(%v) are not disjoint, %v-%v exists", u, v1, v2)
-				neighborsShareCommonVertexOtherThanU = true
-				Debug("N(%v) share common vertices %v, %v", u, v1, v2)
-				done <- true
-				return
 			}
 
 			g.ForAllNeighbors(v1, func(e *Edge, done chan<- bool) {

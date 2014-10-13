@@ -102,8 +102,9 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 
 	g.AddEdge(3, 5)
 
-	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
-	assert.True(t, share)
+	share, areDisjoint := str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.False(t, share)
+	assert.False(t, areDisjoint)
 
 	g.RemoveEdge(3, 5)
 	g.AddEdge(3, 6)
@@ -162,8 +163,10 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 	g.AddEdge(5, 20)
 	g.AddEdge(5, 21)
 
-	share, _ = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
-	assert.True(t, share)
+	// ShowGraph(g)
+	share, areDisjoint = str.neighborsOfUShareCommonVertexOtherThanU(Vertex(1), Vertex(2), g)
+	assert.False(t, share)
+	assert.False(t, areDisjoint)
 }
 
 // func TestIdentifyStructuresInProteins(t *testing.T) {
