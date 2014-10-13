@@ -1,7 +1,7 @@
 package graph
 
 func fordFulkerson(nf *NetworkFlow) (Edges, int) {
-	result := Edges{}
+	result := make(Edges, 0, nf.graph.NEdges())
 	totalFlow := 0
 	for pathExists, path, _ := shortestPathFromSourceToSink(nf); pathExists; pathExists, path, _ = shortestPathFromSourceToSink(nf) {
 		bottleneckCapacity := MAX_INT
