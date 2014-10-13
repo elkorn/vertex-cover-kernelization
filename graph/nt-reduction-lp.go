@@ -6,17 +6,17 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
-type ntReduction struct {
+type ntReductionLP struct {
 	formulation *lpPrimalFormulation
 }
 
-func mkNtReduction(g *Graph, k int) *ntReduction {
-	return &ntReduction{
+func mkNtReductionLP(g *Graph, k int) *ntReductionLP {
+	return &ntReductionLP{
 		formulation: mklpPrimalFormulation(g, k),
 	}
 }
 
-func (self *ntReduction) solve() (P, Q, R mapset.Set, err error) {
+func (self *ntReductionLP) solve() (P, Q, R mapset.Set, err error) {
 	err = self.formulation.solve()
 	P, Q, R = mapset.NewSet(), mapset.NewSet(), mapset.NewSet()
 	self.formulation.g.ForAllVertices(func(v Vertex, done chan<- bool) {
