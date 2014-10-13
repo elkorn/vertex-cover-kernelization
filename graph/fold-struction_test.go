@@ -155,3 +155,11 @@ func TestGeneralFold5(t *testing.T) {
 	// 2) Doing a consecutive fold on the graph causes a crash.
 	// generalFold(gPrime, nil, MAX_INT)
 }
+
+// func TestBussKernelization(t *testing.T) {
+// 	g := mkPetersenGraph()
+// 	InVerboseContext(func() {
+// 		reduction := kernelizeIfHasCoverOfSize(g, 3)
+// 		Debug("Reduction by Buss: %v", reduction)
+// 	})
+// }

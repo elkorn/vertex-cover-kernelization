@@ -139,6 +139,49 @@ func (g *Graph) isIndependentSet(set mapset.Set) bool {
 	return true
 }
 
+// func kernelizeIfHasCoverOfSize(g *Graph, k int) (hasCover bool, reduction int) {
+// 	// Based on J. F. Buss and J. Goldsmith, SIAM 22, (1993), pp. 560-572.
+// 	// 1.1. Let U be the set of vertices of degree more than k.
+// 	U := mapset.NewSet()
+// 	g.forAllVerticesOfDegreeGeq(k+1, func(v Vertex) {
+// 		U.Add(v)
+// 	})
+
+// 	u := U.Cardinality()
+
+// 	if u == 0 {
+
+// 		return 0
+// 	}
+
+// 	Debug("%v vertices of degree > %v", u, k)
+// 	// 1.2. If |U| > k, then reject; there is no cover of size k or less.
+// 	if u > k {
+// 		hasCover = false
+// 		reduction = 0
+// 		return
+// 	}
+
+// 	// 2.1. Let G’ be the subgraph of G induced by V⧵U.
+// 	// Every k-cover of G consists of U together with a k(k-|U|)-cover of G’.
+// 	for v := range U.Iter() {
+// 		g.RemoveVertex(v.(Vertex))
+// 	}
+
+// 	// 2.2. If G’ has more than k(k-|U|) edges, then reject; G’ has no (k-|U|)-cover.
+// 	if g.NEdges() > k*(k-u) {
+// 		Debug("More than %v edges in subgraph, rejecting", k*(k-u))
+// 		for v := range U.Iter() {
+// 			g.RestoreVertex(v.(Vertex))
+// 		}
+
+// 		return 0
+// 	}
+
+// 	// 3. If G’ has a cover of size k IU[, then accept; otherwise reject.
+// 	return k - u - kernelizeIfHasCoverOfSize(g, k-u)
+// }
+
 func generalFold(g *Graph, halt chan bool, k int) (*Graph, int) {
 	// If the subroutine General-Fold() is not applicable to the
 	// graph it means that its application does not change the structure of the
