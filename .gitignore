@@ -25,3 +25,4 @@ scratchpad*
 *.fls
 *.thm
 *.synctex.gz
+*.prof
