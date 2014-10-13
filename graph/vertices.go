@@ -20,3 +20,12 @@ func (toReach Vertices) reachableFromWithMatching(reachFrom mapset.Set, netFlow 
 
 	return result
 }
+
+func (self Vertices) toSet() (result mapset.Set) {
+	result = mapset.NewSet()
+	for _, vertex := range self {
+		result.Add(vertex)
+	}
+
+	return
+}
