@@ -31,3 +31,18 @@ func TestMaterializeVertexDiscontinuityHandlingError(t *testing.T) {
 	assert.False(t, g.HasEdge(2, 5))
 	assert.False(t, g.HasEdge(2, 6))
 }
+
+func BenchmarkMaterializeVertexDiscontinuityHandlingError(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		g := graph.MkGraph(7)
+		g.AddEdge(1, 2)
+		g.AddEdge(2, 3)
+		g.AddEdge(2, 4)
+		g.AddEdge(2, 5)
+		g.AddEdge(2, 6)
+		g.AddEdge(5, 7)
+		g.AddEdge(5, 6)
+
+		graph.NetworkFlowKernelization(g, 3)
+	}
+}
