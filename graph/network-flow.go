@@ -69,9 +69,20 @@ func mkNet(g *Graph) Net {
 	return result
 }
 
+func connectSourceAndSink(bipartite *Graph, source, sink Vertex) {
+	verticesAfter := bipartite.NVertices() - 2
+	verticesBefore := (verticesAfter) / 2
+
+	for i := 0; i < verticesBefore; i++ {
+		bipartite.AddEdge(source, Vertex(i+1))
+	}
+
+	for i := verticesBefore; i < verticesAfter; i++ {
+		bipartite.AddEdge(Vertex(i+1), sink)
+	}
+}
+
 func mkNetworkFlow(g *Graph) *NetworkFlow {
-	verticesBefore := g.NVertices()
-	verticesAfter := verticesBefore * 2
 	bipartite := makeBipartiteForNetworkFlow(g)
 	result := &NetworkFlow{
 		graph:  bipartite,
@@ -79,13 +90,7 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	}
 
 	result.sink = Vertex(bipartite.currentVertexIndex)
-	for i := 0; i < verticesBefore; i++ {
-		bipartite.AddEdge(result.source, Vertex(i+1))
-	}
-
-	for i := verticesBefore; i < verticesAfter; i++ {
-		bipartite.AddEdge(Vertex(i+1), result.sink)
-	}
+	connectSourceAndSink(bipartite, result.source, result.sink)
 
 	result.net = mkNet(bipartite)
 	return result
