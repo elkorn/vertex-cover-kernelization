@@ -1,11 +1,11 @@
 package graph
 
-func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, []int, []int) {
+func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, *IntStack, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
 // TODO: migrate to the new logic.
-func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
+func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
@@ -16,25 +16,23 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		marked[vi] = true
 		queue.Push(vi)
 	}
-	pathTo := func(v Vertex) []int {
+	pathTo := func(v Vertex) *IntStack {
 		vi := v.toInt()
 		si := from.toInt()
-
-		Debug("vi: %v, marked: %v", vi, marked)
 
 		if !marked[vi] {
 			return nil
 		}
 
-		path := MkIntStack(distance[v.toInt()])
+		pathLength := distance[v.toInt()]
+		path := MkIntStack(pathLength + 1)
 
 		for x := vi; x != si; x = edgeTo[x] {
 			path.Push(x)
 		}
 
 		path.Push(si)
-		// TODO: introduce Queue.Iter() to get rid of O(N) here.
-		return path.Values()
+		return path
 	}
 
 	mark(from)
@@ -61,7 +59,12 @@ func shortestPath(net Net, from, to Vertex) (bool, []int, []int) {
 		}
 	}
 
+	Debug("Path exists: %v", marked[to.toInt()])
 	return marked[to.toInt()], pathTo(to), distance
+}
+
+func shortestPathNewNf(nf *NetworkFlow) (bool, []int, []int) {
+	return shortestPathNew(nf.net, nf.sink, nf.source)
 }
 
 // TODO: merge with forAllCoordPairsInPath.

@@ -7,12 +7,11 @@ type Stack struct {
 
 func (self *Stack) Push(value interface{}) {
 	if self.count >= len(self.values) {
-		values := make([]interface{}, len(self.values)*2)
-		copy(values, self.values)
-		self.values = values
+		self.values = append(self.values, value)
+	} else {
+		self.values[self.count] = value
 	}
 
-	self.values[self.count] = value
 	self.count++
 }
 
@@ -45,14 +44,9 @@ func (self *Stack) Iter() <-chan interface{} {
 }
 
 func (self *Stack) Values() []interface{} {
-	tmp := MkStack(self.count)
-	tmp.values = self.values
-	tmp.count = self.count
-	result := make([]interface{}, self.count)
-	i := 0
-	for !tmp.Empty() {
-		result[i] = tmp.Pop()
-		i++
+	result := make([]interface{}, 0, self.Size())
+	for val := range self.Iter() {
+		result = append(result, val)
 	}
 
 	return result
@@ -64,7 +58,7 @@ func (self *Stack) Empty() bool {
 
 func MkStack(capacity int) *Stack {
 	return &Stack{
-		values: make([]interface{}, capacity),
+		values: make([]interface{}, 0, capacity),
 		count:  0,
 	}
 }

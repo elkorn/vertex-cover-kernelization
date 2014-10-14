@@ -16,14 +16,9 @@ func (self *IntStack) Pop() int {
 	return self.s.Pop().(int)
 }
 
-// TODO: add an Iter method.
-// It should return a buffered channel of length self.count
 func (self *IntStack) Iter() <-chan int {
-	iter := make(chan int, self.s.count)
-	count := self.s.count - 1
-
-	// This is cheating a bit- the algorithms are supposed to be single-threaded.
-	// TODO: Implement a proper iterator?
+	iter := make(chan int, self.Size())
+	count := self.Size() - 1
 	go func() {
 		for ; count >= 0; count-- {
 			iter <- self.s.values[count].(int)
@@ -34,10 +29,14 @@ func (self *IntStack) Iter() <-chan int {
 	return iter
 }
 
+func (self *IntStack) Size() int {
+	return self.s.Size()
+}
+
 func (self *IntStack) Values() []int {
-	result := make([]int, self.s.count)
-	for i, original := range self.s.Values() {
-		result[i] = original.(int)
+	result := make([]int, 0, self.Size())
+	for val := range self.Iter() {
+		result = append(result, val)
 	}
 
 	return result

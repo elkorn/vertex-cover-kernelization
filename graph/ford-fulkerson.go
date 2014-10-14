@@ -6,10 +6,16 @@ func fordFulkerson(nf *NetworkFlow) (Edges, int) {
 	for pathExists, path, _ := shortestPathFromSourceToSink(nf); pathExists; pathExists, path, _ = shortestPathFromSourceToSink(nf) {
 		bottleneckCapacity := MAX_INT
 		forAllEdgesInPath := func(fn func(int, int)) {
-			for i, n := 1, len(path); i < n; i++ {
-				from := path[i-1]
-				to := path[i]
+			iter := path.Iter()
+			from, ok := <-iter
+			for ok {
+				to, ok := <-iter
+				Debug("%v -> %v (ok: %v)", from, to, ok)
+				if !ok {
+					break
+				}
 				fn(from, to)
+				from = to
 			}
 		}
 
