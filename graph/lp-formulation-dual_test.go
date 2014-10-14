@@ -14,7 +14,7 @@ func TestDualformulation1(t *testing.T) {
 	assert.Equal(t, 2, matching.Cardinality())
 	gv := MkGraphVisualizer(g)
 	gv.HighlightMatchingSet(matching, "red")
-	gv.Display()
+	// gv.Display()
 }
 
 func TestDualformulation2(t *testing.T) {

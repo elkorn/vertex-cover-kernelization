@@ -16,22 +16,20 @@ func TestStrong2TuplePriority(t *testing.T) {
 	str := MkStructure(1, Vertex(1), Vertex(2))
 
 	// 2 ≤ d ( u ) ≤ 3 and 2 ≤ d (v) ≤ 3
-	InVerboseContext(func() {
-		assert.Equal(t, 1, str.computePriority(g))
+	assert.Equal(t, 1, str.computePriority(g))
 
-		g.AddEdge(1, 6)
-		g.AddEdge(1, 7)
-		g.AddEdge(2, 5)
-		g.AddEdge(2, 6)
-		// d ( u ) ≥ 4 and d (v) ≥ 4
-		assert.Equal(t, 1, str.computePriority(g))
+	g.AddEdge(1, 6)
+	g.AddEdge(1, 7)
+	g.AddEdge(2, 5)
+	g.AddEdge(2, 6)
+	// d ( u ) ≥ 4 and d (v) ≥ 4
+	assert.Equal(t, 1, str.computePriority(g))
 
-		g.RemoveEdge(2, 3)
-		g.RemoveEdge(2, 5)
-		g.RemoveEdge(2, 6)
-		// Does not fit the cases.
-		assert.NotEqual(t, 1, str.computePriority(g))
-	})
+	g.RemoveEdge(2, 3)
+	g.RemoveEdge(2, 5)
+	g.RemoveEdge(2, 6)
+	// Does not fit the cases.
+	assert.NotEqual(t, 1, str.computePriority(g))
 }
 
 func Test2TuplePriority(t *testing.T) {

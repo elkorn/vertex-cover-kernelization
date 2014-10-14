@@ -21,8 +21,8 @@ func TestNtReductionLP(t *testing.T) {
 	assert.Equal(t, g.NVertices()-p.Cardinality(), r.Cardinality(), "{2,5} is the vertex cover, all other vertices can be excluded.")
 	assert.Nil(t, err)
 	crown := findCrown(g, nil, 10)
-	InVerboseContext(func() {
-		Debug("Crown: %v", crown)
-	})
+	// InVerboseContext(func() {
+	Debug("Crown: %v", crown)
+	// })
 
 }

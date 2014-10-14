@@ -60,7 +60,6 @@ func InVerboseContext(fn func()) {
 	SetOptions(Options{Verbose: true})
 	fn()
 	SetOptions(Options{Verbose: false})
-
 }
 
 func rng(args ...int) []int {
