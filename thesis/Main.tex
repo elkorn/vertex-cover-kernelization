@@ -59,6 +59,8 @@ pdftex}
 
 \graphicspath{{./pictures/}}
 
+\DeclareUnicodeCharacter{00A0}{~}
+
 \ifpdf
 \ifelektroniczna
 \usepackage[
@@ -100,7 +102,7 @@ pdftex}
 \captionsetup[subfigure]{justification=centerfirst}
 \usepackage{cite}
 \usepackage{listings}
-\lstset{language={C++},inputencoding=latin2}
+\lstset{language={Go},inputencoding=latin2}
 \usepackage{cleardpempty}
 \usepackage{float}
 \usepackage{textcomp}
@@ -180,11 +182,11 @@ pdftex}
   %\input{spis_oznaczen}
 
   \mainmatter
-  \input{1-Theory/Theory}
+  \input{Theory}
   \input{Internals}
 
   \addcontentsline{toc}{chapter}{\bibname}
-  \input{Appendixes}
+  % \input{Appendixes}
   \bibliography{Main}
 
   % \renewcommand{\appendixname}{Dodatek}

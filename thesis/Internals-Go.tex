@@ -1,0 +1,70 @@
+\subsection{Język programowania Go} % (fold)
+\label{sss_go}
+\par{
+Go jest statycznie typowanym, imperatywnym, strukturalnym językiem programowania, którego historia rozpoczęła się w 2007. roku w firmie Google. Autorzy oryginalnej specyfikacji wraz z implementacją to: Rob Pike, Robert Griesemer oraz Ken Thompson.
+Najnowsza stabilna wersja języka na dzień pisania niniejszej pracy to 1.3.3.
+}
+\par{
+Składnia Go silnie nawiązuje do języka C --- dokonano jednak wielu modyfikacji skupiających się przede wsyzstkim na jej uproszczeniu, eliminacji możliwości popełniania błędów oraz zwiększeniu zwięzłości.
+Dużo uwagi poświęca się również pielęgnacji ekosystemu wokół Go w celu uczynienia go narzędziem jak najłatwiejszym i najbardziej praktycznym w użyciu.
+Dla osiągnięcia tych założeń zastosowano wzorce znane zarówno z języków statycznie jak i dynamicznie typowanych.
+}
+\par{Deklaracja i inicjalizacja zmiennych odbywa się przy pomocy mechanizmu domniemania typów, w większości przypadków zwalniającego programistę z obowiązku jawnego oznaczania typu zmiennych oraz metod. Zamiast zapisu \texttt{int~x~=~0;}, znanego z języka C, stosuje się tu krótszy zapis \texttt{x~:=~0}. Warto również zwrócić uwagę na brak wymagania stawiania średników jako zakończeń wyrażeń.
+}
+ \par{Mimo możliwości korzystania ze wskaźników, bezpośredni dostęp do nich jest niemożliwy, co zapobiega błędom związanym z niezgodnością typów. W połączeniu ze statycznym typowaniem oznacza to, iż programista nie jest w stanie wprowadzić rozbieżności na poziomie typów zmiennych prowadzących do awarii aplikacji niewykrytych przez kompilator. Konsekwencją zablokowania bezpośredniego dostępu do wskaźników jest również brak możliwości wykonywania na nich działań arytmetycznych.
+ }
+ \par{
+Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wynikającym z nieprawidłowego zarządzania wskaźnikami. W aktualnej wersji wykorzystywana jest współbieżna wersja algorytmu \textit{mark and sweep}.
+}
+\par{
+ W związku z faktem, iż Go jest językiem strukturalnym, brak w nim pojęcia obiektu. Uproszczonym odpowiednikiem jest struktura, definiowana słowem kluczowym \texttt{struct}.
+}
+  \par{
+  Jedną z najbardziej radykalnych decyzji podczas tworzenia specyfikacji języka stanowi rezygnacja ze standardowego mechanizmu dziedziczenia. W miejsce dziedziczenia wirtualnego zastosowano system interfejsów, gdzie dana struktura implementuje określony interfejs wtedy i tylko wtedy gdy wystawia pełen zestaw publicznych metod zgodnych z jego deklaracją. Odpowiednikiem dziedziczenia klasycznego w Go jest osadzanie typów.
+  Przykład osadzenia typów \texttt{Reader} i \texttt{Writer} w nowo utworzonym interfejsie \texttt{ReaderWriter}.
+  \begin{lstlisting}
+    type ReaderWriter interface {
+      Reader
+      Writer
+    }
+  \end{lstlisting}
+  Struktury implementujące interfejs \texttt{ReaderWriter} implementują również interfejsy osadzone.
+  Osadzanie typów w strukturach wygląda podobnie, należy jednak oznaczyć je symbolem wskaźnika.
+  \begin{lstlisting}
+    type ReaderWriter struct {
+      *Reader
+      *Writer
+    }
+  \end{lstlisting}
+  Kluczowa różnica pomiędzy dziedziczeniem a osadzaniem typów polega na właściwości, iż metody typu osadzanego zostają włączone do typu zewnętrznego~---~jednak podczas wywołania danej metody, jej odbiorcą jest instancja typu osadzonego. \cite{godoc:embedding}
+}
+\par {
+W celu uproszczenia składni głównie względem C++, argumentowanym przez jednego z autorów w notatce \cite{Pike:LessIsMore}, wyłączono ze specyfikacji wiele funkcji oferowanych przez podobne języki, poza wymienionymi wcześniej.
+  \begin{itemize}
+    \item Przeciążanie metod i operatorów,
+    \item cykliczne zależności pomiędzy pakietami,
+    \item asercje,
+    \item programowanie generyczne.
+  \end{itemize}
+}
+\par{
+  Dla wygody programisty wprowadzono do Go zestaw podstawowych typów, wyrażających elementy brakujące zdaniem autorów w czystym C.
+  \begin{itemize}
+    \item \emph{Plastry} (slices), zapisywane jako \texttt{[]typ}, wskazują na tablicę obiektów przechowywanych w pamięci, przechowując wskaźnik do początku danego plastra, jego długość oraz \emph{pojemność}, określającą liczebność elementów plastra, która wymagać alokacji dodatkowej pamięci w celu rozszerzenia odpowiadającej tablicy.
+    \item Niezmienne ciągi znaków (typ \texttt{string}), zawierające przeważnie tekst w kodowaniu UTF-8. Mogą jednak przechowywać dowolne bajty.
+    \item Tablica haszująca, zapisywana jako \texttt{map[typ\_klucza]typ\_wartości}.
+  \end{itemize}
+}
+\par{
+  Go jest językiem kompilowanym do kodu bajtowego. Istnieją dwa oficjalnie wspierane zestawy kompilatorów:
+  \begin{itemize}
+    \item \texttt{gc} wraz z narzędziami dla architektur \texttt{amd64} oraz \texttt{i386}, posiadający wydajny optymalizator, oraz dla architektury \texttt{ARM},
+    \item \texttt{gccgo}, będący nakładką na \texttt{gcc}.
+  \end{itemize}
+  Każdy z zestawów wspiera platformy DragonFly BSD, FreeBSD, Linux, NetBSD, OpenBSD, OS X (Darwin), Plan 9, Solaris oraz Windows. Wyjątkiem jest kompilator \texttt{gc} na architekturę \texttt{ARM}, wspierający wyłącznie platformy Linux, FreeBSD oraz NetBSD. \cite{godoc:compilers}
+  Łańcuch narzędzi związany z procesem kompilacji tworzy statycznie linkowane, natywne binarne pliki wykonywalne bez zewnętrznych zależności.
+}
+
+\par{
+  Ostatnim elementem, o którym należy wspomnieć, są wbudowane mechanizmy służące do programowania współbieżnego.
+}
