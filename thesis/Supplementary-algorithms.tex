@@ -57,6 +57,17 @@
   \end{algorithmic}
   \end{algorithm}
 }
+\subsubsection{Ścieżki powiększające}
+  \begin{definition}
+    Dla danej sieci $N=(V,E)$ i przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w sieci residualnej $N_f$.
+  \end{definition}
+  \par{
+    Zgodnie z definicją sieci residualnej (\ref{def_residual_network}) każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy daodtni przepły bez naruszenia warunku przepustowości.
+    Największą możliwą wartość, o którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej} tej ścieżki, definiowanej jak następuje.
+    \begin{definition}
+      Przepustowość residualna ścieżki powiększającej $P_a$ odpowiada najmniejszej przepustowości residualnej spośród przynależących do niej krawędzi, $c_f(p) = min\{c_f(u, v):(u, v)\in P_a\}$.
+    \end{definition}
+  }
 \subsection{Algorytm kwiatów Edmondsa}\label{ss_edmonds}
 
 
