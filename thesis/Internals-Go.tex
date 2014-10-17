@@ -1,5 +1,5 @@
 \subsection{Język programowania Go} % (fold)
-\label{sss_go}
+\label{ss_internals_go}
 \par{
 Go jest statycznie typowanym, imperatywnym, strukturalnym językiem programowania, którego historia rozpoczęła się w 2007. roku w firmie Google. Autorzy oryginalnej specyfikacji wraz z implementacją to: Rob Pike, Robert Griesemer oraz Ken Thompson.
 Najnowsza stabilna wersja języka na dzień pisania niniejszej pracy to 1.3.3.
@@ -22,7 +22,7 @@ Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wyni
   \par{
   Jedną z najbardziej radykalnych decyzji podczas tworzenia specyfikacji języka stanowi rezygnacja ze standardowego mechanizmu dziedziczenia. W miejsce dziedziczenia wirtualnego zastosowano system interfejsów, gdzie dana struktura implementuje określony interfejs wtedy i tylko wtedy gdy wystawia pełen zestaw publicznych metod zgodnych z jego deklaracją. Odpowiednikiem dziedziczenia klasycznego w Go jest osadzanie typów.
   Przykład osadzenia typów \texttt{Reader} i \texttt{Writer} w nowo utworzonym interfejsie \texttt{ReaderWriter}.
-  \begin{lstlisting}
+  \begin{lstlisting}[language=go]
     type ReaderWriter interface {
       Reader
       Writer
@@ -30,7 +30,7 @@ Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wyni
   \end{lstlisting}
   Struktury implementujące interfejs \texttt{ReaderWriter} implementują również interfejsy osadzone.
   Osadzanie typów w strukturach wygląda podobnie, należy jednak oznaczyć je symbolem wskaźnika.
-  \begin{lstlisting}
+  \begin{lstlisting}[language=go]
     type ReaderWriter struct {
       *Reader
       *Writer
@@ -44,6 +44,7 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
     \item Przeciążanie metod i operatorów,
     \item cykliczne zależności pomiędzy pakietami,
     \item asercje,
+    \item wyjątki --- powrócono do błędów jako wartości zwracanych przez funkcje,
     \item programowanie generyczne.
   \end{itemize}
 }
@@ -66,5 +67,13 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
 }
 
 \par{
-  Ostatnim elementem, o którym należy wspomnieć, są wbudowane mechanizmy służące do programowania współbieżnego.
+  Ostatnim elementem, o którym należy wspomnieć są wbudowane mechanizmy służące do programowania współbieżnego.
+  Za bardzo wartościową cechę języka Go uznaje się zawarcie w jego specyfikacji oraz implementacji prymitywów zapewniających logiczne i wygodne w użyciu konstrukcje tworzące poziom abstrakcji ponad technikaliami związanymi z zarządzaniem wątkami i procesami oraz ich synchronizacją, zarówno jak i aspektami programowania asynchronicznego.
+  Cechy te stanowią silny argument przemawiający za wartościowością Go jako języka docelowego dla aplikacji serwerowych o wysokiej przepustowości.
+  \begin{itemize}
+    \item Wyrażenie \texttt{go}, pozwalające na uruchomienie dowolnej funkcji w tzw. \emph{lekkim procesie}, enkapsulującym pojedynczy wątek jądra systemu i współdzielącym przestrzeń adresową z innymi wątkami wykorzystywanymi przez podobne procesy.
+    \item Typ kanałowy, \texttt{chan dowolny\_typ}, pozwalający na synchronizowaną wymianę informacji pomiędzy lekkimi procesami. Instancje kanałów obsługiwane są przede wszystkim za pomocą operatorów wysyłania (\texttt{instancja\_kanału <- wartość}) oraz odbioru (\texttt{zmienna <- instancja\_kanału}). Obydwie te operacje blokują wykonywanie programu w ramach danego procesu dopóki dowolny z innych procesów nie umieści danych w kanale.
+    \item Wyrażenie \texttt{select}, będące rozwiązaniem podobnym do konstrukcji \texttt{switch} z różnicą polegającą na fakcie, iż predykaty przypadków nie są oparte na wartościach określonej zmiennej lecz na stanie kanałów w sensie pojawiania się na nich danych.
+  \end{itemize}
+  Podstawowe elementy umożliwiają budowę bardziej skomplikowanych mechanizmów zarządzania przepływem kontroli w systemach współbieżnych dostosowanych do poszczególnych przypadków użycia, takich jak pule robotników lub łańcuchy przetwarzania.
 }
