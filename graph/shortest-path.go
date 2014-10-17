@@ -63,10 +63,6 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 	return marked[to.toInt()], pathTo(to), distance
 }
 
-func shortestPathNewNf(nf *NetworkFlow) (bool, []int, []int) {
-	return shortestPathNew(nf.net, nf.sink, nf.source)
-}
-
 // TODO: merge with forAllCoordPairsInPath.
 func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, int, chan<- bool)) {
 	done := make(chan bool, 1)

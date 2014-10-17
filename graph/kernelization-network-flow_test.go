@@ -1,4 +1,4 @@
-package graphgi _test
+package graph_test
 
 import (
 	"testing"
@@ -42,9 +42,7 @@ func TestKernelizationNetworkFlow2(t *testing.T) {
 	g.AddEdge(4, 7)
 	g.AddEdge(8, 7)
 
-	graph.ShowGraph(g)
 	graph.NetworkFlowKernelization(g, 10)
-	graph.ShowGraph(g)
 }
 
 // func TestKernelizationNetworkFlowProteins(t *testing.T) {
