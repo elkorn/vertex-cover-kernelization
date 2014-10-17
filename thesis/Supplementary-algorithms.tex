@@ -5,8 +5,45 @@
   w~podrozdziale~\ref{s_kernelization}.
 }
 
-\subsection{Algorytm największego przepływu Forda-Fulkersona}\label{ss_ford_fulkerson}
-\subsection{Algorytm najkrótszej ścieżki Edmondsa-Karpa}\label{ss_edmonds_karp}
+\subsection{Rozwiązywanie problemu maksymalnego przepływu w sieci}\label{ss_max_flow}
+\subsubsection{Metoda Forda-Fulkersona}
+\par{
+  Metoda Forda-Fulkersona stanowi podstawę kilku algorytmów rozwiązujących problem maksmalnego przepływu, o różnych czasach działania.
+  Kluczowymi pojęciami, na których operuje metoda Forda-Fulkersona są \emph{sieci residualne}, \emph{ścieżki powiększające} oraz \emph{przekroje}.
+  Pojęcia te mają istotne znaczenie w praktyce rozwiązywania problemów dotyczących przepływów w sieciach i stanowią zasadnicze koncepcje w twierdzeniu o maksymalnym przepływie i minimalnym przekroju.
+  \begin{theorem}[Twierdzenie o maksymalnym przepływie i minimalnym przekroju Forda-Fulkersona]\thlabel{th_max_flow}
+    Przyjmując za $f$ przepływ w sieci $N=(V,E)$ ze źródłem $s$ i ujściem $t$, to następujące warunki są równoważne:
+    \begin{enumerate}
+      \item Przepływ $f$ jest maksymalny w sieci $N$.
+      \item Sieć residualna $N_f$ nie zawiera ścieżek powiększających.
+      \item Dla pewnego przekroju $(S, T)$ w sieci $N$ zachodzi $|f|=c(S,T)$.
+    \end{enumerate}
+  \end{theorem}
+}
+\par{
+  Metoda Forda-Fulkersona jest metodą iteracyjną ze zerową wartością początkową przepływu w sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
+  W każdej iteracji wartość przepływu zostaje zwiększona poprzez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
+  Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
+  Zgodnie z twierdzeniem \ref{th_max_flow}, przepływ otrzymany w tym momencie jest maksymalny.
+  \begin{algorithm}
+    \caption{Zarys metody Forda-Fulkersona}\label{alg_fordFulkerson}
+    \begin{algorithmic}[1]
+      \Function{Ford-Fulkerson-Method}{N, s, t}
+
+        \algorithmicrequire{sieć $N$, źródło $s$, ujście $t$}
+
+        \algorithmicensure{przepływ $f$}
+
+        \State{$f \gets 0$}
+        \While{istnieje ścieżka powiększająca $P_a$}
+
+        \Do{powiększ przepływ $f$ wzdłuż $P_a$}
+        \EndWhile
+        \State\textbf{return} f
+      \EndFunction
+  \end{algorithmic}
+  \end{algorithm}
+}
 \subsection{Algorytm kwiatów Edmondsa}\label{ss_edmonds}
 
 
