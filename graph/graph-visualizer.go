@@ -19,6 +19,8 @@ var allowedLayouts map[string]bool = map[string]bool{
 	"sfdp":  true,
 }
 
+var defaultOutputFormat string = "svg"
+
 type graphVisualizer struct {
 	g               *Graph
 	edgeAttrs       [][]map[string]string
@@ -205,43 +207,43 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 	return res
 }
 
-func (self *graphVisualizer) dotToJpg(dot bytes.Buffer) bytes.Buffer {
+func (self *graphVisualizer) dotToImage(dot bytes.Buffer) bytes.Buffer {
 	var res bytes.Buffer
-	cmd := exec.Command(self.layoutAlgorithm, "-T", "jpg")
+	cmd := exec.Command(self.layoutAlgorithm, "-T", defaultOutputFormat)
 	cmd.Stdout = &res
 	cmd.Stdin = bytes.NewReader(dot.Bytes())
-	Debug("Converting dot to jpg...")
+	Debug("Converting dot to %v...", defaultOutputFormat)
 	err := cmd.Run()
 	if nil != err {
 		log.Fatal(err)
 		return res
 	}
 
-	Debug("Converted dot to jpg.")
+	Debug("Converted dot to %v.", defaultOutputFormat)
 	return res
 }
 
-func (self *graphVisualizer) mkJpg(name string) bytes.Buffer {
-	return self.dotToJpg(self.toDot(name))
+func (self *graphVisualizer) mkImage(name string) bytes.Buffer {
+	return self.dotToImage(self.toDot(name))
 }
 
-func (self *graphVisualizer) MkJpg(name string) error {
-	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
+func (self *graphVisualizer) MkImage(name string) error {
+	file, err := os.Create(fmt.Sprintf("%v.%v", name, defaultOutputFormat))
 	if nil != err {
 		return err
 	}
 
 	defer file.Close()
-	buf := self.mkJpg(name)
+	buf := self.mkImage(name)
 	_, err = file.Write(buf.Bytes())
 	return err
 }
 
 func (self *graphVisualizer) Display() {
 	randname := fmt.Sprintf("%v", rand.Int63())
-	filename := fmt.Sprintf("%v.jpg", randname)
+	filename := fmt.Sprintf("%v.%v", randname, defaultOutputFormat)
 	cmd := exec.Command("feh", filename)
-	err := self.MkJpg(randname)
+	err := self.MkImage(randname)
 	if nil != err {
 		log.Fatal(err)
 	}
