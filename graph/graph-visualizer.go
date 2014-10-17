@@ -59,7 +59,11 @@ func mkGraphVisualizer(g *Graph, layoutAlgorithm string) *graphVisualizer {
 }
 
 func MkGraphVisualizer(g *Graph) *graphVisualizer {
-	return mkGraphVisualizer(g, "dot")
+	if g.NVertices() > 100 {
+		return mkGraphVisualizer(g, "sfdp")
+	} else {
+		return mkGraphVisualizer(g, "neato")
+	}
 }
 
 func MkNeatoVisualizer(g *Graph) {
