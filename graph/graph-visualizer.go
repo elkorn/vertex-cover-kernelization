@@ -2,6 +2,7 @@ package graph
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -12,19 +13,31 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
+var allowedLayouts map[string]bool = map[string]bool{
+	"dot":   true,
+	"neato": true,
+	"sfdp":  true,
+}
+
 type graphVisualizer struct {
-	g           *Graph
-	edgeAttrs   [][]map[string]string
-	vertexAttrs []map[string]string
+	g               *Graph
+	edgeAttrs       [][]map[string]string
+	vertexAttrs     []map[string]string
+	layoutAlgorithm string
 }
 
 func ShowGraph(g *Graph) {
 	MkGraphVisualizer(g).Display()
 }
 
-func MkGraphVisualizer(g *Graph) *graphVisualizer {
+func mkGraphVisualizer(g *Graph, layoutAlgorithm string) *graphVisualizer {
+	if !allowedLayouts[layoutAlgorithm] {
+		panic(errors.New(fmt.Sprintf("Layout algorithm '%v' is not allowed.", layoutAlgorithm)))
+	}
+
 	result := &graphVisualizer{
-		g: g,
+		g:               g,
+		layoutAlgorithm: layoutAlgorithm,
 	}
 
 	result.edgeAttrs = make([][]map[string]string, g.currentVertexIndex)
@@ -41,6 +54,18 @@ func MkGraphVisualizer(g *Graph) *graphVisualizer {
 	}
 
 	return result
+}
+
+func MkGraphVisualizer(g *Graph) *graphVisualizer {
+	return mkGraphVisualizer(g, "dot")
+}
+
+func MkNeatoVisualizer(g *Graph) {
+	return mkGraphVisualizer(g, "neato")
+}
+
+func MkSfdpVisualizer(g *Graph) {
+	return mkGraphVisualizer(g, "sfdp")
 }
 
 func stob(str string) []byte {
@@ -182,7 +207,7 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 
 func (self *graphVisualizer) dotToJpg(dot bytes.Buffer) bytes.Buffer {
 	var res bytes.Buffer
-	cmd := exec.Command("dot", "-T", "jpg")
+	cmd := exec.Command(self.layoutAlgorithm, "-T", "jpg")
 	cmd.Stdout = &res
 	cmd.Stdin = bytes.NewReader(dot.Bytes())
 	Debug("Converting dot to jpg...")
