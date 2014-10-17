@@ -23,21 +23,34 @@
 \par{
   Metoda Forda-Fulkersona jest metodą iteracyjną ze zerową wartością początkową przepływu w sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
   W każdej iteracji wartość przepływu zostaje zwiększona poprzez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
+  Przepływ maksymalny obliczany jest przez aktualizację przepływu f[u,v]\footnote{Nawiasami kwadratowymi oznaczany jest dostęp do zmiennej tablicowej.} między każdą parą wierzchołków $\{u,v\} \in N$.
   Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
   Zgodnie z twierdzeniem \ref{th_max_flow}, przepływ otrzymany w tym momencie jest maksymalny.
+  Przymuje się, że przepustowości krawędzi $c(u, v)$ są dane wraz z grafem i $c(u, v)=0$ w przypadku gdy $(u, v) \notin E$.
+  W zapisie algorytmu oznaczenie $c_f(u, v)$ oznacza \emph{przepustowość residualną} krawędzi $(u, v)$, natomiast $c_f(P_a)$ przepustowość residualną ścieżki powiększającej.
+  Pojęcie przepustowości residualnej opisane jest w następującej podsekcji.
   \begin{algorithm}
-    \caption{Zarys metody Forda-Fulkersona}\label{alg_fordFulkerson}
+    \caption{Podstawowy algorytm Forda-Fulkersona}\label{alg_fordFulkerson}
     \begin{algorithmic}[1]
-      \Function{Ford-Fulkerson-Method}{N, s, t}
+      \Function{Ford-Fulkerson}{N, s, t}
 
-        \algorithmicrequire{sieć $N$, źródło $s$, ujście $t$}
+        \algorithmicrequire{sieć $N=(V, E)$, źródło $s$, ujście $t$}
 
         \algorithmicensure{przepływ $f$}
 
-        \State{$f \gets 0$}
+        \For{$\forall_{(u,v) \in E}$}
+        \Do
+        \State{$f[u, v] \gets 0$}
+        \State{$f[v, u] \gets 0$}
+        \EndFor
         \While{istnieje ścieżka powiększająca $P_a$}
-
-        \Do{powiększ przepływ $f$ wzdłuż $P_a$}
+          \Do
+          \State{$c_f \gets min\{c_f(u, v): (u, v)\in P_a\}$}
+          \For{$\forall_{(u,v) \in P_a}$}
+            \Do
+            \State{$f[u, v] \gets f[u, v] + c_f(p)$}
+            \State{$f[v, u] \gets -f[u, v]$}
+          \EndFor
         \EndWhile
         \State\textbf{return} f
       \EndFunction
