@@ -122,7 +122,22 @@
     \item Wartość dowolnego przepływu $f$ w~sieci $N$ jest nie większa niż przepustowość przekroju $(S, T)$.
   \end{enumerate}
 }
+\par{
+  Opisawszy niezbędne elementy składowe, można przedstawić dowód twierdzenia o~maksymalnym przepływie i~minimalnym przekroju.
 
+  \begin{bproof}{(twierdzenia o~maksymalnym przepływie i~minimalnym przekroju)\\}
+    \underline{(1) $\implies$ (2)}: Jeżeli dla maksymalnego przepływu $f$ w sieci $N$ sieć residualna $N_f$ zawierałaby ścieżkę powiększającą $P_a$, wartość przepływu $f$ musiałaby zostać powiększona o wartość przepływu $f_{P_a}$.
+    Implikuje to, iż wartość przepływu $f$ musiałaby być większa niż $|f|$ co przeczy założeniu, że $f$ jest maksymalny.
+
+    \underline{(2) $\implies$ (3)}: Założyć należy, że sieć residualna $N_f=(V_f, E_f)$ dla sieci $N$ ze źródłem $s$ i ujściem $t$ nie zawiera żadnej ścieżki powiększającej.
+    Przyjąć należy istnienie przekroju $(S, T)$, $S=\{v \in V:\text{ istnieje ścieżka z }s\text{ do }v\text{ w }N_f\}$ oraz zbioru $T=V\setminus S$.
+    W oparciu o cechę 1. dowolnego przekroju w sieci stwierdzić można, iż $s \in S$ oraz $t \notin S$, gdyż nie istnieje ścieżka z $s$ do $t$ w sieci residualnej $N_f$.
+    Dla każdej pary wierzchołków $u \in S, v \in T$ musi zachodzić równość $f(u, v)=c(u, v)$, gdyż w przeciwnym wypadku spełniony byłby warunek klasyfikujący krawędź $(u,v)$ jako krawędź residualną i w konsekwencji następowałoby $v \in S$, co przeczy założeniu, iż $v \in T$.
+    Widocznym zatem jest, iż $|f|=f(S, T)=c(S, T)$.
+
+    \underline{(3) $\implies$ (1)}: Mając na uwadze warunek (3): $|f|=c(S,T)$, z cechy 2. dowolnego przekroju sieci wynika, że $f$ stanowi przepływ maksymalny w sieci $N$.
+  \end{bproof}
+}
 \subsection{Algorytm kwiatów Edmondsa}\label{ss_edmonds}
 
 
