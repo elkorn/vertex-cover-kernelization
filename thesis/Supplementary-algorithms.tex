@@ -5,30 +5,31 @@
   w~podrozdziale~\ref{s_kernelization}.
 }
 
-\subsection{Rozwiązywanie problemu maksymalnego przepływu w sieci}\label{ss_max_flow}
-\subsubsection{Metoda Forda-Fulkersona}
+\subsection{Rozwiązywanie problemu maksymalnego przepływu w~sieci}\label{ss_max_flow}
+\subsubsection{\textbf{Metoda Forda-Fulkersona}}
 \par{
-  Metoda Forda-Fulkersona stanowi podstawę kilku algorytmów rozwiązujących problem maksmalnego przepływu, o różnych czasach działania.
+  Metoda Forda-Fulkersona stanowi podstawę kilku algorytmów rozwiązujących problem maksmalnego przepływu, o~różnych czasach działania.
   Kluczowymi pojęciami, na których operuje metoda Forda-Fulkersona są \emph{sieci residualne}, \emph{ścieżki powiększające} oraz \emph{przekroje}.
-  Pojęcia te mają istotne znaczenie w praktyce rozwiązywania problemów dotyczących przepływów w sieciach i stanowią zasadnicze koncepcje w twierdzeniu o maksymalnym przepływie i minimalnym przekroju.
-  \begin{theorem}[Twierdzenie o maksymalnym przepływie i minimalnym przekroju Forda-Fulkersona]\thlabel{th_max_flow}
-    Przyjmując za $f$ przepływ w sieci $N=(V,E)$ ze źródłem $s$ i ujściem $t$, to następujące warunki są równoważne:
+  Pojęcia te mają istotne znaczenie w~praktyce rozwiązywania problemów dotyczących przepływów w~sieciach i~stanowią zasadnicze koncepcje w~twierdzeniu o~maksymalnym przepływie i~minimalnym przekroju.
+  \begin{theorem}[Twierdzenie o~maksymalnym przepływie i~minimalnym przekroju Forda-Fulkersona]\thlabel{th_max_flow}
+    Przyjmując za $f$ przepływ w~sieci $N=(V,E)$ ze źródłem $s$ i~ujściem $t$, to następujące warunki są równoważne:
     \begin{enumerate}
-      \item Przepływ $f$ jest maksymalny w sieci $N$.
+      \item Przepływ $f$ jest maksymalny w~sieci $N$.
       \item Sieć residualna $N_f$ nie zawiera ścieżek powiększających.
-      \item Dla pewnego przekroju $(S, T)$ w sieci $N$ zachodzi $|f|=c(S,T)$.
+      \item Dla pewnego przekroju $(S, T)$ w~sieci $N$ zachodzi $|f|=c(S,T)$.
     \end{enumerate}
   \end{theorem}
+  Dowód powyższego twierdzenia przedstawiony zostanie pod koniec sekcji, po objaśnieniach pojęć składowych.
 }
 \par{
-  Metoda Forda-Fulkersona jest metodą iteracyjną ze zerową wartością początkową przepływu w sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
+  Metoda Forda-Fulkersona jest metodą iteracyjną z~zerową wartością początkową przepływu w~sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
   W każdej iteracji wartość przepływu zostaje zwiększona poprzez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
   Przepływ maksymalny obliczany jest przez aktualizację przepływu f[u,v]\footnote{Nawiasami kwadratowymi oznaczany jest dostęp do zmiennej tablicowej.} między każdą parą wierzchołków $\{u,v\} \in N$.
   Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
-  Zgodnie z twierdzeniem \ref{th_max_flow}, przepływ otrzymany w tym momencie jest maksymalny.
-  Przymuje się, że przepustowości krawędzi $c(u, v)$ są dane wraz z grafem i $c(u, v)=0$ w przypadku gdy $(u, v) \notin E$.
+  Zgodnie z~twierdzeniem \ref{th_max_flow}, przepływ otrzymany w~tym momencie jest maksymalny.
+  Przymuje się, że przepustowości krawędzi $c(u, v)$ są dane wraz z~grafem i~$c(u, v)=0$ w~przypadku gdy $(u, v) \notin E$.
   W zapisie algorytmu oznaczenie $c_f(u, v)$ oznacza \emph{przepustowość residualną} krawędzi $(u, v)$, natomiast $c_f(P_a)$ przepustowość residualną ścieżki powiększającej.
-  Pojęcie przepustowości residualnej opisane jest w następującej podsekcji.
+  Pojęcie przepustowości residualnej opisane jest w~następującej podsekcji.
   \begin{algorithm}
     \caption{Podstawowy algorytm Forda-Fulkersona}\label{alg_fordFulkerson}
     \begin{algorithmic}[1]
@@ -57,45 +58,70 @@
   \end{algorithmic}
   \end{algorithm}
 }
-\subsubsection{Sieci residualne}
+\subsubsection{\textbf{Sieci residualne}}
 \par{
-  W dowolnej sieci przepływowej $N=(V, E_f)$ dodatkowy przepływ z wierzchołka $u$ do $v$, nie przekraczający przepustowości $c(u, v)$ krawędzi łączącej te wierzchołki określa się mianem \emph{przepustowości residualnej}, definiowanej jako $c_f(u ,v) = c(u, v) - f(u, v)$.
-  Dla dowolnej sieci przepływowej $N$ i pewnego przepływu $f$ sieć residualna $N_f$ jest siecią składającą się z krawędzi dopuszczających dodatkowy dodatni przepływ. Formalnie sieć residualną definiuje się jako zbiór $E_f=\{(u, v) \in V \x V: c_f(u,v) > 0\}$.
-  Krawędziami $E_f$ w sieci $N_f$, zwanymi \emph{krawędziami residualnymi}, są albo krawędzie należące do zbioru $E$ sieci $N$ albo krawędzie do nich przeciwne.
+  W dowolnej sieci przepływowej $N=(V, E_f)$ dodatkowy przepływ z~wierzchołka $u$ do $v$, nie przekraczający przepustowości $c(u, v)$ krawędzi łączącej te wierzchołki określa się mianem \emph{przepustowości residualnej}, definiowanej jako $c_f(u ,v) = c(u, v) - f(u, v)$.
+  Dla dowolnej sieci przepływowej $N$ i~pewnego przepływu $f$ sieć residualna $N_f$ jest siecią składającą się z~krawędzi dopuszczających dodatkowy dodatni przepływ. Formalnie sieć residualną definiuje się jako zbiór $E_f=\{(u, v) \in V \x V: c_f(u,v) > 0\}$.
+  Krawędziami $E_f$ w~sieci $N_f$, zwanymi \emph{krawędziami residualnymi}, są albo krawędzie należące do zbioru $E$ sieci $N$ albo krawędzie do nich przeciwne.
   \begin{theorem}
-    Krawędź $(u, v)$ może pojawić się w sieci residualnej $N_f$ wtedy i tylko wtedy, gdy co najmniej jedna z krawędzi $\{(u, v), (v, u)\}$ występuje w sieci pierwotnej, co daje $|E_f| \leq 2|E|$.
+    Krawędź $(u, v)$ może pojawić się w sieci residualnej $N_f$ wtedy i~tylko wtedy, gdy co najmniej jedna z~krawędzi $\{(u, v), (v, u)\}$ występuje w~sieci pierwotnej, co daje $|E_f| \leq 2|E|$.
   \end{theorem}
   \begin{bproof}
-    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) < c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) > 0$, co z definicji sieci residualnej świadczy, iż krawędź $(u, v) \in E_f$ jest w niej zawarta.
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) < c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) > 0$, co z~definicji sieci residualnej świadczy, iż krawędź $(u, v) \in E_f$ jest w~niej zawarta.
 
-    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) > c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) < 0$, co z definicji sieci residualnej świadczy, iż krawędź przeciwna $(v, u) \in E_f$  jest w niej zawarta.
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) > c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) < 0$, co z~definicji sieci residualnej świadczy, iż krawędź przeciwna $(v, u) \in E_f$  jest w~niej zawarta.
 
-    Jeżeli żadna z krawędzi $\{(u, v), (v, u)\}$ nie występuje w pierwotnej sieci, zachodzi wtedy $c(u, v) = c(v, u) = f(u, v) = f(v, u) = c_f(u, v) = c_f(v, u)=0$. Żadna z tych krawędzi nie dopuszcza dodatniego przepływu, co zgodnie z definicją sieci residualnej wyklucza ją ze zbioru krawędzi residualnych.
+    Jeżeli żadna z~krawędzi $\{(u, v), (v, u)\}$ nie występuje w~pierwotnej sieci, zachodzi wtedy $c(u, v) = c(v, u) = f(u, v) = f(v, u) = c_f(u, v) = c_f(v, u)=0$. Żadna z~tych krawędzi nie dopuszcza dodatniego przepływu, co zgodnie z~definicją sieci residualnej wyklucza ją ze zbioru krawędzi residualnych.
   \end{bproof}
 }
 
-\subsubsection{Ścieżki powiększające}
-  \par{
-    \begin{definition}
-      Dla danej sieci $N=(V,E)$ i przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w sieci residualnej $N_f$.
-    \end{definition}
-    Zgodnie z definicją sieci residualnej każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
-    Największą możliwą wartość, o którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej ścieżki powiększającej}, definiowanej jak następuje.
-    \begin{definition}
-      Przepustowość residualna ścieżki powiększającej $P_a$ odpowiada najmniejszej przepustowości residualnej spośród przynależących do niej krawędzi, $c_f(P_a) = min\{c_f(u, v):(u, v)\in P_a\}$.
-    \end{definition}
-    \begin{definition}
-      Przepływ $f_{P_a}$ na ścieżce powiększającej $P_a$ o wartości $|F_{P_a}| = c_f(P_a) > 0$ definiowany jest w oparciu o następującą funkcję $f_p: V \times V \rightarrow \mathbb{R}$: 
-      \begin{equation*}
-      f_{P_a}(u, v) = \left\{
-      \begin{array}{rl}
-      c_f(P_a) & \text{jeżeli } (u, v) \in P_a,\\
-      -c_f(P_a) & \text{jeżeli } (v, u) \in P_a,\\
-      0 & \text{w przeciwnym wypadku }.
-      \end{array} \right.
-      \end{equation*}
-    \end{definition}
-  }
+\subsubsection{\textbf{Ścieżki powiększające}}
+\par{
+  \begin{definition}
+    Dla danej sieci $N=(V,E)$ i~przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w~sieci residualnej $N_f$.
+  \end{definition}
+  Zgodnie z~definicją sieci residualnej każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
+  Największą możliwą wartość, o~którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej ścieżki powiększającej}, definiowanej jak następuje.
+  \begin{definition}
+    Przepustowość residualna ścieżki powiększającej $P_a$ odpowiada najmniejszej przepustowości residualnej spośród przynależących do niej krawędzi, $c_f(P_a) = min\{c_f(u, v):(u, v)\in P_a\}$.
+  \end{definition}
+  \begin{definition}
+    Przepływ $f_{P_a}$ na ścieżce powiększającej $P_a$ o~wartości $|F_{P_a}| = c_f(P_a) > 0$ definiowany jest w~oparciu o~następującą funkcję $f_p: V \times V \rightarrow \mathbb{R}$: 
+    \begin{equation*}
+    f_{P_a}(u, v) = \left\{
+    \begin{array}{rl}
+    c_f(P_a) & \text{jeżeli } (u, v) \in P_a,\\
+    -c_f(P_a) & \text{jeżeli } (v, u) \in P_a,\\
+    0 & \text{w przeciwnym wypadku }.
+    \end{array} \right.
+    \end{equation*}
+  \end{definition}
+}
+\subsubsection{\textbf{Przekroje w~sieciach}}
+\par{
+  Ostatnim z~pojęć potrzebnych do pełnego zrozumienia metody Forda-Fulkersona są przekroje w~sieciach.
+  Stanowią one jednocześnie ważny element całości, gdyż maksymalny przepływ w~sieci bezpośrednio koreluje z~przepustowością najmniejszego jej przekroju.
+  \begin{definition}
+    Dla sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ każdy podział zbioru $V$ na podzbiory $S$ oraz $T=V\setminus S$ określa się mianem \emph{przekroju} $(S,T)$ w~sieci $N$.
+
+    Jeżeli w~sieci zdefiniowany jest przepływ $f$, to \emph{przepływem netto} przez przekrój $(S, T)$ definiowany jest jako $f(S, T)$.
+
+    Mianem \emph{przepustowości} przekroju $(S, T)$ określa się $c(S, T)$.
+
+    \emph{Przekrojem minimalnym} w~sieci $N$ nazywa się przekrój, którego przepustowość jest najmniejsza spośród przekrojów istniejących w~$N$.
+  \end{definition}
+}
+\par{
+  Nadmienić należy, iż przepływ netto przez przekrój $(S, T)$ składa się z~dodatnich przepływów w~obu kierunkach; to znaczy dodatniego przepływu z~$S$ do $T$, branego ze znakiem plus oraz dodatniego przepływu z~$T$ do $S$, branego ze znakiem minus.
+  Przepustowość przekroju $c(S, T)$ jest jednak obliczna wyłącznie na podstawie przepustowości krawędzi prowadzących z~$S$ do $T$.
+}
+\par{
+  Dowolny przekrój $(S, T)$ w~sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ posiada dwie kluczowe cechy czyniące tę koncepcję kluczową dla rozwiązania problemu największego przepływu.
+  \begin{enumerate}
+    \item Wartość dowolnego przepływu $f$ w~sieci $N$ jest równa wartości przepływu netto $f(S,T)$.
+    \item Wartość dowolnego przepływu $f$ w~sieci $N$ jest nie większa niż przepustowość przekroju $(S, T)$.
+  \end{enumerate}
+}
 
 \subsection{Algorytm kwiatów Edmondsa}\label{ss_edmonds}
 
