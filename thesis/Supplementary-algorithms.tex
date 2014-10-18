@@ -57,13 +57,30 @@
   \end{algorithmic}
   \end{algorithm}
 }
+\subsubsection{Sieci residualne}
+\par{
+  W dowolnej sieci przepływowej $N=(V, E_f)$ dodatkowy przepływ z wierzchołka $u$ do $v$, nie przekraczający przepustowości $c(u, v)$ krawędzi łączącej te wierzchołki określa się mianem \emph{przepustowości residualnej}, definiowanej jako $c_f(u ,v) = c(u, v) - f(u, v)$.
+  Dla dowolnej sieci przepływowej $N$ i pewnego przepływu $f$ sieć residualna $N_f$ jest siecią składającą się z krawędzi dopuszczających dodatkowy dodatni przepływ. Formalnie sieć residualną definiuje się jako zbiór $E_f=\{(u, v) \in V \x V: c_f(u,v) > 0\}$.
+  Krawędziami $E_f$ w sieci $N_f$, zwanymi \emph{krawędziami residualnymi}, są albo krawędzie należące do zbioru $E$ sieci $N$ albo krawędzie do nich przeciwne.
+  \begin{theorem}
+    Krawędź $(u, v)$ może pojawić się w sieci residualnej $N_f$ wtedy i tylko wtedy, gdy co najmniej jedna z krawędzi $\{(u, v), (v, u)\}$ występuje w sieci pierwotnej, co daje $|E_f| \leq 2|E|$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) < c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) > 0$, co z definicji sieci residualnej świadczy, iż krawędź $(u, v) \in E_f$ jest w niej zawarta.
+
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) > c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) < 0$, co z definicji sieci residualnej świadczy, iż krawędź przeciwna $(v, u) \in E_f$  jest w niej zawarta.
+
+    Jeżeli żadna z krawędzi $\{(u, v), (v, u)\}$ nie występuje w pierwotnej sieci, zachodzi wtedy $c(u, v) = c(v, u) = f(u, v) = f(v, u) = c_f(u, v) = c_f(v, u)=0$. Żadna z tych krawędzi nie dopuszcza dodatniego przepływu, co zgodnie z definicją sieci residualnej wyklucza ją ze zbioru krawędzi residualnych.
+  \end{bproof}
+}
+
 \subsubsection{Ścieżki powiększające}
   \begin{definition}
     Dla danej sieci $N=(V,E)$ i przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w sieci residualnej $N_f$.
   \end{definition}
   \par{
-    Zgodnie z definicją sieci residualnej (\ref{def_residual_network}) każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy daodtni przepły bez naruszenia warunku przepustowości.
-    Największą możliwą wartość, o którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej} tej ścieżki, definiowanej jak następuje.
+    Zgodnie z definicją sieci residualnej (definicja \ref{def_residual_network}) każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
+    Największą możliwą wartość, o którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej ścieżki powiększającej}, definiowanej jak następuje.
     \begin{definition}
       Przepustowość residualna ścieżki powiększającej $P_a$ odpowiada najmniejszej przepustowości residualnej spośród przynależących do niej krawędzi, $c_f(p) = min\{c_f(u, v):(u, v)\in P_a\}$.
     \end{definition}
