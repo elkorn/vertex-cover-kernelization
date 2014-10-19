@@ -153,34 +153,42 @@
   \begin{equation*}
     O^{\star}(f(n))=O(f(n) \cdot wielomian(n))
   \end{equation*}
-}
-\begin{theorem}
-  Problem pokrycia wierzchołkowego jest rozwiązywalny w czasie $O^{\star}(2^k)$
-  i wielomianowej przestrzeni.
-\end{theorem}
-\begin{bproof}
-  Zakładając istnienie zbioru $VC \in V$ kandydującego do miana pokrywy 
-  wierzchołkowej, $\forall_{e=(u,v), e \in E}: u \in VC \lor v \in VC$.
-  Jeżeli więc $\exists_{e=(u,v) \in E}: \neg(u \in VC \lor v \in VC)$, należy
-  dodać jeden z wierzchołków do $VC$. 
-  Rekurencyjnie realizowane są obydwie możliwości.
-  Kiedy rekurencja dociera do momentu, gdzie $k=0, \exists_{e=(u,v) \in E}:
-  \neg(u \in VC \lor v \in VC)$, wiadomo, że rozwiązanie odnalezione w tej
-  gałęzi nie jest akceptowalne i należy je odrzucić.
 
+  \begin{theorem}
+    Problem pokrycia wierzchołkowego jest rozwiązywalny w czasie $O^{\star}(2^k)$
+    i wielomianowej przestrzeni.
+  \end{theorem}
+  \begin{bproof}
+    Zakładając istnienie zbioru $VC \in V$ kandydującego do miana pokrycia wierzchołkowego, zachodzi $\forall_{e=(u,v), e \in E}: u \in VC \lor v \in VC$.
+    Jeżeli więc istnieje taka krawędź $\exists_{e=(u,v) \in E}: \neg(u \in VC \lor v \in VC)$, należy dodać jeden z wierzchołków do $VC$.
+    Rekurencyjnie realizowane są obydwie możliwości.
+    Z definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w kolejnych iteracjach algorytmu.
+    W związku z tym przed rozpoczęciem każdej kolejnej iteracji, wierzchołek podlegający rozpatrzeniu wraz z przystającymi do niego krawędziami należy usunąć z dziedziny problemu w celu sprawdzenia istnienia pokrycia wierzchołkowego o rozmiarze co najwyżej $k-1$ w pozostałej części grafu.
+    Kiedy rekurencja dociera do momentu, gdzie $k=0, \exists_{e=(u,v) \in E}:
+    \neg(u \in VC \lor v \in VC)$, wiadomo, że rozwiązanie odnalezione w tej
+    gałęzi nie jest akceptowalne i należy je odrzucić.
+    Zaobserwować należy, że bez względu na ostateczną odpowiedź na zadany problem, algorytm konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
+    Łatwo zauważyć, że istnieją dwa warunki zakończenia działania algorytmu:
+    \begin{enumerate}
+      \item Zbiór krawędzi dziedziny problemu $E$ jest pusty co oznacza, że wierzchołki włączone dotychczas do rozwiązania pokrywają wszystkie krawędzie grafu.
+      Oznacza to, iż odnaleziono minimalne pokrycie wierzchołkowe o rozmiarze co najwyżej $k$ --- algorytm kończy działanie odpowiedzią twierdzącą po $O^\star(2^{k^\prime \leq k})=O^\star(2^k)$ operacjach.
+      \item Wartość parametru osiągnęła $k=0$ co oznacza, iż odnalezione minimalne częściowe pokrycie wierzchołkowe zawiera już $k$ wierzchołków, lecz nadal nie pokrywa ono każdej krawędzi grafu $e \in E$.
+      Algorytm kończy działanie odpowiedzią przeczącą po $O^\star(2^k)$ iteracjach.
+    \end{enumerate}
+  \end{bproof}
   \begin{algorithm}
     \caption{Algorytm rozwiązujący problem pokrycia wierzchołkowego}\label{alg_VC1}
     \begin{algorithmic}[1]
       \Function{VC}{G, k}
-      \If {$E=\emptyset$}
-      \Return{true}
-    \EndIf
-    \If {$k=0$}
-    \Return{false}\Comment{Rozwiązanie nieoptymalne}
-  \EndIf
-  \State $(u,v) \leftarrow e \in E$
-  \State \textbf{return} {VC($G\setminus \{u\}$, k-1) lub V~($G\setminus \{v\}$, k-1)}
-\EndFunction
-\end{algorithmic}
-\end{algorithm}
-\end{bproof}
+        \If {$E=\emptyset$}
+          \Return{true}
+        \EndIf
+        \If {$k=0$}
+          \Return{false}\Comment{Rozwiązanie nieoptymalne}
+        \EndIf
+        \State $(u,v) \leftarrow e \in E$
+        \State \textbf{return} {VC($G\setminus \{u\}$, k-1) lub V~($G\setminus \{v\}$, k-1)}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+}
