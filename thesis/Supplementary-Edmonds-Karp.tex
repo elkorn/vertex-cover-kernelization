@@ -125,7 +125,7 @@
     \underline{(3) $\implies$ (1)}: Mając na uwadze warunek (3): $|f|=c(S,T)$, z cechy 2. dowolnego przekroju sieci wynika, że $f$ stanowi przepływ maksymalny w~sieci $N$.
   \end{bproof}
 }
-\subsubsection{\textbf{Algorytm Edmondsa-Karpa}}
+\subsubsection{\textbf{Algorytm Edmondsa-Karpa}}\label{sss_edmonds_karp}
 W konkretnej implementacji metody Forda-Fulkersona, powiększanie przepływu o przepływ residualny odbywa się za pośrednictwem aktualizacji przepływu $f[u,v]$\footnote{Nawiasami kwadratowymi oznaczany jest dostęp do zmiennej tablicowej.} między każdą parą wierzchołków $\{u,v\} \in V$.
 Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
 \par{
