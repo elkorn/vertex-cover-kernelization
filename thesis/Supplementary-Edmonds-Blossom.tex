@@ -1,1 +1,117 @@
-\subsection{\textbf{Algorytm kwiatów Edmondsa}}\label{ss_edmonds}
+\subsection{Odnajdywanie maksymalnego skojarzenia w grafie}\label{ss_edmonds}
+\par{
+  Każdy z opisywanych w pracy algorytmów działający w oparciu o twierdzenie\\Nemhausera-Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}) oraz algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według definicji \ref{def_maximum_matching}.
+  Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
+}
+
+\subsubsection{\textbf{Problem odnajdywania maksymalnego skojarzenia w grafach}}
+\par{
+  Zgodnie z definicją \ref{def_matching}, w dowolnym grafie $G=(V,E)$~skojarzenie $M$ stanowi zbiór krawędzi $e \in E$, które nie współdzielą ze sobą żadnych wierzchołków: \[\not\exists_{\{(u_1,v_1), (u_2, v_2)\} \in M}:{u_1 = u_2 \lor u_1 = v_2 \lor v_1 = u_2 \lor v_1 = v_2}.\]
+  Skojarzenie maksymalne opisywane jest twierdzeniem Berge'a, na którym opiera się definicja \ref{def_maximum_matching}.
+  \begin{theorem}[Twierdzenie Berge'a]\thlabel{th_Berge}
+    Skojarzenie $M$ w grafie $G$ jest maksymalne wtedu i tylko wtedy gdy nie istnieje ścieżka powiększająca $P_a$ taka, że dla dowolnej pary kolejno następujących po sobie krawędzi $\{e_1, e_2\} \in P_a$ prawdziwe jest $e_1 \in M \oplus e_2 \in M$.
+  \end{theorem}
+   W kontekście poszukiwania skojarzeń poprzez ścieżki powiększające, graf można traktować jako odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
+}
+\par{
+  W przypadku grafów dwudzielnych z krawędziami o jednostkowej, problem odnalezienia maksymalnego dopasowania sprowadza się do rozwiązania problemu maksymalnego przepływu.
+  Problem przeformułować należy poprzez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z zasadami opisanymi w podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z algorytmem Edmondsa-Karpa, opisanym w podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego dopasowania jest przepływ prowadzący w jedną stronę pomiędzy podziałami grafu.
+  Poprawność takiego sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w sieci jest ugruntowana w fakcie, że każda krytyczna krawędź zostaje usunięta z sieci residualnej --- a branie pod uwagę przepływu tylko zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w rozwiązaniu.
+}
+\par{
+  Problem odnajdywania maksymalnego skojarzenia w dowolnym grafie nie jest zadaniem trywialnym --- wymaga zatem odpowiedniego, działającego w czasie wielomianowym narzędzia jego rozwiązywania w celu możliwości efektywnego rozwiązania problemów głównych.
+  \[
+    TODO: Write about the generic approach to finding maximum matchings in general graphs.
+  \]
+  Narzędzie takie stanowi algorytm skurczania kwiatów Edmondsa, zwany w dalszej części podrozdziału algorytmem Edmondsa lub po prostu algorytmem.
+}
+
+\subsubsection{\textbf{Algorytm skurczania kwiatów Edmondsa}}
+\par{
+  Algorytm Edmondsa poszukuje ścieżek powiększających w grafie stanowiącym odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
+  Realizacja odbywa się w oparciu o drzewo poszukiwań ze specjalnym traktowaniem występujących w grafie cykli o nieparzystej długości.
+  Algorytm Edmondsa przedstawiany jest w ten sposób, ponieważ najczęściej zestawia się go jako działającą w dowolnych grafach alternatywę dla innych algorytmów poszukujących maksymalnego skojarzenia w grafach dwudzielnych.
+  Cykle o nieparzystej długości są charakterystyczne jedynie dla grafów niedwudzielnych i określane są mianem \emph{kwiatów}.
+}
+% \par{
+%   Algorytm działa  według następujących kroków.
+%   \begin{enumerate}
+%     \item Poszukuj skierowanej ścieżki w grafie $H$ zaczynającej się od pewnego wolnego wierzchołka $v_f$ do pewnego dobrego wierzchołka $v_g$, posiadającego co najmniej jeden wolny wierzchołek sąsiedni.
+%     \item Jeżeli nie odnaleziono tak zdefiniowanej ścieżki,  jest powiększająca
+%   \end{enumerate}
+  
+%   Jeżeli ścieżka taka zostanie odnaleziona i zawiera ona skurczone kwiaty, algorytm rozwija każdy z nich w celu otrzymania właściwej formy znalezionej ścieżki powiększającej.
+%   Tak odnaleziona ścieżka zostaje wykorzystania do rozszerzenia częściowego maksymalnego skojarzenia grafu o jedną krawędź.
+%   W sytuacji gdy algorytm znajduje się w stanie gdzie nie istnieje ścieżka powiększająca w zredukowanej instancji grafu, pewnym jest również jej brak w grafie wejściowym.
+% }
+\par{
+  \begin{definition}
+    W dowolnym grafie $G=(V, E)$, mianem \emph{kwiatu} $B$ względem skojarzenia $M \in E$ określa się cykl o nieparzystej długości i największej liczbie krawędzi składowych skojarzonych w $M$. 
+  \end{definition}
+  Z powyższej definicji wynika, że przykładowo jeżeli pewien cykl składa się z $2k + 1$ wierzchołków oznacza to, że $k$ krawędzi musi zawierać się w pewnym skojarzeniu $M$ aby cykl ten mógł być kwiatem.
+  \begin{definition}
+    Poprzez \emph{skurczenie} kwiatu $B$ w grafie $G=(V, E)$ rozumie się operację składającą się z następujących czynności.
+    \begin{enumerate}
+       \item Zastąpieniu zbioru wszystkich wierzchołków $V_B=\{v: v \in B\}$ pojedynczym wierzchołkiem $v_B$. Konsekwencja zastąpienia każdego z wierzchołków kwiatu jest usunięcie przystających do niego krawędzi.
+       \item Połączeniem wierzchołka $v_B$ krawędziami ze wszystkimi wierzchołkami spoza kwiatu, które sąsiadowały z nim przed wykonaniem kroku 1: \[V_N=\{v: v \in V \setminus V_B, \exists_{u \in V}:(u,v)\in E \lor (v, u)\in E\}.\]
+     \end{enumerate}
+  \end{definition}
+  Konsekwencją skurczenia kwiatu $B=(V_B, E_B)$ jest zmniejszenie skojarzenia $M$ do $M^\prime=M\E_B$.
+  W celu zwiększenia efektywności odnajdywania skierowanych ścieżek w grafie $H$, algorytm przechowuje dane o odwiedzonych krawędziach w strukturze lasu.\\
+  Algorytm Edmondsa działa według następującego schematu.
+  \begin{algorithm}
+    \caption{Algorytm Edmondsa}\label{alg_Edmonds}
+    \begin{algorithmic}[1]
+      \Function{Edmonds}{G}
+
+        \algorithmicrequire{graf $G$}
+
+        \algorithmicensure{maksymalne skojarzenie $M$}
+
+        \State{$M$ \gets \emptyset}
+
+        \State{$H$ \gets $G$}
+
+        \State{$N$ \gets $M$}
+
+        \State{$P$ \gets $\{v: v\text{ jest wolne w } M\}$}\label{init_edmonds}
+
+        \State{$NP$ \gets \emptyset}
+
+        \State{$E_F$ \gets \emptyset}
+
+        \State{$V_F$ \gets $P \bigcup NP$}
+
+        \State{$F$ \gets \Call{Las}{V_F, E_F}}
+
+        \State{Wybierz krawędź $(u, v); u \in P, v \notin NP$}\label{pick_edge}
+        \If{taka krawędź nie istnieje}
+          \State{\textbf{return} $M$}
+        \EndIf
+        \If{$v \notin V_F$}
+          \State{$NP$ \gets $NP \bigcup \{v\}$}
+
+          \State{$P$ \gets $P \bigcup \{M(v)\}$}
+
+          \State{$E_F$ \gets $E_F \bigcup \{(v, M(v))\}$}
+        \ElsIf{$v \in P$ oraz $(u, v) \in E_F$}
+          \Comment{Odnaleziono kwiat B.}
+          \State{$b$ \gets \Call{Skurcz}{B}}
+
+          \State{$H$ \gets $H\B$}
+
+          \State{$N$ \gets $N\B$}
+
+          \State{$P$ \gets $P \bigcup \{b\}$}
+
+          \State{Idź do kroku~\ref{pick_edge}}
+        \Elsif{$v \in P$ oraz $(u, v) \notin E_F$}
+          \State{Znajdź w $G$ ścieżkę powiększającą $\rho$ względem $M$}
+
+          \State{Rozszerz $M$}
+          \State{Idź do kroku~\ref{init_edmonds}}
+        \EndIf
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+}
