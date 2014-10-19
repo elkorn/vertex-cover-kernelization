@@ -209,7 +209,6 @@
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
-\setcounter{topnumber}{2}
 \renewcommand\topfraction{.7}
 \setcounter{bottomnumber}{1}
 \renewcommand\bottomfraction{.3}
