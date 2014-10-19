@@ -47,7 +47,6 @@ pdftex}
 \usepackage[utf8]{inputenc}
 \def\rodzaj{Praca magisterska}
 
-\setcounter{tocdepth}{3}
 \def\wydzial{Automatyki, Elektroniki i~Informatyki}
 
 \def\tytul{Algorytmy FPT}
@@ -115,10 +114,13 @@ pdftex}
 \def\degree{\ensuremath{^{\circ}}\protect}
 \def\fixme#1{\marginpar{\tiny{}#1}}
 \newtheorem{theorem}{\parindent=0pt{\textbf{Twierdzenie}}}[section]
+\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{\thmnote{#3's }#1}
+\theoremstyle{named}
+\newtheorem*{namedtheorem}{Twierdzenie}
 \newtheorem{property}{\parindent=0pt{\textbf{Własność}}}[section]
 \newtheorem{lemma}{\parindent=0pt{\textbf{Lemat}}}[section]
 \newtheorem{corollary}{\parindent=0pt{\textbf{Wniosek}}}[section]
-\newtheorem{definition}{\parindent=0pt{\textbf{Definicja}}}
+\newtheorem{definition}{\parindent=0pt{\textbf{Definicja}}}[section]
 \newtheorem{proposition}{\parindent=0pt{\textbf{Założenie}}}[section]
 \newtheorem{conjecture}{\parindent=0pt{\textbf{Przypuszczenie}}}[section]
 \newtheorem{nt}{\parindent=0pt{\textbf{Neumhauser-Trotter}}}
