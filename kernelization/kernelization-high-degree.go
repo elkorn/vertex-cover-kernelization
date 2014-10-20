@@ -1,8 +1,11 @@
 package kernelization
 
-import "github.com/deckarep/golang-set"
+import (
+	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/graph"
+)
 
-func (self *graph.Graph) removeVerticesWithDegreeGreaterThan(k int) (graph.Neighbors, int) {
+func removeVerticesWithDegreeGreaterThan(self *graph.Graph, k int) (graph.Neighbors, int) {
 	toRemove := mapset.NewSet()
 	removed := 0
 

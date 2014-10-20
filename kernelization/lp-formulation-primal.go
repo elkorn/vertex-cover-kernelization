@@ -18,7 +18,7 @@ func asPrimalLpVar(v graph.Vertex) string {
 
 func asPrimalLpConstraint(edge *graph.Edge) string {
 	return fmt.Sprintf("%v + %v >= 1",
-		asPrimalLpVar(edge.rimfrom),
+		asPrimalLpVar(edge.From),
 		asPrimalLpVar(edge.To))
 }
 
@@ -52,7 +52,7 @@ func mklpPrimalFormulation(g *graph.Graph, k int) (result *lpPrimalFormulation) 
 
 	result.lp.AddRows(g.NEdges())
 	i := 1
-	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		utility.Debug("Constraint: %v", asPrimalLpConstraint(edge))
 		result.lp.SetRowName(i, fmt.Sprintf("%v + %v >= 1", asPrimalLpVar(edge.From), asPrimalLpVar(edge.To)))
 		result.lp.SetRowBnds(i, glpk.LO, 1, 1)
@@ -83,7 +83,7 @@ func mklpPrimalFormulation(g *graph.Graph, k int) (result *lpPrimalFormulation) 
 
 	// Set the coefficients for the constraints.
 	i = 1
-	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		// SetMatRow sets (replaces) i-th row. It sets
 		//
 		//     matrix[i, ind[j]] = val[j]

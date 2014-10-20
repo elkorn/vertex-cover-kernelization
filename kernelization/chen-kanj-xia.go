@@ -5,6 +5,7 @@ import (
 
 	"github.com/deckarep/golang-set"
 	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 
 const REDUCING_EMPTY_RESULT = -128
@@ -19,7 +20,7 @@ type ChenKanjXiaVC struct {
 	// where tuples are not being invalidated between 2 recursive calls.
 	// (because a.4, b and c is not applicable)
 	tuples mapset.Set
-	T      *kernelization.StructurePriorityQueueProxy
+	T      *StructurePriorityQueueProxy
 	k      int
 	halt   chan bool
 }
@@ -108,15 +109,15 @@ func (self *ChenKanjXiaVC) conditionalStruction() (wasApplicable bool) {
 		}
 
 		// if there exists w ∈ { u , z} such that d (w) = 3 and the Struction is applicable to w then apply it;
-		nu, nuSet := self.G.getNeighborsWithSet(gp.U())
+		nu, nuSet := self.G.GetNeighborsWithSet(gp.U())
 		if self.G.Degree(gp.U()) == 3 &&
-			gp.U().isStructionApplicable(self.G, nuSet) {
+			isStructionApplicable(gp.U(), self.G, nuSet) {
 			_, reduction = structionWithGivenNeighbors(self.G, gp.U(), nu, nuSet)
 			wasApplicable = reduction > 0
 		} else {
-			nz, nzSet := self.G.getNeighborsWithSet(gp.Z())
+			nz, nzSet := self.G.GetNeighborsWithSet(gp.Z())
 			if self.G.Degree(gp.Z()) == 3 &&
-				gp.Z().isStructionApplicable(self.G, nzSet) {
+				isStructionApplicable(gp.Z(), self.G, nzSet) {
 				_, reduction = structionWithGivenNeighbors(self.G, gp.Z(), nz, nzSet)
 				wasApplicable = reduction > 0
 			}
@@ -127,11 +128,11 @@ func (self *ChenKanjXiaVC) conditionalStruction() (wasApplicable bool) {
 		return
 	} else {
 		// else if there exists a vertex u ∈ self.G where d ( u ) = 3 or d ( u ) = 4 and such that the Struction is applicable to u
-		self.G.ForAllVertices(func(u Vertex, done chan<- bool) {
+		self.G.ForAllVertices(func(u graph.Vertex, done chan<- bool) {
 			deg := self.G.Degree(u)
 			if deg == 3 || deg == 4 {
-				nv, nvSet := self.G.getNeighborsWithSet(u)
-				if u.isStructionApplicable(self.G, nvSet) {
+				nv, nvSet := self.G.GetNeighborsWithSet(u)
+				if isStructionApplicable(u, self.G, nvSet) {
 					// then apply it;
 					_, reduction = structionWithGivenNeighbors(self.G, u, nv, nvSet)
 					wasApplicable = reduction > 0
@@ -146,7 +147,7 @@ func (self *ChenKanjXiaVC) conditionalStruction() (wasApplicable bool) {
 	return
 }
 
-func (self *ChenKanjXiaVC) includeVertices(vs ...Vertex) {
+func (self *ChenKanjXiaVC) includeVertices(vs ...graph.Vertex) {
 	for _, includedVertex := range vs {
 		self.G.RemoveVertex(includedVertex)
 	}
@@ -154,7 +155,7 @@ func (self *ChenKanjXiaVC) includeVertices(vs ...Vertex) {
 	self.updateTuplesByInclusion(vs...)
 }
 
-func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
+func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...graph.Vertex) {
 	for _, includedVertex := range includedVertices {
 		for t := range self.tuples.Iter() {
 			tuple := t.(*structure)
@@ -167,7 +168,7 @@ func (self *ChenKanjXiaVC) updateTuplesByInclusion(includedVertices ...Vertex) {
 	}
 }
 
-func (self *ChenKanjXiaVC) excludeVertices(vs ...Vertex) {
+func (self *ChenKanjXiaVC) excludeVertices(vs ...graph.Vertex) {
 	for _, excludedVertex := range vs {
 		self.G.RemoveVertex(excludedVertex)
 	}
@@ -175,7 +176,7 @@ func (self *ChenKanjXiaVC) excludeVertices(vs ...Vertex) {
 	self.updateTuplesByExclusion(vs...)
 }
 
-func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...Vertex) {
+func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...graph.Vertex) {
 	toRemove := mapset.NewSet()
 
 	for _, excludedVertex := range excludedVertices {
@@ -227,7 +228,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 
 			// T = T ∪ {( S − { u }, q − 1 )};
 			S := tuple.S.Clone()
-			S.Remove(u.(Vertex))
+			S.Remove(u.(graph.Vertex))
 			newTuple := MkStructure(tuple.q-1, tuple.Elements...)
 			if newTuple.computePriority(self.G) < 3 {
 				// It's a 2-tuple.
@@ -253,7 +254,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 		}
 
 		// a.3. if S is not an independent set then
-		isIndependent, edges := isIndependentSet(tuple.S, self.G)
+		isIndependent, edges := graph.IsIndependentSet(tuple.S, self.G)
 		if !isIndependent {
 			// T = T ∪ (\forall(u ,v)∈ E , u ,v∈ S {( S − { u , v}, q − 1 )}) ;
 			S := tuple.S.Clone()
@@ -272,9 +273,9 @@ func (self *ChenKanjXiaVC) reducing() int {
 		// return (1 + VC (self.G−v, T, k−1)); exit;
 		// This condition means that v has to be adjacent to a vertex in S -
 		// if it is, it is included in the cover.
-		includedVertex := INVALID_VERTEX
-		self.G.ForAllVertices(func(v Vertex, done chan<- bool) {
-			_, Nv := self.G.getNeighborsWithSet(v)
+		includedVertex := graph.INVALID_VERTEX
+		self.G.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
+			_, Nv := self.G.GetNeighborsWithSet(v)
 			if Nv.Intersect(tuple.S).Cardinality() >= tuple.S.Cardinality()-tuple.q+1 {
 				// v can be included in the cover, a new instance of the problem
 				// has to be run.
@@ -283,7 +284,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 			}
 		})
 
-		if includedVertex == INVALID_VERTEX {
+		if includedVertex == graph.INVALID_VERTEX {
 			// Equivalent of 'nothing happened at this point'.
 			return self.k
 		} else {
@@ -327,10 +328,10 @@ func (self *ChenKanjXiaVC) reducing() int {
 
 	// c. if there are vertices u and v in self.G such that v dominates u then return (1 + VC ( self.G − v, T , k − 1 ) ); exit;
 	// By Observation 3.3., vertex v is included in the cover in this step.
-	includedVertex := INVALID_VERTEX
-	self.G.ForAllVertices(func(v Vertex, done1 chan<- bool) {
-		self.G.ForAllVertices(func(u Vertex, done2 chan<- bool) {
-			if v.dominates(u, self.G) {
+	includedVertex := graph.INVALID_VERTEX
+	self.G.ForAllVertices(func(v graph.Vertex, done1 chan<- bool) {
+		self.G.ForAllVertices(func(u graph.Vertex, done2 chan<- bool) {
+			if dominates(v, u, self.G) {
 				includedVertex = v
 				done1 <- true
 				done2 <- true
@@ -338,7 +339,7 @@ func (self *ChenKanjXiaVC) reducing() int {
 		})
 	})
 
-	if includedVertex == INVALID_VERTEX {
+	if includedVertex == graph.INVALID_VERTEX {
 		// Equivalent of 'nothing happened at this point'.
 		return self.k
 	} else {
@@ -374,16 +375,16 @@ func (self *ChenKanjXiaVC) VC() int {
 	zIncludedBranch := self.Copy()
 	nZIncludedBranch := self.Copy()
 	iter := str.S.Iter()
-	u := INVALID_VERTEX
+	u := graph.INVALID_VERTEX
 	if priority != 8 &&
 		priority != 11 {
 		// It's a good pair.
-		u = (<-iter).(Vertex)
+		u = (<-iter).(graph.Vertex)
 	}
 
-	z := (<-iter).(Vertex)
+	z := (<-iter).(graph.Vertex)
 	dz := self.G.Degree(z)
-	neighbors, Nz := self.G.getNeighborsWithSet(z)
+	neighbors, Nz := self.G.GetNeighborsWithSet(z)
 
 	zIncludedBranch.includeVertices(z)
 	zIncludedBranch.k--
@@ -398,8 +399,8 @@ func (self *ChenKanjXiaVC) VC() int {
 	// ( Γ is a vertex z with d ( z ) ≥ 7) then
 	if priority <= 2 ||
 		priority == structurePriority(utility.MAX_INT) || // TODO: Check the proofs to see which good pairs qualify for this.
-		priority == 8 || // Vertex z with d(z) \geq 8
-		priority == 11 { // Vertex z with d(z) \geq 7
+		priority == 8 || // graph.Vertex z with d(z) \geq 8
+		priority == 11 { // graph.Vertex z with d(z) \geq 7
 		// return min {1+VC(G−z, T ∪ (N(z), 2), k−1), d(z)+VC(G−N[z], T, k−d(z))};
 		zIncludedBranch.tuples.Add(MkStructureWithSet(2, Nz, neighbors...))
 
@@ -407,7 +408,7 @@ func (self *ChenKanjXiaVC) VC() int {
 		//Γ is a good pair (u, z) where z is not almost-dominated by any vertex
 		// in N(u).
 		// return min{1+VC(G−z, T, k−1) , d(z)+VC(G−N[z], T ∪ (N(u), 2), k−d(z))};
-		nu, Nu := self.G.getNeighborsWithSet(u)
+		nu, Nu := self.G.GetNeighborsWithSet(u)
 		nZIncludedBranch.tuples.Add(MkStructureWithSet(2, Nu, nu...))
 	}
 

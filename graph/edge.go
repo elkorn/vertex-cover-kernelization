@@ -21,6 +21,10 @@ func (self Edge) GetIntEndpoints() (int, int) {
 	return a.ToInt(), b.ToInt()
 }
 
+func (self *Edge) IsDeleted() bool {
+	return self.isDeleted
+}
+
 func MkEdge(a, b Vertex) *Edge {
 	return &Edge{a, b, false}
 }

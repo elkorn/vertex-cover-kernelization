@@ -2,6 +2,7 @@ package kernelization
 
 import (
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 
@@ -170,7 +171,7 @@ func (self *goodPair) countAlmostDominatedPairs(g *graph.Graph) int {
 				return
 			}
 
-			if x.almostDominates(y, g) {
+			if almostDominates(x, y, g) {
 				result++
 			}
 		})
@@ -248,17 +249,17 @@ func forAllGoodPairs(set mapset.Set, action func(*goodPair)) {
 	}
 }
 
-func (self *graph.Graph) forAllgraph.VerticesOfDegreeGeq(degree int, action func(Vertex)) {
-	self.ForAllgraph.Vertices(func(v graph.Vertex, done chan<- bool) {
+func forAllVerticesOfDegreeGeq(self *graph.Graph, degree int, action func(graph.Vertex)) {
+	self.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		if self.Degree(v) >= degree {
 			action(v)
 		}
 	})
 }
 
-func identifyGoodgraph.Vertices(G *graph.Graph) mapset.Set {
+func identifyGoodVertices(G *graph.Graph) mapset.Set {
 	result := mapset.NewSet()
-	G.forAllgraph.VerticesOfDegreeGeq(7, func(v graph.Vertex) {
+	forAllVerticesOfDegreeGeq(G, 7, func(v graph.Vertex) {
 		result.Add(MkStructure(-1, v))
 	})
 
@@ -278,12 +279,12 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 	// The first graph.vertex in a good pair is found as follows:
 	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
 	utility.Debug("Looking for U...")
-	G.ForAllgraph.Vertices(func(u graph.Vertex, done chan<- bool) {
+	G.ForAllVertices(func(u graph.Vertex, done chan<- bool) {
 		deg := G.Degree(u)
 		tagU := tags[u.ToInt()]
 		utility.Debug("Tag of %v: %v", u, tagU.neighbors)
 		foundValidU := true
-		G.forAllgraph.VerticesOfDegree(deg, func(w graph.Vertex) {
+		G.ForAllVerticesOfDegree(deg, func(w graph.Vertex) {
 			if !foundValidU {
 				return
 			}
@@ -367,7 +368,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 						return
 					}
 
-					if z.isAlmostDominatedBy(n, G) {
+					if isAlmostDominatedBy(z, n, G) {
 						utility.Debug("a) satisfied, adding %v", z)
 						possibleZ.Add(z)
 					}
@@ -377,14 +378,14 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 			// If no graph.vertex in N ( u ) is almost-dominated by another graph.vertex in
 			// N ( u ) , then (a) is vacuously satisfied by every graph.vertex in N ( u ),
 			// and z will be a neighbor of u of maximum degree.
-			_, possibleZ = G.getNeighborsWithSet(u)
+			_, possibleZ = G.GetNeighborsWithSet(u)
 		}
 
 		utility.Debug("Satisfying a): %v", possibleZ)
 		// b) the degree of z is max among N(u) satisfying a).
 		maxDegreeOfZ := 0
 		for zInter := range possibleZ.Iter() {
-			z := zInter.(Vertex)
+			z := zInter.(graph.Vertex)
 			if deg := G.Degree(z); deg > maxDegreeOfZ {
 				maxDegreeOfZ = deg
 			}
@@ -392,7 +393,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 
 		utility.Debug("Max. degree of z: %v", maxDegreeOfZ)
 		for zInter := range possibleZ.Iter() {
-			z := zInter.(Vertex)
+			z := zInter.(graph.Vertex)
 			if G.Degree(z) != maxDegreeOfZ {
 				toRemove.Add(z)
 			}
@@ -406,7 +407,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		// TODO: This should be a priority queue.
 		adjacencies := mapset.NewSet()
 		for zInter := range possibleZ.Iter() {
-			z := zInter.(Vertex)
+			z := zInter.(graph.Vertex)
 			adjacency := 0
 			G.ForAllNeighbors(
 				possibleGoodPair.U(),
@@ -445,7 +446,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		maxSharedNeighbors := 0
 		sharedNeighbors := mapset.NewSet()
 		for zInter := range possibleZ.Iter() {
-			z := zInter.(Vertex)
+			z := zInter.(graph.Vertex)
 			curSharedNeighbors := 0
 			G.ForAllNeighbors(z, func(edge *graph.Edge, done chan<- bool) {
 				G.ForAllNeighbors(
@@ -510,10 +511,10 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 
 func identifyStructures(G *graph.Graph, k int) *StructurePriorityQueueProxy {
 	result := MkStructurePriorityQueue()
-	goodgraph.Vertices := identifyGoodgraph.Vertices(G)
+	goodVertices := identifyGoodVertices(G)
 	goodPairs := identifyGoodPairs(G)
 
-	for gvInter := range goodgraph.Vertices.Iter() {
+	for gvInter := range goodVertices.Iter() {
 		result.Push(gvInter.(*structure), G)
 	}
 

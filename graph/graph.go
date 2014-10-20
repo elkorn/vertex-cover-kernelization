@@ -71,7 +71,7 @@ func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
 	return self.neighbors[v.ToInt()]
 }
 
-func (self *Graph) getNeighbors(v Vertex) Neighbors {
+func (self *Graph) GetNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 		result = result.appendIfNotContains(GetOtherVertex(v, edge))
@@ -80,7 +80,7 @@ func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	return result
 }
 
-func (self *Graph) getNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
+func (self *Graph) GetNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
 	resultSet := mapset.NewSet()
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
@@ -153,11 +153,11 @@ func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, chan<- bool)) {
 }
 
 func (self *Graph) HasEdge(a, b Vertex) bool {
-	edge := self.getEdgeByCoordinates(a.ToInt(), b.ToInt())
+	edge := self.GetEdgeByCoordinates(a.ToInt(), b.ToInt())
 	return edge != nil && !edge.isDeleted
 }
 
-func (g *Graph) addVertex() error {
+func (g *Graph) AddVertex() error {
 	g.CurrentVertexIndex++
 	utility.Debug("Adding %v", g.CurrentVertexIndex)
 	g.Vertices = append(g.Vertices, Vertex(g.CurrentVertexIndex))
@@ -261,7 +261,7 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 
 func (self *Graph) RemoveEdge(from, to Vertex) {
 	fi, ti := from.ToInt(), to.ToInt()
-	edge := self.getEdgeByCoordinates(fi, ti)
+	edge := self.GetEdgeByCoordinates(fi, ti)
 	self.degrees[fi] -= 1
 	self.degrees[ti] -= 1
 	edge.isDeleted = true
@@ -333,7 +333,7 @@ func mkGraph(vertices, capacity int) *Graph {
 	return g
 }
 
-func isIndependentSet(set mapset.Set, g *Graph) (result bool, dependent Edges) {
+func IsIndependentSet(set mapset.Set, g *Graph) (result bool, dependent Edges) {
 	dependent = make(Edges, 0, g.NEdges())
 	result = true
 	for vi := range set.Iter() {

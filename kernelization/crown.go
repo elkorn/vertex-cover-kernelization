@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/matching"
 	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
@@ -23,18 +24,18 @@ func (self *Crown) IsTrivial() bool {
 	return self.Width() == 0 && self.I.Cardinality() == 0
 }
 
-func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
+func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 	// Step 1.: Find a maximal matching M1 of the graph,
 	// identify the set of all unmatched vertices as the set O of outsiders
 	M1, O := matching.FindMaximalMatching(G)
 	// If a maximum matching of size > k is found then
-	// there is not a vertex cover of size ≤ k and the vertex cover problem
+	// there is not a graph.vertex cover of size ≤ k and the graph.vertex cover problem
 	// can be solved with a "no" instance.
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	utility.Debug("M1 cardinality: %v", M1.NEdges())
 	utility.Debug("Outsiders: %v", O)
 	// if options.Verbose {
-	// 	M1.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 	M1.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 	// 		utility.Debug("%v", edge.Str())
 	// 	})
 	// }
@@ -44,10 +45,10 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 2.: Find a maximum aux. matching M2 of the edges between O and N(O)
-	outsiderNeighbors := MkGraph(G.CurrentVertexIndex)
+	outsiderNeighbors := graph.MkGraph(G.CurrentVertexIndex)
 	for vInter := range O.Iter() {
-		v := vInter.(Vertex)
-		G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+		v := vInter.(graph.Vertex)
+		G.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
 			outsiderNeighbors.AddEdge(edge.From, edge.To)
 		})
 	}
@@ -55,7 +56,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	M2 := matching.FindMaximumMatching(outsiderNeighbors)
 	utility.Debug("M2 cardinality: %v", M2.NEdges())
 	// if options.Verbose {
-	// 	M2.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	// 	M2.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 	// 		utility.Debug("%v", edge.Str())
 	// 	})
 	// }
@@ -66,12 +67,11 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		return nil
 	}
 
-	// Step 3: If every vertex in N(O) is matched by M2, then H=N(O) and I=O
+	// Step 3: If every graph.vertex in N(O) is matched by M2, then H=N(O) and I=O
 	// form a straight crown, and we are done.
 	straightCrown := true
-	outsiderNeighbors.ForAllVertices(func(v Vertex, done chan<- bool) {
-		if outsiderNeighbors.IsVertexDeleted
-[v.ToInt()] {
+	outsiderNeighbors.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
+		if outsiderNeighbors.IsVertexDeleted[v.ToInt()] {
 			panic(fmt.Sprintf("Vertex %v is deleted!", v))
 		}
 
@@ -83,7 +83,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 
 	if straightCrown {
 		H := mapset.NewSet()
-		outsiderNeighbors.ForAllVertices(func(v Vertex, done chan<- bool) {
+		outsiderNeighbors.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 			H.Add(v)
 		})
 
@@ -97,7 +97,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	// Step 4: Let I0 be the set of vertices in O that are unmatched by M2.
 	In := mapset.NewSet()
 	for vInter := range O.Iter() {
-		v := vInter.(Vertex)
+		v := vInter.(graph.Vertex)
 		if !M2.HasVertex(v) || M2.Degree(v) == 0 {
 			In.Add(v)
 		}
@@ -123,8 +123,8 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		utility.Debug("n: %v, N: %v", n, N)
 		utility.Debug("Isteps: %v", Isteps)
 		for vInter := range In.Iter() {
-			v := vInter.(Vertex)
-			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+			v := vInter.(graph.Vertex)
+			G.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
 				Hsteps[n].Add(graph.GetOtherVertex(v, edge))
 			})
 		}
@@ -137,8 +137,8 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		// 5b. Let I_(n+1)= In ∪ N_M2(Hn)
 		neighbors := mapset.NewSet()
 		for vInter := range Hsteps[n].Iter() {
-			v := vInter.(Vertex)
-			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+			v := vInter.(graph.Vertex)
+			G.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
 				w := graph.GetOtherVertex(v, edge)
 				if M2.HasEdge(v, w) {
 					// Adding N_M2(Hn)
@@ -174,7 +174,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 	}
 }
 
-func reduceCrown(G *Graph, crown *Crown) {
+func reduceCrown(G *graph.Graph, crown *Crown) {
 	// TODO: There is a bug here - the algorithm keeps finding and reducing
 	// crowns even if |I|=1 and |H|=0. This leads to a degradation of the graph
 	// up to the point of having no vertices inside.
@@ -187,7 +187,7 @@ func reduceCrown(G *Graph, crown *Crown) {
 	// along with their adjacent edges.
 	removeVerticesInSet := func(set mapset.Set) {
 		for vInter := range set.Iter() {
-			G.RemoveVertex(vInter.(Vertex))
+			G.RemoveVertex(vInter.(graph.Vertex))
 		}
 	}
 
@@ -195,7 +195,7 @@ func reduceCrown(G *Graph, crown *Crown) {
 	removeVerticesInSet(crown.H)
 }
 
-func ReduceCrown(G *Graph, halt chan bool, k int) (kPrime int, partialCover mapset.Set) {
+func ReduceCrown(G *graph.Graph, halt chan bool, k int) (kPrime int, partialCover mapset.Set) {
 	crown := findCrown(G, halt, k)
 	select {
 	case <-halt:

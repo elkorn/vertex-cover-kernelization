@@ -50,7 +50,7 @@ func mkNtDecomposition(g *graph.Graph, k int) (result *ntDecomposition) {
 	}
 
 	// 5. let V 1 = {x | x ∈ S ∩ U 1 and σ −1 (x) ∈ S}
-	U1 := g.Vertices.toSet()
+	U1 := g.Vertices.ToSet()
 	U1minusS := U1.Difference(S)
 	for vInter := range S.Iter() {
 		v := vInter.(graph.Vertex)
@@ -72,7 +72,7 @@ func mkNtDecomposition(g *graph.Graph, k int) (result *ntDecomposition) {
 		result.Answer = NT_MIN_COVER_TOO_BIG
 		return
 	} else if result.V1.Cardinality() == k {
-		if indep, _ := isIndependentSet(result.V12, g); !indep {
+		if indep, _ := graph.IsIndependentSet(result.V12, g); !indep {
 			// 9. if |V 1 | = k and E(G[V 12 ]) % = ∅: return NO2
 			result.Answer = NT_V12_NOT_INDEPENDENT
 			return

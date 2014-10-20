@@ -99,7 +99,7 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 		// T is the set of neighbors of R along edges in M
 		T := mapset.NewSet()
 		for edgeInterface := range M.Iter() {
-			edge := edgeInterface.(Edge)
+			edge := edgeInterface.(graph.Edge)
 			if R.Contains(edge.To) {
 				T.Add(edge.From)
 			}
@@ -115,7 +115,7 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 
 		// The vertex cover of the bipartite graph G' (this is a misprint in the paper I think - have to check other revisions)
 		for v := range A.Difference(S).Difference(R).Union(T).Iter() {
-			bipartiteCover[v.(Vertex).ToInt()] = true
+			bipartiteCover[v.(graph.Vertex).ToInt()] = true
 		}
 	}
 
@@ -128,7 +128,7 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 	x := 0
 	for vIndex, weight := range weights {
 		if 0.5 != weight {
-			G.RemoveVertex(MkVertex(vIndex))
+			G.RemoveVertex(graph.MkVertex(vIndex))
 			if 1 == weight {
 				x++
 			}

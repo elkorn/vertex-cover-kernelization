@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/kernelization"
 	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
@@ -24,17 +25,17 @@ var allowedLayouts map[string]bool = map[string]bool{
 var defaultOutputFormat string = "svg"
 
 type graphVisualizer struct {
-	g               *Graph
+	g               *graph.Graph
 	edgeAttrs       [][]map[string]string
 	vertexAttrs     []map[string]string
 	layoutAlgorithm string
 }
 
-func ShowGraph(g *Graph) {
+func ShowGraph(g *graph.Graph) {
 	MkGraphVisualizer(g).Display()
 }
 
-func mkGraphVisualizer(g *Graph, layoutAlgorithm string) *graphVisualizer {
+func mkGraphVisualizer(g *graph.Graph, layoutAlgorithm string) *graphVisualizer {
 	if !allowedLayouts[layoutAlgorithm] {
 		panic(errors.New(fmt.Sprintf("Layout algorithm '%v' is not allowed.", layoutAlgorithm)))
 	}
@@ -60,7 +61,7 @@ func mkGraphVisualizer(g *Graph, layoutAlgorithm string) *graphVisualizer {
 	return result
 }
 
-func MkGraphVisualizer(g *Graph) *graphVisualizer {
+func MkGraphVisualizer(g *graph.Graph) *graphVisualizer {
 	if g.NVertices() > 100 {
 		return mkGraphVisualizer(g, "sfdp")
 	} else {
@@ -68,11 +69,11 @@ func MkGraphVisualizer(g *Graph) *graphVisualizer {
 	}
 }
 
-func MkNeatoVisualizer(g *Graph) *graphVisualizer {
+func MkNeatoVisualizer(g *graph.Graph) *graphVisualizer {
 	return mkGraphVisualizer(g, "neato")
 }
 
-func MkSfdpVisualizer(g *Graph) *graphVisualizer {
+func MkSfdpVisualizer(g *graph.Graph) *graphVisualizer {
 	return mkGraphVisualizer(g, "sfdp")
 }
 
@@ -91,11 +92,11 @@ func tstobn(str string) []byte {
 	return res.Bytes()
 }
 
-func edgeToB(edge *Edge) []byte {
+func edgeToB(edge *graph.Edge) []byte {
 	return tstobn(fmt.Sprintf("%v -- %v;", edge.From, edge.To))
 }
 
-func edgeToBWithAttrs(edge *Edge, attrs map[string]string) []byte {
+func edgeToBWithAttrs(edge *graph.Edge, attrs map[string]string) []byte {
 	if len(attrs) > 0 {
 		attrsStrs := make([]string, 0, len(attrs))
 
@@ -109,11 +110,11 @@ func edgeToBWithAttrs(edge *Edge, attrs map[string]string) []byte {
 	}
 }
 
-func vertexToB(v Vertex) []byte {
+func vertexToB(v graph.Vertex) []byte {
 	return tstobn(fmt.Sprintf("%v;", v))
 }
 
-func (self *graphVisualizer) vertexToB(v Vertex) []byte {
+func (self *graphVisualizer) vertexToB(v graph.Vertex) []byte {
 	if len(self.vertexAttrs[v.ToInt()]) > 0 {
 		attrsStrs := make([]string, 0, len(self.vertexAttrs))
 
@@ -129,15 +130,15 @@ func (self *graphVisualizer) vertexToB(v Vertex) []byte {
 	}
 }
 
-func (self *graphVisualizer) edgeToB(edge *Edge) []byte {
+func (self *graphVisualizer) edgeToB(edge *graph.Edge) []byte {
 	return edgeToBWithAttrs(edge, self.edgeAttrs[edge.From.ToInt()][edge.To.ToInt()])
 }
 
-func (self *graphVisualizer) setEdgeAttr(edge *Edge, name, val string) {
+func (self *graphVisualizer) setEdgeAttr(edge *graph.Edge, name, val string) {
 	self.setEdgeEndpointsAttr(edge.From, edge.To, name, val)
 }
 
-func (self *graphVisualizer) setEdgeEndpointsAttr(from, to Vertex, name, val string) {
+func (self *graphVisualizer) setEdgeEndpointsAttr(from, to graph.Vertex, name, val string) {
 	self.setEdgeCoordsAttr(from.ToInt(), to.ToInt(), name, val)
 }
 
@@ -146,40 +147,40 @@ func (self *graphVisualizer) setEdgeCoordsAttr(from, to int, name, val string) {
 	self.edgeAttrs[to][from][name] = val
 }
 
-func (self *graphVisualizer) HighlightEdge(edge *Edge, color string) {
+func (self *graphVisualizer) HighlightEdge(edge *graph.Edge, color string) {
 	self.setEdgeAttr(edge, "color", color)
 }
 
-func (self *graphVisualizer) HighlightMatching(matching *Graph, color string) {
-	matching.ForAllEdges(func(edge *Edge, done chan<- bool) {
+func (self *graphVisualizer) HighlightMatching(matching *graph.Graph, color string) {
+	matching.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		self.HighlightEdge(edge, color)
 	})
 }
 
 func (self *graphVisualizer) HighlightMatchingSet(matching mapset.Set, color string) {
 	for e := range matching.Iter() {
-		self.HighlightEdge(e.(*Edge), color)
+		self.HighlightEdge(e.(*graph.Edge), color)
 	}
 }
 
-func (self *graphVisualizer) HighlightVertex(v Vertex, color string) {
+func (self *graphVisualizer) HighlightVertex(v graph.Vertex, color string) {
 	self.vertexAttrs[v.ToInt()]["style"] = "filled"
 	self.vertexAttrs[v.ToInt()]["fillcolor"] = color
 }
 
 func (self *graphVisualizer) HighlightCover(cover mapset.Set, color string) {
 	for vInter := range cover.Iter() {
-		self.HighlightVertex(vInter.(Vertex), color)
+		self.HighlightVertex(vInter.(graph.Vertex), color)
 	}
 }
 
 func (self *graphVisualizer) HighlightCrown(crown *kernelization.Crown) {
 	for vInter := range crown.I.Iter() {
-		self.HighlightVertex(vInter.(Vertex), "lightgray")
+		self.HighlightVertex(vInter.(graph.Vertex), "lightgray")
 	}
 
 	for vInter := range crown.H.Iter() {
-		self.HighlightVertex(vInter.(Vertex), "yellow")
+		self.HighlightVertex(vInter.(graph.Vertex), "yellow")
 	}
 }
 
@@ -194,13 +195,13 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 			continue
 		}
 
-		v := MkVertex(i)
+		v := graph.MkVertex(i)
 		verticesWithAttrs.Add(v)
 		res.Write(self.vertexToB(v))
 	}
 
 	connectedVertices := mapset.NewSet()
-	self.g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+	self.g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		// In this context it might be useful to use this range loop and e.g. display
 		// the removed edge as dotted or grayed out.
 		// for _, edge := range g.Edges {

@@ -11,7 +11,7 @@ type fold struct {
 	neighbors   Neighbors
 }
 
-func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
+func (self *Graph) ForAllVerticesOfDegree(degree int, action func(Vertex)) {
 	// Create an immutable view of vertices with given degree.
 	vertices := make(Vertices, 0, self.NVertices())
 
@@ -29,8 +29,8 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) (NeighborMap, bool) {
 	result := MkNeighborMap(self.CurrentVertexIndex)
 	hasNeighbors := false
-	self.forAllVerticesOfDegree(degree, func(v Vertex) {
-		neighbors := self.getNeighbors(v)
+	self.ForAllVerticesOfDegree(degree, func(v Vertex) {
+		neighbors := self.GetNeighbors(v)
 		for _, n1 := range neighbors {
 			for _, n2 := range neighbors {
 				if n1 == n2 {
@@ -54,8 +54,8 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (Nei
 	utility.Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	hasNeighbors := false
 	result := MkNeighborMap(self.CurrentVertexIndex)
-	self.forAllVerticesOfDegree(degree, func(v Vertex) {
-		neighbors := self.getNeighbors(v)
+	self.ForAllVerticesOfDegree(degree, func(v Vertex) {
+		neighbors := self.GetNeighbors(v)
 		length := len(neighbors)
 		hasOnlyDisjoint := true
 		potentiallyToBeAdded := make(Neighbors, 0, length)
@@ -99,7 +99,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (Nei
 }
 func (self *Graph) removeVerticesOfDegree(degree int) int {
 	removed := 0
-	self.forAllVerticesOfDegree(degree, func(v Vertex) {
+	self.ForAllVerticesOfDegree(degree, func(v Vertex) {
 		self.RemoveVertex(v)
 		removed++
 	})
@@ -143,7 +143,7 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	toRemove := make(Neighbors, 0, self.NVertices())
 	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
 		for _, neighbor := range neighbors {
-			distantNeighbors := self.getNeighbors(neighbor)
+			distantNeighbors := self.GetNeighbors(neighbor)
 			utility.Debug("Neighbor: %v", neighbor)
 			for _, distantNeighbor := range distantNeighbors {
 				utility.Debug("Distante Neighbor: %v", distantNeighbor)
@@ -161,7 +161,7 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 }
 
 func (g *Graph) fold(u Vertex) *fold {
-	neighbors := g.getNeighbors(u)
+	neighbors := g.GetNeighbors(u)
 	for _, n1 := range neighbors {
 		for _, n2 := range neighbors {
 			if n1 == n2 {
@@ -175,7 +175,7 @@ func (g *Graph) fold(u Vertex) *fold {
 	}
 
 	utility.Debug("Adding vertex")
-	g.addVertex()
+	g.AddVertex()
 	uPrime := Vertex(g.CurrentVertexIndex)
 	theFold := &fold{
 		root:        u,
@@ -203,7 +203,7 @@ func (g *Graph) fold(u Vertex) *fold {
 func preprocessing4(g *Graph) mapset.Set {
 	folds := mapset.NewSet()
 	// bound := Vertex(g.CurrentVertexIndex)
-	g.forAllVerticesOfDegree(2, func(u Vertex) {
+	g.ForAllVerticesOfDegree(2, func(u Vertex) {
 		theFold := g.fold(u)
 
 		if nil != theFold {

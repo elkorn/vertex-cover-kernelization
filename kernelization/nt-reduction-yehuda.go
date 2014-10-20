@@ -23,7 +23,7 @@ func mkNtReductionYehuda(g *graph.Graph, k int) *ntReductionYehuda {
 	}
 
 	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
-		if CB.Contains(v) == CB.Contains(v+Vertex(border)) {
+		if CB.Contains(v) == CB.Contains(v+graph.Vertex(border)) {
 			if CB.Contains(v) {
 				C0.Add(v)
 			}

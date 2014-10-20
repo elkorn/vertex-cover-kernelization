@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -106,7 +107,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	g = MkGraph4()
 
-	g.addVertex()
+	g.AddVertex()
 
 	g.AddEdge(1, 8)
 	g.AddEdge(2, 8)
@@ -131,7 +132,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 
 	g = MkGraph4()
 
-	g.addVertex()
+	g.AddVertex()
 	g.AddEdge(1, 8)
 	/*
 	           1-----8

@@ -1,16 +1,17 @@
-package graph
+package kernelization
 
 import (
 	"fmt"
 	"testing"
 
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetVertices(t *testing.T) {
-	g := MkGraph(3)
+	g := graph.MkGraph(3)
 
-	expected := make(Vertices, 6)
+	expected := make(graph.Vertices, 6)
 	for i := 0; i < 6; i++ {
 		expected[i] = Vertex(i + 1)
 	}
@@ -38,14 +39,14 @@ func assertAllEdgesEqual(t *testing.T, expected Edges, actual *Graph) {
 }
 
 func TestMakeBipartite(t *testing.T) {
-	g := MkGraph(4)
+	g := graph.MkGraph(4)
 	g.AddEdge(4, 1)
 	g.AddEdge(2, 3)
 
 	expectedVertices := Vertices{1, 2, 3, 4, 5, 6, 7, 8}
 	expectedEdges := Edges{
-		MkEdge(4, 5),
-		MkEdge(2, 7),
+		graph.MkEdge(4, 5),
+		graph.MkEdge(2, 7),
 	}
 
 	actual := makeBipartite(g)

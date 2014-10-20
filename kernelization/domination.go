@@ -4,16 +4,16 @@ import "github.com/elkorn/vertex-cover-kernelization/utility"
 import "github.com/elkorn/vertex-cover-kernelization/graph"
 
 type domination struct {
-	x, y   Vertex
-	g      *Graph
+	x, y   graph.Vertex
+	g      *graph.Graph
 	almost bool
 }
 
-func (u graph.Vertex) isDominatedBy(v Vertex, g *Graph) bool {
-	return v.dominates(u, g)
+func isDominatedBy(u, v graph.Vertex, g *graph.Graph) bool {
+	return dominates(v, u, g)
 }
 
-func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
+func dominates(v, u graph.Vertex, g *graph.Graph) bool {
 	/*
 		Vertex u is said to be dominated by a vertex v , or alternatively,
 		a vertex v is said to dominate a vertex u, if ( u , v) is an
@@ -25,7 +25,7 @@ func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
 
 	result := true
 
-	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
+	g.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
 		// For the whole N(u)...
 		wu := graph.GetOtherVertex(u, edge)
 		contains := false
@@ -36,7 +36,7 @@ func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
 			return
 		}
 
-		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+		g.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
 			wv := graph.GetOtherVertex(v, edge)
 			if wv == wu {
 				utility.Debug("%v is in N[%v]", wu, v)
@@ -60,11 +60,11 @@ func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
 	return result
 }
 
-func (u graph.Vertex) isAlmostDominatedBy(v Vertex, g *Graph) bool {
-	return v.almostDominates(u, g)
+func isAlmostDominatedBy(u, v graph.Vertex, g *graph.Graph) bool {
+	return almostDominates(v, u, g)
 }
 
-func (v graph.Vertex) almostDominates(u Vertex, g *Graph) bool {
+func almostDominates(v, u graph.Vertex, g *graph.Graph) bool {
 	/*
 		A vertex v is said to almost-dominate a vertex u
 		if u and v are non-adjacent and | N ( u ) − N (v)| ≤ 1.
@@ -74,8 +74,8 @@ func (v graph.Vertex) almostDominates(u Vertex, g *Graph) bool {
 		return false
 	}
 
-	_, vNeighbors := g.getNeighborsWithSet(v)
-	_, uNeighbors := g.getNeighborsWithSet(u)
+	_, vNeighbors := g.GetNeighborsWithSet(v)
+	_, uNeighbors := g.GetNeighborsWithSet(u)
 
 	diff := uNeighbors.Difference(vNeighbors).Cardinality()
 	// utility.Debug("[ad-neighbors] u(%v): %v, v(%v): %v, diff: %v", u, uNeighbors, v, vNeighbors, diff)

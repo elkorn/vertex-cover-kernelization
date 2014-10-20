@@ -20,7 +20,7 @@ type lpDualFormulation struct {
 	lpFormulation
 }
 
-func (self *Edge) lpVarStr() string {
+func lpVarStr(self *graph.Edge) string {
 	return fmt.Sprintf("y(%v,%v)", self.From, self.To)
 }
 
@@ -58,12 +58,12 @@ func mklpDualFormulation(g *graph.Graph, k int) (result *lpDualFormulation) {
 
 	result.lp.AddRows(g.NVertices())
 	i := 1
-	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		utility.Debug("Adding row %v (v%v)", i, v)
 		result.lp.SetRowName(i, fmt.Sprintf("v%v", v))
 		result.lp.SetRowBnds(i, glpk.UP, 0, 1)
 		j := 1
-		g.ForAllEdges(func(edge *Edge, done chan<- bool) {
+		g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 			if edge.IsCoveredBy(v) {
 				result.coefficients[v.ToInt()][j] = 1
 			}
@@ -77,10 +77,10 @@ func mklpDualFormulation(g *graph.Graph, k int) (result *lpDualFormulation) {
 
 	result.lp.AddCols(g.NEdges())
 	j := 1
-	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-		result.lp.SetColName(j, edge.lpVarStr())
+	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
+		result.lp.SetColName(j, lpVarStr(edge))
 		result.lp.SetColBnds(j, glpk.LO, 0, 1) // the ub should not matter here.
-		utility.Debug("Col[%v]: %v", j, edge.lpVarStr())
+		utility.Debug("Col[%v]: %v", j, lpVarStr(edge))
 		// All the edges belong to the objective function.
 		result.lp.SetObjCoef(j, 1)
 		j++
@@ -94,7 +94,7 @@ func mklpDualFormulation(g *graph.Graph, k int) (result *lpDualFormulation) {
 
 	// Set the coefficients for the constraints.
 	i = 1
-	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		result.lp.SetMatRow(i, ind, result.coefficients[v.ToInt()])
 		utility.Debug("Matrix[%v]:\n%v", i, result.coefficients[v.ToInt()])
 		i++

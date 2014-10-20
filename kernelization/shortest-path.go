@@ -1,24 +1,27 @@
-package graph
+package kernelization
 
-import "github.com/elkorn/vertex-cover-kernelization/utility"
+import (
+	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
+)
 
-func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, *IntStack, []int) {
+func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, *graph.IntStack, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
 // TODO: migrate to the new logic.
-func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
+func shortestPath(net Net, from, to graph.Vertex) (bool, *graph.IntStack, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
 	distance := make([]int, n)
-	queue := MkIntQueue(n)
-	mark := func(v Vertex) {
+	queue := graph.MkIntQueue(n)
+	mark := func(v graph.Vertex) {
 		vi := v.ToInt()
 		marked[vi] = true
 		queue.Push(vi)
 	}
-	pathTo := func(v Vertex) *IntStack {
+	pathTo := func(v graph.Vertex) *graph.IntStack {
 		vi := v.ToInt()
 		si := from.ToInt()
 
@@ -27,7 +30,7 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 		}
 
 		pathLength := distance[v.ToInt()]
-		path := MkIntStack(pathLength + 1)
+		path := graph.MkIntStack(pathLength + 1)
 
 		for x := vi; x != si; x = edgeTo[x] {
 			path.Push(x)
@@ -53,8 +56,8 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 				distance[w] = distance[v] + 1
 				if nil == arc.edge {
 					// Dealing with a reverse arc, existing only in the residual net.
-					mark(MkVertex(w))
-				} else if !arc.edge.isDeleted {
+					mark(graph.MkVertex(w))
+				} else if !arc.edge.IsDeleted() {
 					mark(arc.edge.To)
 				}
 			}
@@ -66,7 +69,7 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 }
 
 // TODO: merge with forAllCoordPairsInPath.
-func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, int, chan<- bool)) {
+func forEachCoordsInPath(from, to graph.Vertex, edgeTo []int, g *graph.Graph, fn func(int, int, chan<- bool)) {
 	done := make(chan bool, 1)
 	vi := to.ToInt()
 	si := from.ToInt()
@@ -80,7 +83,7 @@ func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, i
 	}
 }
 
-func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
+func ShortestPathInGraph(g *graph.Graph, from, to graph.Vertex) []*graph.Edge {
 	utility.Debug("Looking from path from %v to %v", from, to)
 	exists, edgeTo, distance := shortestPathInGraph(g, from, to)
 	if !exists {
@@ -88,29 +91,29 @@ func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
 	}
 
 	length := distance[to.ToInt()]
-	path := make([]*Edge, length)
+	path := make([]*graph.Edge, length)
 	index := length - 1
 
 	forEachCoordsInPath(from, to, edgeTo, g, func(coordFrom, coordTo int, done chan<- bool) {
-		path[index] = g.getEdgeByCoordinates(coordFrom, coordTo)
+		path[index] = g.GetEdgeByCoordinates(coordFrom, coordTo)
 		index--
 	})
 
 	return path
 }
 
-func ShortestDistanceInGraph(g *Graph, from, to Vertex) int {
+func ShortestDistanceInGraph(g *graph.Graph, from, to graph.Vertex) int {
 	_, _, distance := shortestPathInGraph(g, from, to)
 	return distance[to.ToInt()]
 }
 
-func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
+func shortestPathInGraph(g *graph.Graph, from, to graph.Vertex) (bool, []int, []int) {
 	n := g.CurrentVertexIndex
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
 	distance := make([]int, n)
-	queue := MkIntQueue(n)
-	mark := func(v Vertex) {
+	queue := graph.MkIntQueue(n)
+	mark := func(v graph.Vertex) {
 		vi := v.ToInt()
 		marked[vi] = true
 		queue.Push(vi)
@@ -121,9 +124,9 @@ func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 
 	for !queue.Empty() {
 		vi := queue.Pop()
-		v := MkVertex(vi)
-		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			w := GetOtherVertex(v, edge)
+		v := graph.MkVertex(vi)
+		g.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
+			w := graph.GetOtherVertex(v, edge)
 			wi := w.ToInt()
 			utility.Debug("[%v->%v] marked: %v", v, w, marked[wi])
 			if !marked[wi] {

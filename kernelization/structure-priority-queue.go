@@ -4,6 +4,7 @@ import (
 	"container/heap"
 
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 

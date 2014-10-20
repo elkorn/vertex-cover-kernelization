@@ -9,32 +9,31 @@ import (
 )
 
 type structionVertex struct {
-	v    Vertex
-	i, j Vertex
+	v    graph.Vertex
+	i, j graph.Vertex
 }
 
 func (self *structionVertex) Name() string {
 	return fmt.Sprintf("v%v%v", self.i, self.j)
 }
 
-func struction(g *graph.Graph, v0 Vertex) *graph.Graph {
+func struction(g *graph.Graph, v0 graph.Vertex) *graph.Graph {
 	// Set of neighbors {v1, ... ,vp}
-	s, sSet := g.getNeighborsWithSet(v0)
+	s, sSet := g.GetNeighborsWithSet(v0)
 	result, _ := structionWithGivenNeighbors(g, v0, s, sSet)
 	return result
 }
 
-func structionWithGivenNeighbors(g *graph.Graph, v0 Vertex, s Neighbors, sSet mapset.Set) (result *graph.Graph, reduction int) {
+func structionWithGivenNeighbors(g *graph.Graph, v0 graph.Vertex, s graph.Neighbors, sSet mapset.Set) (result *graph.Graph, reduction int) {
 	p := sSet.Cardinality()
 	newGraphCapacity := g.CurrentVertexIndex
 	newVertices := make([]*structionVertex, 0, g.CurrentVertexIndex)
-	newVertexLookup := make([][]Vertex, g.CurrentVertexIndex)
+	newVertexLookup := make([][]graph.Vertex, g.CurrentVertexIndex)
 	for i, _ := range newVertexLookup {
-		newVertexLookup[i] = make([]Vertex, g.CurrentVertexIndex)
+		newVertexLookup[i] = make([]graph.Vertex, g.CurrentVertexIndex)
 	}
 	newDeletions := make([]bool, g.CurrentVertexIndex)
-	copy(newDeletions, g.IsVertexDeleted
-)
+	copy(newDeletions, g.IsVertexDeleted)
 
 	// Remove vertices {v0, ... ,vp}
 	newDeletions[v0.ToInt()] = true
@@ -53,7 +52,7 @@ func structionWithGivenNeighbors(g *graph.Graph, v0 Vertex, s Neighbors, sSet ma
 				newGraphCapacity++
 				reduction--
 				structionVertex := &structionVertex{
-					v: Vertex(newGraphCapacity),
+					v: graph.Vertex(newGraphCapacity),
 					i: vi,
 					j: vj,
 				}
@@ -67,7 +66,7 @@ func structionWithGivenNeighbors(g *graph.Graph, v0 Vertex, s Neighbors, sSet ma
 
 	utility.Debug("Deletions: %v", newDeletions)
 
-	result = MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
+	result = graph.MkGraphRememberingDeletedVertices(newGraphCapacity, newDeletions)
 	for _, newVertex1 := range newVertices {
 		for _, newVertex2 := range newVertices {
 			if newVertex1 == newVertex2 {
@@ -86,7 +85,7 @@ func structionWithGivenNeighbors(g *graph.Graph, v0 Vertex, s Neighbors, sSet ma
 		// For every vertex u not in {v0,...,vp},
 		// if g.HasEdge(vi,u) or g.HasEdge(vj,u),
 		// add an edge (vij, u)
-		g.ForAllVertices(func(u Vertex, done chan<- bool) {
+		g.ForAllVertices(func(u graph.Vertex, done chan<- bool) {
 			if sSet.Contains(u) || u == v0 {
 				return
 			}
@@ -102,14 +101,14 @@ func structionWithGivenNeighbors(g *graph.Graph, v0 Vertex, s Neighbors, sSet ma
 	return
 }
 
-func (self Vertex) isStructionApplicable(g *graph.Graph, neighbors mapset.Set) bool {
+func isStructionApplicable(self graph.Vertex, g *graph.Graph, neighbors mapset.Set) bool {
 	p := neighbors.Cardinality()
 	maxAllowedAntiEdges := p - 1
 	numAntiEdges := 0
 	for n := range neighbors.Iter() {
-		n1 := n.(Vertex)
+		n1 := n.(graph.Vertex)
 		for n := range neighbors.Iter() {
-			n2 := n.(Vertex)
+			n2 := n.(graph.Vertex)
 			if n1 == n2 {
 				continue
 			}
@@ -130,7 +129,7 @@ func (self Vertex) isStructionApplicable(g *graph.Graph, neighbors mapset.Set) b
 // 	// Based on J. F. Buss and J. Goldsmith, SIAM 22, (1993), pp. 560-572.
 // 	// 1.1. Let U be the set of vertices of degree more than k.
 // 	U := mapset.NewSet()
-// 	g.forAllVerticesOfDegreeGeq(k+1, func(v Vertex) {
+// 	g.forAllVerticesOfDegreeGeq(k+1, func(v graph.Vertex) {
 // 		U.Add(v)
 // 	})
 
@@ -152,14 +151,14 @@ func (self Vertex) isStructionApplicable(g *graph.Graph, neighbors mapset.Set) b
 // 	// 2.1. Let G’ be the subgraph of G induced by V⧵U.
 // 	// Every k-cover of G consists of U together with a k(k-|U|)-cover of G’.
 // 	for v := range U.Iter() {
-// 		g.RemoveVertex(v.(Vertex))
+// 		g.RemoveVertex(v.(graph.Vertex))
 // 	}
 
 // 	// 2.2. If G’ has more than k(k-|U|) edges, then reject; G’ has no (k-|U|)-cover.
 // 	if g.NEdges() > k*(k-u) {
 // 		utility.Debug("More than %v edges in subgraph, rejecting", k*(k-u))
 // 		for v := range U.Iter() {
-// 			g.RestoreVertex(v.(Vertex))
+// 			g.RestoreVertex(v.(graph.Vertex))
 // 		}
 
 // 		return 0
@@ -207,12 +206,12 @@ func reduceAlmostCrown(g *graph.Graph, halt chan<- bool, kPrime int) (*graph.Gra
 	// that G′ ⧵ {v} has an equal crown.
 	// For every vertex v in G′ , check if G′ ⧵ {v} has a crown.
 	var crown *Crown
-	var almostCrownVertex Vertex
+	var almostCrownVertex graph.Vertex
 	if g.NVertices() == 0 {
 		utility.Debug("No vertices to search!")
 		return g, kPrime
 	}
-	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		g.RemoveVertex(v)
 		utility.Debug("Removed vertex %v, looking for a crown.", v)
 		crown = findCrown(g, halt, kPrime)
@@ -233,7 +232,7 @@ func reduceAlmostCrown(g *graph.Graph, halt chan<- bool, kPrime int) (*graph.Gra
 	// and adding a vertex u_I,
 	// then connecting u_I to every vertex v ∈ G′
 	// such that v was a neighbor of a vertex u ∈ N (I) in G.
-	if almostCrownVertex != INVALID_VERTEX {
+	if almostCrownVertex != graph.INVALID_VERTEX {
 		// TODO: This is how it should look like as the result. Not sure if such
 		// treatment is correct.
 		// It might be OK, since as the result we are always removing I and N(I).
@@ -241,21 +240,21 @@ func reduceAlmostCrown(g *graph.Graph, halt chan<- bool, kPrime int) (*graph.Gra
 		// crown.I.Clear()
 		// crown.I.Add(almostCrownVertex)
 		utility.Debug("Found a non-trivial almost-crown! H: %v, I: %v", crown.H, crown.I)
-		g.addVertex()
-		foldRoot := Vertex(g.CurrentVertexIndex)
-		foldAndRemove := func(v Vertex) {
-			g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
+		g.AddVertex()
+		foldRoot := graph.Vertex(g.CurrentVertexIndex)
+		foldAndRemove := func(v graph.Vertex) {
+			g.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
 				g.AddEdge(foldRoot, graph.GetOtherVertex(v, edge))
 			})
 
 			g.RemoveVertex(v)
 		}
 		for vInter := range crown.H.Iter() {
-			foldAndRemove(vInter.(Vertex))
+			foldAndRemove(vInter.(graph.Vertex))
 		}
 
 		for vInter := range crown.I.Iter() {
-			foldAndRemove(vInter.(Vertex))
+			foldAndRemove(vInter.(graph.Vertex))
 		}
 
 		foldAndRemove(almostCrownVertex)

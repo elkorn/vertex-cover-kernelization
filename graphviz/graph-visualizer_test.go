@@ -4,11 +4,13 @@ import (
 	"os"
 	"testing"
 
+	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 	"github.com/stretchr/testify/assert"
 )
 
 func TesttoDot(t *testing.T) {
-	g := MkGraph(3)
+	g := graph.MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -26,7 +28,7 @@ func TesttoDot(t *testing.T) {
 }
 
 func TestdotToImage(t *testing.T) {
-	g := MkGraph(3)
+	g := graph.MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -48,7 +50,7 @@ func TestdotToImage(t *testing.T) {
 }
 
 func TestMkImage(t *testing.T) {
-	g := MkGraph(3)
+	g := graph.MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
@@ -82,7 +84,7 @@ func TestMkImage(t *testing.T) {
 }
 
 func TestColor(t *testing.T) {
-	g := MkGraph(3)
+	g := graph.MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)

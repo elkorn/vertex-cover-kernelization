@@ -1,21 +1,22 @@
-package graph
+package kernelization
 
 import (
 	"testing"
 
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestShortestPath(t *testing.T) {
-	g := MkGraph(4)
+	g := graph.MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(3, 4)
 	g.AddEdge(1, 4)
 
 	nf := &NetworkFlow{
-		source: Vertex(1),
-		sink:   Vertex(4),
+		source: graph.Vertex(1),
+		sink:   graph.Vertex(4),
 		graph:  g,
 		net:    mkNet(g),
 	}
@@ -27,14 +28,14 @@ func TestShortestPath(t *testing.T) {
 }
 
 func TestShortestPath2(t *testing.T) {
-	g := MkGraph(4)
+	g := graph.MkGraph(4)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
 	g.AddEdge(3, 4)
 
 	nf := &NetworkFlow{
-		source: Vertex(1),
-		sink:   Vertex(4),
+		source: graph.Vertex(1),
+		sink:   graph.Vertex(4),
 		graph:  g,
 		net:    mkNet(g),
 	}
@@ -45,7 +46,7 @@ func TestShortestPath2(t *testing.T) {
 }
 
 func TestShortestPathUndirected(t *testing.T) {
-	g := MkGraph(6)
+	g := graph.MkGraph(6)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 5)
 	g.AddEdge(2, 3)
@@ -55,8 +56,8 @@ func TestShortestPathUndirected(t *testing.T) {
 
 	nf := &NetworkFlow{
 		graph:  g,
-		source: Vertex(1),
-		sink:   Vertex(6),
+		source: graph.Vertex(1),
+		sink:   graph.Vertex(6),
 		net:    mkNet(g),
 	}
 
@@ -67,7 +68,7 @@ func TestShortestPathUndirected(t *testing.T) {
 }
 
 func TestShortestPathArbitraryEndpoints(t *testing.T) {
-	g := MkGraph(6)
+	g := graph.MkGraph(6)
 	g.AddEdge(1, 5)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
