@@ -12,7 +12,7 @@ func sliceIndexOf(n int, f func(int) bool) int {
 	return n + 1
 }
 
-func (self Neighbors) appendIfNotContains(v Vertex) Neighbors {
+func (self Neighbors) AppendIfNotContains(v Vertex) Neighbors {
 	if !Contains(self, v) {
 		self = append(self, v)
 	}

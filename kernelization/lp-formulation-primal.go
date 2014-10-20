@@ -8,6 +8,13 @@ import (
 	"github.com/lukpank/go-glpk/glpk"
 )
 
+type lpFormulation struct {
+	g            *graph.Graph
+	k            int
+	lp           *glpk.Prob
+	coefficients [][]float64
+}
+
 type lpPrimalFormulation struct {
 	lpFormulation
 }

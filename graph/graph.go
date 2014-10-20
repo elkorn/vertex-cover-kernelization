@@ -74,7 +74,7 @@ func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
 func (self *Graph) GetNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		result = result.appendIfNotContains(GetOtherVertex(v, edge))
+		result = result.AppendIfNotContains(GetOtherVertex(v, edge))
 	})
 
 	return result
@@ -116,6 +116,21 @@ func (self *Graph) ForAllVertices(fn func(Vertex, chan<- bool)) {
 			return
 		default:
 		}
+	}
+}
+
+func (self *Graph) ForAllVerticesOfDegree(degree int, action func(Vertex)) {
+	// Create an immutable view of vertices with given degree.
+	vertices := make(Vertices, 0, self.NVertices())
+
+	self.ForAllVertices(func(vertex Vertex, done chan<- bool) {
+		if self.Degree(vertex) == degree {
+			vertices = append(vertices, vertex)
+		}
+	})
+
+	for _, vertex := range vertices {
+		action(vertex)
 	}
 }
 
