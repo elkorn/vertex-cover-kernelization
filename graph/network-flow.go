@@ -37,15 +37,15 @@ type Net struct {
 }
 
 func (self *Net) Capacity(edge *Edge) int {
-	return (*self).arcs[edge.from-1][edge.to-1].capacity
+	return (*self).arcs[edge.From-1][edge.To-1].capacity
 }
 
 func (self *Net) Flow(edge *Edge) int {
-	return (*self).arcs[edge.from-1][edge.to-1].flow
+	return (*self).arcs[edge.From-1][edge.To-1].flow
 }
 
 func (self *Net) Residuum(edge *Edge) int {
-	return (*self).arcs[edge.from-1][edge.to-1].residuum()
+	return (*self).arcs[edge.From-1][edge.To-1].residuum()
 }
 
 func mkNet(g *Graph) Net {
@@ -59,8 +59,8 @@ func mkNet(g *Graph) Net {
 	}
 
 	g.ForAllEdges(func(edge *Edge, done chan<- bool) {
-		from := edge.from.toInt()
-		to := edge.to.toInt()
+		from := edge.From.ToInt()
+		to := edge.To.ToInt()
 		result.arcs[from][to] = mkNetArc(edge)
 		result.arcs[to][from] = mkNetArc(nil)
 		result.length[from] += 1
@@ -86,10 +86,10 @@ func mkNetworkFlow(g *Graph) *NetworkFlow {
 	bipartite := makeBipartiteForNetworkFlow(g)
 	result := &NetworkFlow{
 		graph:  bipartite,
-		source: Vertex(bipartite.currentVertexIndex - 1),
+		source: Vertex(bipartite.CurrentVertexIndex - 1),
 	}
 
-	result.sink = Vertex(bipartite.currentVertexIndex)
+	result.sink = Vertex(bipartite.CurrentVertexIndex)
 	connectSourceAndSink(bipartite, result.source, result.sink)
 
 	result.net = mkNet(bipartite)

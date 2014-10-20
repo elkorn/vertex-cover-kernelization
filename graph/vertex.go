@@ -4,7 +4,7 @@ type Vertex int
 
 var INVALID_VERTEX Vertex = Vertex(0)
 
-func (self Vertex) toInt() int {
+func (self Vertex) ToInt() int {
 	return int(self) - 1
 }
 
@@ -13,7 +13,7 @@ func MkVertex(src int) Vertex {
 }
 
 func (self *Graph) generateVertex() Vertex {
-	candidate := Vertex(self.currentVertexIndex)
+	candidate := Vertex(self.CurrentVertexIndex)
 	for self.HasVertex(candidate) {
 		candidate = Vertex(candidate + 1)
 	}

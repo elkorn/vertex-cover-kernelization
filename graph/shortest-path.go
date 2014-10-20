@@ -1,5 +1,7 @@
 package graph
 
+import "github.com/elkorn/vertex-cover-kernelization/utility"
+
 func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, *IntStack, []int) {
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
@@ -12,19 +14,19 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 	distance := make([]int, n)
 	queue := MkIntQueue(n)
 	mark := func(v Vertex) {
-		vi := v.toInt()
+		vi := v.ToInt()
 		marked[vi] = true
 		queue.Push(vi)
 	}
 	pathTo := func(v Vertex) *IntStack {
-		vi := v.toInt()
-		si := from.toInt()
+		vi := v.ToInt()
+		si := from.ToInt()
 
 		if !marked[vi] {
 			return nil
 		}
 
-		pathLength := distance[v.toInt()]
+		pathLength := distance[v.ToInt()]
 		path := MkIntStack(pathLength + 1)
 
 		for x := vi; x != si; x = edgeTo[x] {
@@ -36,7 +38,7 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 	}
 
 	mark(from)
-	distance[from.toInt()] = 0
+	distance[from.ToInt()] = 0
 
 	for !queue.Empty() {
 		v := queue.Pop()
@@ -45,7 +47,7 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 				continue
 			}
 
-			Debug("[%v->%v] marked: %v, residuum: %v", v, w, marked[w], arc.residuum())
+			utility.Debug("[%v->%v] marked: %v, residuum: %v", v, w, marked[w], arc.residuum())
 			if !marked[w] && arc.residuum() > 0 {
 				edgeTo[w] = v // Note the last edge on the shortest path.
 				distance[w] = distance[v] + 1
@@ -53,21 +55,21 @@ func shortestPath(net Net, from, to Vertex) (bool, *IntStack, []int) {
 					// Dealing with a reverse arc, existing only in the residual net.
 					mark(MkVertex(w))
 				} else if !arc.edge.isDeleted {
-					mark(arc.edge.to)
+					mark(arc.edge.To)
 				}
 			}
 		}
 	}
 
-	Debug("Path exists: %v", marked[to.toInt()])
-	return marked[to.toInt()], pathTo(to), distance
+	utility.Debug("Path exists: %v", marked[to.ToInt()])
+	return marked[to.ToInt()], pathTo(to), distance
 }
 
 // TODO: merge with forAllCoordPairsInPath.
 func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, int, chan<- bool)) {
 	done := make(chan bool, 1)
-	vi := to.toInt()
-	si := from.toInt()
+	vi := to.ToInt()
+	si := from.ToInt()
 	for x := vi; x != si; x = edgeTo[x] {
 		fn(x, edgeTo[x], done)
 		select {
@@ -79,13 +81,13 @@ func forEachCoordsInPath(from, to Vertex, edgeTo []int, g *Graph, fn func(int, i
 }
 
 func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
-	Debug("Looking from path from %v to %v", from, to)
+	utility.Debug("Looking from path from %v to %v", from, to)
 	exists, edgeTo, distance := shortestPathInGraph(g, from, to)
 	if !exists {
 		return nil
 	}
 
-	length := distance[to.toInt()]
+	length := distance[to.ToInt()]
 	path := make([]*Edge, length)
 	index := length - 1
 
@@ -99,31 +101,31 @@ func ShortestPathInGraph(g *Graph, from, to Vertex) []*Edge {
 
 func ShortestDistanceInGraph(g *Graph, from, to Vertex) int {
 	_, _, distance := shortestPathInGraph(g, from, to)
-	return distance[to.toInt()]
+	return distance[to.ToInt()]
 }
 
 func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
-	n := g.currentVertexIndex
+	n := g.CurrentVertexIndex
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
 	edgeTo := make([]int, n)  // The last vertex on the known path to a vertex.
 	distance := make([]int, n)
 	queue := MkIntQueue(n)
 	mark := func(v Vertex) {
-		vi := v.toInt()
+		vi := v.ToInt()
 		marked[vi] = true
 		queue.Push(vi)
 	}
 
 	mark(from)
-	distance[from.toInt()] = 0
+	distance[from.ToInt()] = 0
 
 	for !queue.Empty() {
 		vi := queue.Pop()
 		v := MkVertex(vi)
 		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 			w := getOtherVertex(v, edge)
-			wi := w.toInt()
-			Debug("[%v->%v] marked: %v", v, w, marked[wi])
+			wi := w.ToInt()
+			utility.Debug("[%v->%v] marked: %v", v, w, marked[wi])
 			if !marked[wi] {
 				edgeTo[wi] = vi // Note the last edge on the shortest path.
 				distance[wi] = distance[vi] + 1
@@ -132,5 +134,5 @@ func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 		})
 	}
 
-	return marked[to.toInt()], edgeTo, distance
+	return marked[to.ToInt()], edgeTo, distance
 }

@@ -39,7 +39,7 @@ func TestGetVerticesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 	g.AddEdge(1, 4)
 
 	result, _ := g.getVerticesOfDegreeWithOnlyAdjacentNeighbors(2)
-	Debug("%v", result)
+	utility.Debug("%v", result)
 	assert.Equal(t, Neighbors{2, 3}, result[4])
 	assert.Equal(t, Neighbors{3, 5}, result[1])
 	assert.Equal(t, Neighbors{2, 5}, result[2])

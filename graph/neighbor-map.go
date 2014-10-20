@@ -12,11 +12,11 @@ func MkNeighborMap(size int) NeighborMap {
 }
 
 func (self *NeighborMap) AddNeighborOfVertex(v, n Vertex) {
-	index := v.toInt()
+	index := v.ToInt()
 	if (*self)[index] == nil {
 		(*self)[index] = Neighbors{n}
 	} else {
-		if !contains((*self)[index], n) {
+		if !Contains((*self)[index], n) {
 			(*self)[index] = append((*self)[index], n)
 		}
 	}

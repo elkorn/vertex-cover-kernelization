@@ -2,6 +2,7 @@ package graph
 
 import (
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 
 type fold struct {
@@ -26,7 +27,7 @@ func (self *Graph) forAllVerticesOfDegree(degree int, action func(Vertex)) {
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) (NeighborMap, bool) {
-	result := MkNeighborMap(self.currentVertexIndex)
+	result := MkNeighborMap(self.CurrentVertexIndex)
 	hasNeighbors := false
 	self.forAllVerticesOfDegree(degree, func(v Vertex) {
 		neighbors := self.getNeighbors(v)
@@ -42,7 +43,7 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) (Nei
 			}
 		}
 
-		result[v.toInt()] = neighbors
+		result[v.ToInt()] = neighbors
 		hasNeighbors = true
 	})
 
@@ -50,9 +51,9 @@ func (self *Graph) getVerticesOfDegreeWithOnlyAdjacentNeighbors(degree int) (Nei
 }
 
 func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (NeighborMap, bool) {
-	Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
+	utility.Debug("===== GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	hasNeighbors := false
-	result := MkNeighborMap(self.currentVertexIndex)
+	result := MkNeighborMap(self.CurrentVertexIndex)
 	self.forAllVerticesOfDegree(degree, func(v Vertex) {
 		neighbors := self.getNeighbors(v)
 		length := len(neighbors)
@@ -71,11 +72,11 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (Nei
 					n2 := neighbors[j]
 
 					if self.HasEdge(n1, n2) {
-						Debug("%v and %v are NOT disjoint", n1, n2)
+						utility.Debug("%v and %v are NOT disjoint", n1, n2)
 						hasOnlyDisjoint = false
 						break
 					} else {
-						Debug("%v and %v are disjoint", n1, n2)
+						utility.Debug("%v and %v are disjoint", n1, n2)
 						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n1)
 						potentiallyToBeAdded = potentiallyToBeAdded.appendIfNotContains(n2)
 					}
@@ -84,16 +85,16 @@ func (self *Graph) getVerticesOfDegreeWithOnlyDisjointNeighbors(degree int) (Nei
 		}
 
 		if hasOnlyDisjoint {
-			Debug("For %v: adding %v", v, potentiallyToBeAdded)
+			utility.Debug("For %v: adding %v", v, potentiallyToBeAdded)
 			if len(potentiallyToBeAdded) > 0 {
-				result[v.toInt()] = potentiallyToBeAdded
+				result[v.ToInt()] = potentiallyToBeAdded
 				hasNeighbors = true
 			}
 		}
 	})
 
-	Debug("%v", result)
-	Debug("===== END GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
+	utility.Debug("%v", result)
+	utility.Debug("===== END GET DISJOINT NEIGHBORS OF DEGREE %v =====", degree)
 	return result, hasNeighbors
 }
 func (self *Graph) removeVerticesOfDegree(degree int) int {
@@ -143,9 +144,9 @@ func (self *Graph) contractEdges(contractionMap NeighborMap) {
 	contractionMap.ForAll(func(vertex Vertex, neighbors Neighbors, done chan<- bool) {
 		for _, neighbor := range neighbors {
 			distantNeighbors := self.getNeighbors(neighbor)
-			Debug("Neighbor: %v", neighbor)
+			utility.Debug("Neighbor: %v", neighbor)
 			for _, distantNeighbor := range distantNeighbors {
-				Debug("Distante Neighbor: %v", distantNeighbor)
+				utility.Debug("Distante Neighbor: %v", distantNeighbor)
 				self.AddEdge(vertex, distantNeighbor)
 			}
 
@@ -173,16 +174,16 @@ func (g *Graph) fold(u Vertex) *fold {
 		}
 	}
 
-	Debug("Adding vertex")
+	utility.Debug("Adding vertex")
 	g.addVertex()
-	uPrime := Vertex(g.currentVertexIndex)
+	uPrime := Vertex(g.CurrentVertexIndex)
 	theFold := &fold{
 		root:        u,
 		replacement: uPrime,
 		neighbors:   neighbors,
 	}
 
-	Debug("Creating fold %v (%v) -> %v", theFold.root, theFold.neighbors, theFold.replacement)
+	utility.Debug("Creating fold %v (%v) -> %v", theFold.root, theFold.neighbors, theFold.replacement)
 
 	for _, n := range neighbors {
 		g.ForAllNeighbors(n, func(edge *Edge, done chan<- bool) {
@@ -201,7 +202,7 @@ func (g *Graph) fold(u Vertex) *fold {
 
 func preprocessing4(g *Graph) mapset.Set {
 	folds := mapset.NewSet()
-	// bound := Vertex(g.currentVertexIndex)
+	// bound := Vertex(g.CurrentVertexIndex)
 	g.forAllVerticesOfDegree(2, func(u Vertex) {
 		theFold := g.fold(u)
 
@@ -221,19 +222,19 @@ func preprocessing4(g *Graph) mapset.Set {
 }
 
 // func unfoldIter(theFold *fold, vc, folds mapset.Set, bound Vertex) mapset.Set {
-// 	Debug("VC: %v", vc)
+// 	utility.Debug("VC: %v", vc)
 // 	if vc.Contains(theFold.replacement) {
-// 		Debug("vc contains replacement for %v", theFold.neighbors)
+// 		utility.Debug("vc contains replacement for %v", theFold.neighbors)
 // 		for _, neighbor := range theFold.neighbors {
-// 			Debug("Checking neighbor %v...", neighbor)
+// 			utility.Debug("Checking neighbor %v...", neighbor)
 // 			vc.Add(neighbor)
 // 			if neighbor > bound {
-// 				Debug("It's syntetic.")
+// 				utility.Debug("It's syntetic.")
 // 				for fInter := range folds.Iter() {
 // 					f := fInter.(*fold)
-// 					Debug("checking fold with syntetic: %v", f.replacement)
+// 					utility.Debug("checking fold with syntetic: %v", f.replacement)
 // 					if f.replacement == neighbor {
-// 						Debug("replacement %v == neighbor %v", f.replacement, neighbor)
+// 						utility.Debug("replacement %v == neighbor %v", f.replacement, neighbor)
 // 						unfoldIter(f, vc, folds, bound)
 // 						break
 // 					}
@@ -260,13 +261,13 @@ func Preprocessing(g *Graph) (int, mapset.Set) {
 	// 2. Vertices interconnected with only themselves are useless - remove them.
 	parameterReduction += g.removeVerticesOfDegree(1)
 	g.removeVerticesOfDegree(0)
-	Debug("Removed %v pendant vertices.", parameterReduction)
+	utility.Debug("Removed %v pendant vertices.", parameterReduction)
 
 	// 3. Remove vertices with degree 2 which have connected neighbors.
 	// Then, remove nodes whose degree has dropped to 0.
 	//
 	red := g.removeVertivesOfDegreeWithOnlyAdjacentNeighbors(2)
-	Debug("Removed %v vertices of deg. 2 with adj. neighbors.", red)
+	utility.Debug("Removed %v vertices of deg. 2 with adj. neighbors.", red)
 	parameterReduction += red
 	g.removeVerticesOfDegree(0)
 

@@ -45,8 +45,8 @@ func TestAddEdge(t *testing.T) {
 	assert.Nil(t, err)
 
 	edge := g.Edges[0]
-	assert.Equal(t, edge.from, 1)
-	assert.Equal(t, edge.to, 2)
+	assert.Equal(t, edge.From, 1)
+	assert.Equal(t, edge.To, 2)
 
 	err = g.AddEdge(2, 1)
 	assert.NotNil(t, err)
@@ -55,8 +55,8 @@ func TestAddEdge(t *testing.T) {
 
 	err = g.AddEdge(3, 1)
 	edge = g.Edges[1]
-	assert.Equal(t, edge.from, 3)
-	assert.Equal(t, edge.to, 1)
+	assert.Equal(t, edge.From, 3)
+	assert.Equal(t, edge.To, 1)
 }
 
 func TestVertexCoverSimpleGraph(t *testing.T) {

@@ -1,11 +1,5 @@
 package graph
 
-import (
-	"container/list"
-	"fmt"
-	"testing"
-)
-
 // func benchScannedGraph(b *testing.B, filename string, fn func(g *Graph)) {
 // 	original := ScanGraph(filename)
 // 	gs := make([]*Graph, b.N)
@@ -85,144 +79,144 @@ import (
 // 	benchExample(b, 15, 3)
 // }
 
-func BenchmarkPrependList(b *testing.B) {
-	list := list.New()
+// func BenchmarkPrependList(b *testing.B) {
+// 	list := list.New()
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for j := 0; j < 10000; j++ {
-			list.PushFront(j)
-		}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		for j := 0; j < 10000; j++ {
+// 			list.PushFront(j)
+// 		}
 
-		get(list, 9999)
-	}
-}
+// 		get(list, 9999)
+// 	}
+// }
 
-func BenchmarkPrependSlice(b *testing.B) {
-	slice := make([]Vertex, 0, 10000)
-	var p Vertex
-	Debug("%v", p)
+// func BenchmarkPrependSlice(b *testing.B) {
+// 	slice := make([]Vertex, 0, 10000)
+// 	var p Vertex
+// 	utility.Debug("%v", p)
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for j := 0; j < 10000; j++ {
-			slice = prepend(slice, Vertex(j))
-		}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		for j := 0; j < 10000; j++ {
+// 			slice = prepend(slice, Vertex(j))
+// 		}
 
-		p = slice[9999]
-	}
-}
+// 		p = slice[9999]
+// 	}
+// }
 
-func BenchmarkPrependSliceWithTemplate(b *testing.B) {
-	slice := make([]Vertex, 0, 10000)
-	template := make([]Vertex, 1)
-	var p Vertex
-	Debug("%v", p)
+// func BenchmarkPrependSliceWithTemplate(b *testing.B) {
+// 	slice := make([]Vertex, 0, 10000)
+// 	template := make([]Vertex, 1)
+// 	var p Vertex
+// 	utility.Debug("%v", p)
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for j := 0; j < 10000; j++ {
-			template[0] = Vertex(j)
-			slice = append(template, slice...)
-		}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		for j := 0; j < 10000; j++ {
+// 			template[0] = Vertex(j)
+// 			slice = append(template, slice...)
+// 		}
 
-		p = slice[9999]
-	}
-}
+// 		p = slice[9999]
+// 	}
+// }
 
-func BenchmarkBSTConflictResolverStraightPetersenLT(b *testing.B) {
-	g := mkPetersenGraph()
-	ShowGraph(g)
-	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
-		return d1 < d2
-	}
+// func BenchmarkBSTConflictResolverStraightPetersenLT(b *testing.B) {
+// 	g := MkPetersenGraph()
+// 	ShowGraph(g)
+// 	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+// 		return d1 < d2
+// 	}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		branchAndBound(g)
-	}
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		branchAndBound(g)
+// 	}
+// }
 
-func BenchmarkBSTConflictResolverStraightPetersenGT(b *testing.B) {
-	g := mkPetersenGraph()
-	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
-		return d1 > d2
-	}
+// func BenchmarkBSTConflictResolverStraightPetersenGT(b *testing.B) {
+// 	g := MkPetersenGraph()
+// 	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+// 		return d1 > d2
+// 	}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		branchAndBound(g)
-	}
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		branchAndBound(g)
+// 	}
+// }
 
-func BenchmarkBSTConflictResolverStraightPetersenLTEQ(b *testing.B) {
-	g := mkPetersenGraph()
-	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
-		return d1 <= d2
-	}
+// func BenchmarkBSTConflictResolverStraightPetersenLTEQ(b *testing.B) {
+// 	g := MkPetersenGraph()
+// 	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+// 		return d1 <= d2
+// 	}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		branchAndBound(g)
-	}
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		branchAndBound(g)
+// 	}
+// }
 
-func BenchmarkBSTConflictResolverStraightPetersenGTEQ(b *testing.B) {
-	g := mkPetersenGraph()
-	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
-		return d1 >= d2
-	}
+// func BenchmarkBSTConflictResolverStraightPetersenGTEQ(b *testing.B) {
+// 	g := MkPetersenGraph()
+// 	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
+// 		return d1 >= d2
+// 	}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		branchAndBound(g)
-	}
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		branchAndBound(g)
+// 	}
+// }
 
-func benchBnB(b *testing.B, no int) {
-	g := ScanGraph(fmt.Sprintf("../examples/example_%v", no))
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		branchAndBound(g)
-	}
-}
+// func benchBnB(b *testing.B, no int) {
+// 	g := ScanGraph(fmt.Sprintf("../examples/example_%v", no))
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		branchAndBound(g)
+// 	}
+// }
 
-func BenchmarkBnBPessimistic1(b *testing.B) {
-	benchBnB(b, 1)
-}
+// func BenchmarkBnBPessimistic1(b *testing.B) {
+// 	benchBnB(b, 1)
+// }
 
-func BenchmarkBnBPessimistic2(b *testing.B) {
-	benchBnB(b, 2)
-}
+// func BenchmarkBnBPessimistic2(b *testing.B) {
+// 	benchBnB(b, 2)
+// }
 
-func BenchmarkBnBPessimistic3(b *testing.B) {
-	benchBnB(b, 3)
-}
+// func BenchmarkBnBPessimistic3(b *testing.B) {
+// 	benchBnB(b, 3)
+// }
 
-func BenchmarkBnBPessimistic5(b *testing.B) {
-	benchBnB(b, 5)
-}
+// func BenchmarkBnBPessimistic5(b *testing.B) {
+// 	benchBnB(b, 5)
+// }
 
-func BenchmarkBnBPessimistic6(b *testing.B) {
-	benchBnB(b, 6)
-}
+// func BenchmarkBnBPessimistic6(b *testing.B) {
+// 	benchBnB(b, 6)
+// }
 
-func BenchmarkBnBPessimistic7(b *testing.B) {
-	benchBnB(b, 7)
-}
+// func BenchmarkBnBPessimistic7(b *testing.B) {
+// 	benchBnB(b, 7)
+// }
 
-func BenchmarkBnBPessimistic8(b *testing.B) {
-	benchBnB(b, 8)
-}
+// func BenchmarkBnBPessimistic8(b *testing.B) {
+// 	benchBnB(b, 8)
+// }
 
-func BenchmarkBnBPessimistic9(b *testing.B) {
-	benchBnB(b, 9)
-}
+// func BenchmarkBnBPessimistic9(b *testing.B) {
+// 	benchBnB(b, 9)
+// }
 
-func BenchmarkBnBPessimistic10(b *testing.B) {
-	benchBnB(b, 10)
-}
+// func BenchmarkBnBPessimistic10(b *testing.B) {
+// 	benchBnB(b, 10)
+// }
 
-func BenchmarkBnBPessimistic11(b *testing.B) {
-	benchBnB(b, 11)
-}
+// func BenchmarkBnBPessimistic11(b *testing.B) {
+// 	benchBnB(b, 11)
+// }

@@ -3,22 +3,22 @@ package graph
 import "fmt"
 
 type Edge struct {
-	from      Vertex
-	to        Vertex
+	From      Vertex
+	To        Vertex
 	isDeleted bool
 }
 
 func (self *Edge) IsCoveredBy(v Vertex) bool {
-	return self.from == v || self.to == v
+	return self.From == v || self.To == v
 }
 
 func (self Edge) GetEndpoints() (Vertex, Vertex) {
-	return self.from, self.to
+	return self.From, self.To
 }
 
 func (self Edge) GetIntEndpoints() (int, int) {
 	a, b := self.GetEndpoints()
-	return a.toInt(), b.toInt()
+	return a.ToInt(), b.ToInt()
 }
 
 func MkEdge(a, b Vertex) *Edge {
@@ -34,7 +34,7 @@ func MkEdgeValFromInts(a, b int) Edge {
 }
 
 func (self *Edge) Str() string {
-	return fmt.Sprintf("%v-%v", self.from, self.to)
+	return fmt.Sprintf("%v-%v", self.From, self.To)
 }
 
 type Edges []*Edge

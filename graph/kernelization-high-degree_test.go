@@ -3,6 +3,7 @@ package graph
 import (
 	"testing"
 
+	"github.com/elkorn/vertex-cover-kernelization/vc"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,11 +23,11 @@ func TestRemoveHighDegree(t *testing.T) {
 
 	g1.AddEdge(9, 8)
 
-	vc := branchAndBound(g1)
+	vc := vc.BranchAndBound(g1)
 	removed, remCount := g1.removeVerticesWithDegreeGreaterThan(2)
-	vc2 := branchAndBound(g1)
-	assert.True(t, contains(removed, 1))
-	assert.True(t, contains(removed, 2))
+	vc2 := vc.BranchAndBound(g1)
+	assert.True(t, Contains(removed, 1))
+	assert.True(t, Contains(removed, 2))
 
 	assert.False(t, g1.HasVertex(1))
 	assert.False(t, g1.HasVertex(2))

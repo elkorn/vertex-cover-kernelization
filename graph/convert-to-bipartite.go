@@ -8,7 +8,7 @@ func getVertices(g *Graph) Vertices {
 	}
 
 	for _, v := range result {
-		result = append(result, MkVertex(v.toInt()+n))
+		result = append(result, MkVertex(v.ToInt()+n))
 	}
 
 	return result
@@ -17,7 +17,7 @@ func getVertices(g *Graph) Vertices {
 func addBipartiteEdges(g *Graph, original *Graph, border int) {
 	original.ForAllEdges(func(edge *Edge, done chan<- bool) {
 		// Invariant: F = {(A_v,B_u)|(v,u) \in E or (u,v) \in E}
-		g.AddEdge(edge.from, MkVertex(edge.to.toInt()+border))
+		g.AddEdge(edge.From, MkVertex(edge.To.ToInt()+border))
 	})
 }
 
@@ -30,15 +30,15 @@ func makeBipartite(g *Graph) *Graph {
 		F = {(A_v,B_u)|(v,u) \in E or (u,v) \in E}
 	*/
 
-	border := g.currentVertexIndex
-	result := MkGraphRememberingDeletedVertices(border*2, g.isVertexDeleted) // remember deleted vertices
+	border := g.CurrentVertexIndex
+	result := MkGraphRememberingDeletedVertices(border*2, g.IsVertexDeleted) // remember deleted vertices
 	addBipartiteEdges(result, g, border)
 	return result
 }
 
 func makeBipartiteForNetworkFlow(g *Graph) *Graph {
 	border := len(g.Vertices)
-	result := MkGraphRememberingDeletedVertices(border*2+2, g.isVertexDeleted) // remember deleted vertices
+	result := MkGraphRememberingDeletedVertices(border*2+2, g.IsVertexDeleted) // remember deleted vertices
 	addBipartiteEdges(result, g, border)
 	return result
 }

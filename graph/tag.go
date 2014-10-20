@@ -50,9 +50,9 @@ func MkTag(v Vertex, g *Graph) *tag {
 }
 
 func computeTags(g *Graph) []*tag {
-	result := make([]*tag, g.currentVertexIndex)
+	result := make([]*tag, g.CurrentVertexIndex)
 	g.ForAllVertices(func(v Vertex, done chan<- bool) {
-		result[v.toInt()] = MkTag(v, g)
+		result[v.ToInt()] = MkTag(v, g)
 	})
 
 	return result

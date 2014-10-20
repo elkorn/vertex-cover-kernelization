@@ -5,14 +5,15 @@ import (
 	"fmt"
 
 	"github.com/deckarep/golang-set"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 
 type Graph struct {
 	Vertices                Vertices
 	Edges                   Edges
 	degrees                 []int
-	currentVertexIndex      int
-	isVertexDeleted         []bool
+	CurrentVertexIndex      int
+	IsVertexDeleted         []bool
 	neighbors               [][]*Edge
 	numberOfVertices        int
 	numberOfEdges           int
@@ -22,14 +23,14 @@ type Graph struct {
 
 func (self *Graph) Copy() *Graph {
 	result := &Graph{
-		currentVertexIndex: self.currentVertexIndex,
+		CurrentVertexIndex: self.CurrentVertexIndex,
 		numberOfVertices:   self.numberOfVertices,
 		numberOfEdges:      self.numberOfEdges,
 	}
 	result.Vertices = make(Vertices, len(self.Vertices))
 	copy(result.Vertices, self.Vertices)
-	result.isVertexDeleted = make([]bool, len(self.isVertexDeleted))
-	copy(result.isVertexDeleted, self.isVertexDeleted)
+	result.IsVertexDeleted = make([]bool, len(self.IsVertexDeleted))
+	copy(result.IsVertexDeleted, self.IsVertexDeleted)
 	result.Edges = make(Edges, 0, cap(self.Edges))
 	result.neighbors = make([][]*Edge, len(self.neighbors))
 	result.degrees = make([]int, len(self.degrees))
@@ -39,11 +40,11 @@ func (self *Graph) Copy() *Graph {
 	}
 
 	for i, edge := range self.Edges {
-		Debug("%v", edge)
+		utility.Debug("%v", edge)
 		if nil == edge {
 			continue
 		}
-		result.AddEdge(edge.from, edge.to)
+		result.AddEdge(edge.From, edge.To)
 		result.Edges[i].isDeleted = edge.isDeleted
 	}
 
@@ -55,19 +56,19 @@ func (self *Graph) Copy() *Graph {
 }
 
 func (self *Graph) HasVertex(v Vertex) bool {
-	if v.toInt() >= self.currentVertexIndex {
+	if v.ToInt() >= self.CurrentVertexIndex {
 		return false
 	}
 
-	if v.toInt() < len(self.isVertexDeleted) {
-		return !self.isVertexDeleted[v.toInt()]
+	if v.ToInt() < len(self.IsVertexDeleted) {
+		return !self.IsVertexDeleted[v.ToInt()]
 	}
 
 	return true
 }
 
 func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
-	return self.neighbors[v.toInt()]
+	return self.neighbors[v.ToInt()]
 }
 
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
@@ -104,7 +105,7 @@ func (self *Graph) NEdges() int {
 func (self *Graph) ForAllVertices(fn func(Vertex, chan<- bool)) {
 	done := make(chan bool, 1)
 	for _, vertex := range self.Vertices {
-		if self.isVertexDeleted[vertex.toInt()] {
+		if self.IsVertexDeleted[vertex.ToInt()] {
 			continue
 		}
 
@@ -152,22 +153,22 @@ func (self *Graph) ForAllNeighbors(v Vertex, fn func(*Edge, chan<- bool)) {
 }
 
 func (self *Graph) HasEdge(a, b Vertex) bool {
-	edge := self.getEdgeByCoordinates(a.toInt(), b.toInt())
+	edge := self.getEdgeByCoordinates(a.ToInt(), b.ToInt())
 	return edge != nil && !edge.isDeleted
 }
 
 func (g *Graph) addVertex() error {
-	g.currentVertexIndex++
-	Debug("Adding %v", g.currentVertexIndex)
-	g.Vertices = append(g.Vertices, Vertex(g.currentVertexIndex))
-	g.isVertexDeleted = append(g.isVertexDeleted, false)
+	g.CurrentVertexIndex++
+	utility.Debug("Adding %v", g.CurrentVertexIndex)
+	g.Vertices = append(g.Vertices, Vertex(g.CurrentVertexIndex))
+	g.IsVertexDeleted = append(g.IsVertexDeleted, false)
 	g.degrees = append(g.degrees, 0)
 	g.numberOfVertices++
 	for y, neighbor := range g.neighbors {
 		g.neighbors[y] = append(neighbor, nil)
 	}
 
-	g.neighbors = append(g.neighbors, make([]*Edge, g.currentVertexIndex))
+	g.neighbors = append(g.neighbors, make([]*Edge, g.CurrentVertexIndex))
 	g.needToComputeRegularity = true
 
 	return nil
@@ -179,7 +180,7 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 	}
 
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		self.RemoveEdge(edge.from, edge.to)
+		self.RemoveEdge(edge.From, edge.To)
 	})
 
 	self.removeVertex(v)
@@ -187,8 +188,8 @@ func (self *Graph) RemoveVertex(v Vertex) error {
 }
 
 func (self *Graph) RestoreVertex(v Vertex) {
-	vi := v.toInt()
-	if !self.isVertexDeleted[vi] {
+	vi := v.ToInt()
+	if !self.IsVertexDeleted[vi] {
 		return
 	}
 
@@ -198,15 +199,15 @@ func (self *Graph) RestoreVertex(v Vertex) {
 		}
 
 		edge.isDeleted = false
-		self.neighbors[getOtherVertex(v, edge).toInt()][vi].isDeleted = false
-		self.degrees[edge.from.toInt()]++
-		self.degrees[edge.to.toInt()]++
+		self.neighbors[getOtherVertex(v, edge).ToInt()][vi].isDeleted = false
+		self.degrees[edge.From.ToInt()]++
+		self.degrees[edge.To.ToInt()]++
 		self.numberOfEdges++
 	}
 }
 
 func (self *Graph) removeVertex(v Vertex) {
-	self.isVertexDeleted[v.toInt()] = true
+	self.IsVertexDeleted[v.ToInt()] = true
 	self.numberOfVertices--
 	self.needToComputeRegularity = true
 }
@@ -246,11 +247,11 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 
 	edge := MkEdge(a, b)
 	self.Edges = append(self.Edges, edge)
-	self.neighbors[a.toInt()][b.toInt()] = edge
-	self.neighbors[b.toInt()][a.toInt()] = edge
+	self.neighbors[a.ToInt()][b.ToInt()] = edge
+	self.neighbors[b.ToInt()][a.ToInt()] = edge
 
-	ai := a.toInt()
-	bi := b.toInt()
+	ai := a.ToInt()
+	bi := b.ToInt()
 	self.degrees[ai]++
 	self.degrees[bi]++
 	self.numberOfEdges++
@@ -259,7 +260,7 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 }
 
 func (self *Graph) RemoveEdge(from, to Vertex) {
-	fi, ti := from.toInt(), to.toInt()
+	fi, ti := from.ToInt(), to.ToInt()
 	edge := self.getEdgeByCoordinates(fi, ti)
 	self.degrees[fi] -= 1
 	self.degrees[ti] -= 1
@@ -271,25 +272,25 @@ func (self *Graph) RemoveEdge(from, to Vertex) {
 func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 	n := self.NEdges()
 	amountCovered := 0
-	isCovered := make([][]bool, self.currentVertexIndex)
+	isCovered := make([][]bool, self.CurrentVertexIndex)
 	for i := range isCovered {
-		isCovered[i] = make([]bool, self.currentVertexIndex)
+		isCovered[i] = make([]bool, self.CurrentVertexIndex)
 	}
 
 	for _, vertex := range vertices {
-		Debug("Checking %v for coverage", vertex)
+		utility.Debug("Checking %v for coverage", vertex)
 		self.ForAllEdges(func(edge *Edge, done chan<- bool) {
 			if edge.IsCoveredBy(vertex) {
-				if !isCovered[edge.from.toInt()][edge.to.toInt()] {
-					Debug("Edge %v -> Covered", *edge)
+				if !isCovered[edge.From.ToInt()][edge.To.ToInt()] {
+					utility.Debug("Edge %v -> Covered", *edge)
 					amountCovered++
-					isCovered[edge.from.toInt()][edge.to.toInt()] = true
+					isCovered[edge.From.ToInt()][edge.To.ToInt()] = true
 				}
 			}
 		})
 	}
 
-	Debug("Coverage map for %v: %v", vertices, isCovered)
+	utility.Debug("Coverage map for %v: %v", vertices, isCovered)
 	return amountCovered == n
 }
 
@@ -298,7 +299,7 @@ func (self *Graph) Degree(v Vertex) int {
 		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v)))
 	}
 
-	return self.degrees[v.toInt()]
+	return self.degrees[v.ToInt()]
 }
 
 func (self *Graph) IsRegular() bool {
@@ -316,7 +317,7 @@ func mkGraph(vertices, capacity int) *Graph {
 		g.Vertices[i] = MkVertex(i)
 	}
 
-	g.currentVertexIndex = vertices
+	g.CurrentVertexIndex = vertices
 	// NOTE: Duplicate edges are not allowed, thus the maximum number of edges in the graph is V^2
 	// (when every vertex is connected to each other)
 	g.Edges = make(Edges, 0, capacity*capacity)
@@ -326,10 +327,31 @@ func mkGraph(vertices, capacity int) *Graph {
 		g.neighbors[y] = make([]*Edge, capacity)
 	}
 
-	g.isVertexDeleted = make([]bool, vertices, capacity)
+	g.IsVertexDeleted = make([]bool, vertices, capacity)
 	g.numberOfVertices = vertices
 	g.needToComputeRegularity = true
 	return g
+}
+
+func isIndependentSet(set mapset.Set, g *Graph) (result bool, dependent Edges) {
+	dependent = make(Edges, 0, g.NEdges())
+	result = true
+	for vi := range set.Iter() {
+		v1 := vi.(Vertex)
+		for vi := range set.Iter() {
+			v2 := vi.(Vertex)
+			if v1 == v2 {
+				continue
+			}
+
+			if g.HasEdge(v1, v2) {
+				result = false
+				dependent = append(dependent, MkEdge(v1, v2))
+			}
+		}
+	}
+
+	return
 }
 
 func MkGraph(vertices int) *Graph {

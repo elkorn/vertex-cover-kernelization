@@ -3,12 +3,12 @@ package graph
 import "errors"
 
 func getOtherVertex(v Vertex, edge *Edge) Vertex {
-	if edge.from != v {
-		return edge.from
+	if edge.From != v {
+		return edge.From
 	}
 
-	if edge.to != v {
-		return edge.to
+	if edge.To != v {
+		return edge.To
 	}
 
 	panic(errors.New("An edge with the same vertex as both endpoints may not exist."))
@@ -149,7 +149,7 @@ func MkGraph6() *Graph {
 	return g
 }
 
-func mkPetersenGraph() *Graph {
+func MkPetersenGraph() *Graph {
 	g := MkGraph(10)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
@@ -169,7 +169,7 @@ func mkPetersenGraph() *Graph {
 	return g
 }
 
-func mkReversePetersenGraph() *Graph {
+func MkReversePetersenGraph() *Graph {
 	g := MkGraph(10)
 	g.AddEdge(2, 1)
 	g.AddEdge(3, 2)

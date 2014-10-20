@@ -23,6 +23,6 @@ func TestScanGraph(t *testing.T) {
 	}
 
 	for _, edge := range expected.edges {
-		assert.True(t, g.HasEdge(edge.from, edge.to), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.from, edge.to))
+		assert.True(t, g.HasEdge(edge.From, edge.To), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.From, edge.To))
 	}
 }
