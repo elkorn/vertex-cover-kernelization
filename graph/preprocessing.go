@@ -187,7 +187,7 @@ func (g *Graph) fold(u Vertex) *fold {
 
 	for _, n := range neighbors {
 		g.ForAllNeighbors(n, func(edge *Edge, done chan<- bool) {
-			v := getOtherVertex(n, edge)
+			v := GetOtherVertex(n, edge)
 			g.AddEdge(uPrime, v)
 		})
 	}

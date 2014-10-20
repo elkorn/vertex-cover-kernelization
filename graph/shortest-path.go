@@ -123,7 +123,7 @@ func shortestPathInGraph(g *Graph, from, to Vertex) (bool, []int, []int) {
 		vi := queue.Pop()
 		v := MkVertex(vi)
 		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			w := getOtherVertex(v, edge)
+			w := GetOtherVertex(v, edge)
 			wi := w.ToInt()
 			utility.Debug("[%v->%v] marked: %v", v, w, marked[wi])
 			if !marked[wi] {

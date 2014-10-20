@@ -245,7 +245,7 @@ func reduceAlmostCrown(g *graph.Graph, halt chan<- bool, kPrime int) (*graph.Gra
 		foldRoot := Vertex(g.CurrentVertexIndex)
 		foldAndRemove := func(v Vertex) {
 			g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-				g.AddEdge(foldRoot, getOtherVertex(v, edge))
+				g.AddEdge(foldRoot, graph.GetOtherVertex(v, edge))
 			})
 
 			g.RemoveVertex(v)

@@ -21,7 +21,7 @@ type lpDualFormulation struct {
 }
 
 func (self *Edge) lpVarStr() string {
-	return fmt.Sprintf("y(%v,%v)", self.from, self.to)
+	return fmt.Sprintf("y(%v,%v)", self.From, self.To)
 }
 
 // Maximization dual of the LP kernelization:

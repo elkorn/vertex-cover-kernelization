@@ -1,14 +1,15 @@
-package graph
+package kernelization
 
 import (
 	"testing"
 
+	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/vc"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestRemoveHighDegree(t *testing.T) {
-	g1 := MkGraph(10)
+	g1 := graph.MkGraph(10)
 
 	g1.AddEdge(1, 2)
 	g1.AddEdge(1, 3)

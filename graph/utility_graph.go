@@ -2,7 +2,7 @@ package graph
 
 import "errors"
 
-func getOtherVertex(v Vertex, edge *Edge) Vertex {
+func GetOtherVertex(v Vertex, edge *Edge) Vertex {
 	if edge.From != v {
 		return edge.From
 	}

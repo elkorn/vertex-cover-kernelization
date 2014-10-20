@@ -74,7 +74,7 @@ func (self *Graph) getNeighborEdges(v Vertex) []*Edge {
 func (self *Graph) getNeighbors(v Vertex) Neighbors {
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		result = result.appendIfNotContains(getOtherVertex(v, edge))
+		result = result.appendIfNotContains(GetOtherVertex(v, edge))
 	})
 
 	return result
@@ -84,7 +84,7 @@ func (self *Graph) getNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
 	resultSet := mapset.NewSet()
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-		w := getOtherVertex(v, edge)
+		w := GetOtherVertex(v, edge)
 		if !resultSet.Contains(w) {
 			resultSet.Add(w)
 			result = append(result, w)
@@ -176,7 +176,7 @@ func (g *Graph) addVertex() error {
 
 func (self *Graph) RemoveVertex(v Vertex) error {
 	if !self.HasVertex(v) {
-		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v))
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the ", v))
 	}
 
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
@@ -199,7 +199,7 @@ func (self *Graph) RestoreVertex(v Vertex) {
 		}
 
 		edge.isDeleted = false
-		self.neighbors[getOtherVertex(v, edge).ToInt()][vi].isDeleted = false
+		self.neighbors[GetOtherVertex(v, edge).ToInt()][vi].isDeleted = false
 		self.degrees[edge.From.ToInt()]++
 		self.degrees[edge.To.ToInt()]++
 		self.numberOfEdges++
@@ -234,11 +234,11 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	}
 
 	if !self.HasVertex(a) {
-		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", a))
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the ", a))
 	}
 
 	if !self.HasVertex(b) {
-		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", b))
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the ", b))
 	}
 
 	if self.HasEdge(a, b) {
@@ -296,7 +296,7 @@ func (self *Graph) IsVertexCover(vertices ...Vertex) bool {
 
 func (self *Graph) Degree(v Vertex) int {
 	if !self.HasVertex(v) {
-		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the graph.", v)))
+		panic(errors.New(fmt.Sprintf("Vertex %v does not exist in the ", v)))
 	}
 
 	return self.degrees[v.ToInt()]

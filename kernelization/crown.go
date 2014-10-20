@@ -125,7 +125,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		for vInter := range In.Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-				Hsteps[n].Add(getOtherVertex(v, edge))
+				Hsteps[n].Add(graph.GetOtherVertex(v, edge))
 			})
 		}
 
@@ -139,7 +139,7 @@ func findCrown(G *Graph, halt chan<- bool, k int) *Crown {
 		for vInter := range Hsteps[n].Iter() {
 			v := vInter.(Vertex)
 			G.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-				w := getOtherVertex(v, edge)
+				w := graph.GetOtherVertex(v, edge)
 				if M2.HasEdge(v, w) {
 					// Adding N_M2(Hn)
 					neighbors.Add(w)

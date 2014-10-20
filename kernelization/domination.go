@@ -27,7 +27,7 @@ func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
 
 	g.ForAllNeighbors(u, func(edge *Edge, done chan<- bool) {
 		// For the whole N(u)...
-		wu := getOtherVertex(u, edge)
+		wu := graph.GetOtherVertex(u, edge)
 		contains := false
 
 		// We're dealing with N[v]
@@ -37,7 +37,7 @@ func (v graph.Vertex) dominates(u Vertex, g *Graph) bool {
 		}
 
 		g.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
-			wv := getOtherVertex(v, edge)
+			wv := graph.GetOtherVertex(v, edge)
 			if wv == wu {
 				utility.Debug("%v is in N[%v]", wu, v)
 				contains = true

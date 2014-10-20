@@ -32,8 +32,7 @@ func mkNodeInformation(parent, root graph.Vertex, isOuter bool) *NodeInformation
 // Intuitively, this is equivalent to saying that a matching is maximal if we cannot
 // add any edge to the existing set
 func FindMaximalMatching(g *graph.Graph) (matching *graph.Graph, outsiders mapset.Set) {
-	matching = graph.MkGraphRememberingDeletedVertices(g.CurrentVertexIndex, g.IsVertexDeleted
-)
+	matching = graph.MkGraphRememberingDeletedVertices(g.CurrentVertexIndex, g.IsVertexDeleted)
 	outsiders = mapset.NewSet()
 	added := make([]bool, g.CurrentVertexIndex)
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
@@ -83,11 +82,11 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 		}
 
 		// utility.Debug("%v is exposed, adding to forest.", v)
-		forest[v.ToInt()] = mkNodeInformation(INVALID_VERTEX, v, true)
+		forest[v.ToInt()] = mkNodeInformation(graph.INVALID_VERTEX, v, true)
 
 		G.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
-			e := MkEdge(v, getOtherVertex(v, edge))
-			// utility.Debug("Adding %v-%v to work list", e.from, e.to)
+			e := graph.MkEdge(v, graph.GetOtherVertex(v, edge))
+			// utility.Debug("Adding %v-%v to work list", e.From, e.To)
 			// This ordering has to be enforced.
 			workList.Push(e)
 		})
@@ -96,13 +95,13 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 	// utility.Debug("Looking for an augmenting path.")
 	for !workList.Empty() {
 		cur := (workList.Pop()).(*graph.Edge)
-		// utility.Debug("Processing edge %v-%v.", cur.from, cur.to)
-		if M.HasEdge(cur.from, cur.to) {
+		// utility.Debug("Processing edge %v-%v.", cur.From, cur.To)
+		if M.HasEdge(cur.From, cur.To) {
 			continue
 		}
 
-		startInfo := forest[cur.from.ToInt()]
-		endInfo := forest[cur.to.ToInt()]
+		startInfo := forest[cur.From.ToInt()]
+		endInfo := forest[cur.To.ToInt()]
 
 		// utility.Debug("Got startInfo: %v, endInfo: %v", startInfo, endInfo)
 
@@ -113,7 +112,7 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 				// a blossom is present.
 				// Contract the blossom, repeat the search in the contracted graph
 				// and expand the result.
-				// utility.Debug("Case 1.: %v-%v", cur.from, cur.to)
+				// utility.Debug("Case 1.: %v-%v", cur.From, cur.To)
 				blossom := findBlossom(forest, cur)
 				// utility.Debug("Found blossom %v", blossom.vertices)
 				path := findAugmentingPath(
@@ -132,14 +131,14 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 				// down through the other.
 				// (root(v) → … → v) → (w → … → root(w))
 
-				// utility.Debug("Case 2.: %v-%v", cur.from, cur.to)
+				// utility.Debug("Case 2.: %v-%v", cur.From, cur.To)
 				result = list.New()
-				for v := cur.from; v != INVALID_VERTEX; v = forest[v.ToInt()].Parent {
+				for v := cur.From; v != graph.INVALID_VERTEX; v = forest[v.ToInt()].Parent {
 					// The path has to be added in reverse order.
 					result.PushFront(v)
 				}
 
-				for v := cur.to; v != INVALID_VERTEX; v = forest[v.ToInt()].Parent {
+				for v := cur.To; v != graph.INVALID_VERTEX; v = forest[v.ToInt()].Parent {
 					// The path has to be added in reverse order.
 					result.PushBack(v)
 				}
@@ -153,7 +152,7 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 				// the only way it could be done while alternating would trail away from
 				// the root.
 				// This edge can be skipped.
-				// utility.Debug("Case 3.: %v-%v", cur.from, cur.to)
+				// utility.Debug("Case 3.: %v-%v", cur.From, cur.To)
 			}
 		} else {
 			// There is no info on this edge - it must correspond to a matched
@@ -162,22 +161,22 @@ func findAugmentingPath(G, M *graph.Graph) (result *list.List) {
 			// containing the start of the endpoint, then add the node for its
 			// endpoint to the tree as an outer node.
 
-			// utility.Debug("Corresponds to a matched vertex: %v-%v", cur.from, cur.to)
-			forest[cur.to.ToInt()] = mkNodeInformation(cur.from, startInfo.Root, false)
+			// utility.Debug("Corresponds to a matched vertex: %v-%v", cur.From, cur.To)
+			forest[cur.To.ToInt()] = mkNodeInformation(cur.From, startInfo.Root, false)
 
 			// The endpoint of the unique matched edge corresp. to this node
 			// will become an outer node of this tree.
 			var endpoint graph.Vertex
-			M.ForAllNeighbors(cur.to, func(edge *graph.Edge, done chan<- bool) {
-				endpoint = getOtherVertex(cur.to, edge)
+			M.ForAllNeighbors(cur.To, func(edge *graph.Edge, done chan<- bool) {
+				endpoint = graph.GetOtherVertex(cur.To, edge)
 				done <- true
 			})
 
-			forest[endpoint.ToInt()] = mkNodeInformation(cur.to, startInfo.Root, true)
+			forest[endpoint.ToInt()] = mkNodeInformation(cur.To, startInfo.Root, true)
 
 			G.ForAllNeighbors(endpoint, func(edge *graph.Edge, done chan<- bool) {
-				e := MkEdge(endpoint, getOtherVertex(endpoint, edge))
-				// utility.Debug("Adding fringe edge %v-%v to work list", e.from, e.to)
+				e := graph.MkEdge(endpoint, graph.GetOtherVertex(endpoint, edge))
+				// utility.Debug("Adding fringe edge %v-%v to work list", e.From, e.To)
 				workList.Push(e)
 			})
 		}
@@ -229,7 +228,7 @@ func contractGraph(g *graph.Graph, blossom *blossom) *graph.Graph {
 		}
 
 		g.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {
-			w := getOtherVertex(v, edge)
+			w := graph.GetOtherVertex(v, edge)
 			if blossom.vertices.Contains(w) {
 				result.AddEdge(v, blossom.Root)
 			} else {

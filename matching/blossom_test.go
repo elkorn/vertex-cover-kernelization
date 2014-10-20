@@ -21,7 +21,7 @@ func TestContractBlossom(t *testing.T) {
 	cycle := list.New()
 	vertices := mapset.NewSet()
 
-	g.ForAllVertices(func(v Vertex, done chan<- bool) {
+	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		if v == 6 {
 			return
 		}

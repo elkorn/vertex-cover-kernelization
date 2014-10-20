@@ -62,7 +62,7 @@ func TestShortestPathUndirected(t *testing.T) {
 
 	exists, path, distance := shortestPathFromSourceToSink(nf)
 	assert.True(t, exists, "The path in an undirected graph has to be found.")
-	assert.Equal(t, []int{0, 4, 3, 5}, path.Values(), "The correct path has to be found in an undirected graph.")
+	assert.Equal(t, []int{0, 4, 3, 5}, path.Values(), "The correct path has to be found in an undirected ")
 	assert.Equal(t, []int{0, 1, 2, 2, 1, 3}, distance, "The distance has to be correct.")
 }
 
@@ -87,6 +87,6 @@ func TestShortestPathArbitraryEndpoints(t *testing.T) {
 	}
 
 	assert.True(t, exists, "The path in an undirected graph has to be found.")
-	assert.Equal(t, []int{1, 2, 3, 5}, path.Values(), "The correct path has to be found in an undirected graph.")
+	assert.Equal(t, []int{1, 2, 3, 5}, path.Values(), "The correct path has to be found in an undirected ")
 	assert.Equal(t, []int{1, 0, 1, 2, 2, 3}, distance, "The distance has to be correct.")
 }

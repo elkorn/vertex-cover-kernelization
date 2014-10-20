@@ -44,7 +44,7 @@ func processHeader(scanner *bufio.Scanner) header {
 	}
 }
 
-func processLine(line string, graph *Graph) {
+func processLine(line string, g *Graph) {
 	// Format: e 0 98
 	segments := strings.Split(line, " ")
 	from, err := strconv.Atoi(segments[1])
@@ -59,7 +59,7 @@ func processLine(line string, graph *Graph) {
 		return
 	}
 
-	graph.AddEdge(MkVertex(from), MkVertex(to))
+	g.AddEdge(MkVertex(from), MkVertex(to))
 }
 
 func ScanGraph(path string) *Graph {

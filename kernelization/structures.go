@@ -73,7 +73,7 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z graph.Vertex
 			return
 		}
 
-		v1 := getOtherVertex(u, e)
+		v1 := graph.GetOtherVertex(u, e)
 
 		g.ForAllNeighbors(u, func(e *graph.Edge, done chan<- bool) {
 			if neighborsShareCommonVertexOtherThanU {
@@ -81,7 +81,7 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z graph.Vertex
 				return
 			}
 
-			v2 := getOtherVertex(u, e)
+			v2 := graph.GetOtherVertex(u, e)
 			if v1 == v2 {
 				return
 			}
@@ -97,11 +97,11 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z graph.Vertex
 					return
 				}
 
-				n1 := getOtherVertex(v1, e)
+				n1 := graph.GetOtherVertex(v1, e)
 
 				g.ForAllNeighbors(v2, func(e *graph.Edge, done chan<- bool) {
 					utility.Debug("Checking %v|%v", v1, v2)
-					n2 := getOtherVertex(v2, e)
+					n2 := graph.GetOtherVertex(v2, e)
 					if n1 == n2 && n1 != u {
 						neighborsShareCommonVertexOtherThanU = true
 						utility.Debug("N(%v) share common graph.vertex %v", u, n1)
@@ -126,7 +126,7 @@ func (self *structure) neighborsOfUShareCommonVertexOtherThanU(u, z graph.Vertex
 func (self *structure) countDegree5Neighbors(u graph.Vertex, g *graph.Graph) (degree5NeighborsCount int, hasOnlyDegree5Neighbors bool) {
 	hasOnlyDegree5Neighbors = true
 	g.ForAllNeighbors(u, func(e *graph.Edge, done chan<- bool) {
-		w := getOtherVertex(u, e)
+		w := graph.GetOtherVertex(u, e)
 		deg := g.Degree(w)
 		if deg == 5 {
 			degree5NeighborsCount++
@@ -163,9 +163,9 @@ func (self *goodPair) countAlmostDominatedPairs(g *graph.Graph) int {
 
 	utility.Debug("Counting almost-dominated pairs for u: %v", u)
 	g.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-		x := getOtherVertex(u, edge)
+		x := graph.GetOtherVertex(u, edge)
 		g.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-			y := getOtherVertex(u, edge)
+			y := graph.GetOtherVertex(u, edge)
 			if x == y {
 				return
 			}
@@ -186,9 +186,9 @@ func (self *goodPair) countNeighborhoodEdges(g *graph.Graph) int {
 	u := self.U()
 
 	g.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-		x := getOtherVertex(u, edge)
+		x := graph.GetOtherVertex(u, edge)
 		g.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-			y := getOtherVertex(u, edge)
+			y := graph.GetOtherVertex(u, edge)
 			if x == y {
 				return
 			}
@@ -360,9 +360,9 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		if possibleGoodPair.countAlmostDominatedPairs(G) > 0 {
 			possibleZ = mapset.NewSet()
 			G.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-				n := getOtherVertex(u, edge)
+				n := graph.GetOtherVertex(u, edge)
 				G.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
-					z := getOtherVertex(u, edge)
+					z := graph.GetOtherVertex(u, edge)
 					if n == z {
 						return
 					}
@@ -411,7 +411,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 			G.ForAllNeighbors(
 				possibleGoodPair.U(),
 				func(edge *graph.Edge, done chan<- bool) {
-					if G.HasEdge(z, getOtherVertex(possibleGoodPair.U(), edge)) {
+					if G.HasEdge(z, graph.GetOtherVertex(possibleGoodPair.U(), edge)) {
 						adjacency++
 					}
 				})
@@ -451,7 +451,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 				G.ForAllNeighbors(
 					possibleGoodPair.U(),
 					func(edge *graph.Edge, done chan<- bool) {
-						sharedNeighbor := getOtherVertex(
+						sharedNeighbor := graph.GetOtherVertex(
 							possibleGoodPair.U(),
 							edge)
 						if G.HasEdge(z, sharedNeighbor) {
