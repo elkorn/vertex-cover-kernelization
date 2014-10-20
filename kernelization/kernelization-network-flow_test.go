@@ -16,7 +16,7 @@ func TestMaterializeVertexDiscontinuityHandlingError(t *testing.T) {
 	g.AddEdge(2, 6)
 	g.AddEdge(5, 7)
 	g.AddEdge(5, 6)
-	kPrime := graph.NetworkFlowKernelization(g, 3)
+	kPrime := NetworkFlowKernelization(g, 3)
 
 	assert.Equal(t, 1, kPrime)
 	assert.True(t, g.HasVertex(2))
@@ -42,14 +42,14 @@ func TestKernelizationNetworkFlow2(t *testing.T) {
 	g.AddEdge(4, 7)
 	g.AddEdge(8, 7)
 
-	graph.NetworkFlowKernelization(g, 10)
+	NetworkFlowKernelization(g, 10)
 }
 
 // func TestKernelizationNetworkFlowProteins(t *testing.T) {
 // 	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
 
 // 	fmt.Println("Kernelizing....")
-// 	graph.NetworkFlowKernelization(g, 246)
+// 	NetworkFlowKernelization(g, 246)
 // 	fmt.Println("Done.")
 // }
 
@@ -64,6 +64,6 @@ func BenchmarkMaterializeVertexDiscontinuityHandlingError(b *testing.B) {
 		g.AddEdge(5, 7)
 		g.AddEdge(5, 6)
 
-		graph.NetworkFlowKernelization(g, 3)
+		NetworkFlowKernelization(g, 3)
 	}
 }

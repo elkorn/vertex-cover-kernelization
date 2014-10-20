@@ -20,15 +20,15 @@ func TestStruction(t *testing.T) {
 	g.AddEdge(4, 8) // 8 is y on the diagram
 	g.AddEdge(4, 9) // 9 is z on the diagram
 
-	g1 := struction(g, Vertex(1))
+	g1 := struction(g, graph.Vertex(1))
 	assert.Equal(t, 7, g1.NVertices())
 	assert.Equal(t, 8, g1.NEdges())
-	assert.True(t, g1.HasVertex(Vertex(10)))
-	assert.True(t, g1.HasVertex(Vertex(11)))
-	assert.False(t, g1.HasVertex(Vertex(1)))
-	assert.False(t, g1.HasVertex(Vertex(2)))
-	assert.False(t, g1.HasVertex(Vertex(3)))
-	assert.False(t, g1.HasVertex(Vertex(4)))
+	assert.True(t, g1.HasVertex(graph.Vertex(10)))
+	assert.True(t, g1.HasVertex(graph.Vertex(11)))
+	assert.False(t, g1.HasVertex(graph.Vertex(1)))
+	assert.False(t, g1.HasVertex(graph.Vertex(2)))
+	assert.False(t, g1.HasVertex(graph.Vertex(3)))
+	assert.False(t, g1.HasVertex(graph.Vertex(4)))
 	assert.True(t, g1.HasEdge(11, 10))
 	assert.True(t, g1.HasEdge(11, 7))
 	assert.True(t, g1.HasEdge(11, 8))
@@ -57,7 +57,7 @@ func TestStruction2(t *testing.T) {
 	g.AddEdge(5, 11)
 	g.AddEdge(5, 12)
 
-	g1 := struction(g, Vertex(1))
+	g1 := struction(g, graph.Vertex(1))
 	assert.Equal(t, 10, g1.NVertices())
 	assert.Equal(t, 15, g1.NEdges())
 	assert.Equal(t, 6, g1.Degree(13))
@@ -133,7 +133,7 @@ func TestGeneralFold4(t *testing.T) {
 	gPrime, kPrime := generalFold(g, nil, 1)
 	assert.Equal(t, 1, gPrime.NVertices())
 	assert.Equal(t, -1, kPrime)
-	assert.True(t, g.HasVertex(Vertex(4)))
+	assert.True(t, g.HasVertex(graph.Vertex(4)))
 }
 
 func TestGeneralFold5(t *testing.T) {

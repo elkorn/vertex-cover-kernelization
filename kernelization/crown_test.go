@@ -22,19 +22,11 @@ func TestFindCrown1(t *testing.T) {
 	g.AddEdge(4, 7)
 	halt := make(chan bool, 1)
 
-	gv := graph.MkGraphVisualizer(g)
-	m, o := matching.FindMaximalMatching(g)
-	gv.HighlightMatching(m, "red")
-	gv.HighlightCover(o, "green")
-	// InVerboseContext(func() {
-	// 	findCrown(g, halt, k)
-	// })
 	crown := findCrown(g, halt, k)
 	assert.Equal(t, 1, crown.Width())
-	assert.True(t, crown.H.Contains(Vertex(4)))
-	assert.True(t, crown.I.Contains(Vertex(2)))
-	assert.True(t, crown.I.Contains(Vertex(3)))
-	gv.HighlightCrown(crown)
+	assert.True(t, crown.H.Contains(graph.Vertex(4)))
+	assert.True(t, crown.I.Contains(graph.Vertex(2)))
+	assert.True(t, crown.I.Contains(graph.Vertex(3)))
 }
 
 func TestReduceCrown1(t *testing.T) {
@@ -61,7 +53,7 @@ func TestReduceCrown1(t *testing.T) {
 }
 
 func TestReduceCrown2(t *testing.T) {
-	g := ScanGraph("../examples/sh2/sh2-3.dim")
+	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
 	halt := make(chan bool, 1)
 
 	verticesBefore := g.NVertices()
@@ -74,7 +66,7 @@ func TestReduceCrown2(t *testing.T) {
 }
 
 func TestReduceProteins(t *testing.T) {
-	g := ScanGraph("../examples/sh2/sh2-3.dim")
+	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
 	halt := make(chan bool, 1)
 
 	// Test according to F.N.Abu-Khzam et al. paper. (Table 1)

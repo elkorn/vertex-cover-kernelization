@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 	"github.com/elkorn/vertex-cover-kernelization/vc"
 	"github.com/stretchr/testify/assert"
 )
@@ -24,11 +25,11 @@ func TestRemoveHighDegree(t *testing.T) {
 
 	g1.AddEdge(9, 8)
 
-	vc := vc.BranchAndBound(g1)
-	removed, remCount := g1.removeVerticesWithDegreeGreaterThan(2)
-	vc2 := vc.BranchAndBound(g1)
-	assert.True(t, Contains(removed, 1))
-	assert.True(t, Contains(removed, 2))
+	cov := vc.BranchAndBound(g1, nil, utility.MAX_INT)
+	removed, remCount := removeVerticesWithDegreeGreaterThan(g1, 2)
+	vc2 := vc.BranchAndBound(g1, nil, utility.MAX_INT)
+	assert.True(t, graph.Contains(removed, 1))
+	assert.True(t, graph.Contains(removed, 2))
 
 	assert.False(t, g1.HasVertex(1))
 	assert.False(t, g1.HasVertex(2))
@@ -46,5 +47,5 @@ func TestRemoveHighDegree(t *testing.T) {
 
 	assert.True(t, g1.HasEdge(9, 8))
 
-	assert.Equal(t, vc.Cardinality(), vc2.Cardinality()+remCount)
+	assert.Equal(t, cov.Cardinality(), vc2.Cardinality()+remCount)
 }
