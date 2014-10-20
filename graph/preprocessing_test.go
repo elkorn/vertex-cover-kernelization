@@ -93,7 +93,7 @@ func TestRemoveVertivesOfDegreeWithOnlyAdjacentNeighbors(t *testing.T) {
 }
 
 func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
-	g := mkGraph3()
+	g := MkGraph3()
 
 	result, _ := g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
 	assert.Equal(t, Neighbors{2, 3}, result[0])
@@ -104,7 +104,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	assert.Equal(t, empty_neighborhood, result[5])
 	assert.Equal(t, empty_neighborhood, result[6])
 
-	g = mkGraph4()
+	g = MkGraph4()
 
 	g.addVertex()
 
@@ -129,7 +129,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	assert.Equal(t, empty_neighborhood, result[6])
 	assert.Equal(t, empty_neighborhood, result[7])
 
-	g = mkGraph4()
+	g = MkGraph4()
 
 	g.addVertex()
 	g.AddEdge(1, 8)
@@ -163,7 +163,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 	assert.Equal(t, empty_neighborhood, result[6])
 	assert.Equal(t, Neighbors{1}, result[7])
 
-	g = mkGraph5()
+	g = MkGraph5()
 	result, _ = g.getVerticesOfDegreeWithOnlyDisjointNeighbors(2)
 	assert.Equal(t, Neighbors{2, 3}, result[0])
 	assert.Equal(t, empty_neighborhood, result[1])
@@ -175,7 +175,7 @@ func TestGetVerticesOfDegreeWithOnlyDisjointNeighbors(t *testing.T) {
 }
 
 func TestContractEdges(t *testing.T) {
-	g := mkGraph4()
+	g := MkGraph4()
 	// ShowGraph(g)
 	contractionMap := make(NeighborMap, 1)
 	contractionMap[0] = Neighbors{2, 3}
@@ -189,7 +189,7 @@ func TestContractEdges(t *testing.T) {
 	assert.True(t, g.HasEdge(1, 6))
 	assert.True(t, g.HasEdge(1, 7))
 
-	g = mkGraph5()
+	g = MkGraph5()
 	contractionMap = make(NeighborMap, 6)
 	contractionMap[0] = Neighbors{2, 3}
 	contractionMap[5] = Neighbors{2, 7}

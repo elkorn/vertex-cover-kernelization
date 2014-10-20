@@ -5,7 +5,7 @@ package graph
 //
 
 // func TestConditionalGeneralFold(t *testing.T) {
-// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim")
 // 	T := identifyStructures(g, 246)
 // 	instance := &ChenKanjXiaVC{
 // 		G:      g,

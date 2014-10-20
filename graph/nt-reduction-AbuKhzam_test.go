@@ -7,7 +7,7 @@ import (
 )
 
 func TestNtReductionAbuKhzam1(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 	formulation := mkNtReductionAbuKhzam(g, 10)
 	_, _, _, err := formulation.solve()
 	assert.Nil(t, err)
@@ -37,7 +37,7 @@ func TestNtReductionAbuKhzam3(t *testing.T) {
 }
 
 // func TestNtReductionAbuKhzam3(t *testing.T) {
-// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim")
 // 	formulation := mkNtReductionAbuKhzam(g, 10)
 // 	p, q, r, err := formulation.solve()
 // 	assert.Nil(t, err)

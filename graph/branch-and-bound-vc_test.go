@@ -86,13 +86,13 @@ func TestMkBnbNode(t *testing.T) {
 }
 
 func TestGetNumberOfCoveredEdges(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 	s := mapset.NewSet()
 	s.Add(Vertex(1))
 	s.Add(Vertex(2))
 	assert.Equal(t, 5, getNumberOfCoveredEdges(g, s))
 
-	g = mkGraph6()
+	g = MkGraph6()
 	s.Add(Vertex(4))
 	s.Add(Vertex(5))
 	assert.Equal(t, 7, getNumberOfCoveredEdges(g, s))
@@ -107,7 +107,7 @@ func TestBranchAndBound1(t *testing.T) {
 	cover := branchAndBound(g)
 	assert.True(t, optimalSelection.Equal(cover))
 
-	g = mkGraph6()
+	g = MkGraph6()
 	optimalSelection = mapset.NewSet()
 	optimalSelection.Add(Vertex(4))
 	optimalSelection.Add(Vertex(5))

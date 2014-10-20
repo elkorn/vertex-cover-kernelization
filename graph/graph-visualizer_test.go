@@ -25,7 +25,7 @@ func TesttoDot(t *testing.T) {
 	assert.Equal(t, expected, result.String())
 }
 
-func TestdotToJpg(t *testing.T) {
+func TestdotToImage(t *testing.T) {
 	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -33,7 +33,7 @@ func TestdotToJpg(t *testing.T) {
 	gv := MkGraphVisualizer(g)
 
 	dot := gv.toDot("test")
-	file, err := os.Open("expected_dot.jpg")
+	file, err := os.Open("expected_dot.svg")
 	expected := make([]byte, 0)
 	if nil != err {
 		panic("Cannot open reference file.")
@@ -42,12 +42,12 @@ func TestdotToJpg(t *testing.T) {
 	defer file.Close()
 
 	file.Read(expected)
-	actual := gv.dotToJpg(dot)
+	actual := gv.dotToImage(dot)
 	Debug("", actual)
 	// assert.Equal(t, expected, actual.Bytes())
 }
 
-func TestMkJpg(t *testing.T) {
+func TestMkImage(t *testing.T) {
 	g := MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(1, 3)
@@ -55,19 +55,19 @@ func TestMkJpg(t *testing.T) {
 
 	gv := MkGraphVisualizer(g)
 
-	expectedFile, err := os.Open("expected_dot.jpg")
+	expectedFile, err := os.Open("expected_dot.svg")
 	if nil != err {
 		panic(err)
 	}
 
 	defer expectedFile.Close()
 
-	err = gv.MkJpg("actual_dot")
+	err = gv.MkImage("actual_dot")
 	if nil != err {
 		panic(err)
 	}
 
-	actualFile, err := os.Open("actual_dot.jpg")
+	actualFile, err := os.Open("actual_dot.svg")
 	if nil != err {
 		panic(err)
 	}
@@ -78,7 +78,7 @@ func TestMkJpg(t *testing.T) {
 	expectedFile.Read(expected)
 	actualFile.Read(actual)
 	// assert.Equal(t, expected, actual)
-	os.Remove("actual_dot.jpg")
+	os.Remove("actual_dot.svg")
 }
 
 func TestColor(t *testing.T) {

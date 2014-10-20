@@ -132,6 +132,7 @@ func BenchmarkPrependSliceWithTemplate(b *testing.B) {
 
 func BenchmarkBSTConflictResolverStraightPetersenLT(b *testing.B) {
 	g := mkPetersenGraph()
+	ShowGraph(g)
 	CONFLICT_RESOLVER = func(g *Graph, d1, d2 int) bool {
 		return d1 < d2
 	}

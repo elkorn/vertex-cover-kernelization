@@ -46,7 +46,7 @@ func TestKernelizationNetworkFlow2(t *testing.T) {
 }
 
 // func TestKernelizationNetworkFlowProteins(t *testing.T) {
-// 	g := graph.ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
 
 // 	fmt.Println("Kernelizing....")
 // 	graph.NetworkFlowKernelization(g, 246)

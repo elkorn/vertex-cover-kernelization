@@ -7,7 +7,7 @@ import (
 )
 
 func TestDualformulation1(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 	formulation := mklpDualFormulation(g, 10)
 	matching, err := formulation.solve()
 	assert.Nil(t, err)

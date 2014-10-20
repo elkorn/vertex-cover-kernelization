@@ -53,7 +53,7 @@ func TestNet(t *testing.T) {
 }
 
 // func TestNetworkFlowProteins(t *testing.T) {
-// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim")
 
 // 	InVerboseContext(func() {
 // 		kPrime := networkFlowKernelization(g, 246)

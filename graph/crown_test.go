@@ -58,7 +58,7 @@ func TestReduceCrown1(t *testing.T) {
 }
 
 func TestReduceCrown2(t *testing.T) {
-	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+	g := ScanGraph("../examples/sh2/sh2-3.dim")
 	halt := make(chan bool, 1)
 
 	verticesBefore := g.NVertices()
@@ -71,7 +71,7 @@ func TestReduceCrown2(t *testing.T) {
 }
 
 func TestReduceProteins(t *testing.T) {
-	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+	g := ScanGraph("../examples/sh2/sh2-3.dim")
 	halt := make(chan bool, 1)
 
 	// Test according to F.N.Abu-Khzam et al. paper. (Table 1)

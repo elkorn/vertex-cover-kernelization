@@ -172,7 +172,7 @@ func TestNeighborsOfUShareCommonVertexOtherThanU(t *testing.T) {
 // func TestIdentifyStructuresInProteins(t *testing.T) {
 // 	// TODO: Devise better test cases.
 // 	// For now, this should not fail.
-// 	g := ScanGraph("../examples/sh2/sh2-3.dim.sh")
+// 	g := ScanGraph("../examples/sh2/sh2-3.dim")
 // 	pq := identifyStructures(g, MAX_INT)
 // 	for !pq.Empty() {
 // 		s, priority := pq.Pop()

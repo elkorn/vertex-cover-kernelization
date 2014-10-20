@@ -26,13 +26,13 @@ package graph
 // 	g.AddEdge(2, 3)
 // 	net := mkNet(g)
 
-// 	expectedFile, err := os.Open("expected_dot.jpg")
+// 	expectedFile, err := os.Open("expected_dot.svg")
 // 	if nil != err {
 // 		panic(err)
 // 	}
 
 // 	defer expectedFile.Close()
-// 	ACTUAL_NAME := "net.jpg"
+// 	ACTUAL_NAME := "net.svg"
 // 	nv := MkNetworkVisualizer()
 // 	err = nv.MkJpg(&net, "net")
 // 	if nil != err {

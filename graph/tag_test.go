@@ -8,7 +8,7 @@ import (
 )
 
 func TestTag(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 	t1 := MkTag(Vertex(2), g)
 	for i := 1; i < len(t1.neighbors); i++ {
 		d1 := g.Degree(t1.neighbors[i-1])

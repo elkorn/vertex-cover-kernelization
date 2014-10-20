@@ -74,13 +74,13 @@ func TestVertexCoverSimpleGraph(t *testing.T) {
 }
 
 func TestVertexCoverNonTrivialGraph1(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 	assert.Equal(t, g.IsVertexCover(5), false)
 	assert.Equal(t, g.IsVertexCover(1, 3, 5), true)
 }
 
 func TestVertexCoverNonTrivialGraph2(t *testing.T) {
-	g := mkGraph2()
+	g := MkGraph2()
 	assert.Equal(t, g.IsVertexCover(2, 3, 4, 5, 7), true)
 }
 

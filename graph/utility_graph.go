@@ -23,7 +23,7 @@ func (self *Graph) getEdgeByCoordinates(from, to int) *Edge {
 	return result
 }
 
-func mkGraph1() *Graph {
+func MkGraph1() *Graph {
 	/*
 		   1o---o2
 			|\ /|
@@ -45,7 +45,7 @@ func mkGraph1() *Graph {
 	return g
 }
 
-func mkGraph2() *Graph {
+func MkGraph2() *Graph {
 	/*
 		   1o--------o2
 			|\      /|
@@ -71,7 +71,7 @@ func mkGraph2() *Graph {
 	return g
 }
 
-func mkGraph3() *Graph {
+func MkGraph3() *Graph {
 	/*
 	           1
 	          / \
@@ -91,7 +91,7 @@ func mkGraph3() *Graph {
 	return g
 }
 
-func mkGraph4() *Graph {
+func MkGraph4() *Graph {
 	/*
 	           1
 	          / \
@@ -100,7 +100,7 @@ func mkGraph4() *Graph {
 	   7---6       5---4
 	*/
 
-	g := mkGraph3()
+	g := MkGraph3()
 
 	g.AddEdge(6, 7)
 	g.AddEdge(4, 5)
@@ -108,7 +108,7 @@ func mkGraph4() *Graph {
 	return g
 }
 
-func mkGraph5() *Graph {
+func MkGraph5() *Graph {
 	/*
 		  1   6
 		 / \ / \
@@ -130,7 +130,7 @@ func mkGraph5() *Graph {
 	return g
 }
 
-func mkGraph6() *Graph {
+func MkGraph6() *Graph {
 	/*
 			3        6
 			 \      /

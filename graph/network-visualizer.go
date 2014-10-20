@@ -51,27 +51,27 @@ func (self *networkVisualizer) toDot(net *Net, name string) bytes.Buffer {
 	return res
 }
 
-func (self *networkVisualizer) mkJpg(net *Net, name string) bytes.Buffer {
-	return self.gv.dotToJpg(self.toDot(net, name))
+func (self *networkVisualizer) mkImage(net *Net, name string) bytes.Buffer {
+	return self.gv.dotToImage(self.toDot(net, name))
 }
 
-func (self *networkVisualizer) MkJpg(net *Net, name string) error {
-	file, err := os.Create(fmt.Sprintf("%v.jpg", name))
+func (self *networkVisualizer) MkImage(net *Net, name string) error {
+	file, err := os.Create(fmt.Sprintf("%v.svg", name))
 	if nil != err {
 		return err
 	}
 
 	defer file.Close()
-	buf := self.mkJpg(net, name)
+	buf := self.mkImage(net, name)
 	_, err = file.Write(buf.Bytes())
 	return err
 }
 
 func (self *networkVisualizer) Display(net *Net) {
 	randname := fmt.Sprintf("%v", rand.Int63())
-	filename := fmt.Sprintf("%v.jpg", randname)
+	filename := fmt.Sprintf("%v.svg", randname)
 	cmd := exec.Command("feh", filename)
-	err := self.MkJpg(net, randname)
+	err := self.MkImage(net, randname)
 	if nil != err {
 		log.Fatal(err)
 	}

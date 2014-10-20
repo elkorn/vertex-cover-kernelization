@@ -8,7 +8,7 @@ import (
 )
 
 func TestMaximalMatching(t *testing.T) {
-	g := mkGraph1()
+	g := MkGraph1()
 
 	m, o := FindMaximalMatching(g)
 	assert.Equal(t, 2, m.NEdges(), "The matching of graph1 should contain 2 edges.")
@@ -16,7 +16,7 @@ func TestMaximalMatching(t *testing.T) {
 	assert.True(t, m.HasEdge(1, 2))
 	assert.True(t, m.HasEdge(3, 4))
 
-	g = mkGraph5()
+	g = MkGraph5()
 	m, o = FindMaximalMatching(g)
 	assert.Equal(t, 3, m.NEdges(), "The matching of graph5 should contain 3 edges.")
 	assert.Equal(t, 1, o.Cardinality(), "The outsiders of graph5 should contain 1 unmatched vertex.")

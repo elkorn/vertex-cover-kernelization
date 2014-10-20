@@ -66,11 +66,11 @@ func MkGraphVisualizer(g *Graph) *graphVisualizer {
 	}
 }
 
-func MkNeatoVisualizer(g *Graph) {
+func MkNeatoVisualizer(g *Graph) *graphVisualizer {
 	return mkGraphVisualizer(g, "neato")
 }
 
-func MkSfdpVisualizer(g *Graph) {
+func MkSfdpVisualizer(g *Graph) *graphVisualizer {
 	return mkGraphVisualizer(g, "sfdp")
 }
 
