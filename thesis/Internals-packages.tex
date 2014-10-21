@@ -82,3 +82,66 @@
     Wszystkie opisane metody związane z operacjami na sąsiedztwie wierzchołka $v$ zachowują złożoność $O(|N(v)|)$ z wyłączeniem złożoności funkcji \texttt{action}.
   }
 }
+\subsubsection{Pakiet \texttt{vc} --- algorytm \texttt{BranchAndBound}}
+\label{ss_internals_BnB}
+\par{
+  W celu weryfikacji poprawności działania implementacji koncepcji związanych z redukcją dziedziny do jądra problemu pokrycia wierzchołkowego opisanych w podrozdziale~\ref{s_kernelization} wymagane jest posiadanie algorytmu rozwiązującego sam problem pokrycia wierzchołkowego.
+
+  W podrozdziale~\ref{s_vertex_cover_domain} przytoczono najprostszy rekurencyjny algorytm służący do tego celu.
+  Jednak w związku z prominencją koncepcji drzewa poszukiwań z ograniczeniami w dziedzinie parametrycznej złożoności obliczeniowej oraz zainteresowaniem technikaliami tej koncepcji, podjęto decyzję o stworzeniu własnego algorytmu na niej opartego, o potencjalnie mniejszej złożoności obliczeniowej od wersji naiwnej poprzez podążanie wyłącznie za obiecującymi gałęziami poszukiwań.
+
+  \begin{definition}
+    Mianem \emph{rozwiązania kandydackiego} w grafie $G=(V, E)$ określa się zbiór wierzchołków $C=\{v_1, v_2, \ldots\, v_p\} \neq \emptyset; C \subseteq V$ spełniający warunki częściowego pokrycia wierzchołkowego.
+  \end{definition}
+  \begin{definition}\thlabel{def_bnb_promising_solution}
+    W grafie $G=(V,E)$ dla drzewa poszukiwań $T$ z pewnym najlepszym rozwiązaniem kandydackim $r_b$ mianem \emph{obiecującego} rozwiązania określa się rozwiązanie kandydackie $r$ spełniające jedną z następujących własności w podanej kolejności.
+    \begin{enumerate}
+      \item Liczba krawędzi w zbiorze $E$ pokrytych przez rozwiązanie $r$ jest większa niż liczba krawędzi w zbiorze $E$ pokrytych przez obecne najlepsze rozwiązanie $r_b$.
+      \item Liczba krawędzi w zbiorze $E$ pokrytych przez rozwiązanie $r$ jest równa liczbie krawędzi w zbiorze $E$ pokrytych przez obecne najlepsze rozwiązanie $r_b$ i liczebność rozwiązania $|r|$ jest mniejsza od liczebności obecnego najlepszego rozwiązania $|r_b|$.
+    \end{enumerate}
+  \end{definition}
+  \begin{definition}
+     W grafie $G=(V, E)$ dla drzewa poszukiwań $T$ z pewnym obiecującym rozwiązaniem $r_b$ Mianem \emph{obiecującej gałęzi} określa się gałąź $t \subseteq T$ zawierającą obiecujące rozwiązanie $r_b$.
+  \end{definition}
+}
+\par{
+  Algorytm działa zgodnie z następującym pseudokodem.
+  Zmienna $Q$ stanowi kolejkę priorytetową działającą według własności określanych definicją~\ref{def_bnb_promising_solution}.
+  \begin{algorithm}
+    \caption{Algorytm odnajdujący pokrycie wierzchołkowe --- drzewo poszukiwań z ograniczeniami}\label{alg_VC2}
+    \begin{algorithmic}[1]
+      \Function{BranchAndBoundVC}{G, k}
+
+        \algorithmicrequire{graf $G=(V, E)$, maks. rozmiar pokr. wierzch. $k$}
+
+        \algorithmicensure{odnalezione pokrycie wierzchołkowe}
+
+        \State $Q \gets \emptyset$\Comment{Q --- kolejka priorytetowa}
+        \State $VS \gets \Call{Wierzchołki}{E}$\Comment{Zbiór wierzchołków krawędzi grafu G}
+        \State{Wstaw $\emptyset$ do $Q$}
+        \State $b \gets \infty$
+        \While{$Q \neq \emptyset$}
+          \State{$r \gets$ kolejne rozwiązanie z $Q$}
+          \If{$r$ jest obiecujące względem $b$}
+            \If{$r$ pokrywa wszystkie krawędzie w $G$}
+            \State {$b \gets \min\{|r_{VC}\supseteq r|\}$ takiego, że $r_{VC}$ jest pokryciem wierzch.}
+            \If{$b \leq k$}
+              \State{\textbf{return} $r$}
+            \EndIf
+            \Else
+              \For{$v \in VS$}\label{bnb_forLoop}
+                \If{$v \in r$}
+                  \State{Idź do kroku~\ref{bnb_forLoop}}
+                \EndIf
+                \State$r_{tmp} \gets r \bigcup \{v\}$
+                \If{$r_{tmp}$ jest obiecujące względem $b$}
+                  \State{Wstaw $r_{tmp}$ do $Q$}
+                \EndIf
+              \EndFor
+            \EndIf
+          \EndIf
+        \EndWhile
+        \State{\textbf{return nil}}\Comment{Nie istnieje pokrycie o liczebności $\leq k$}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}}
