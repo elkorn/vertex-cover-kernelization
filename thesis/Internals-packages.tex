@@ -1,0 +1,84 @@
+\subsection{Opis wybranych pakietów}\label{ss_internals_important_packages}
+\subsubsection{Pakiet \texttt{graph}}
+\par{
+  W obliczu charakterystyki pracy to znaczy podjęcia się analizy i implementacji szerokiej gamy technik związanych z parametryzacją złożoności obliczeniowej pokrycia wierzchołkowego, kwestią wymagającą uwagi jest sposób reprezentacji grafu.
+  W związku ze zróżnicowaniem podejść do problemu, reprezentacja struktur grafowych za pomocą wyłącznie macierzy incydencji lub też listy incydencji okazuje się nie tyle niewystarczająca, co nieoptymalna.
+  Podczas gdy niektóre z technik operują na grafie przede wszystkim przy pomocy wierzchołków (głównie metody oparte na sformułowaniu problemu jako instancji przepływu w sieci), inne zdecydowanie traktują graf jako zbiór krawędzi pomiędzy pewnymi punktami.
+  Jako iż jednym z pomniejszych celów pracy jest stworzenie ogólnej platformy użytecznej do testowania rozwiązań różnych problemów związanych z grafami, zdecydowano się zaimplementować strukturę grafu jako reprezentację zawierającą zarówno macierz incydencji jak i listę krawędzi.
+}
+\par{
+  \begin{lstlisting}[language=go, caption=Typy reprezentujące wierzchołki grafu.]
+  type Vertex int
+  type Vertices []Vertex
+  \end{lstlisting}
+  W celu uniknięcia potrzeby uważania tablicy haszujących, gdzie klucze stanowią wierzchołki, zdecydowano się na wprowadzenie metody \texttt{Vertex.ToInt() int}, konwertującej dowolny wierzchołek do odpowiadającej mu wartości całkowitoliczbowej.
+  Zabieg ten pozwala na zastosowanie zwykłych tablic w miejsce tablic haszujących, co pozwala na obniżenie złożoności obliczeniowej związanych z takimi strukturami operacji.
+
+  Wartości wierzchołków często występują obok liczb całkowitych, pełniących zazwyczaj w tym kontekście rolę indeksów tablic.
+  Aby łatwiej było odróżnić instancje wierzchołków od zwykłych liczb całkowitych, przyjęto konwencję numeracji wartości wierzchołków grafu od 1.
+  \begin{lstlisting}[language=go, caption=Typy reprezentujące krawędzie grafu.]
+  type Edge struct {
+    From      Vertex
+    To        Vertex
+    isDeleted bool
+  }
+
+  type Edges []*Edge
+  \end{lstlisting}
+
+  Krawędzie grafu nie są reprezentowane idiomatycznie, to znaczy jako pary wierzchołków stanowiących ich zakończenia.
+  Wynika to z praktycznej potrzeby związanej ze zwijaniem krawędzi w ramach operacji przetwarzania wstępnego (podrozdział~\ref{Section_preprocessing}), działania algorytmu Edmondsa (podrozdział~\ref{ss_edmonds_blossom}) oraz algorytmu Chen, Kanj, Xia (podrozdział~\ref{s_chen_kanj_xia}).
+  Praktyka pokazuje, iż znacznie łatwiejsze i bardziej wydajne jest oznaczanie krawędzi grafu jako usuniętych zamiast właściwego ich usuwania --- głównie ze względu na fakt, iż w większości przypadków zostają one w późniejszym momencie przywrócone do grafu na przykład w celu określenia pełnej postaci odnalezionej ścieżki powiększającej.
+
+  \begin{lstlisting}[language=go, caption=Struktura reprezentująca graf.]
+  type Graph struct {
+    Vertices                Vertices
+    Edges                   Edges
+    CurrentVertexIndex      int
+    IsVertexDeleted         []bool
+    degrees                 []int
+    neighbors               [][]*Edge
+    numberOfVertices        int
+    numberOfEdges           int
+    isRegular               bool
+    needToComputeRegularity bool
+  }
+  \end{lstlisting}
+
+  Podczas implementacji rozwiązań opisywanych w niniejszej pracy problemów napotkano na trzy podstawowe sposoby poruszania się po grafie.
+  Każdy z tych sposobów znajduje odzwierciedlenie w implementacji struktury --- istnieje metoda realizująca dany sposób przy zachowaniu najmniejszej możliwej złożoności dla grafu $G=(V, E)$: $O(1)$, $O(|V|)$, lub $O(|E|)$.
+  \\\\\underline{Iteracja po wszystkich wierzchołkach}\\
+  \par{
+      Metoda \texttt{ForAllVertices(action func(v Vertex, chan<- done bool))} iteruje po kolekcji \texttt{Vertices}, zapewniając  podstawową złożoność operacji na poziomie $O(|V|)$, z wyłączeniem złożoności operacji realizowanych przez funkcję \texttt{action}. Kanał \texttt{done} służy do informowania o potrzebie przerwania iteracji.\\
+      Metody \texttt{ForAllVerticesOfDegree(degree int, action func(v Vertex, chan<- done bool))} oraz \texttt{ForAllVerticesOfDegreeGeq(degree int, action func(v Vertex, chan<- done bool))} korzystają z metody \texttt{ForAllVertices}, nakładając dodatkowe ograniczenia związane ze stopniem wierzchołków, które mają zostać uwzględnione w iteracjach.
+  }
+  \\\\\underline{Iteracja po wszystkich krawędziach}\\\
+  \par{
+      Analogicznie jak w przypadku wierzchołków, metoda \texttt{ForAllEdges(action func(edge *Edge, done chan<- bool))} iteruje po kolekcji \texttt{Edges}, zachowując złożoność operacji na poziomie $O(E)$ z wyłączeniem złożoności funkcji \textt{action}.
+  }
+  \\\\\underline{Uzyskiwanie dostępu do krawędzi pomiędzy danymi wierzchołkami}\\
+  \par{
+      Metoda \texttt{GetEdgeByCoordinates(from, to int) *Edge} korzysta z macierzy incydencji \texttt{neighbors}, pobierając z niej krawędź łączącą wierzchołki, których wartości skonwertowane do liczb całkowitych odpowiadają podanym współrzędnym.
+
+      Przy okazji omawiania tejże metody należy zwrócić uwagę na następujące dwie kwestie.
+      \begin{enumerate}
+        \item Macierz incydencji \texttt{neighbors} zamiast wartości logicznych typu \texttt{bool} zawiera wskaźniki na krawędzie istniejące w kolekcji \texttt{Edges}.
+        Rozwiązanie to podyktowane jest znów praktyką --- w zdecydowanej większości przypadków fakt istnienia danej krawędzi wiązał się z potrzebą wykonania działań z nią związanych, gdzie przechowywanie wskaźników na krawędzie pozwoliło na uniknięcie dodatkowych jawnych odwołań do kolekcji \texttt{Edges}.
+        \item W związku z faktem, iż w ramach niniejszej pracy podjęto się analizy rozwiązań wersji problemów dotyczących grafu o nieskierowanych krawędziach, macierz \texttt{neighbors} zawiera wskaźnik do tej samej krawędzi zarówno dla współrzędnych wprost $(x, y)$, jak i zestawu transponowanego $(y, x)$.
+        Rozwiązanie takie zostało przyjęte, mimo pewnego narzutu zajętości pamięci, za pożądane głównie ze względu na spójność właściwej struktury grafu z jego logiczną reprezentacją.
+        Dodatkowo, zachowanie takiego rozłożenia wskaźników pomaga w bardziej zrozumiały sposób posługiwać się strukturą sieci przepływowej.
+      \end{enumerate}
+  }
+  \\\\\underline{Operacje wykonywane na zbiorze wierzchołków sąsiednich}\\
+  \par{
+    Bardzo szeroki zakres działań implementowanych algorytmów w grafie $G=(V,E)$ opiera się na operacjach wykonywanych na sąsiedztwie wierzchołka $N(v); v \in V$.
+    Zdecydowanie najczęściej realizowana jest iteracja po wierzchołkach sąsiednich, na drugim miejscu znajdują się operacje wymagające uzyskania sąsiedztwa jako kolekcji lub zbioru w rozumieniu struktury danych.
+    W tym celu bardzo pomocna okazuje się macierz incydencji.
+    Dla pierwszego przypadku została zaimplementowana metoda \texttt{ForAllNeigbors(v Vertex, action func(edge *Edge, done chan<- bool))}, oparta na rozumowaniu analogicznym do tego, na którym oparto metodę \texttt{ForAllEdges}, jednak iterująca po danym rzędzie macierzy \texttt{neighbors}, indeksowanym przekształconą do liczby całkowitej wartością wierzchołka $v$ z ograniczeniem uwzględniania w iteracjach wyłącznie istniejących wskaźników (to znaczy \textt{edge != nil}).
+
+    Drugi przypadek obsługiwany jest przez metody \texttt{GetNeighbors(v Vertex) Neighbors} oraz \texttt{GetNeighborsWithSet(v Vertex) (Neighbors, mapset.Set)}.
+
+    Metoda \texttt{GetNeighbors} zwraca odpowiedni rząd macierzy incydencji opakowany w typ pomocniczy, natomiast metoda \texttt{GetNeighborsWithSet} dodatkowo w ramach wewnętrznej iteracji konstruuje zbiór wierzchołków (w rozumieniu struktury danych) stanowiących sąsiedztwo.
+    Wszystkie opisane metody związane z operacjami na sąsiedztwie wierzchołka $v$ zachowują złożoność $O(|N(v)|)$ z wyłączeniem złożoności funkcji \texttt{action}.
+  }
+}
