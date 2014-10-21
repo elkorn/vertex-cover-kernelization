@@ -103,7 +103,7 @@ func BranchAndBound(g *graph.Graph, halt chan<- bool, k int) mapset.Set {
 	n := g.NEdges()
 	total, worked := 0, 0
 	// 2. Initialize a priority queue.
-	// The size of the priority queue would be calculated as in ../combinations.go
+	// The capacity of the queue would be the number of k-element combinations in g.Vertices.
 	// TODO: Benchmark if it is worth it to pre-calculate the queue capacity.
 	queue := MkPriorityQueue()
 	vertices := getEdgeEndpoints(g)
