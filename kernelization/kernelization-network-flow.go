@@ -52,10 +52,10 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 
 	// Step 4: The arcs in H' included in the instance of the maximum flow
 	// 		   that correspond to edges in H constitute a matching set M of H.
-	M := mapset.NewSet()
-	matchedVertices := mapset.NewSet()
+	M := mapset.NewThreadUnsafeSet()
+	matchedVertices := mapset.NewThreadUnsafeSet()
 	// S is the set of all unmatched vertices in A.
-	S := mapset.NewSet()
+	S := mapset.NewThreadUnsafeSet()
 	start("Processing max flow path of length %v", len(maxFlowPath))
 	for _, edge := range maxFlowPath {
 		if edge.From != hPrime.source && edge.To != hPrime.sink {
@@ -97,7 +97,7 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 		end("Getting reachable vertices")
 
 		// T is the set of neighbors of R along edges in M
-		T := mapset.NewSet()
+		T := mapset.NewThreadUnsafeSet()
 		for edgeInterface := range M.Iter() {
 			edge := edgeInterface.(graph.Edge)
 			if R.Contains(edge.To) {
@@ -108,7 +108,7 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 			}
 		}
 
-		A := mapset.NewSet()
+		A := mapset.NewThreadUnsafeSet()
 		for _, g := range G.Vertices {
 			A.Add(g)
 		}

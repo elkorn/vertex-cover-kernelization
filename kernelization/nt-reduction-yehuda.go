@@ -11,9 +11,9 @@ type ntReductionYehuda struct {
 
 func mkNtReductionYehuda(g *graph.Graph, k int) *ntReductionYehuda {
 	border := g.CurrentVertexIndex
-	V0, C0 := mapset.NewSet(), mapset.NewSet()
+	V0, C0 := mapset.NewThreadUnsafeSet(), mapset.NewThreadUnsafeSet()
 	edges, _ := fordFulkerson(mkNetworkFlow(g))
-	CB := mapset.NewSet()
+	CB := mapset.NewThreadUnsafeSet()
 	for _, edge := range edges {
 		if CB.Contains(edge.From) {
 			CB.Add(edge.To)

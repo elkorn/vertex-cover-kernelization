@@ -67,7 +67,7 @@ func findBlossom(forest []*NodeInformation, edge *graph.Edge) *blossom {
 	// Both nodes belong to the same tree, they have the same root,
 	// what guarantees having a non-zero common ancestor index.
 	cycle := list.New()
-	vertices := mapset.NewSet()
+	vertices := mapset.NewThreadUnsafeSet()
 	for i := commonAncestorIdx; i < nA; i++ {
 		v := pathA[i]
 		cycle.PushBack(v)

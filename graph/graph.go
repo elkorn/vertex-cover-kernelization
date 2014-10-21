@@ -81,7 +81,7 @@ func (self *Graph) GetNeighbors(v Vertex) Neighbors {
 }
 
 func (self *Graph) GetNeighborsWithSet(v Vertex) (Neighbors, mapset.Set) {
-	resultSet := mapset.NewSet()
+	resultSet := mapset.NewThreadUnsafeSet()
 	result := make(Neighbors, 0, len(self.getNeighborEdges(v)))
 	self.ForAllNeighbors(v, func(edge *Edge, done chan<- bool) {
 		w := GetOtherVertex(v, edge)

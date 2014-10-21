@@ -205,7 +205,7 @@ func (self *StructurePriorityQueueProxy) Contains2Tuple() bool {
 }
 
 func (self *StructurePriorityQueueProxy) PopAllStrong2Tuples() mapset.Set {
-	result := mapset.NewSet()
+	result := mapset.NewThreadUnsafeSet()
 	for self.ContainsStrong2Tuple() {
 		s2t, _ := self.Pop()
 		result.Add(s2t)
@@ -215,7 +215,7 @@ func (self *StructurePriorityQueueProxy) PopAllStrong2Tuples() mapset.Set {
 }
 
 func (self *StructurePriorityQueueProxy) PopAll2Tuples() mapset.Set {
-	result := mapset.NewSet()
+	result := mapset.NewThreadUnsafeSet()
 	for self.Contains2Tuple() {
 		s2t, _ := self.Pop()
 		result.Add(s2t)

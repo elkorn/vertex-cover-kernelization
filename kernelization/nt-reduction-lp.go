@@ -20,7 +20,7 @@ func mkNtReductionLP(g *graph.Graph, k int) *ntReductionLP {
 
 func (self *ntReductionLP) solve() (P, Q, R mapset.Set, err error) {
 	err = self.formulation.solve()
-	P, Q, R = mapset.NewSet(), mapset.NewSet(), mapset.NewSet()
+	P, Q, R = mapset.NewThreadUnsafeSet(), mapset.NewThreadUnsafeSet(), mapset.NewThreadUnsafeSet()
 	self.formulation.g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		i := int(v)
 		val := self.formulation.lp.ColPrim(i)

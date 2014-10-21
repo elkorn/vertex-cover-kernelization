@@ -204,7 +204,7 @@ func foldVertex(g *graph.Graph, u graph.Vertex) *fold {
 }
 
 func preprocessing4(g *graph.Graph) mapset.Set {
-	folds := mapset.NewSet()
+	folds := mapset.NewThreadUnsafeSet()
 	// bound := graph.Vertex(g.CurrentVertexIndex)
 	g.ForAllVerticesOfDegree(2, func(u graph.Vertex) {
 		theFold := foldVertex(g, u)

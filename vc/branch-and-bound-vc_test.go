@@ -10,11 +10,11 @@ import (
 )
 
 func TestObjectiveFunction(t *testing.T) {
-	s1 := mapset.NewSet()
+	s1 := mapset.NewThreadUnsafeSet()
 	s1.Add(graph.Vertex(5))
 	s1.Add(graph.Vertex(6))
 
-	s2 := mapset.NewSet()
+	s2 := mapset.NewThreadUnsafeSet()
 	s2.Add(graph.Vertex(5))
 
 	assert.Equal(t, s2, objectiveFunction([]mapset.Set{s1, s2}))
@@ -55,7 +55,7 @@ func TestCalculateLowerBound(t *testing.T) {
 	g.AddEdge(1, 6)
 	g.AddEdge(8, 9)
 
-	selection := mapset.NewSet()
+	selection := mapset.NewThreadUnsafeSet()
 
 	assert.Equal(t, 3, computeLowerBound(g, selection))
 
@@ -83,7 +83,7 @@ func TestMkBnbNode(t *testing.T) {
 	g.AddEdge(1, 3)
 	g.AddEdge(2, 3)
 	g.AddEdge(2, 4)
-	selection := mapset.NewSet()
+	selection := mapset.NewThreadUnsafeSet()
 	level := 1
 	node := mkBnbNode(g, selection, level)
 	assert.NotNil(t, node)
@@ -94,7 +94,7 @@ func TestMkBnbNode(t *testing.T) {
 
 func TestGetNumberOfCoveredEdges(t *testing.T) {
 	g := graph.MkGraph1()
-	s := mapset.NewSet()
+	s := mapset.NewThreadUnsafeSet()
 	s.Add(graph.Vertex(1))
 	s.Add(graph.Vertex(2))
 	assert.Equal(t, 5, getNumberOfCoveredEdges(g, s))
@@ -109,13 +109,13 @@ func TestBranchAndBound1(t *testing.T) {
 	g := graph.MkGraph(3)
 	g.AddEdge(1, 2)
 	g.AddEdge(2, 3)
-	optimalSelection := mapset.NewSet()
+	optimalSelection := mapset.NewThreadUnsafeSet()
 	optimalSelection.Add(graph.Vertex(2))
 	cover := branchAndBound(g)
 	assert.True(t, optimalSelection.Equal(cover))
 
 	g = graph.MkGraph6()
-	optimalSelection = mapset.NewSet()
+	optimalSelection = mapset.NewThreadUnsafeSet()
 	optimalSelection.Add(graph.Vertex(4))
 	optimalSelection.Add(graph.Vertex(5))
 	assert.True(t, optimalSelection.Equal(branchAndBound(g)))
@@ -124,7 +124,7 @@ func TestBranchAndBound1(t *testing.T) {
 
 func TestBranchAndBound2(t *testing.T) {
 	g := graph.MkPetersenGraph()
-	innerVertices, outerVertices := mapset.NewSet(), mapset.NewSet()
+	innerVertices, outerVertices := mapset.NewThreadUnsafeSet(), mapset.NewThreadUnsafeSet()
 	for i := 1; i < 6; i++ {
 		outerVertices.Add(graph.Vertex(i))
 		innerVertices.Add(graph.Vertex(i + 5))
@@ -139,7 +139,7 @@ func TestBranchAndBound2(t *testing.T) {
 
 func TestBranchAndBound3(t *testing.T) {
 	g := graph.MkReversePetersenGraph()
-	innerVertices, outerVertices := mapset.NewSet(), mapset.NewSet()
+	innerVertices, outerVertices := mapset.NewThreadUnsafeSet(), mapset.NewThreadUnsafeSet()
 	for i := 1; i < 6; i++ {
 		outerVertices.Add(graph.Vertex(i))
 		innerVertices.Add(graph.Vertex(i + 5))

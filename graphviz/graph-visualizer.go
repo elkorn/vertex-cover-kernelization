@@ -189,7 +189,7 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 	res.Write(stob("graph "))
 	res.Write(stob(name))
 	res.Write(stobn(" {"))
-	verticesWithAttrs := mapset.NewSet()
+	verticesWithAttrs := mapset.NewThreadUnsafeSet()
 	for i, attrs := range self.vertexAttrs {
 		if len(attrs) == 0 {
 			continue
@@ -200,7 +200,7 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 		res.Write(self.vertexToB(v))
 	}
 
-	connectedVertices := mapset.NewSet()
+	connectedVertices := mapset.NewThreadUnsafeSet()
 	self.g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		// In this context it might be useful to use this range loop and e.g. display
 		// the removed edge as dotted or grayed out.

@@ -177,7 +177,7 @@ func (self *ChenKanjXiaVC) excludeVertices(vs ...graph.Vertex) {
 }
 
 func (self *ChenKanjXiaVC) updateTuplesByExclusion(excludedVertices ...graph.Vertex) {
-	toRemove := mapset.NewSet()
+	toRemove := mapset.NewThreadUnsafeSet()
 
 	for _, excludedVertex := range excludedVertices {
 		for t := range self.tuples.Iter() {
@@ -209,7 +209,7 @@ func (self *ChenKanjXiaVC) invalidateTuples() {
 func (self *ChenKanjXiaVC) reducing() int {
 	// NOTE: If Reducing is not applicable, it might as well return self,
 	// since no reduction could be achieved.
-	rejectedTuples := mapset.NewSet()
+	rejectedTuples := mapset.NewThreadUnsafeSet()
 	// a. for each tuple ( S , q ) ∈ T do
 	for s := range self.tuples.Iter() {
 		tuple := s.(*structure)

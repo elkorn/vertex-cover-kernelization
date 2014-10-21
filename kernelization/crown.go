@@ -82,7 +82,7 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 	})
 
 	if straightCrown {
-		H := mapset.NewSet()
+		H := mapset.NewThreadUnsafeSet()
 		outsiderNeighbors.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 			H.Add(v)
 		})
@@ -95,7 +95,7 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 	}
 
 	// Step 4: Let I0 be the set of vertices in O that are unmatched by M2.
-	In := mapset.NewSet()
+	In := mapset.NewThreadUnsafeSet()
 	for vInter := range O.Iter() {
 		v := vInter.(graph.Vertex)
 		if !M2.HasVertex(v) || M2.Degree(v) == 0 {
@@ -119,7 +119,7 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 	// Step 5.:Repeat the following steps until n=N so that I_(N-1)=IN
 	for {
 		// 5a. Let Hn = N(In)
-		Hsteps = append(Hsteps, mapset.NewSet())
+		Hsteps = append(Hsteps, mapset.NewThreadUnsafeSet())
 		utility.Debug("n: %v, N: %v", n, N)
 		utility.Debug("Isteps: %v", Isteps)
 		for vInter := range In.Iter() {
@@ -135,7 +135,7 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 		}
 
 		// 5b. Let I_(n+1)= In ∪ N_M2(Hn)
-		neighbors := mapset.NewSet()
+		neighbors := mapset.NewThreadUnsafeSet()
 		for vInter := range Hsteps[n].Iter() {
 			v := vInter.(graph.Vertex)
 			G.ForAllNeighbors(v, func(edge *graph.Edge, done chan<- bool) {

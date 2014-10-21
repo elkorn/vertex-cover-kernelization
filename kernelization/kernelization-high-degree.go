@@ -6,7 +6,7 @@ import (
 )
 
 func removeVerticesWithDegreeGreaterThan(self *graph.Graph, k int) (graph.Neighbors, int) {
-	toRemove := mapset.NewSet()
+	toRemove := mapset.NewThreadUnsafeSet()
 	removed := 0
 
 	self.ForAllVertices(func(v graph.Vertex, done chan<- bool) {

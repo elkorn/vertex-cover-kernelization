@@ -52,7 +52,7 @@ func isAlternatingPathWithMatching(self *graph.Graph, path *graph.IntStack, matc
 }
 
 func reachableFromWithMatching(toReach graph.Vertices, reachFrom mapset.Set, netFlow *NetworkFlow, matching mapset.Set) mapset.Set {
-	result := mapset.NewSet()
+	result := mapset.NewThreadUnsafeSet()
 	for from := range reachFrom.Iter() {
 		for _, to := range toReach {
 			if result.Contains(to) {

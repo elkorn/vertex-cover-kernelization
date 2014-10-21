@@ -10,7 +10,7 @@ package kernelization
 // 	instance := &ChenKanjXiaVC{
 // 		G:      g,
 // 		T:      T,
-// 		tuples: mapset.NewSet(),
+// 		tuples: mapset.NewThreadUnsafeSet(),
 // 		k:      246,
 // 		halt:   nil,
 // 	}

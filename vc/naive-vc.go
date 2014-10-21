@@ -56,7 +56,7 @@ func (self *naiveVC) solve(g *graph.Graph, k int) bool {
 
 func NaiveVC(G *graph.Graph, k int) (bool, mapset.Set) {
 	instance := &naiveVC{
-		cover: mapset.NewSet(),
+		cover: mapset.NewThreadUnsafeSet(),
 	}
 
 	instance.solve(G, k)

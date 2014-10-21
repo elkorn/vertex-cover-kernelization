@@ -19,7 +19,7 @@ func TestContractBlossom(t *testing.T) {
 	g.AddEdge(1, 6)
 
 	cycle := list.New()
-	vertices := mapset.NewSet()
+	vertices := mapset.NewThreadUnsafeSet()
 
 	g.ForAllVertices(func(v graph.Vertex, done chan<- bool) {
 		if v == 6 {

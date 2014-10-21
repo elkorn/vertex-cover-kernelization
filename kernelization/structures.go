@@ -17,7 +17,7 @@ type structure struct {
 func MkStructure(q int, s ...graph.Vertex) *structure {
 	result := &structure{
 		q:        q,
-		S:        mapset.NewSet(),
+		S:        mapset.NewThreadUnsafeSet(),
 		Elements: s,
 	}
 
@@ -39,7 +39,7 @@ func MkStructureWithSet(q int, S mapset.Set, s ...graph.Vertex) *structure {
 func MkStructureWithCapacity(q, capacity int, s ...graph.Vertex) *structure {
 	result := &structure{
 		q:        q,
-		S:        mapset.NewSet(),
+		S:        mapset.NewThreadUnsafeSet(),
 		Elements: make(graph.Vertices, len(s), capacity),
 	}
 
@@ -258,7 +258,7 @@ func forAllVerticesOfDegreeGeq(self *graph.Graph, degree int, action func(graph.
 }
 
 func identifyGoodVertices(G *graph.Graph) mapset.Set {
-	result := mapset.NewSet()
+	result := mapset.NewThreadUnsafeSet()
 	forAllVerticesOfDegreeGeq(G, 7, func(v graph.Vertex) {
 		result.Add(MkStructure(-1, v))
 	})
@@ -274,8 +274,8 @@ func trimSet(source mapset.Set, toRemove *mapset.Set) mapset.Set {
 
 func identifyGoodPairs(G *graph.Graph) mapset.Set {
 	tags := computeTags(G)
-	possibleGoodPairs := mapset.NewSet()
-	invalidPairs := mapset.NewSet()
+	possibleGoodPairs := mapset.NewThreadUnsafeSet()
+	invalidPairs := mapset.NewThreadUnsafeSet()
 	// The first graph.vertex in a good pair is found as follows:
 	// 1. tag(u) is lex. max over tag(w) for all w of the same degree as u.
 	utility.Debug("Looking for U...")
@@ -302,7 +302,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 
 	// 2. If the graph is regular, the number of pairs {x,y} \subseteq N(u) s.t.
 	// y is almost-dominated by x is maximized.
-	toRemove := mapset.NewSet()
+	toRemove := mapset.NewThreadUnsafeSet()
 	if G.IsRegular() {
 		maxAlmostDominated := 0
 		forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
@@ -350,7 +350,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 	// graph.vertex, we pick a neighbor z of u such that the following conditions are
 	// satisfied in their respective order.
 	// TODO: Verify whether this is feasible.
-	additionalPairs := mapset.NewSet()
+	additionalPairs := mapset.NewThreadUnsafeSet()
 	forAllGoodPairs(possibleGoodPairs, func(possibleGoodPair *goodPair) {
 		utility.Debug("\n")
 		utility.Debug("Looking for Z for %v...", possibleGoodPair.U())
@@ -359,7 +359,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		// by w, then z is almost dominated by a neighbor of u.
 		u := possibleGoodPair.U()
 		if possibleGoodPair.countAlmostDominatedPairs(G) > 0 {
-			possibleZ = mapset.NewSet()
+			possibleZ = mapset.NewThreadUnsafeSet()
 			G.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
 				n := graph.GetOtherVertex(u, edge)
 				G.ForAllNeighbors(u, func(edge *graph.Edge, done chan<- bool) {
@@ -405,7 +405,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		// c) z is adjacent to the least number of N(u) satisfying a) and b)
 		minAdjacency := utility.MAX_INT
 		// TODO: This should be a priority queue.
-		adjacencies := mapset.NewSet()
+		adjacencies := mapset.NewThreadUnsafeSet()
 		for zInter := range possibleZ.Iter() {
 			z := zInter.(graph.Vertex)
 			adjacency := 0
@@ -444,7 +444,7 @@ func identifyGoodPairs(G *graph.Graph) mapset.Set {
 		// d) The number of shared neighbors between z and a neighbor of u is
 		// maximized among N(u) satisfying a), b) and c).
 		maxSharedNeighbors := 0
-		sharedNeighbors := mapset.NewSet()
+		sharedNeighbors := mapset.NewThreadUnsafeSet()
 		for zInter := range possibleZ.Iter() {
 			z := zInter.(graph.Vertex)
 			curSharedNeighbors := 0

@@ -27,7 +27,7 @@ func mkBnbNode(g *graph.Graph, selection mapset.Set, level int) *BnbNode {
 }
 
 func computeLowerBound(g *graph.Graph, preselected mapset.Set) int {
-	fullSelection := mapset.NewSet().Union(preselected)
+	fullSelection := mapset.NewThreadUnsafeSet().Union(preselected)
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		// Maintaining the invariant: {u,v} ∈ E ⇒  Xu + Xv ≥ 1
 		if !(fullSelection.Contains(edge.From) || fullSelection.Contains(edge.To)) {
@@ -42,7 +42,7 @@ func computeLowerBound(g *graph.Graph, preselected mapset.Set) int {
 }
 
 func objectiveFunction(feasibleSolutions []mapset.Set) mapset.Set {
-	res := mapset.NewSet()
+	res := mapset.NewThreadUnsafeSet()
 	minWeight := utility.MAX_INT
 	for _, solution := range feasibleSolutions {
 		totalWeight := solution.Cardinality()
@@ -65,7 +65,7 @@ func resolveConflict(g *graph.Graph, v1, v2 graph.Vertex) graph.Vertex {
 
 func getEdgeEndpoints(g *graph.Graph) mapset.Set {
 	// TODO: Refactor to not use the containment map.
-	result := mapset.NewSet()
+	result := mapset.NewThreadUnsafeSet()
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		result.Add(edge.From)
 		result.Add(edge.To)
@@ -76,7 +76,7 @@ func getEdgeEndpoints(g *graph.Graph) mapset.Set {
 
 // Similar to graph.Vertex.degree -> this should be push-based while computing the lower bound.
 func getNumberOfCoveredEdges(g *graph.Graph, s mapset.Set) int {
-	covered := mapset.NewSet()
+	covered := mapset.NewThreadUnsafeSet()
 	for val := range s.Iter() {
 		vertex := val.(graph.Vertex)
 		// utility.Debug("Vertex %v", vertex)
@@ -99,7 +99,7 @@ func branchAndBound(g *graph.Graph) mapset.Set {
 
 func BranchAndBound(g *graph.Graph, halt chan<- bool, k int) mapset.Set {
 	// 1. Initial value for the best combination
-	bestSelection := mapset.NewSet()
+	bestSelection := mapset.NewThreadUnsafeSet()
 	n := g.NEdges()
 	total, worked := 0, 0
 	// 2. Initialize a priority queue.

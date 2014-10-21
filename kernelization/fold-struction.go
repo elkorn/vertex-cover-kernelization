@@ -128,7 +128,7 @@ func isStructionApplicable(self graph.Vertex, g *graph.Graph, neighbors mapset.S
 // func kernelizeIfHasCoverOfSize(g *graph.Graph, k int) (hasCover bool, reduction int) {
 // 	// Based on J. F. Buss and J. Goldsmith, SIAM 22, (1993), pp. 560-572.
 // 	// 1.1. Let U be the set of vertices of degree more than k.
-// 	U := mapset.NewSet()
+// 	U := mapset.NewThreadUnsafeSet()
 // 	g.forAllVerticesOfDegreeGeq(k+1, func(v graph.Vertex) {
 // 		U.Add(v)
 // 	})

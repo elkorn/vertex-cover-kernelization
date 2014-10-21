@@ -35,7 +35,7 @@ func mkNtDecomposition(g *graph.Graph, k int) (result *ntDecomposition) {
 	// 4. let S be a vertex cover of H (Ford-Fulkerson)
 	border := graph.Vertex(g.CurrentVertexIndex)
 	maxFlow, _ := fordFulkerson(mkNetworkFlow(g))
-	S := mapset.NewSet()
+	S := mapset.NewThreadUnsafeSet()
 	for _, edge := range maxFlow {
 		if S.Contains(edge.From) {
 			S.Add(edge.To)
@@ -45,8 +45,8 @@ func mkNtDecomposition(g *graph.Graph, k int) (result *ntDecomposition) {
 	}
 
 	result = &ntDecomposition{
-		V1: mapset.NewSet(),
-		V0: mapset.NewSet(),
+		V1: mapset.NewThreadUnsafeSet(),
+		V0: mapset.NewThreadUnsafeSet(),
 	}
 
 	// 5. let V 1 = {x | x ∈ S ∩ U 1 and σ −1 (x) ∈ S}

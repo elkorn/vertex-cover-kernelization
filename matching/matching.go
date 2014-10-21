@@ -33,7 +33,7 @@ func mkNodeInformation(parent, root graph.Vertex, isOuter bool) *NodeInformation
 // add any edge to the existing set
 func FindMaximalMatching(g *graph.Graph) (matching *graph.Graph, outsiders mapset.Set) {
 	matching = graph.MkGraphRememberingDeletedVertices(g.CurrentVertexIndex, g.IsVertexDeleted)
-	outsiders = mapset.NewSet()
+	outsiders = mapset.NewThreadUnsafeSet()
 	added := make([]bool, g.CurrentVertexIndex)
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		if !(added[edge.From.ToInt()] || added[edge.To.ToInt()]) {
