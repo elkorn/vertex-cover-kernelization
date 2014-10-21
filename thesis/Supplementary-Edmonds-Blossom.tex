@@ -68,46 +68,27 @@
 
         \algorithmicensure{maksymalne skojarzenie $M$}
 
-        \State{$M$ \gets \emptyset}
-
-        \State{$H$ \gets $G$}
-
-        \State{$N$ \gets $M$}
-
-        \State{$P$ \gets $\{v: v\text{ jest wolne w } M\}$}\label{init_edmonds}
-
-        \State{$NP$ \gets \emptyset}
-
-        \State{$E_F$ \gets \emptyset}
-
-        \State{$V_F$ \gets $P \bigcup NP$}
-
-        \State{$F$ \gets \Call{Las}{V_F, E_F}}
-
+        \State $M \gets \emptyset, H \gets G, N \gets M$
+        \State $P \gets \{v: v\text{ jest wolne w } M\}, NP \gets \emptyset, E_F \gets \emptyset$\label{init_edmonds}
+        \State $V_F \gets P \bigcup NP$
+        \State $F \gets \Call{Las}{V_F, E_F}$
         \State{Wybierz krawędź $(u, v); u \in P, v \notin NP$}\label{pick_edge}
         \If{taka krawędź nie istnieje}
           \State{\textbf{return} $M$}
         \EndIf
         \If{$v \notin V_F$}
-          \State{$NP$ \gets $NP \bigcup \{v\}$}
-
-          \State{$P$ \gets $P \bigcup \{M(v)\}$}
-
-          \State{$E_F$ \gets $E_F \bigcup \{(v, M(v))\}$}
+          \State $NP \gets NP \bigcup \{v\}$
+          \State $P \gets P \bigcup \{M(v)\}$
+          \State $E_F \gets E_F \bigcup \{(v, M(v))\}$
         \ElsIf{$v \in P$ oraz $(u, v) \in E_F$}
           \Comment{Odnaleziono kwiat B.}
-          \State{$b$ \gets \Call{Skurcz}{B}}
-
-          \State{$H$ \gets $H\B$}
-
-          \State{$N$ \gets $N\B$}
-
-          \State{$P$ \gets $P \bigcup \{b\}$}
-
+          \State $b \gets \Call{Skurcz}{B}$
+          \State $H \gets H\B$
+          \State $N \gets N\B$
+          \State $P \gets P \bigcup \{b\}$
           \State{Idź do kroku~\ref{pick_edge}}
-        \Elsif{$v \in P$ oraz $(u, v) \notin E_F$}
+        \ElsIf{$v \in P$ oraz $(u, v) \notin E_F$}
           \State{Znajdź w $G$ ścieżkę powiększającą $\rho$ względem $M$}
-
           \State{Rozszerz $M$}
           \State{Idź do kroku~\ref{init_edmonds}}
         \EndIf
