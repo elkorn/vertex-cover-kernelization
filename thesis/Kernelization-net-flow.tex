@@ -41,20 +41,20 @@ Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
     F=\{(A_v, B_v)|(v,u) \in E \lor (u,v) \in E\}$
   \item Przekształć graf dwudzielny $H$ w graf przepływu w sieci $H\prime$:
     \begin{itemize}
-      \item[-] dodaj węzeł źródłowy $v_s$, połączony z każdym wierzchołkiem $v_a
+      \item dodaj węzeł źródłowy $v_s$, połączony z każdym wierzchołkiem $v_a
         k\in A$ krawędziami skierowanymi $(v_s, v_a)$,
-      \item[-] dodaj węzeł docelowy $v_z$, połączony z każdym wierzchołkiem $v_b
+      \item dodaj węzeł docelowy $v_z$, połączony z każdym wierzchołkiem $v_b
         \in B$ krawędziamiy skierowanymi $(v_b, v_z)$,
-      \item[-] wszystkie krawędzie $f \in F$ skieruj $(v_a, v_b)$,
-      \item[-] każdej krawędzi $h \in H\prime$ nadaj pojemność $c(f)=1$.
+      \item wszystkie krawędzie $f \in F$ skieruj $(v_a, v_b)$,
+      \item każdej krawędzi $h \in H\prime$ nadaj pojemność $c(f)=1$.
     \end{itemize}
   \item Znajdź maksymalny przepływ $MF$ w $H\prime$.
   \item Zbiór $M=MF \bigcap F$ stanowi maksymalne skojarzenie $H$.
   \item Znajdź pokrywę wierzchołkową $H$, bazując na $M$.
     \begin{itemize}
-      \item[-] Jeżeli $\forall_{v in U}{v \in M}$, pokrywę
+      \item Jeżeli $\forall_{v in U}{v \in M}$, pokrywę
         wierzchołkową~stanowi całość zbioru $A$ lub $B$.
-      \item[-] Przy licznościach zbiorów $A$, $B$ oraz wagach krawędzi w $H\prime$
+      \item Przy licznościach zbiorów $A$, $B$ oraz wagach krawędzi w $H\prime$
         wiadomo, iż ${\forall_{v_A in A}{v_A \in M} \iff \forall_{v_B in B}{v_B \in M}}$.
         Na tej podstawie można, stwierdzić, że $\exists_{v_A \in A}{v_A \notin
         M}$.
@@ -71,10 +71,10 @@ Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
     \end{itemize}
   \item Przypisz wagi wszystkim wierzchołkom $v \in V$ w odniesieniu do $VC$:
     \begin{itemize}
-      \item[-] $\{A_v, B_v\} \in VC \Rightarrow W_v=1$,
-      \item[-] $A_v \in VC \land B_v \notin VC \lor A_v \notin VC \land B_v \in
+      \item $\{A_v, B_v\} \in VC \Rightarrow W_v=1$,
+      \item $A_v \in VC \land B_v \notin VC \lor A_v \notin VC \land B_v \in
         VC \Rightarrow W_v=0.5$,
-      \item[-] $\{A_v, B_v\} \notin VC \Rightarrow W_v=0$
+      \item $\{A_v, B_v\} \notin VC \Rightarrow W_v=0$
     \end{itemize}
     W przypadku 1., wszystkim wierzchołkom nadać należy wagę $W_v=0.5$.
   \item Zdefiniuj graf wynikowy jako 
@@ -116,12 +116,12 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga:
 
   Każdy z przypadków rozpatrywany jest osobno:
   \begin{itemize}
-    \item[-] \underline{$x \in S$}: $x$ jest nieskojarzony---jeżeli $M$ ma być skojarzeniem 
+    \item \underline{$x \in S$}: $x$ jest nieskojarzony---jeżeli $M$ ma być skojarzeniem 
       maksymalnym, $y$ musi być skojarzony.
       Prowadzi to do wniosku, iż $\exists{e_M=(w,y)}: e_M \in M$.
       Na podstawie wytycznych algorytmu wiadomo, iż w takiej sytuacji $w \in R$
       oraz, co ważniejsze, $y \in T$---oznacza to, że $e$ jest pokryta przez $M$.
-    \item[-] \underline{$x \in R$}: $\exists{e_M=(x,w), e_M\in M}: w \in T$. \\
+    \item \underline{$x \in R$}: $\exists{e_M=(x,w), e_M\in M}: w \in T$. \\
       $w=y \implies y \in T$.
       W przeciwnym wypadku, gdy $w \neq y$, pewnym jest, że $\exists{e_M=(z,w),
       z \in R \oplus z \in S}: e_M \in M$.
@@ -130,7 +130,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga:
       nie stanowi maksymalnego skojarzenia---zamiast krawędzi $(x,w)$ musiałby
       zawierać krawędzie $\{(x,y),(z,w)\}$.
       W efekcie $v \in R, y \in T$, tak więc krawędź $e$ jest pokryta przez $VC$.
-    \item[-] \underline{$x \in A \setminus S \setminus R$}: Przypadek trywialny,
+    \item \underline{$x \in A \setminus S \setminus R$}: Przypadek trywialny,
       pokrycie krawędzi $e$ wynika z definicji samej pokrywy $VC$.
   \end{itemize}
 \end{bproof}
