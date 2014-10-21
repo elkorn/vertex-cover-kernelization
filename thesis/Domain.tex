@@ -99,7 +99,7 @@
 \par{
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
   Polega on na udzieleniu odpowiedzi na pytanie ``Czy w grafie $G=(V,E)$
-  istnieje zbiór wierzchołków $VC \in V, \|VC\| \leq k$ stanowiący pokrywę 
+  istnieje zbiór wierzchołków $VC \in V, |VC| \leq k$ stanowiący pokrywę 
   wierzchołkową tego grafu?''.
   Mianem pokrywy wierzchołkowej określa się zbiór wierzchołków $VC
   \subseteq V; \forall_{e=(u,v) \in E}:u\in VC\lor v\in VC$.
@@ -123,7 +123,7 @@
   Autorów~\cite{O'Callahan:2003:HDD:781498.781528}.
 }
 \begin{theorem}
-  Optymalna pokrywa wierzchołkowa grafu $G=(V,E), \|V\|=n, \|E\|=m$ może zostać 
+  Optymalna pokrywa wierzchołkowa grafu $G=(V,E), |V|=n, |E|=m$ może zostać 
   odnaleziona w czasie $O(2^{n}m)$.
 \end{theorem}
 \begin{bproof}
@@ -131,7 +131,7 @@
   $e \in E$, należy wykonać $O(m)$ porównań.
   Aby wykonać operację na wszystkich podzbiorach $V_s$, należy wykonać tę
   czynność dla wszystkich zbiorów należących do zbioru potęgowego 
-  $P(V), \|P(V)\| = 2^{n}$.
+  $P(V), |P(V)| = 2^{n}$.
   Aby odnaleźć pokrywę wierzchołkową wśród podzbiorów $V$, należy dla każdego z
   nich zrealizować operację weryfikacji pokrycia krawędzi, co w rezultacie daje 
   złożoność $O(2^{n}m)$.

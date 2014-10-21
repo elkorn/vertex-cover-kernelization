@@ -15,7 +15,7 @@
   Zbiór $H$ określa się mianem \emph{głowy korony}.
 \end{definition}
 \begin{definition}
-  Mianem \emph{szerokości korony} określa się $\|H\|$.
+  Mianem \emph{szerokości korony} określa się $|H|$.
 \end{definition}
 \begin{theorem}\thlabel{th_crown_vc}
   Jeżeli graf $G=(V,E)$ zawiera koronę $(I,H)$, istnieje optymalna pokrywa 
@@ -24,13 +24,13 @@
 \begin{bproof}
   Z własności 3.\ definicji~\ref{def_crown}.\ wynika, że każda pokrywa 
   wierzchołkowa $VC$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
-  Na tej podstawie stwierdzić można, że $\|VC\|\geq\|H\|$.
+  Na tej podstawie stwierdzić można, że $|VC|\geq|H|$.
   Taki rozmiar pokrywy osiągnąć można przez umieszczenie $VC=VC\bigcup H$.
   Należy w~tym miejscu zaznaczyć, że wierzchołki $v_H$ są użyteczne w~kontekście
   możliwości pokrywania krawędzi $e \notin M$, podczas gdy wierzchołki $v_I \in
   I$ nie posiadają tej cechy.
-  Mając to na uwadze łatwo zauważyć, że $\|VC \bigcup H\| \leq \|VC \bigcup
-  I\|$.
+  Mając to na uwadze łatwo zauważyć, że $|VC \bigcup H| \leq |VC \bigcup
+  I|$.
   Wniosek płynący z~tej obserwacji jest jednoznaczny: istnieje optymalna pokrywa
   wierzchołkowa $VC_{OPT}; H \in VC_{OPT}, I \notin VC_{OPT}$.
 \end{bproof}
@@ -41,12 +41,12 @@ W celu odnalezienia korony w~grafie, zastosować można następujący algorytm.
     \Function{findCrown}{G, k}
     \State{$M_1\leftarrow$ największe skojarzenie $G$}
     \State{$O\leftarrow v \in V, \neg\exists_{e_{M_1}=(u, w) \in M_1}: u=v \lor w=v$}
-    \If{$\|M_1\| \geq k$}
-    \State\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: \|VC_{OPT}\| \leq k$}
+    \If{$|M_1| \geq k$}
+    \State\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: |VC_{OPT}| \leq k$}
   \EndIf
   \State{$M_2 \leftarrow$ maksymalne skojarzenie na krawędziach $O\leftrightarrow N(O)$}
-  \If{$\|M_2\| > k$}
-  \State{\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: \|VC_{OPT}\|\leq k$}}
+  \If{$|M_2| > k$}
+  \State{\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: |VC_{OPT}|\leq k$}}
 \EndIf
 \State{$I_0 \leftarrow v_O\in O, \neg\exists_{e_{M_2}=(u,v)\in M_2}: u=v_O\lor v=v_O$}
 \State($n \leftarrow 0$)
@@ -109,33 +109,33 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   \setminus \{H\leftrightarrow I\}$.
 
   Rozmiar dziedziny problemu ulega zmniejszeniu do wartości
-  $n\prime=n-\|I\|-\|H\|$, natomiast wartość parametru spada do $k\prime=k-\|H\|$,
+  $n\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k\prime=k-|H|$,
   z~uwagi na fakt, że każdy z wierzchołków $h \in H$ musi należeć do optymalnej
   pokrywy wierzchołkowej, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
   Należy zaobserwować, iż jeżeli w~grafie istnieje maksymalne skojarzenie
-  $M_{MAX}, \|M_{MAX}\| > k$, wyklucza to istnienie optymalnej pokrywy
-  wierzchołkowej $VC_{OPT}, \|VC_{OPT}\|\leq k$.
+  $M_{MAX}, |M_{MAX}| > k$, wyklucza to istnienie optymalnej pokrywy
+  wierzchołkowej $VC_{OPT}, |VC_{OPT}|\leq k$.
   Zatem, jeżeli rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest
   większy niż $k$, algorytm może zakończyć działanie, udzielając ekwiwalentu 
   odpowiedzi negatywnej.
   Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu 
-  wynikowego $\|G\prime\|$.
+  wynikowego $|G\prime|$.
 }
 \begin{theorem}
-  $\|M_1\| \leq k, \|M_2\| \leq k \implies \|V\prime \setminus I \setminus H\|
+  $|M_1| \leq k, |M_2| \leq k \implies |V\prime \setminus I \setminus H|
   \leq 3k$.
 \end{theorem}
 \begin{bproof}
-  Ponieważ skojarzenie $M_1, \|M_1\| \leq k$ stanowi zbiór krawędzi, wnioskować
-  można, iż $V_{M_1}=\{v, u|v, u \in V, (u,v)\in M_1 \lor (v,u) \in M_1\}, \|V_{M_1}\| \leq
+  Ponieważ skojarzenie $M_1, |M_1| \leq k$ stanowi zbiór krawędzi, wnioskować
+  można, iż $V_{M_1}=\{v, u|v, u \in V, (u,v)\in M_1 \lor (v,u) \in M_1\}, |V_{M_1}| \leq
   2k$.
-  Z tego wynika, iż $\|O\| \geq n-2k$.
-  W związku z~faktem, że $\|M_2\| \leq k$, istnieje co najwyżej $k$ wierzchołków
+  Z tego wynika, iż $|O| \geq n-2k$.
+  W związku z~faktem, że $|M_2| \leq k$, istnieje co najwyżej $k$ wierzchołków
   $v_O \in O$ skojarzonych przez $M_2$.
   Łatwo zauważyć, iż w~takim wypadku istnieje co najmniej $n-3k$ wierzchołków
   $v_O \in O$ nieskojarzonych przez $M_2$---są one zawarte w $I_0$, a~zatem
   także w~$I$.
-  Ten tok rozumowania prowadzi do wniosku, iż $\|V \setminus I \setminus H\|
+  Ten tok rozumowania prowadzi do wniosku, iż $|V \setminus I \setminus H|
   \leq 3k$.
 \end{bproof}
 \par{
@@ -161,7 +161,7 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
 }
 
 \begin{theorem}
-  Implementacja algorytmu redukcji korony grafu $G=(V,E); \|V\|=n,\|E\|=m$ 
+  Implementacja algorytmu redukcji korony grafu $G=(V,E); |V|=n,|E|=m$ 
   w~oparciu o~algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4})$.
 \end{theorem}
 \begin{bproof}

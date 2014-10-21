@@ -16,7 +16,7 @@ Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ przypisać należy wartość $
 \end{enumerate}
 
 Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrywy 
-wierzchołkowej $\|VC\|$.
+wierzchołkowej $|VC|$.
 Zbiór rozwiązań prawdopodobnych składa się z~funkcji $V \to \{0, 1\}$,
 spełniających warunek 2.
 W związku z faktem, iż programowanie całkowitoliczbowe samo w sobie stanowi
@@ -70,15 +70,15 @@ $V\prime=Q; E\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   Należy założyć pewne rozwiązanie całkowitoliczbowej formulacji problemu 
   pokrycia wierzchołkowego $OPT_{IP}$ oraz zbiory 
   ${A = P \setminus OPT_{IP}, B = R \bigcap OPT_{IP}}$.
-  % Dowód przeprowadzony będzie zatem przy założeniu $\|A\|\neq \|B\|$.
+  % Dowód przeprowadzony będzie zatem przy założeniu $|A|\neq |B|$.
   Zauważyć należy, że $N(B) \bigcap Q = \emptyset$, co zapewnia właściwość 2.
   formulacji, której rozwiązaniem jest $OP_{IP}$.
 
 
-  Jeżeli $\|A\|<\|B\|$, zastąpienie $B$ przez $A$ w $OPT_{IP}$ spowodowałoby
+  Jeżeli $|A|<|B|$, zastąpienie $B$ przez $A$ w $OPT_{IP}$ spowodowałoby
   odkrycie przynajmniej jednej krawędzi grafu---wykluczając tym samym
   tak otrzymaną pokrywę jako rozwiązanie.
-  W prypadku gdy $\|A\|>\|B\|$, swiadczyłoby to, że istnieje możliwość
+  W prypadku gdy $|A|>|B|$, swiadczyłoby to, że istnieje możliwość
   otrzymania rozwiązania formulacji liniowej lepszego niż $OPT_{IP}$ poprzez
   ustanowienie $\epsilon &= \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
   zastąpienie $\forall{u \in B}:X_u \leftarrow X_u + \epsilon$; 
@@ -88,19 +88,19 @@ $V\prime=Q; E\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   Nemhausera-Trottera~\ref{nt_lp}.
 
   Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
-  czynienia to $\|A\|=\|B\|$.
+  czynienia to $|A|=|B|$.
   Przypadek ten jest trywialny---w~celu orzymania optymalnej pokrywy
   wierzchołkowej wystarczy zastąpić zbiór $A$ zbiorem $B$.
 \end{bproof}
 
 Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze
-$n\prime=\|V\|-\|P\|-\|R\|$.
+$n\prime=|V|-|P|-|R|$.
 
 Wartość wynikowa parametru określającego maksymalny rozmiar optymalnej pokrywy
-wierzchołkowej zmniejszona zostaje do $k\prime=k-\|P\|$.
+wierzchołkowej zmniejszona zostaje do $k\prime=k-|P|$.
 
 \begin{theorem}
-  Nie istnieje optymalna pokrywa wierzchołkowa $VC\prime_{OPT}\in G\prime,\|VC\prime_{OPT}\|>\Sigma_{u\in Q}X_u=\frac{\|Q\|}{2}$.
+  Nie istnieje optymalna pokrywa wierzchołkowa $VC\prime_{OPT}\in G\prime,|VC\prime_{OPT}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
 \end{theorem}
 \begin{bproof}
   Należy mieć na uwadze fakt, iż rozmiar funkcji celu formulacji liniowej 
@@ -111,16 +111,16 @@ wierzchołkowej zmniejszona zostaje do $k\prime=k-\|P\|$.
 \end{bproof}
 
 W świetle powyższego dowodu stwierdzić można, że w sytuacji gdy
-$\|Q\|>2k\prime$, można zakończyć działanie całego procesu poszukiwania pokrywy
-wierzchołkowej $VC_{OPT}, \|VC_{OPT}\|\leq k$, udzielając odpowiedzi negatywnej.
+$|Q|>2k\prime$, można zakończyć działanie całego procesu poszukiwania pokrywy
+wierzchołkowej $VC_{OPT}, |VC_{OPT}|\leq k$, udzielając odpowiedzi negatywnej.
 
 Warto nadmienić, że powyższe sformułowanie algorytmu jest niepraktyczne dla
 grafów o~dużym zagęszczeniu ze względu na liczbę warunków ograniczających 
-formulacji równą $\|E\|$.
+formulacji równą $|E|$.
 
 Sensowną optymalizacją podejścia dla takich przypadków jest przekształcenie
 problemu z~minimalizacyjnego do dualnego problemu maksymalizacyjnego, 
-w~którym liczba warunków ograniczających równa będzie $\|V\|$.
+w~którym liczba warunków ograniczających równa będzie $|V|$.
 
 \subsubsection{\textbf{Rozwiązanie problemu dualnego}}
 
