@@ -124,7 +124,7 @@
           \State{$r \gets$ kolejne rozwiązanie z $Q$}
           \If{$r$ jest obiecujące względem $b$}
             \If{$r$ pokrywa wszystkie krawędzie w $G$}
-            \State {$b \gets \min\{|r_{VC}\supseteq r|\}$ takiego, że $r_{VC}$ jest pokryciem wierzch.}
+            \State {$b \gets \min\{|r_{VC}\supseteq r|\}$ takiego, że $r_{VC}$ zawiera pokrycie wierzch.}
             \If{$b \leq k$}
               \State{\textbf{return} $r$}
             \EndIf
