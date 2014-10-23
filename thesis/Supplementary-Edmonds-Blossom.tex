@@ -81,38 +81,37 @@
   \end{definition}
   Konsekwencją skurczenia kwiatu $B=(V_B, E_B)$ jest zmniejszenie skojarzenia $M$ do $M^\prime = M \setminus E_B$.
   W celu zwiększenia efektywności odnajdywania skierowanych ścieżek w grafie $H$, algorytm przechowuje dane o odwiedzonych krawędziach w strukturze lasu.\\
-  Algorytm Edmondsa działa według następującego schematu.
+  Algorytm Edmondsa działa według schematu opisanego pseudokodem~\ref{alg_Edmonds}.
   \begin{algorithm}
     \caption{Algorytm Edmondsa}\label{alg_Edmonds}
     \begin{algorithmic}[1]
       \Function{Edmonds}{G}
 
-        \algorithmicrequire{graf $G$}
+        \algorithmicrequire{graf $G=(V, E)$}
 
         \algorithmicensure{maksymalne skojarzenie $M$}
 
-        \State $M \gets \emptyset, H \gets G, N \gets M$
-        \State $P \gets \{v: v \notin M\}, NP \gets \emptyset, E_F \gets \emptyset$\label{init_edmonds}
-        \State $V_F \gets P \bigcup NP$
-        \State $F \gets \Call{Las}{V_F, E_F}$
-        \State{Wybierz krawędź $(u, v); u \in P, v \notin NP$}\label{pick_edge}
+        \State $M \gets \emptyset, H=(V_H, E_H) \gets G, W \gets M$
+        \State $P \gets \{v: v \notin M\}, W \gets \emptyset, E_F \gets \emptyset$\label{init_edmonds}
+        \State $F \gets \Call{Las}{P \bigcup W, E_F}$
+        \State{Wybierz krawędź $(u, v); u \in P, v \notin W$}\label{pick_edge}
         \If{taka krawędź nie istnieje}
           \State{\textbf{return} $M$}
         \EndIf
-        \If{$v \notin V_F$}
-          \State $NP \gets NP \bigcup \{v\}$
+        \If{$v \notin P \bigcup W$}\label{put_matched_in_odd}
+          \State $N \gets N \bigcup \{v\}$
           \State $P \gets P \bigcup \{M(v)\}$
           \State $E_F \gets E_F \bigcup \{(v, M(v))\}$
-        \ElsIf{$v \in P$ oraz $(u, v) \in E_F$}
+        \ElsIf{$v \in P$ oraz $(u, v) \in E_F$}\label{even_connected}
           \Comment{Odnaleziono kwiat B.}
           \State $b \gets \Call{Skurcz}{B}$
           \State $H \gets H\setminus B$
-          \State $N \gets N\setminus B$
+          \State $W \gets W\setminus B$
           \State $P \gets P \bigcup \{b\}$
           \State{Idź do kroku~\ref{pick_edge}}
-        \ElsIf{$v \in P$ oraz $(u, v) \notin E_F$}
-          \State{Znajdź w $G$ $M$-przemienną ścieżkę powiększającą $\rho$}
-          \State{Rozszerz $M$}
+        \ElsIf{$v \in P$ oraz $(u, v) \notin E_F$}\label{even_disjoint}
+          \State\Comment{(Istnieje $W$-przemienna ścieżka powiększająca $\eta \in H$)}
+          \State{Znajdź $M$-przemienną ścieżkę powiększającą $\rho \in G$}
           \State{Idź do kroku~\ref{init_edmonds}}
         \EndIf
       \EndFunction
@@ -122,15 +121,73 @@
     W momencie zakończenia działania algorytmu, zbiór $N$ stanowi maksymalne skojarzenie w grafie $H$.
   \end{theorem}
   Aby dowieść poprawności tego twierdzenia, przygotować należy metrykę pozwalającą na sprawdzenie czy dane skojarzenie rzeczywiście jest maksymalne.
-  W oparciu o pracę~\ref{cohen:hal-00358468} posłużyć można się następującą własnością.
+  W oparciu o notatki~\cite{Tutte-Berge:notes} oraz artykuł~\cite{cohen:hal-00358468} (stanowiące syntezę koncepcji pracy~\cite{Tutte-Berge:original}),  można posłużyć się następującą własnością, u podstaw której leży wzór Tutte-Berge'a.
 
-  Dla dowolnego zbioru wierzchołków $U$, przyjąć należy oznaczenie $\mdwhtcircle (G \setminus U)$ jako określenie liczby spójnych składowych grafu $G^\prime=(V^\prime, E^\prime)$ zaindukowanego z grafu $G=(V \setminus U, E)$ o nieparzystej liczebności.
-  Należy zaobserwować, że dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \in E^\prime$ musi kojarzyć mniej niż $\mdwhtcircle (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
+  Dla dowolnego zbioru wierzchołków $U$, przyjąć należy oznaczenie $\circ (G \setminus U)$ jako określenie liczby spójnych składowych grafu $G^\prime=(V^\prime, E^\prime)$ zaindukowanego z grafu $G=(V \setminus U, E)$ o nieparzystej liczebności.
+  Należy zaobserwować, że dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \in E^\prime$ musi kojarzyć mniej niż $\circ (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
   Co więcej, wierzchołki te skojarzone mogą być jedynie ze zbiorem wierzchołków $U$.
-  \begin{definition}
-    Skojarzenie $M$ jest maksymalne, jeżeli liczba nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \mdwhtcircle (G \setminus U) - |U|$, a zatem $|M|\leq \frac{|V|+|U| - \mdwhtcircle (G \setminus U)}{2}$.
+  \begin{definition}[ (Oparta na wzorze Tutte-Berge'a)]\thlabel{def_edmonds_max_matching}
+    Skojarzenie $M$ jest maksymalne, jeżeli liczba wierzchołków nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \circ (G \setminus U) - |U|$, a zatem $|M|\leq \frac{|V|+|U| - \circ (G \setminus U)}{2}$.
+  }
   \end{definition}
-  \[
-    \textbf{TODO: Finish the Edmonds proofs.}
-  \]
+  \begin{definition}
+  Mianem \emph{zbioru zaświadczającego} określa się zbiór wierzchołków spełniający wzór Tutte-Berge'a.
+  \end{definition}
+  W przypadku spełnienia założeń definicji~\ref{def_edmonds_max_matching}, zbiór $U$ zaświadcza o tym, że skojarzenie $M$ jest maksymalne.
+  W pseudokodzie~\ref{alg_Edmonds} zbiorem zaświadczającym jest zbiór $N$.
+  Zaznaczyć należy, iż nazewnictwo zmiennych $P$ oraz $N$ jest nieprzypadkowe --- wierzchołki należące do zbioru $P$ znajdują się w parzystej odległości od korzenia pewnego drzewa $T \in F$, natomiast wierzchołki należące do zbioru $N$, analogicznie, w odległości nieparzystej od korzenia drzewa $T$.
+  Przez odległość rozumie się długość ścieżki prowadzącej do danego wierzchołka z korzenia drzewa $T$.\\\\
+  \begin{bproof} (Dla twierdzenia~\ref{th_edmonds_max_matching})\\
+    W momencie zakończenia działania algorytmu na grafie $G=(V, E)$, zbiór wierzchołków $V$ jest podzielony na trzy podzbiory: $P$, $N$ oraz podzbiór $R = V \setminus P \setminus N$.
+    Zbiór $N$ jest niezależny w grafie $H=(V_H, E_H)$ (w rozumieniu definicji~\ref{def_independent_set}) --- w przeciwnym wypadku warunek~\algref{alg_Edmonds}{even_connected} lub~\algref{alg_Edmonds}{even_disjoint} algorytmu Edmondsa byłby spełniony co przeczy założeniu, iż algorytm zakończył działanie.
+    Kroki w momencie spełnienia warunku~\algref{alg_Edmonds}{put_matched_in_odd} algorytmu gwarantują, że dla każdego wierzchołka $v_N \in N$ dowolny skojarzony z nim przez zbiór $W$ wierzchołek zostanie umieszczony w zbiorze $P$.
+    Tym samym zagwarantowana jest właściwość, że każdy wierzchołek $v_P \in P$ jest skojarzony przez zbiór $W$ wyłącznie z innym wierzchołkiem $v_N \in N$.
+    Krok~\algref{alg_Edmonds}{pick_edge} zapewnia, że w momencie zakończenia działania algorytmu nie może istnieć krawędź $(v_P, v_R); v_P \in P, v_R \in R$ pomiędzy zbiorami $P$ oraz $R$.
+    Łatwo zauważyć, że po usunięciu z dziedziny zbioru $P$ każdy wierzchołek $v_P \in P$ sam w sobie stanowi spójną składową grafu $H$.
+    W związku z faktem, iż wszystkie wierzchołki $v_R \in R$ są skojarzone przez zbiór $W$ w ramach zbioru $R$ można stwierdzić, że po usunięciu zbioru $N$ z dziedziny składowe należące do zbioru $R$ są parzystej liczebności.
+    Prowadzi to do wniosku, że spełnione są założenia wzoru Tutte-Berge'a, przybliżone w artykule~\cite{cohen:hal-00358468}.
+    \begin{align*}
+        \circ(H \setminus N) = |P| &= |N| + |R|\\
+        |N| + |V_H| - \circ(H \setminus N) = |V| - |R| &= 2|W|\\
+        \frac{|N| + |V_H| - \circ (H \setminus N)}{2} &= |W|
+    \end{align*}
+    Zgodnie z dotychczasowym tokiem rozumowania, spełnienie powyższej równości dowodzi, iż zbiór $N$ zaświadcza o tym, że skojarzenie $W$ jest maksymalne w grafie $H$.
+  \end{bproof}
+  W celu uzyskania pełnego oglądu poprawności algorytmu Edmondsa, należy uzasadnić poprawność operacji zwijania struktur kwiatów w celu poszukiwania maksymalnych skojarzeń.
+  \begin{theorem}
+    Przyjąwszy istnienie pewnego skojarzenia $W$ w grafie $H=(V_H, E_H)$ oraz kwiatu $B$, $W \setminus B$ jest maksymalne w $H \setminus B$ wtedy i tylko wtedy gdy skojarzenie $W$ jest maksymalne w $H$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli skojarzenie $W \setminus B$ nie byłoby maksymalne, w grafie $H$musiałaby istnieć $W$-przemienna ścieżka powiększająca $\eta$.
+    Kroki algorytmu w razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} zajmują się tym przypadkiem.
+
+    Ścieżka $\eta$ zaczyna od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w algorytmie) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
+    Uzyskanie $M$-przemiennej ścieżki powiększającej w grafie $G$ jest możliwe poprzez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
+    skojarzeń.
+
+    Założyć należy, że graf $H=(V_H, E_H)$ otrzymano z grafu $G=(V, E)$ poprzez skurczenie kwiatu $B$ do wierzchołka $b$.
+    W takiej sytuacji jeżeli ścieżka $\eta$ nie przechodzi przez wierzchołek $b$ oznacza to, że musi być ona również $M$-przemienną ścieżką powiększającą w grafie $G$. W przeciwnym wypadku --- gdy ścieżka $\eta$ zawiera w sobie wierzchołek $b$ --- mogą wystąpić dwie sytuacje:
+    \begin{enumerate}
+      \item Ścieżka $\eta$ kończy się w wierzchołku $b$.
+      Może to nastąpić wyłącznie w przypadku, gdy w kwiecie $B$ występuje korzeń zawierającego go drzewa $T$, w przeciwnym razie wierzchołek $b$ nie byłby wolny w grafie $H$.
+      W tejże sytuacji zakończeniem ścieżki $\eta$ w grafie $G$ jest pewien wierzchołek $v_B \in B$, z którego można dotrzeć do korzenia podążajac we właściwym kierunku --- to znaczy tym, który zawiera skojarzoną przez zbiór $M$ krawędź łączącą kwiat $B$ z najbliższym wierzchołkiem z zewnątrz.
+      \item Ścieżka $\eta$ przechodzi przez wierzchołek $b$.
+      Przyjąć należy, że ścieżka $\eta$ w grafie $G$ dociera do pewnego wierzchołka $x$ należącego do kwiatu $B$.
+      W takiej sytuacji jedyna skojarzona przez zbiór $M$ krawędź wychodząca z kwiatu $B$ prowadzi z pewnego wierzchołka $y$ do korzenia drzewa $T$.
+      Zaczynając w wierzchołku $x$ można zatem ponownie wybrać odpowiedni kierunek wzdłuż krawędzi kwiatu $B$ w celu zachowania $M$-przemienności, osiągnąć wierzchołek $y$ i postępować dalej zgodnie z kształtem ścieżki $\eta$.
+    \end{enumerate}
+
+    Powyższy szkic mogących nastąpić sytuacji dowodzi, że w momencie zakończenia działania algorytmu skojarzenie $W$ musi być maksymalne w grafie $H$.
+  \end{bproof}
+  \begin{theorem}
+    Algorytm Edmondsa znajduje maksymalne dopasowanie grafu $G=(V, E)$ w czasie $O(|V|^4)$.
+  \end{theorem}
+  \begin{bproof}
+    Podpierając się rozumowaniem przedstawionym w dowodzie twierdzenia~\ref{th_augentation_complexity} oraz dowodami zawartymi w niniejszym podrozdziale łatwo zauważyć, że algorytm Edmondsa w trakcie działania dokona co najwyżej $\frac{|V|}{2}$ powiększeń.
+    Pomiędzy kolejnymi powiększeniami istnieje możliwość dodania co najwyżej $|E|$ krawędzi do lasu $F$.
+    W związku z faktem, iż kwiat stanowi cykl nieparzystej długości, zawiera on przynajmniej 3 krawędzie --- a zatem pomiędzy kolejnymi powiększeniami istnieje możliwość skurczenia co najwyżej $\frac{|V|}{3}$ kwiatów.
+    W związku z potrzebą utrzymywania lasu $F$, dodawanie do niego kolejnej krawędzi poprzedzone jest sprawdzeniem co najwyżej $O(|E|)$ zawartych krawędzi w celu zachowania ich unikalności w ramach drzewa.
+    Łatwo zauważyć, że złożoność obliczeniowa wynosić będzie $O(|E||V|^2)$.
+    W możliwie najgęstszym grafie spełniona jest równość $|E|=|V|^2$ --- pesymistyczna złożoność obliczeniowa wynosić będzie zatem $O(|V|^2*|V|^2)=O(|V|^4)$.
+  \end{bproof}
 }
