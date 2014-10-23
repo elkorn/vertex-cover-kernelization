@@ -122,7 +122,7 @@ pdftex}
 \def\labelitemiii{--}
 
 \newtheorem{theorem}{\parindent=0pt{\textbf{Twierdzenie}}}[section]
-\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{\thmnote{#3's }#1}
+\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{#3}}}
 \theoremstyle{named}
 \newtheorem*{namedtheorem}{Twierdzenie}
 \newtheorem{property}{\parindent=0pt{\textbf{Własność}}}[section]
