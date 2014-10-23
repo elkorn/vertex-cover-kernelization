@@ -2,6 +2,8 @@
 \subsection{Architektura aplikacji}\label{ss_internals_architecture}
 \par{
   Zgodnie z kanonem podyktowanym przez specyfikację języka Go, kod aplikacji podzielony został na \emph{pakiety}.
+  Należy zaznaczyć, iż pakiety w rozumienia języka Go są czymś innym niż pakiety opisywane w podrozdziale~\ref{ss_internals_misc}.
+  W kontekście obecnego rozdziału przez pakiety rozumie się logiczne jednostki organizacji kodu w języku Go, pakiety omawiane w podrozdziale~\ref{ss_internals_misc} stanowią zewnętrzne biblioteki, z których korzystano w ramach prac implementacyjnych.
   Projektując strukturę kodu, nacisk położony został na logiczne rozdzielenie części programu związanych z poszczególnymi aspektami domeny problemu.
   W związku z tym zdefiniowano następujące pakiety:
   \begin{itemize}
