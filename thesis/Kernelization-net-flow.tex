@@ -3,7 +3,7 @@ Algorytm ten, zaproponowany w~\cite{KernelizationAlgorithms04}, opiera się na
 algorytmie użytym w~\cite{Niedermeier02} do udowodnienia twierdzenia
 Neumhausera-Trottera.
 
-\begin{nt}\thlabel{theorem_nt}
+\begin{theorem}[Drugie twierdzenie Nemhausera-Trottera]\thlabel{theorem_nt}
   Dla grafu $G=(V,E), |V|=n, |E|=m$, dwa rozłączne zbiory $C_0 \subseteq V,
   V_0 \subseteq V$ mogą zostać oblicone w czasie $O(\sqrt{n}m)$ przy zachowaniu
   następujących własności.
@@ -15,7 +15,7 @@ Neumhausera-Trottera.
     \item Podgraf $G[V_0]$ posiada optymalną pokrywę wierzchołkową rozmiaru co
       najmniej $\frac{[V_0]}{2}$. 
   \end{enumerate}
-\end{nt}
+\end{theorem}
 
 Algorytm definiuje graf dwudzielny $B$ na podstawie grafu $G$, odnajduje pokrywę
 wierzchołkową $VC_B$ grafu $B$ poprzez odnalezienie maksymalnego skojarzenia $B$,
@@ -88,11 +88,11 @@ pokrycia wierzchołkowego poprzez korelację maksymalnego dopasowania w grafie
 dwudzielnym z optymalną pokrywą wierzchołkową. 
 Zależność ta sformułowana została jako twierdzenie K\"oniga:
 
-\begin{konig*}
+\begin{theorem}[Twierdzenie K\"oniga]
   W dowolnym grafie dwudzielnym, ilość krawędzi zawarta w maksymalnym
   dopasowaniu jest równa rozmiarowi optymalnej pokrywy wierzchołkowej tego
   grafu.
-\end{konig*}
+\end{theorem}
 
 \begin{theorem}\label{theorem_nf1}
   Wynikiem kroku 5.\ algorytmu jest poprawna pokrywa wierzchołkowa $VC$
