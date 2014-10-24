@@ -22,13 +22,33 @@ var allowedLayouts map[string]bool = map[string]bool{
 	"sfdp":  true,
 }
 
-var defaultOutputFormat string = "svg"
+var displayTools map[string]string = map[string]string{
+	"jpg": "feh",
+	"svg": "display",
+}
+
+var defaultOutputFormat string = "jpg"
+var defaultLayoutAlgorithm string = "sfdp"
 
 type graphVisualizer struct {
 	g               *graph.Graph
 	edgeAttrs       [][]map[string]string
 	vertexAttrs     []map[string]string
+	label           string
 	layoutAlgorithm string
+}
+
+func getDisplayTool() string {
+	definedTool := displayTools[defaultOutputFormat]
+	if definedTool == "" {
+		return "display"
+	}
+
+	return displayTools[defaultOutputFormat]
+}
+
+func GetOutputFormat() string {
+	return defaultOutputFormat
 }
 
 func ShowGraph(g *graph.Graph) {
@@ -65,8 +85,19 @@ func MkGraphVisualizer(g *graph.Graph) *graphVisualizer {
 	if g.NVertices() > 100 {
 		return mkGraphVisualizer(g, "sfdp")
 	} else {
-		return mkGraphVisualizer(g, "neato")
+		return mkGraphVisualizer(g, defaultLayoutAlgorithm)
 	}
+}
+
+func MkLabelledGraphVisualizer(g *graph.Graph, label string) (result *graphVisualizer) {
+	if g.NVertices() > 100 {
+		result = mkGraphVisualizer(g, "sfdp")
+	} else {
+		result = mkGraphVisualizer(g, "neato")
+	}
+
+	result.label = label
+	return
 }
 
 func MkNeatoVisualizer(g *graph.Graph) *graphVisualizer {
@@ -220,6 +251,11 @@ func (self *graphVisualizer) toDot(name string) bytes.Buffer {
 		}
 	}
 
+	if self.label != "" {
+		res.Write(tstobn("labelloc=t;"))
+		res.Write(tstobn(fmt.Sprintf("label=\"%v\";", self.label)))
+	}
+
 	res.Write(stob("}"))
 	return res
 }
@@ -259,7 +295,7 @@ func (self *graphVisualizer) MkImage(name string) error {
 func (self *graphVisualizer) Display() {
 	randname := fmt.Sprintf("%v", rand.Int63())
 	filename := fmt.Sprintf("%v.%v", randname, defaultOutputFormat)
-	cmd := exec.Command("feh", filename)
+	cmd := exec.Command(getDisplayTool(), filename)
 	err := self.MkImage(randname)
 	if nil != err {
 		log.Fatal(err)

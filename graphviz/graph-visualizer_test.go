@@ -35,7 +35,7 @@ func TestdotToImage(t *testing.T) {
 	gv := MkGraphVisualizer(g)
 
 	dot := gv.toDot("test")
-	file, err := os.Open("expected_dot.svg")
+	file, err := os.Open("expected_dot." + GetOutputFormat())
 	expected := make([]byte, 0)
 	if nil != err {
 		panic("Cannot open reference file.")
@@ -57,7 +57,7 @@ func TestMkImage(t *testing.T) {
 
 	gv := MkGraphVisualizer(g)
 
-	expectedFile, err := os.Open("expected_dot.svg")
+	expectedFile, err := os.Open("expected_dot." + GetOutputFormat())
 	if nil != err {
 		panic(err)
 	}
@@ -69,7 +69,7 @@ func TestMkImage(t *testing.T) {
 		panic(err)
 	}
 
-	actualFile, err := os.Open("actual_dot.svg")
+	actualFile, err := os.Open("actual_dot." + GetOutputFormat())
 	if nil != err {
 		panic(err)
 	}
@@ -80,7 +80,7 @@ func TestMkImage(t *testing.T) {
 	expectedFile.Read(expected)
 	actualFile.Read(actual)
 	// assert.Equal(t, expected, actual)
-	os.Remove("actual_dot.svg")
+	os.Remove("actual_dot." + GetOutputFormat())
 }
 
 func TestColor(t *testing.T) {
