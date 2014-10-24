@@ -11,28 +11,31 @@ type naiveVC struct {
 	cover  mapset.Set
 }
 
-func (self *naiveVC) solveIter(g *graph.Graph, k int) bool {
+func (self *naiveVC) solveIter(g *graph.Graph, k int, cover mapset.Set) (bool, mapset.Set) {
 	if g.NEdges() == 0 {
-		return false
+		return true, cover
 	}
 
 	if k == 0 {
-		return true
+		return false, cover
 	}
 
 	edge := self.getFirstExistingEdge(g)
 	g1, g2 := g.Copy(), g.Copy()
 	g1.RemoveVertex(edge.From)
 	g2.RemoveVertex(edge.To)
-	result1, result2 := self.solveIter(g1, k-1), self.solveIter(g2, k-1)
-
+	result1, cov1 := self.solveIter(g1, k-1, cover.Clone())
+	result2, cov2 := self.solveIter(g2, k-1, cover.Clone())
+	// var resultCover mapset.Set
 	if result1 {
-		self.cover.Add(edge.From)
+		cover = cov1
+		cover.Add(edge.From)
 	} else if result2 {
-		self.cover.Add(edge.To)
+		cover = cov2
+		cover.Add(edge.To)
 	}
 
-	return result1 || result2
+	return result1 || result2, cover
 }
 
 func (self *naiveVC) getFirstExistingEdge(g *graph.Graph) (result *graph.Edge) {
@@ -44,21 +47,19 @@ func (self *naiveVC) getFirstExistingEdge(g *graph.Graph) (result *graph.Edge) {
 	return
 }
 
-func (self *naiveVC) solve(g *graph.Graph, k int) bool {
+func (self *naiveVC) solve(g *graph.Graph, k int) (bool, mapset.Set) {
 	if self.solved {
-		return self.result
+		return self.result, self.cover
 	}
 
 	self.solved = true
-	self.result = self.solveIter(g, k)
-	return self.result
+	self.result, self.cover = self.solveIter(g, k, self.cover)
+	return self.result, self.cover
 }
 
 func NaiveVC(G *graph.Graph, k int) (bool, mapset.Set) {
 	instance := &naiveVC{
 		cover: mapset.NewThreadUnsafeSet(),
 	}
-
-	instance.solve(G, k)
-	return instance.result, instance.cover
+	return instance.solve(G, k)
 }

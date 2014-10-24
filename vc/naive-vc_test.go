@@ -6,6 +6,7 @@ import (
 
 	"github.com/deckarep/golang-set"
 	"github.com/elkorn/vertex-cover-kernelization/graph"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,7 +23,6 @@ func TestNaiveVC2(t *testing.T) {
 	assert.Equal(t, 6, cover.Cardinality())
 	assert.Equal(t, 3, cover.Intersect(outerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  outer vertices (from %v)", cover, outerVertices))
 	assert.Equal(t, 3, cover.Intersect(innerVertices).Cardinality(), fmt.Sprintf("The cover of the Petersen graph (%v) should contain 3  inner vertices (from %v)", cover, innerVertices))
-
 }
 
 func TestNaiveVC3(t *testing.T) {
