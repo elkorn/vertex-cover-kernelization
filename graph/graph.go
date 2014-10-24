@@ -25,9 +25,9 @@ func (self *Graph) Copy() *Graph {
 	result := &Graph{
 		CurrentVertexIndex: self.CurrentVertexIndex,
 		numberOfVertices:   self.numberOfVertices,
-		numberOfEdges:      self.numberOfEdges,
+		numberOfEdges:      0,
 	}
-	utility.Debug("Copying graph...")
+
 	result.Vertices = make(Vertices, len(self.Vertices))
 	copy(result.Vertices, self.Vertices)
 	result.IsVertexDeleted = make([]bool, len(self.IsVertexDeleted))
@@ -40,18 +40,17 @@ func (self *Graph) Copy() *Graph {
 		result.neighbors[x] = make([]*Edge, len(self.neighbors[x]))
 	}
 
-	i := -1
 	for _, edge := range self.Edges {
 		if nil == edge {
 			continue
 		}
 
 		result.addEdge(edge.From, edge.To)
-		i++
-		result.Edges[i].isDeleted = edge.isDeleted
+		if edge.isDeleted {
+			result.RemoveEdge(edge.From, edge.To)
+		}
 	}
 
-	copy(result.degrees, self.degrees)
 	result.isRegular = self.isRegular
 	result.needToComputeRegularity = self.needToComputeRegularity
 
