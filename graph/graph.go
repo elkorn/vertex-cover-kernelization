@@ -27,6 +27,7 @@ func (self *Graph) Copy() *Graph {
 		numberOfVertices:   self.numberOfVertices,
 		numberOfEdges:      self.numberOfEdges,
 	}
+	utility.Debug("Copying graph...")
 	result.Vertices = make(Vertices, len(self.Vertices))
 	copy(result.Vertices, self.Vertices)
 	result.IsVertexDeleted = make([]bool, len(self.IsVertexDeleted))
@@ -39,12 +40,14 @@ func (self *Graph) Copy() *Graph {
 		result.neighbors[x] = make([]*Edge, len(self.neighbors[x]))
 	}
 
-	for i, edge := range self.Edges {
-		utility.Debug("%v", edge)
+	i := -1
+	for _, edge := range self.Edges {
 		if nil == edge {
 			continue
 		}
-		result.AddEdge(edge.From, edge.To)
+
+		result.addEdge(edge.From, edge.To)
+		i++
 		result.Edges[i].isDeleted = edge.isDeleted
 	}
 
@@ -249,17 +252,22 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	}
 
 	if !self.HasVertex(a) {
-		return errors.New(fmt.Sprintf("Vertex %v does not exist in the ", a))
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph", a))
 	}
 
 	if !self.HasVertex(b) {
-		return errors.New(fmt.Sprintf("Vertex %v does not exist in the ", b))
+		return errors.New(fmt.Sprintf("Vertex %v does not exist in the graph", b))
 	}
 
 	if self.HasEdge(a, b) {
 		return errors.New(fmt.Sprintf("An edge between %v and %v already exists.", a, b))
 	}
 
+	self.addEdge(a, b)
+	return nil
+}
+
+func (self *Graph) addEdge(a, b Vertex) {
 	edge := MkEdge(a, b)
 	self.Edges = append(self.Edges, edge)
 	self.neighbors[a.ToInt()][b.ToInt()] = edge
@@ -271,7 +279,6 @@ func (self *Graph) AddEdge(a, b Vertex) error {
 	self.degrees[bi]++
 	self.numberOfEdges++
 	self.needToComputeRegularity = true
-	return nil
 }
 
 func (self *Graph) RemoveEdge(from, to Vertex) {
