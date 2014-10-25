@@ -20,6 +20,14 @@ grafu $G=(V,E)$.
   Stopień wierzchołka $v$ wyraża się w postaci $d(v)$.
 \end{definition}
 
+\begin{definition}\thlabel{def_regular}
+  Graf uznaje się za \emph{regularny} jeżeli wszystkie należące do niego wierzchołki są tego samego stopnia: $\forall_{v \in V}: \forall_{u \in V}:{d(v)=d(u)}$.
+\end{definition}
+
+\begin{definition}\thlabel{def_n_regular}
+  Graf uznaje się za \emph{$N$-regularny} jeżeli graf ten jest regularny i dowolny wierzchołek grafu jest stopnia $N$.
+\end{definition}
+
 \begin{definition}\thlabel{def_isolated_vertex}
   \emph{Wierzchołkiem izolowanym} nazywa się wierzchołek $v; d(v)=0$.
 \end{definition}
@@ -37,7 +45,7 @@ grafu $G=(V,E)$.
   $\not \exists_{v_n, v_m \in N}{(v_n,v_n) \in E \lor (v_n,v_m) \in E}$.
 \end{definition}
 
-\begin{definition}
+\begin{definition}\thlabel{def_vc}
   \emph{Pokrywą wierzchołkową} grafu nazywa się taki zbiór wierzchołków
   $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
 \end{definition}
@@ -123,4 +131,9 @@ grafu $G=(V,E)$.
   e_{n-1}\}$, spełniającą warunek: 
   ${\forall{\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_{i} \notin M) \oplus
   (e_{i-1} \notin M \land e_{i} \in M)}$.
+\end{definition}
+
+\begin{definition}\thlabel{def_induced_graph}
+  Mianem grafu \emph{zaindukowanego} pewnym zbiorem $W \subseteq V$ określa się graf $G^\prime=(V^\prime, E^\prime)$, którego zbiór wierzchołków ograniczony jest do zbioru $W$, a zbiór krawędzi ograniczony jest wyłącznie do krawędzi pokrytych przez wierzchołki należące do zbioru $W$.
+  Formalnie zbiór wierzchołków indukowanego grafu określony jest jako $V^\prime = W$, a zbiór jego krawędzi jako $E^\prime=\{e=(u,v)|e\in E \land (u \in W \lor v \in W)\}$.
 \end{definition}
