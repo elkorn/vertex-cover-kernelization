@@ -232,3 +232,25 @@
     W oparciu  otwierdzenie~\ref{th_crown_domain_reduction} można stwierdzić, że rozmiar wynikowej instancji problemu wynosi $|V^\prime| \leq 2k^prime$.
   \end{bproof}
 }
+\subsubsection{\textbf{Struktury ``pożyteczne''}}
+\label{sss_ckx_structures}
+\par{
+  Identyfikacja struktur ``pożytecznych'' (zwanych również po prostu \emph{strukturami}) w grafie związanym z rozpatrywaną instancją problemu pokrycia wierzchołkowego pozwala na maksymalizację efektywności procesu redukcji dziedziny do jądra problemu, co przekłąda się bezpośrednio na zmniejszenie złożoności czasowej algorytmu. Klasy struktur wraz z priorytetami zostały przez autorów pracy~\ref{ImprovedBounds10} wyznaczone drogą analityczną w oparciu o identyfikację i dekonstrukcję możliwie występujących w ogólnych grafach przypadków mających znaczenie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego.
+  Wartość ``pożyteczności'' danej klasy struktur określana jest przede wszystkim na podstawie relacji pomiędzy składającymi się na nie wierzchołkami.
+}
+\par{
+  Bardzo intensywnie wykorzystywanym w identyfikacji struktur pojęciem jest \emph{dominacja} oraz \emph{pseudodominacja} zachodząca pomiędzy wierzchołkami.
+  \begin{definition}\thlabel{def_domination}
+    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{zdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{dominuje} nad wierzchołkeiem $u$) jeżeli są one połączone krawędzią $(u, v) \in E$ oraz zachodzi własność $N(u) \subseteq N[v]$.
+  \end{definition}
+  \begin{definition}\thlabel{def_almost_domination}
+    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{pseudozdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{pseudodominuje} nad wierzchołkeiem $u$) jeżeli są nie one połączone krawędzią $(u, v) \notin E$ oraz zachodzi własność $|N(u) \subseteq N(v)| \leq 1$.
+  \end{definition}
+  \begin{theorem}
+      Jeżeli w grafie $G=(V, E)$ pewien wierzchołek $v$ dominuje nad pewynm wierzchołkiem $u$, to istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające wierzchołek $v$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli pewne optymalne pokrycie wierzchołkowe $C$ nie zawiera wierzchołka $v$, musi zatem zawierać zbiór jego wierzchołków sąsiednich $N(v)$, który zawiera wierzchołek $u$ (w oparciu o definicję~\ref{def_domination}).
+    W zawiązku z faktem, iż zbiór $(N(u) \setminus \{v\})$ jest zawarty w zbiorze $N(v)$, zastąpienie wierzchołka $u$ przez $v$ w zbiorze $C$ owocuje optymalnym pokryciem wierzchołkowym zawierającym wierzchołek $v$.
+  \end{bproof}
+}
