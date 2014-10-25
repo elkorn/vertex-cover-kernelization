@@ -25,3 +25,61 @@
 
   Złożoność czasowa algorytmu wynosi $O(1.2738^k + kn)$, co stawia go w światowej czołówce najszybszych algorytmów rozwiązujących parametryzowany wariant problemu pokrycia wierzchołkowego.
 }
+\subsection{Podstawowe pojęcia i struktury}\label{ss_ckx_preliminaries}
+\par{
+  W dalszym toku rozumowanie przyjęte zostaną następujące oznaczenia dla grafu $G=(V, E)$:
+  \begin{itemize}
+    \item $|G|$ stanowi liczbę wierzchołków $|V|$.
+    \item $\tau(G)$ stanowi rozmiar najmniejszego pokrycia wierzchołkowego grafu $G$.
+  \end{itemize}
+  Dla pewnego wierzchołka $v \in V$:
+  \begin{itemize}
+    \item $N(v)$ stanowi zbiór wierzchołków sąsiednich względem wierzchołka $v$, to znaczy połączonych krawędzią z tym wierzchołkiem.
+    \item $N[v]$ stanowi zbiór $N(v) \bigcup \{v\}$.
+    \item $d(v)$ stanowi stopień wierzchołka $v$.
+  \end{itemize}
+  Dla pewnego zbioru wierzchołków $S \in V$:
+  \begin{itemize}
+    \item $N(S)$ stanowi sumę zbiorów wierzchołków sąsiednich dla każdego wierzchołka $v_S \in S$ z wyłączeniem $v_S$, to znaczy $N(S)=\bigcup_{v_S\in S}N(v_S) \setminus S$.
+    \item $N[S]$ oznacza zbiór wierzchołków $N(S) \bigcup S$.
+  \end{itemize}
+
+  Przyjęte zostaje następujące założenie, oparte na drugim twierdzeniu Nemhausera-Trottera (twierdzenie~\ref{nt_lp}) oraz pojęciu NT-dekompozycji, opisanej w rozdziale~\ref{ss_nt_decomposition}.
+  \begin{proposition}
+    Istnieje algorytm o złożoności czasowej $O(kn + k^3)$ który z instancji problemu pokrycia wierzchołkowego $(G, k)$, gdzie $|G|=n$ konstruuje inną instancję problemu  pokrycia wierzchołkowego $(G_1, k_1)$, dla której $k_1 \leq k$ oraz $|G_1| \leq 2k_1$ oraz $\tau(G) \leq k$ wtedy i tylko wtedy gdy $\tau(G_1) \leq k_1$.
+  \end{proposition}
+
+  \begin{definition}
+    Instancja $(G_1, k_1)$, otrzymana przez NT-dekompozycję instancji $(G, k)$, stanowi \emph{jądro} instancji $(G, k)$.
+  \end{definition}
+}
+\par{
+  Logika głównego algorytmu zrealizowana jest jako drzewo poszukiwań, zgodne z techniką opisywaną w podrozdziale~\ref{ss_branch_and_bound}.
+  Każda iteracja podejmuje próby redukcji wartości parametru $k$ instancji wejściowej problemu pokrycia wierzchołkowego $(G, k)$ przez identyfikację pewnego zbioru wierzchołków $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony.
+  W przypadku odnalezienia takiego zbioru, algorytm usuwa należące do niego wierzchołki z dziedziny i rekurencyjnie wywołuje sam siebie na zredukowanych instancjach problemu.
+
+  Sposób redukcji instancji problemu oparty jest o następujące prawidłowości zaobserwowane w zachowaniu pokrycia wierzchołkowego w grafie.
+  \begin{theorem}
+    Dla pewnego wierzchołka $v$ w grafie $G$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(v)$ lub co najwyżej $|N(v)| - 2$ wierzchołków należących do zbioru $N(v)$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli pewne optymalne pokrycie wierzchołkowe $C$ grafu $G$ zawiera $|N(v)|-1$ wierzchołków należących do zbioru $N(v)$, to musi ono zawierać również wierzchołek $v$, ponieważ krawędź $(w \in N(v) \setminus C, v)$ również musi zostać pokryta.
+    Stworzyć można zatem inne optymalne pokrycie wierzchołkowe $C^\prime$ grafu $G$ poprzez zastąpienie wierzchołka $v$ w zbiorze $C$ przez wierzchołek $w$, czego wynikiem jest optymalne pokrycie wierzchołkowe grafu $G$ zawierające $N(v)$.
+  \end{bproof}
+  \begin{theorem}
+    Dla pewnych wierzchołków $u$ oraz $v$ połączonych krawędzią $(u, v) \in E$ w grafie $G=(V, E)$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające wierzchołek $v$ lub wykluczające wierzchołek $v$ oraz co najmniej jeden wierzchołek sąsiadujący z wierzchołkiem $u$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli każde optymalne pokrycie wierzchołkowe $C$ grafu $G$ wykluczałoby wierzchołek $v$, zawierając zarazem wszystkie wierzchołki sąsiadujące z wierzchołkiem $u$ w grafie $G$, to pokrycie $C$ musi również zawierać wierzchołek $u$ --- krawędź $(u, v)$ musi zostać pokryta.
+    W tej sytuacji pokrycie $C^\prime=(C \setminus \{u\}) \bigcup \{v\}$ stanowiłoby zgodne z definicją~\ref{def_vc} optymalne pokrycie wierzchołkowe zawierające $v$, przeczące założeniu że każde optymalne pokrycie wierzchołkowe musi wykluczać wierzchołek $v$.
+  \end{bproof}
+  \begin{definition}
+    W przypadku odnalezienia w grafie $G$ pewnej instancji $(G, k)$ problemu pokrycia wierzchołkowego zbioru $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony mówi się, że algorytm \emph{rozgałęzia się na zbiorze $S$}.
+    Oznacza to, iż algorytm konstruuje dwie zredukowane instancje problemu.
+    \begin{enumerate}
+      \item Instancja zawierająca zbiór $S$ w częściowym pokryciu wierzchołkowym.
+      \item Instancja wykluczająca zbiór $S$ z częściowego pokrycia wierzchołkowego i zawierająca wszystkie wierzchołki sąsiadujące ze zbiorem $S$ w częściowym pokryciu wierzchołkowym.
+    \end{enumerate}
+    Jeżeli zbiór $S$ składa się z jednego wierzchołka $v$ mówi się, że algorytm \emph{rozgałęzia się na wierzchołku $v$}.
+  \end{definition}
+}
