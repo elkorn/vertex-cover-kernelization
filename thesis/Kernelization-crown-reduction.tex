@@ -12,13 +12,22 @@
     \item Istnieje skojarzenie $M=\{e_0, e_1, \ldots, e_p\}, \forall_{e_M=(u,v) \in
       M}: (u\in I \land v\in H) \lor (u \in H \land v \in I)$ takie, że
       $\forall_{v_h \in H}\exists_{e_M=(u,v)\in M}: u = v_h \oplus v = v_h$.
+    \item Spełniona jest nierówność $|H| \leq |I|$. (własność przechodnia z własności 3)
   \end{enumerate}
 \end{definition}
 \begin{definition}
   Zbiór $H$ określa się mianem \emph{głowy korony}.
 \end{definition}
-\begin{definition}
-  Mianem \emph{szerokości korony} określa się $|H|$.
+\begin{definition}\thlabel{def_crown_head}
+  Mianem \emph{szerokości korony} określa się liczebność zbioru stanowiącego jej głowę $|H|$.
+\end{definition}
+\begin{definition}\thlabel{def_strict_crown}
+  Mianem korony \emph{ścisłej} określa się koronę $(I, H)$, dla której spełniona jest nierówność $|H| < |I|$.
+}
+\end{definition}
+\begin{definition}\thlabel{def_equal_crown}
+  Mianem korony \emph{równej} określa się koronę $(I, H)$, dla której spełniona jest równość $|H| = |I|$.
+}
 \end{definition}
 \begin{theorem}\thlabel{th_crown_vc}
   Jeżeli graf $G=(V,E)$ zawiera koronę $(I,H)$, istnieje optymalna pokrywa 
@@ -124,7 +133,7 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu 
   wynikowego $|G\prime|$.
 }
-\begin{theorem}
+\begin{theorem}\thlabel{th_crown_domain_reduction}
   $|M_1| \leq k, |M_2| \leq k \implies |V\prime \setminus I \setminus H|
   \leq 3k$.
 \end{theorem}
