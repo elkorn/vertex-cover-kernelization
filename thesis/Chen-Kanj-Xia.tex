@@ -1,0 +1,27 @@
+\section{Algorytm Chen, Kanj, Xia}\label{s_ckx}
+\subsection{Wstęp}
+\par{
+  Zaprezentowane w poprzednich rozdziałach pracy algorytmy związane są przede wszystkim z modyfikacją struktury grafu wejściowego w celu przyspieszenia procesu rozwiązywania problemu pokrycia wierzchołkowego.
+  Każdy z przestawionych dotychczas algorytmów może być wykorzystywany niezależnie --- ich działanie jest ortogonalne względem siebie.
+  Fakt ten nie uszedł uwadze autorów pracy~\cite{ImprovedBounds10}, którzy dostrzegli potencjał optymalizacji drzemiący w zastosowaniu starannie zaprojektowanego i przeanalizowanego modelu redukcji dziedziny do jądra problemu.
+  Model ten oparty jest na stosunkowo prostym algorytmie rekurencyjnym działającym zgodnie z zasadą drzewa poszukiwań z ograniczeniami, popartym wyczerpującą analizą mogących zaistnieć po drodze przypadków.
+  Wykorzystane w ramach działania algorytmu funkcje redukujące dziedzinę są od siebie mocno uzależnione oraz uruchamiane w ściśle określonej kolejności w celu zachowania poprawności logiki wysokopoziomowej i maksymalizacji pozytywnych efektów ich wykonywania.
+}
+\par{
+  Wedle autorów, główną motywacją do stworzenia niniejszego algorytmu było udowodnienie wagi gruntownej analizy dziedziny algorytmu (w przeciwieństwie do znacznie powszechniejszej analizy opartej o charakterystyczne przypadki) w celu uzyskania jak najdokładniejszych wartości pesymistycznej złożoności obliczeniowej.
+  Zastosowane podejście czerpie inspirację z niezywkle efektywnej metodyki analitycznej ``mierz i zwyciężaj'', zaproponowanej w artykule~\cite{conf/icalp/FominGK05}.
+
+  Drugim głównym celem pracy~\cite{ImprovedBounds10} jest studium najlepszej możliwej złożoności obliczeniowej osiągalnej dla problemu pokrycia wierzchołkowego.
+  Wobec odkryć dokonanych w pracach~\cite{Impagliazzo2001512} oraz~\cite{Cai2003789} wyjawiających, iż dopóki nie zostanie udowodnione, że wszystkie problemy $\mathcal{SNP}$ są rozwiązywalne w czasie krótszym niż wykładniczy, istnieje pewna stała $c_0 > 1$, dla której problem pokrycia wierzchołkowego nie może być rozwiązany w czasie $c_0^kn^{O(1)}$.
+  Uwaga poświęcona jest zatem próbom jak najbardziej znacznego zmniejszenia stałej $c > 1$, dla której problem pokrycia wierzchołkowego rozwiązywalny jest w czasie $c^kn^{O(1)}$.
+}
+\par {
+  Otrzymany algorytm jest nieskomplikowany i jednolity, zachowuje również formę poddającą się w łatwy sposób dokładnej analizie.
+  Kręgosłup algorytmu stanowi utrzymywana na bieżąco kolejka priorytetowa ``pożytecznych'' struktur służacych do redukowania dziedziny problemu.
+  Na każdym z etapów algorytm wybiera strukturę o najwyższym priorytecie, zapewniającą najwięcej korzyści.
+  Wybrana struktura przetwarzana jest w sposób \emph{jednolity} oraz \emph{nieświadomy} jej kształtu.
+  W wyniku analiz udało się doprowadzić do stanu logiki, w której istnieją jedynie dwa możliwe sposoby (odzwierciedlone dwoma gałęziami algorytmu) przetwarzania dowolnej struktury.
+  Pozostałe operacje nie posiadają żadnych rozgałęzień --- stanowią działania pomocnicze ``oczyszczające'' graf (podobnie jak algorytmy przetwarzania wstępnego omówione w podrozdziale~\ref{Section_preprocessing}) w celu zapewnienia największej możliwej wydajności następujących operacji z rozgałęzieniami.
+
+  Złożoność czasowa algorytmu wynosi $O(1.2738^k + kn)$, co stawia go w światowej czołówce najszybszych algorytmów rozwiązujących parametryzowany wariant problemu pokrycia wierzchołkowego.
+}
