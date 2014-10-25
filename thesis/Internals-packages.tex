@@ -144,4 +144,31 @@
         \State{\textbf{return nil}}\Comment{Nie istnieje pokrycie o liczebności $\leq k$}
       \EndFunction
     \end{algorithmic}
-  \end{algorithm}}
+  \end{algorithm}
+  \[
+    \textbf{TODO: Write about the complexity after you test it.}
+  \]
+
+\subsubsection{\textbf{Pakiet \texttt{kernelization} --- algorytm Chen, Kanj, Xia}}
+\label{sss_internals_ckx}
+\begin{algorithm}
+  \caption{Algorytm strukturyzacji}\label{alg_ckx_struction}
+  \begin{algorithmic}[1]
+  \Function{Struction}{G}
+
+    \algorithmicrequire{graf wejściowy $G=(V, E)$}
+
+    \algorithmicensure{graf strukturyzowany $G^\prime=(V^\prime, E^\prime)$}
+
+    \State $v_0 \gets v \in V$
+    \State $p \gets |N(v_0)|$
+    \State $G^\prime \gets G$
+    \State $V^\prime \gets V \setminus N(v_0)$
+    \For{każda antykrawędź $\{v_i, v_j\} \in V; 0 < i < j \leq p$}
+      \State $V^\prime \gets V^\prime \bigcup \{v_{ij}\}$\Comment{wstaw nowy wierzchołek do grafu strukturyzowanego}
+    \EndFor
+    \For{każda krawędź}
+    \EndFor
+  \EndFunction
+  \end{algorithmic}
+\end{algorithm}
