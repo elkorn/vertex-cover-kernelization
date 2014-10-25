@@ -83,3 +83,37 @@
     Jeżeli zbiór $S$ składa się z jednego wierzchołka $v$ mówi się, że algorytm \emph{rozgałęzia się na wierzchołku $v$}.
   \end{definition}
 }
+\subsubsection{\textbf{Operacja strukturyzacji}}\label{sss_ckx_struction}
+\par{
+  Wprowadzona przez autorów pracy~\cite{ImprovedBounds10} operacja strukturyzacji stanowi uściślenie operacji strukturyzacji występującej w~pracy~\cite{Ebengger:1984}.
+  Operacja strukturyzacji jest pierwszą z podstawowych, nierozgałęziających się funkcji pomagających w utrzymywaniu ``czystej'' struktury grafu dla maksymalizacji efektywności algorytmu głównego.
+  Operację tę szczegółowo opisuje pseudokod~\ref{alg_ckx_struction} w podrozdziale~\ref{sss_internals_ckx}.
+}
+\par{
+  \begin{definition}
+    Dla pewnych dwóch wierzchołków $u$ oraz $v$ grafu $G=(V, E)$ zbiór $\{u, v\}$ określa się mianem \emph{antykrawędzi} w grafie $G$ jeżeli $(u, v) \notin E$.
+  \end{definition}
+
+  Przyjąć należy pewien wierzchołek $v_0$ należący do grafu $G$ oraz posiadający zestaw wierzchołków sąsiednich $N(v_0)=\{v_1, v_2, \ldots, v_p\}$.
+  Graf strukturyzowany $G^\prime$ konstruowany jest według następujących kroków.
+  \begin{enumerate}
+    \item Usuń wierzchołki $v_N \in N[v_0]$ z grafu G i dla każdej antykrawędzi $\{v_i, v_j\}$ w grafie $G$, gdzie $0 < i < j \leq p$ wprowadź nowy wierzchołek $v_{ij}$ do grafu strukturyzowanego $G^\prime$.
+    \item Jeżeli $i=j, r\neq s$ oraz $(v_r, v_s) \in E$, dodaj do grafu strukturyzowanego $G^\prime$ krawędź $(v_{ir}, v_{js})$.
+    \item Jeżeli $i \neq j$, dodaj do grafu strukturyzowanego $G^\prime$ krawędź $(v_{ir}, v_{js})$.
+    \item Dla każdego wierzchołka $u \notin N[v_0]$ dodaj krawędź $(v_{ij}, u)$ jeżeli $(v_i, u) \in E$ lub $(v_j, u) \in E$.
+  \end{enumerate}
+  \begin{theorem}
+    Dla pewnego wierzchołka $v_0$ grafu $G=(V, E)$ o sąsiedztwie $N(v_0); |N(v_0)|=p$ założyć należy istnienie co najwyżej $p-1$ antykrawędzi w zbiorze $N(v_0)$.
+    Jeżeli za $G^\prime$ przyjmuje się graf otrzymany w yniku strukturyzacji wierzchołka $v_0$ w grafie $G$, to spełniona jest nierówność $\tau(G) \leq \tau(G^\prime) - 1$.
+  \end{theorem}
+  \begin{bproof}
+    Przyjąć należy notację $\alpha(G)$ oraz $\alpha(G^\prime)$ jako oznaczenie liczebności największego zbioru niezależnego (w rozumieniu definicji~\ref{def_independent_set}) w grafach $G$ oraz $G^\prime$.
+    W~pracy~\cite{Ebengger:1984} udowodniono, iż $\alpha(G^\prime)=\alpha(G) - 1$.
+    Niech przez $n$ oraz $n^\prime$ oznaczone będą liczby wierzchołków odpowiednio grafu $G$ oraz $G^\prime$.
+    W związku z założeniem, iż istnieje co najwyzej $p - 1$ antykrawędzi w zbiorze $N(v_0)$, liczba nowo utworzonych w grafie $G^\prime$ wierzchołków może wynosić co najwyżej $p - 1$.
+    Ponieważ z grafu $G$ usunieto $p+1$ wierzchołków, to znaczy zbiór $N[v_0]$, łatwo zauważyć, iż $n^\prime \leq n-2$.
+    Z charakterystyki zbioru niezależnego oraz pokrycia wierzchołkowego wywnioskować można, iż dla dowolnego grafu $H$ spełniona jest równość $\alpha(H)+\tau(H)=|H|$.
+    Na podstawie powyższych obserwacji stwierdzić można, iż zachowana jest następująca własność.
+    \[\tau(G^\prime)=n^\prime-\alpha(G^\prime)\leq (n-2)-(\alpha(G)-1)=\tau(G)-1\]
+  \end{bproof}
+}
