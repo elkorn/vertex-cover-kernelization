@@ -254,3 +254,27 @@
     W zawiązku z faktem, iż zbiór $(N(u) \setminus \{v\})$ jest zawarty w zbiorze $N(v)$, zastąpienie wierzchołka $u$ przez $v$ w zbiorze $C$ owocuje optymalnym pokryciem wierzchołkowym zawierającym wierzchołek $v$.
   \end{bproof}
 }
+\par{
+  Kolejną szczególną klasą struktur są tak zwane \emph{dobre pary}.
+  Głównym zastosowaniem dobrych par jest maksymalizacja efektywności redukcji dziedziny w momencie rozgałęziania się głównego algorytmu.
+  \begin{definition}
+    W grafie $G=(V, E)$ mianem \emph{dobrej pary} nazywa się parę wierzchołków $\{u, z\}$ wybranych wedle następujących kryteriów.
+    Dla każdego wierzchołka $u \in V$ posiadającego zbiór wierzchołków sąsiednich $N(u)=\{u_1, u_2, \ldots, u_d\}$ zdefiniować należy jego \emph{etykietę} (zapisywaną jako \emph{etykieta(u)}) jako wektor $\eta=\<\eta_1, \eta_2, \ldots, \eta_d\>$, gdzie $\eta_1$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o największym stopniu $u_{a} \in N(u), d(u_{a})=\max\{d(u_n) | u_n \in N(u)\}$, $\eta_2$ jest stopniem wierzchołka sąsiadującego z wierzchołkiem $u$ o drugim w kolejności największym stopniu $u_{b} \in N(u), d(u_{b})=\max\{d(u_n) | u_n \in N(u) \setminus \{u_{a}\}\}$ itd. --- $\eta_d$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o najniższym stopniu spośród wszystkich wierzchołków zbioru $N(u)$ $u_{z} \in N(u), d(u_{z})=\min\{d(u_n) | u_n \in N(u)\}$.
+
+    W celu określenia pierwszego wierzchołka pewnej dobrej pary należy wybrać wierzchołek $u \in V$ spełniający następujące własności w podanym porządku.
+    \begin{enumerate}[(i)]
+      \item Wektor etykiety wierzchołka $u$ jest największy w porządku leksykograficznym spośrów wektorów etykiet wszystkich wierzchołków $w \in G$ stopnia $d(w)=d(u)$.
+      \item  Jeżeli graf $G$ jest regularny (w rozumieniu definicji~\ref{def_regular}), liczba par wierzchołków $\{x, y\} \subseteq N(u)$, w których wierzchołek $y$ jest pseudozdominowany przez wierzchołek $x$ jest największa z możliwych.
+      \item Liczba krawędzi w ramach zbioru $N(u)$ jest największa z możliwych.
+    \end{enumerate}
+
+    W celu identyfikacji drugiego wierzchołka pewnej dobrej pary należy wybrać wierzchołek $z \in N(u)$ spełniający następujące własności w podanym porządku.
+    \begin{enumerate}[(a)]
+      \item Jeżeli istnieją pewne dwa wierzchołki $v \in N(u)$ oraz $w \in N(u)$, z których wierzchołek $v$ jest pseudozdominowany przez wierzchołek $w$, to wierzchołek $z$ jest pseudozdominowany przez pewien wierzchołek $x \in N(u)$.
+      \item Stopień wierzchołka $d(z)$ jest największy z możliwych wśród wierzchołków sąsiadujących z wierzchołkiem $u$, spełniających własność (a).
+      W sytuacji gdy żaden wierzchołek $v \in N(u)$ nie pseudodominuje żadnego innego wierzchołka $w \in N(u)$, własność (a) jest spełniona w sposób przechodni przez każdy wierzchołek sąsiadujący z wierzchołkiem $u$ --- woerzchołek $z$ będzie wtedy po prostu sąsiadem największego stopnia wierzchołka $u$.
+      \item Wierzchołek $z$ jest połączony krawędzią z jak najmniejszą liczbą wierzchołków należących do sąsiedztwa wierzchołka $u$ spośród wszystkich wierzchołków, dla kórych zachodzą własności (a) i (b).
+      \item Liczba wierzchołków sąsiednich współdzielonych pomiędzy wierzchołkiem $z$ oraz innym wierzchołkiem nalężącym do sąsiedztwa wierzchołka $u$ jest największa z możliwych spośród wszystkich elementów zbioru $N(u)$, dla których zachodzą własności (a), (b) i (c).
+    \end{enumerate}
+  \end{definition}
+}
