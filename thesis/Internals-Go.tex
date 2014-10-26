@@ -9,7 +9,7 @@ Składnia Go silnie nawiązuje do języka C --- dokonano jednak wielu modyfikacj
 Dużo uwagi poświęca się również pielęgnacji ekosystemu wokół Go w celu uczynienia go narzędziem jak najłatwiejszym i najbardziej praktycznym w użyciu.
 Dla osiągnięcia tych założeń zastosowano wzorce znane zarówno z języków statycznie jak i dynamicznie typowanych.
 }
-\par{Deklaracja i inicjalizacja zmiennych odbywa się przy pomocy mechanizmu domniemania typów, w większości przypadków zwalniającego programistę z obowiązku jawnego oznaczania typu zmiennych oraz metod. Zamiast zapisu \textit{\textss{\lstinline{int~x~=~0;}}}, znanego z języka C, stosuje się tu krótszy zapis \textit{\textss{\lstinline{x~:=~0}}}. Warto również zwrócić uwagę na brak wymagania stawiania średników jako zakończeń wyrażeń.
+\par{Deklaracja i inicjalizacja zmiennych odbywa się przy pomocy mechanizmu domniemania typów, w większości przypadków zwalniającego programistę z obowiązku jawnego oznaczania typu zmiennych oraz metod. Zamiast zapisu \textit{\lstinline{int x = 0;}}, znanego z języka C, stosuje się tu krótszy zapis \textit{\lstinline{x := 0}}. Warto również zwrócić uwagę na brak wymagania stawiania średników jako zakończeń wyrażeń.
 }
  \par{Mimo możliwości korzystania ze wskaźników, bezpośredni dostęp do nich jest niemożliwy, co zapobiega błędom związanym z niezgodnością typów. W połączeniu ze statycznym typowaniem oznacza to, iż programista nie jest w stanie wprowadzić rozbieżności na poziomie typów zmiennych prowadzących do awarii aplikacji niewykrytych przez kompilator. Konsekwencją zablokowania bezpośredniego dostępu do wskaźników jest również brak możliwości wykonywania na nich działań arytmetycznych.
  }
@@ -17,18 +17,18 @@ Dla osiągnięcia tych założeń zastosowano wzorce znane zarówno z języków 
 Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wynikającym z nieprawidłowego zarządzania wskaźnikami. W aktualnej wersji wykorzystywana jest współbieżna wersja algorytmu \textit{mark and sweep}.
 }
 \par{
- W związku z faktem, iż Go jest językiem strukturalnym, brak w nim pojęcia obiektu. Uproszczonym odpowiednikiem jest struktura, definiowana słowem kluczowym \textit{\textss{\lstinline{struct}}}.
+ W związku z faktem, iż Go jest językiem strukturalnym, brak w nim pojęcia obiektu. Uproszczonym odpowiednikiem jest struktura, definiowana słowem kluczowym \textit{\lstinline{struct}}.
 }
   \par{
   Jedną z najbardziej radykalnych decyzji podczas tworzenia specyfikacji języka stanowi rezygnacja ze standardowego mechanizmu dziedziczenia. W miejsce dziedziczenia wirtualnego zastosowano system interfejsów, gdzie dana struktura implementuje określony interfejs wtedy i tylko wtedy gdy wystawia pełen zestaw publicznych metod zgodnych z jego deklaracją. Odpowiednikiem dziedziczenia klasycznego w Go jest osadzanie typów.
-  Przykład osadzenia typów \textit{\textss{\lstinline{Reader}}} i \textit{\textss{\lstinline{Writer}}} w nowo utworzonym interfejsie \textit{\textss{\lstinline{ReaderWriter}}}.
+  Przykład osadzenia typów \textit{\lstinline{Reader}} i \textit{\lstinline{Writer}} w nowo utworzonym interfejsie \textit{\lstinline{ReaderWriter}}.
   \begin{lstlisting}[language=go]
     type ReaderWriter interface {
       Reader
       Writer
     }
   \end{lstlisting}
-  Struktury implementujące interfejs \textit{\textss{\lstinline{ReaderWriter}}} implementują również interfejsy osadzone.
+  Struktury implementujące interfejs \textit{\lstinline{ReaderWriter}} implementują również interfejsy osadzone.
   Osadzanie typów w strukturach wygląda podobnie, należy jednak oznaczyć je symbolem wskaźnika.
   \begin{lstlisting}[language=go]
     type ReaderWriter struct {
@@ -44,25 +44,25 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
     \item Przeciążanie metod i operatorów,
     \item cykliczne zależności pomiędzy pakietami,
     \item asercje,
-    \item wyjątki --- powrócono do błędów jako wartości zwracanych przez funkcje,
+    \item wyjątki --- powrócono do zwracania błędów jako wyników funkcji,
     \item programowanie generyczne.
   \end{itemize}
 }
 \par{
   Dla wygody programisty wprowadzono do Go zestaw podstawowych typów, wyrażających elementy brakujące zdaniem autorów w czystym C.
   \begin{itemize}
-    \item \emph{Plastry} (slices), zapisywane jako \textit{\textss{\lstinline{[]typ}}}, wskazują na tablicę obiektów przechowywanych w pamięci, przechowując wskaźnik do początku danego plastra, jego długość oraz \emph{pojemność}, określającą liczebność elementów plastra, która wymagać alokacji dodatkowej pamięci w celu rozszerzenia odpowiadającej tablicy.
-    \item Niezmienne ciągi znaków (typ \textit{\textss{\lstinline{string}}}), zawierające przeważnie tekst w kodowaniu UTF-8. Mogą jednak przechowywać dowolne bajty.
-    \item Tablica haszująca, zapisywana jako \textit{\textss{\lstinline{map[typ\_klucza]typ\_wartości}}}.
+    \item \emph{Plastry} (slices), zapisywane jako \textit{\lstinline{[]type}}, wskazują na tablicę obiektów przechowywanych w pamięci, przechowując wskaźnik do początku danego plastra, jego długość oraz \emph{pojemność}, określającą liczebność elementów plastra, która wymagać alokacji dodatkowej pamięci w celu rozszerzenia odpowiadającej tablicy.
+    \item Niezmienne ciągi znaków (typ \textit{\lstinline{string}}), zawierające przeważnie tekst w kodowaniu UTF-8. Mogą jednak przechowywać dowolne bajty.
+    \item Tablica haszująca, zapisywana jako \textit{\lstinline{map[key\_type]value\_type}}.
   \end{itemize}
 }
 \par{
   Go jest językiem kompilowanym do kodu bajtowego. Istnieją dwa oficjalnie wspierane zestawy kompilatorów:
   \begin{itemize}
-    \item \textit{\textss{\lstinline{gc}}} wraz z narzędziami dla architektur \textit{\textss{\lstinline{amd64}}} oraz \textit{\textss{\lstinline{i386}}}, posiadający wydajny optymalizator, oraz dla architektury \textit{\textss{\lstinline{ARM}}},
-    \item \textit{\textss{\lstinline{gccgo}}}, będący nakładką na \textit{\textss{\lstinline{gcc}}}.
+    \item \texttt{gc} wraz z narzędziami dla architektur \texttt{amd64} oraz \texttt{i386}, posiadający wydajny optymalizator, oraz dla architektury \texttt{ARM},
+    \item \texttt{gccgo}, stanowiący nakładkę na \texttt{gcc}.
   \end{itemize}
-  Każdy z zestawów wspiera platformy DragonFly BSD, FreeBSD, Linux, NetBSD, OpenBSD, OS X (Darwin), Plan 9, Solaris oraz Windows. Wyjątkiem jest kompilator \textit{\textss{\lstinline{gc}}} na architekturę \textit{\textss{\lstinline{ARM}}}, wspierający wyłącznie platformy Linux, FreeBSD oraz NetBSD. \cite{godoc:compilers}
+  Każdy z zestawów wspiera platformy DragonFly BSD, FreeBSD, Linux, NetBSD, OpenBSD, OS X (Darwin), Plan 9, Solaris oraz Windows. Wyjątkiem jest kompilator \texttt{gc} na architekturę \texttt{ARM}, wspierający wyłącznie platformy Linux, FreeBSD oraz NetBSD. \cite{godoc:compilers}
   Łańcuch narzędzi związany z procesem kompilacji tworzy statycznie linkowane, natywne binarne pliki wykonywalne bez zewnętrznych zależności.
 }
 
@@ -71,9 +71,9 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
   Za bardzo wartościową cechę języka Go uznaje się zawarcie w jego specyfikacji oraz implementacji prymitywów zapewniających logiczne i wygodne w użyciu konstrukcje tworzące poziom abstrakcji ponad technikaliami związanymi z zarządzaniem wątkami i procesami oraz ich synchronizacją, zarówno jak i aspektami programowania asynchronicznego.
   Cechy te stanowią silny argument przemawiający za wartościowością Go jako języka docelowego dla aplikacji serwerowych o wysokiej przepustowości.
   \begin{itemize}
-    \item Wyrażenie \textit{\textss{\lstinline{go}}}, pozwalające na uruchomienie dowolnej funkcji w tzw. \emph{lekkim procesie}, enkapsulującym pojedynczy wątek jądra systemu i współdzielącym przestrzeń adresową z innymi wątkami wykorzystywanymi przez podobne procesy.
-    \item Typ kanałowy, \textit{\textss{\lstinline{chan dowolny\_typ}}}, pozwalający na synchronizowaną wymianę informacji pomiędzy lekkimi procesami. Instancje kanałów obsługiwane są przede wszystkim za pomocą operatorów wysyłania (\textit{\textss{\lstinline{instancja\_kanału <- wartość}}}) oraz odbioru (\textit{\textss{\lstinline{zmienna <- instancja\_kanału}}}). Obydwie te operacje blokują wykonywanie programu w ramach danego procesu dopóki dowolny z innych procesów nie umieści danych w kanale.
-    \item Wyrażenie \textit{\textss{\lstinline{select}}}, będące rozwiązaniem podobnym do konstrukcji \textit{\textss{\lstinline{switch}}} z różnicą polegającą na fakcie, iż predykaty przypadków nie są oparte na wartościach określonej zmiennej lecz na stanie kanałów w sensie pojawiania się na nich danych.
+    \item Wyrażenie \textit{\lstinline{go}}, pozwalające na uruchomienie dowolnej funkcji w tzw. \emph{lekkim procesie}, enkapsulującym pojedynczy wątek jądra systemu i współdzielącym przestrzeń adresową z innymi wątkami wykorzystywanymi przez podobne procesy.
+    \item Typ kanałowy, \textit{\lstinline{chan type}}, pozwalający na synchronizowaną wymianę informacji pomiędzy lekkimi procesami. Instancje kanałów obsługiwane są przede wszystkim za pomocą operatorów wysyłania (\textit{\lstinline{chan\_instance <- value}}) oraz odbioru (\textit{\lstinline{variable <- chan\_instnace}}). Obydwie te operacje blokują wykonywanie programu w ramach danego procesu dopóki dowolny z innych procesów nie umieści danych w kanale.
+    \item Wyrażenie \textit{\lstinline{select}}, będące rozwiązaniem podobnym do konstrukcji \textit{\lstinline{switch}} z różnicą polegającą na fakcie, iż predykaty przypadków nie są oparte na wartościach określonej zmiennej lecz na stanie kanałów w sensie pojawiania się na nich danych.
   \end{itemize}
   Podstawowe elementy umożliwiają budowę bardziej skomplikowanych mechanizmów zarządzania przepływem kontroli w systemach współbieżnych dostosowanych do poszczególnych przypadków użycia, takich jak pule robotników lub łańcuchy przetwarzania.
 }
