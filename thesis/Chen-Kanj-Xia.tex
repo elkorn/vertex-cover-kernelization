@@ -465,3 +465,52 @@
   Przechowanie jednej 2-krotki uzasadnione jest faktem, iż 2-krotki stanowią struktury o najwyższym priorytecie, a zatem po zakończeniu działania funckji \textsc{Redukcja} algorytm \textsc{VC} wybierze tę krotkę jako pierwszą do przetworzenia.
   W konsekwencji w momencie gdy algorytm \textsc{VC} utworzy nowe krotki w momencie kolejnego rozgałęzienia, przechowana 2-krotka nie będzie już zawarta w kolejce $T$ --- a zatem nie nastąpi konflikt narzuconych przez krotki własności.
 }
+\subsubsection{Priorytety struktur w grafie}
+\label{sss_ckx_priorities}
+\par{
+  Ostatnią z koncepcji wymaganych do zrozumienia sposobu postępowania algorytmu Chen, Kanj, Xia jest priorytet struktury, oparty na relacjach pomiędzy składającymi się na nią wierzchołkami.
+  Priorytety struktur stanowią klucz do porządku utrzymywanego w kolejce priorytetowej $T$.
+  Im wyższy priorytet danej struktury, tym większą oferuje ona korzyść w redukcji przestrzeni poszukiwań pokrycia wierzchołkowego.
+  Podczas działania algorytmu, priorytet przypisywany jest strukturze w momencie jej utworzenia.
+  Jeżeli dowolna z opisanych wcześniej operacji wykonywana w ramach działania algorytmu wpływa na wierzchołki zawarte w pewnej strukturze $\Gamma=(S, q) \in T$, jej priorytet musi zostać odpowiednio zmodyfikowany --- może zaistnieć również sytuacja, w której struktura $\Gamma$ zostanie usunięta z kolejki $T$.
+  Sytuacja, w której struktura $\Gamma$ musi zostać usunięta z kolejki $T$ następuje w momencie, gdy zachodzi jedna z następujących własności.
+  \begin{enumerate}
+    \item Zmniejszono wartość $q$ struktury $\Gamma$ do $0$.
+    \item Struktura $\Gamma$ jest jednoelementowym zbiorem wierzchołków i nastąpiło usunięcie wierzchołka należącego do struktury $\Gamma$ z dziedziny poszukiwań.
+    \item Struktura $\Gamma$ stanowi dobrą parę wierzchołków i jeden z wierzchołków składowych struktury $\Gamma$ zostanie usunięty z dziedziny poszukiwań.
+  \end{enumerate}
+  
+  W pozostałych przypadkach struktura $\Gamma$ jest aktualizowana zgodnie z opisem zawartym w podrozdziale~\ref{ss_ckx_preliminaries}.\footnote{Należy zaznaczyć, iż autorzy pracy~\cite{ImprovedBounds10} pozostawiają decyzje związane z algorytmem aktualizacji struktur w gestii czytelnika.}
+
+  Pełne zestawienie struktur mogących znajdować się w kolejce $T$ w dowolnym momencie wykonywania algorytmu $VC$ przedstawione zostanie wedle porządku nierosnącej wartości priorytetu.
+  \begin{enumerate}[(1)]
+    \item Struktura $\Gamma$ jest silną 2-krotką.
+    \item Struktura $\Gamma$ jest 2-krotką.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=3$ oraz gdzie wszystkie wierzchołki sąsiednie $v_u \in N(u)$ są stopnia $d(v_u)=5$ i nie współdzielą żadnych wierzchołków sąsiednich poza wierzchołkiem $u$.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=3, d(z) \geq 5$.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=3, d(z) \geq 4$.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=4$ oraz gdzie wierzchołek $u$ posiada co najmniej trzy wierzchołki sąsiednie $v_u \in N(u)$ stopnia $d(v_u)=5$ i dodatkowo wśród wierzchołków $v_u$ istnieje co najmniej jedna krawędź.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=3$ oraz gdzie wszystkie wierzchołki sąsiednie $v_u \in N(u)$ są stopnia $d(v_u)=5$ i nie współdzielą żadnych wierzchołków sąsiednich poza wierzchołkiem $u$.
+    \item Struktura $\Gamma$ jest jednoelementowym zbiorem $\{z\}$, gdzie stopień wierzchołka $z$ wynosi $d(z) \geq 8$.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=4, d(z) \geq 5$.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=5, d(z) \geq 6$.
+    \item Struktura $\Gamma$ jest jednoelementowym zbiorem $\{z\}$, gdzie stopień wierzchołka $z$ wynosi $d(z) \geq 7$.
+    \item Struktura $\Gamma$ jest dowolną dobrą parą wierzchołków niespełniającą wyżej wymienionych kryteriów.
+  \end{enumerate}
+
+  Kluczową obserwacją dotyczącą zestawienia struktur mogących znajdować się w kolejce $T$ jest zauważenie, iż powyższa lista jest wyczerpująca.
+  \begin{theorem}
+    Dowolny niepusty graf $G$ musi zawierać jedną ze struktur określonych zestawieniem przedstawionym w podrozdziale~\ref{sss_ckx_priorities}, co gwarantuje ciągłe istnienie pewnej struktury do wyboru przez algorytm \textsc{VC}.
+  \end{theorem}
+  \begin{bproof}
+    Założyć wpierw należy, że stopień wierzchołków w grafie $G$ nie jest ograniczony z góry wartością 2 --- w przeciwnym wypadku funkcja \textsc{Redukcja} przetworzyłąby graf, zmieniając jego strukturę --- oraz, że graf $G$ jest spójny (dla grafów niespójnych algorytm \textsc{VC} wywoła się rekurencyjnie na każdej ze spójnych składowych).
+    Jeżeli graf $G$ posiada wierzchołek $v$ stopnia $d(v) \geq 7$, spełniona musi być przynajmniej jedna z własności (8), (11).
+    W przeciwnym wypadku graf $G$ posiada wierzchołek $v$ stopnia $d(v) \leq 6$.
+    Jeżeli graf $G$ jest regularny (w rozumieniu definicji~\ref{def_regular}), wtedy dla każdej dobrej pary $(u, z)$ spełniona jest własność $d(u)=d(z)$ --- w tej sytuacji jedynie własność (12) znajduje zastosowanie.
+    Jeżeli graf $G$ nie jest regularny, przyjąć należy $u$ jako wierzchołek najmniejszego stopnia w grafie $G$.
+    Zauważyć należy, że ponieważ graf $G$ nie jest regularny i maksymalny stopień wierzchołka w grafie $G$ wynosi $d_{\max} \leq 6$, graf $G$ musi zawierać wierzchołek $u$ stopnia $d(u) \leq 5$.
+    Jeżeli stopień wierzchołka $u$ wynosi $d(u)=3$, musi zachodzić jedna z własności (3), (4), (5).
+    Jeżeli stopień wierzchołka $u$ wynosi $d(u)=4$, musi zachodzić jedna z własności (6), (7), (9).
+    Jeżeli stopień wierzchołka $u$ wynosi $d(u)=5$, musi zachodzić własność (10).
+  \end{bproof}
+}
