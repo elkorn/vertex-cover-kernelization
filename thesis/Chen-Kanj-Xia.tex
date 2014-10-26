@@ -280,3 +280,71 @@
     \end{enumerate}
   \end{definition}
 }
+\subsubsection{Krotki}
+\label{sss_ckx_tuples}
+\par{
+  Szczególnie ważną klasę identyfikowanych w grafie struktur z punktu widzenia redukcji przestrzeni poszukiwań stanowią \emph{krotki}.
+  \begin{definition}
+    Mianem \emph{krotki} określa się uporządkowaną parę $(S, q)$, gdzie $S$ stanowi zbiór wierzchołków, a wartość $q$ jest liczbą całkowitą.
+    Krotka niesie ze sobą informację, że w aktualnie rozpatrywanej instancji problemu pokrycia wierzchołkowego $(G, k)$ można prowadzić poszukiwania optymalnego pokrycia wierzchołkowego z wyłączeniem co najmniej $q$ wierzchołków należących do zbioru $S$.
+  \end{definition}
+  W praktyce algorytm rozpatruje wyłącznie krotki $(S, q)$ dla wartości $q \leq 2$ --- wyłącznie na nich skupiona jest również analiza.
+  Najbardziej wartościowym podzbiorem krotek są tak zwane \emph{2-krotki} oraz \emph{silne 2-krotki}.
+  \begin{definition}
+    Krotka $(S, q)$ określana jest mianem \emph{2-krotki}, jeżeli zbiór $S$ ma postać $S=\{u, v\}$ oraz spełnione są następujące warunki.
+    \begin{enumerate}
+      \item $q=1$.
+      \item $d(u) \geq d(v)$.
+      \item $(u, v) \notin E$.
+    \end{enumerate}
+  \end{definition}
+  \begin{definition}
+    2-krotka $(S, q)$ stanowi \emph{silną 2-krotkę} jeżeli spełnia jeden z następujących warunków.
+    \begin{enumerate}
+      \item $d(u) \geq 4 \land d(v) \geq 4$.
+      \item $2 \leq d(u) \leq 3 \land 2 \leq d(v) \leq 3$.
+    \end{enumerate}
+  \end{definition}
+}
+\par{
+  Aby uwidocznić wysoką wartość krotek, należy wytłumaczyć w jaki sposób algorytm wykorzystuje te struktury podczas rozgałęziania.
+  Dla potrzeb wyjaśnienia przyjąc należy, że algorytm rozgałęzia się na pewnym wierzchołku $z$ o sąsiedztwie $N(z)$.
+  Na podstawie obserwacji dokonanej w ramach twierdzenia~\ref{th_include_neighborhood} stwierdzić można, że istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(z)$ lub wykluczające co najmniej dwa wierzchołki należące do tego zbioru.
+  Wobec tego w momencie rozgałęziania algorytmu, w instancji zawierającej wierzchołek $z$ przestrzeń poszukiwań może zostać ograniczona do pokrycia wierzchołkowego zbioru wykluczającego co najmniej dwa wierzchołki należące do sąsiedztwa wierzchołka $z$ --- istnieje pewność poprawności takiej operacji, ponieważ jeżeli takie pokrycie nie istnieje, druga gałąź rozpatrująca instancję zawierającą całość zbioru $N(z)$ odnajdzie optymalne pokrycie wierzchołkowe jeżeli takowe istnieje.
+  Pojęcie wykluczenia co najmniej dwóch wierzchołków sąsiadujących z wierzchołkiem $z$ jest materializowane przez stworzenie w momencie rozgałęziania krotki $(N(z), q=2)$.
+
+  W sytuacji gdy algorytm rozgałęzia się na pewnym wierzchołku $z$ posiadającym pewien sąsiedni wierzchołek $u$, zgodnie z obserwacją dokonaną w ramach twierdzenia~\ref{th_exclude_additional_neighbor} musi istnieć optymalne pokrycie wierzchołkowe, które albo zawiera wierzchołek $z$ albo wyklucza wierzchołek $z$ oraz co najmniej jeden wierzchołek należący do sąsiedztwa wierzhołka $u$.
+  Przestrzeń poszukiwań w ramach tej gałęzi algorytmu może być zatem ograniczona do zbioru wykluczającego co najmniej dwa wierzchołki należące do zbioru $N(u)$.
+  Pojęcie wykluczenia tychże wierzchołków materializowane jest poprzez utworzenie w momencie rozgałęziania krotki $(N(u), q=2)$.
+}
+\subsubsection{\textbf{Aktualizacja krotek}}
+\label{sss_ckx_updating_tuples}
+\par{
+  Krotki odzwierciedlają szczególne własności zachodzące w strukturze grafu w momencie pewnego rozgałęzienia algorytmu, są jednak utrzymymwane w kolejce priorytetowej struktur przez okres czasu mogący obejmować więcej niż jedno rozgałęzienie.
+  W związku z faktem, iż krotka narzuca pewne ograniczenia na postać poszukiwaneg optymalnego pokrycia wierzchołkowego, należy dbać o to by stan krotek odzwierciedlał wszelkie zmiany zachodzące w strukturze grafu w związku z działaniami wykonywanymi na innych strukturach, które mają wpływ na wierzchołki zawarte w tychże krotkach.
+}
+\par{
+  Przyjmując istnienie pewnej krotki $(S, q)$, jeżeli wartość $q = 0$, krotkę tę należy usunąć z kolejki priorytetowej, ponieważ reprezentowana przez nią własność spełniona jest przez dowolne pokrycie wierzchołkowe.
+  \begin{theorem}
+    Jeżeli pewien wierzchołek $v \in S$ zostanie usunięty z dziedziny poszukiwań przez wykluczenie go z pokrycia wierzchołkowego, krotka musi zostać uaktualniona przez usunięcie wierzchołka $v$ ze zbioru $S$ oraz dekrementację wartości $q$.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli istnieje optymalne pokrycie wierzchołkwe $C$, które wyklucza co najmniej $q$ wierzchołków należących do zbioru $S$, wtedy pokrycie $C$ musi wykluczać co najmniej $q-1$ wierzchołków ze zbioru $S \setminus \{v\}$.
+  \end{bproof}
+  \begin{theorem}
+    Jeżeli pewien wierzchołek $v \in S$ zostanie usunięty z dziedziny poszukiwań przez włączenie go do pokrycia wierzchołkowego, krotka musi zostać uaktualniona przez usunięcie wierzchołka $v$ ze zbioru $S$, a wartość $q$ nie ulega zmianie.
+  \end{theorem}
+  \begin{bproof}
+    Jeżeli istnieje optymalne pokrycie wierzchołkowe $C$ zawierające wierzchołek $u$ oraz wyłączające co najmniej $q$ wierzchołków ze zbioru $S$, to musi ono wykluczać co najmniej $q$ wierzchołków ze zbioru $S \setminus \{v\}$.
+  \end{bproof}
+}
+\par{
+  Bardziej radykalne działania wymagane są w przypadku wykonania operacji wprowadzających ograniczenia struktury grafu wchodzące konflikt z ograniczeniami przedstawianymi przez istniejące krotki.
+  Operacje, w wyniku których powstają ograniczenia wchodzące w konflikt z ograniczeniami przedstawianymi przez istniejące krotki związanymi z postacią poszukiwanego optymalnego pokrycia wierzchołkowego to tworzenie nowych krotek, operacja strukturyzacji oraz uogólniona operacja zwijania.
+  Przykładowo, uogólniania operacja zwijania zakłada, że poszukiwane jest optymalne pokrycie wierzchołkowe zawierające niezależny zbiór $I$ lub jego sąsiedztwo dla odnalezionej struktury $(i, H=N(I))$ --- stanowi to podstawową własność umożliwiającą zwinięcie zbioru $N(I)$.
+  Zwinięcie dowolnego takiego zbioru może pozostawić wynikową strukturę grafu w konflikcie z ograniczeniami narzucanymi przez niektóre istniejące już krotki.
+  W związku z bardzo dużą iczbą potencjalnych sytuacji, w których tego typu konflikt możę następować, algorytm zaprojektowany w pracy~\cite{ImprovedBounds10} zakłada, iż po każdym zastosowaniu operacji strukturyzacji lub uogólnionej operacji zwijania, wszystkie istniejące krotki zostaną usunięte z kolejki priorytetowej.
+
+  W celu weryfikacji możliwości zastosowania operacji strukturyzacji lub uogólnionej operacji zwijania należy sprawdzić czy redukcja parametru $k$ wynikająca z ich zastosowania będzie większa niż redukcja otrzymana z rozgałęzienia algorytmu na aktualnie rozpatrywanej krotce.
+  W tym celu wprowadzone zostały dwie dodatkowe procedury weryfikujące te własności i na tej podstawie warunkowo dokonujące aplikacji wyżej wymienionych operacji.
+}
