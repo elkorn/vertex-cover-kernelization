@@ -348,3 +348,120 @@
   W celu weryfikacji możliwości zastosowania operacji strukturyzacji lub uogólnionej operacji zwijania należy sprawdzić czy redukcja parametru $k$ wynikająca z ich zastosowania będzie większa niż redukcja otrzymana z rozgałęzienia algorytmu na aktualnie rozpatrywanej krotce.
   W tym celu wprowadzone zostały dwie dodatkowe procedury weryfikujące te własności i na tej podstawie warunkowo dokonujące aplikacji wyżej wymienionych operacji.
 }
+\subsection{Algorytm główny}
+\label{ss_ckx_vc}
+\par{
+  Algorytm rozwiązujacy parametryzowany wariant problemu pokrycia wierzchołkowego przedstawiony w pracy~\cite{ImprovedBounds10} działa zgodnie z pseudokodem~\ref{alg_ckx}.
+   \begin{algorithm}
+    \caption{Algorytm rozwiązujący problem pokrycia wierzchołkowego według Chen, Kanj, Xia}\label{alg_ckx}
+    \begin{algorithmic}[1]
+      \Function{VC}{$G$, $T$, $k$}
+
+        \algorithmicrequire{Graf wejściowy $G=(V, E)$, kolejka priorytetowa $T$ struktur, parametr ograniczający $k$}
+
+        \algorithmicensure{Liczebność ($\leq k$) optymalnego pokrycia wierzchołkowego grafu $G$ jeżeli takowe istnieje lub zgłoszenie porażki}
+
+        \If{$k \leq 7$}
+        \State{Rozwiąż instancję metodą siłową i zakończ działanie}
+        \EndIf
+        \State$\Call{Redukcja}$
+        \State{Wybierz strukturę $\Gamma$ o najwyższym priorytecie z kolejki $T$}
+        \If {$(\Gamma$ jest 2-krotką $(\{u, z\}, 1))$ \textbf{ or }\\
+             \hspace{2.6em}($\Gamma$ jest dobrą parą $(u, z)$ gdzie $z\dagger v\in N(u))$ \textbf{or}\\
+             \hspace{2.6em}($\Gamma$ jest wierzchołkiem $z$ stopnia $d(z) \geq 7$)}
+          \State{\textbf{return} $\min\{1+\Call{VC}{G \setminus \{z\}, T \bigcup (N(z), 2), k-1},$\label{ckx_tuple_1}\\
+                                       \hspace{8.9em}$ d(z) + \Call{VC}{G \setminus N[z], T, k - d(z)}\}$}
+        \Else\Comment{$\Gamma$ jest dobrą parą $(u, z)$ gdzie $\neg(z \dagger v \in N(u))$}
+          \State{\textbf{return} $\min\{1+\Call{VC}{G \setminus \{z\}, T, k-1},$\\
+                                       \hspace{8.9em}$d(z) + \Call{VC}{G \setminus N[z], T \bigcup (N(u), 2), k - d(z)}\}$}\label{ckx_tuple_2}
+        \EndIf
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+
+  Wewnątrz głównej funkcji \textsc{VC} zdefiniowane są następujące funkcje pomocnicze.
+  \begin{itemize}
+    \item Funkcja \textsc{Redukcja}, działająca zgodnie z pseudokodem~\ref{alg_ckx_reduction}.
+    \item Funkcja \textsc{War\_Zwijanie}, działająca zgodnie z pseudokodem~\ref{alg_ckx_conditional_gf}.
+    \item Funkcja \textsc{War\_Strukt}, działająca zgodnie z pseudokodem~\ref{alg_ckx_conditional_struction}.
+  \end{itemize}
+
+  Do zadań funkcji pomocniczej \textsc{Redukcja} należy dekompozycja istniejących krotek do odpowiadających im nowych 2-krotek, redukcja przestrzeni poszukiwań przez wykonywanie operacji strukturyzacji i uogólnionej operacji zwijania na grafie, a także utrzymywanie odpowiedniego stanu kolejki $T$ w celu uniknięcia konfliktów pomiędzy ograniczeniami nałożonymi na aktualnie rozpatrywaną instancję problemu przez kolejne redukcje dziedziny.
+
+  \begin{algorithm}
+   \caption{Algorytm Chen, Kanj, Xia --- funkcja \textsc{Redukcja}}\label{alg_ckx_reduction}
+   \begin{algorithmic}[1]
+    \Function{Redukcja}{}
+      \ForAll$(S, q) \in T$
+        \If{$|S|<q$}
+          \State{Odrzuć krotkę $(S, q)$}
+        \EndIf
+        \ForAll{$u \in S$}
+          \State$T \gets T \bigcup \{(S \setminus \{u\}, q-1)\}$\label{a2}\Comment{Dekompozycja krotki}
+        \EndFor
+        \If{$S$ nie jest zbiorem niezależnym w $G$}
+          \State$T \gets T \cup (\bigcup_{(u, v) \in E; u,v \in S}\{(S \setminus \{u, v\}, q-1)\})$\label{a3}\Comment{Dekomp. krotki}
+        \EndIf
+        \If{$\exists_{v \in V}: |N(v) \bigcap S|\geq |S| - q + 1$}\label{a4}
+          \State{\textbf{return} $(1 + $VC($G \setminus \{v\}, T, k-1$)$)$}
+        \EndIf
+      \EndFor
+      \If{\textsc{War\_Zwijanie}($G$) \textbf{or} \textsc{War\_Strukt}($G$) są aplikowalne}\label{b}
+        \State\Comment{Kolejność operacji ma znaczenie.}
+        \State{\textbf{return}}\Comment{Operacje zostają zastosowane w ramach warunku.}
+      \EndIf
+      \If{$\exists_{u, v \in V}: v \ddagger u$}
+        \State{\textbf{return} $(1 + $\textsc{VC}($G \setminus \{v\}, T, k-1$)}
+      \EndIf
+    \EndFunction
+   \end{algorithmic}
+  \end{algorithm}
+
+  Funkcje pomocnicze~\textsc{War\_Zwijanie} oraz \textsc{War\_Strukt} podejmują decyzję o zastosowaniu odpowiednio uogólnionej operacji zwijania oraz operacji strukturyzacji wobec wartości redukcji parametru $k$ możliwych do uzyskania dla aktualnej instancji problemu oraz aktualnie wybranej krotki.
+
+  \begin{algorithm}
+   \caption{Algorytm Chen, Kanj, Xia --- funkcja \textsc{War\_Zwijanie}}\label{alg_ckx_conditional_gf}
+   \begin{algorithmic}[1]
+    \Function{War\_Zwijanie}{}
+      \If{Istnieje silna 2-krotka $(\{u, z\}, 1) \in T$}
+        \If{Powtórzone zastosowanie op. \textsc{Zwijanie} redukuje $k$ do $k^\prime \leq k-2$}
+          \State{Stosuj \textsc{Zwijanie} dopóki to możliwe}
+        \ElsIf{Zastosowanie op. \textsc{Zwijanie} redukuje $k$ o 1 \textbf{and} $d(u) < 4$}
+          \State{Stosuj \textsc{Zwijanie} dopóki to możliwe}
+        \EndIf
+      \Else
+        \State{Stosuj \textsc{Zwijanie} dopóki to możliwe}
+      \EndIf
+    \EndFunction
+    \algstore{xkc_break}
+   \end{algorithmic}
+  \end{algorithm}
+
+  \begin{algorithm}
+   \caption{Algorytm Chen, Kanj, Xia --- funkcja \textsc{War\_Strukt}}\label{alg_ckx_conditional_struction}
+   \begin{algorithmic}[1]
+    \Function{War\_Strukt}{}
+      \If{Istnieje silna 2-krotka $\{u, v\} \in T$}
+        \If{$\exists_{w \in \{u, v\}}: d(w)=3$ i $w$ poddaje się op. \textsc{Strukturyzacja}}
+          \State{Zastosuj operację \textsc{Strukturyzacja} na wierzchołku $w$}
+        \EndIf
+      \ElsIf{$\exists_{u \in V}: 3 \leq d(u) \leq 4$ i $u$ poddaje się op. \textsc{Strukturyzacja}}
+          \State{Zastosuj operację \textsc{Strukturyzacja} na wierzchołku $u$}
+      \EndIf
+    \EndFunction
+   \end{algorithmic}
+  \end{algorithm}
+}
+\par{
+  Krotki utworzone przez algorytm podczas rozgałęziania (linie~\algref{alg_ckx}{ckx_tuple_1} --- \algref{alg_ckx}{ckx_tuple_2} algorytmu \textsc{VC}) są wykorzystywane w ramach funkcji \textsc{Redukcja} do tworzenia 2-krotek w oparciu o zasady opisywane w krokach~\algref{alg_ckx_reduction}{a2} i~\algref{alg_ckx_reduction}{a3}.
+  Podczas procesu tworzenia 2-krotek, niektóre wierzchołki mogą okazać się odpowiednie do włączenia do otpymalnego pokrycia wierzchołkowego, o czym decyduje krok~\algref{alg_ckx_reduction}{a4}.
+  Przykładowo, zakładając istnienie krotki $(S=\{u, w, z\}, 1)$, nałożone przez nią ograniczenie mówi, że można poszukiwać optymalnego pokrycia wierzchołkowego wykluczającego co najmniej jeden wierzchołek należący do zbioru $S$.
+  W tej sytuacji jeżeli wierzchołek $v$ jest wspólnym sąsiadem wierzchołków $u$, $w$ i $z$ oznacza to, iż $v$ może zostać włączony do optymalnego pokrycia wierzchołkowego spełniającą narzuconą własność.
+  Wierzchołek $v$ zostanie zatem włączony do pokrycia wierzchołkowego przez krok~\algref{alg_ckx_reduction}{a4}.
+
+  Utrzymywanie odpowiedniego stanu kolejki priorytetowej $T$ sprowadza się do sprawdzenia czy przed rozpoczęciem kroku~\algref{alg_ckx_reduction}{b} istnieją w kolejce $T$ 2-krotki.
+  Jeżeli w kolejce $T$ istnieje silna 2-krotka, zostanie ona przechowana --- w przeciwnym wypadku, jeżeli kolejka zawiera jakąkolwiek 2-krotkę, zostanie ona przechowana.
+  Wszystkie pozostałe krotki zostaną usunięte z kolejki $T$.
+  Przechowanie jednej 2-krotki uzasadnione jest faktem, iż 2-krotki stanowią struktury o najwyższym priorytecie, a zatem po zakończeniu działania funckji \textsc{Redukcja} algorytm \textsc{VC} wybierze tę krotkę jako pierwszą do przetworzenia.
+  W konsekwencji w momencie gdy algorytm \textsc{VC} utworzy nowe krotki w momencie kolejnego rozgałęzienia, przechowana 2-krotka nie będzie już zawarta w kolejce $T$ --- a zatem nie nastąpi konflikt narzuconych przez krotki własności.
+}
