@@ -1,7 +1,40 @@
-\subsection{Redukcja koron}\label{ss_kernelization_crown_reduction}
+\subsection{Redukcja koron}
+\label{ss_kernelization_crown_reduction}
 \par{
-  \[\textbf{TODO: write an intro chapter, relate to work~\cite{chlebik:crown}}.\]
+  Pojęcie \emph{korony grafu} spopularyzowane zostało przede wszystkim dzięki dorobkowi naukowemu M. Fellowsa oraz F. Abu-Khzam.
+  Niniejsza praca czerpie z literatury tychże autorów, głównie z pracy~\cite{KernelizationAlgorithms04}.
+  Znaczenie koron w grafach jest kluczowe szczególnie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego --- specyficzna budowa tej struktury otwiera drogę do efektywnej redukcji dziedziny poszukiwań do jądra problemu pokrycia wierzchołkowego w grafie.
+  Wiele algorytmów wiodących prym pod względem złożoności obliczeniowej opiera się w dużym stopniu właśnie na identyfikacji oraz przetwarzaniu koron lub struktur podobnych koronom.
+  Prócz algorytmu analizowanego w niniejszym podrozdziale, podjęto się również analizy i implementacji algorytmu zaproponowanego w pracy~\cite{ImprovedBounds10}, któremu poświęcono podrozdział~\ref{s_ckx}.
 }
+\subsubsection{\textbf{Kontekst struktur koron w grafach}}
+\label{sss_kernelization_crown_context}
+\par{
+  Bardzo ważna dla opisywanej koncepcji jest praca~\cite{chlebik:crown}, gdzie usystematyzowano miejsce koron wśród szerszej klasy tzw. \emph{struktur zmniejszających zaangażowanie} w grafach.
+  \begin{definition}
+    Dla grafu $G=(V, E)$ i pewnego podzbioru $U \subseteq V$ ze zbiorem wierzchołków sąsiednich $N(U)$ \emph{strukturą zmniejszającą zaangażowanie} nazywa się uporządkowaną parę $(I, N(I))$ podzbiorów zbioru wierzchołków $V$ spełniającą następujące własności.
+    \begin{enumerate}
+      \item $I \neq \emptyset$ stanowi niezależny zbiór wierzchołków w grafie $G$.
+      \item $N(I)$ stanowi optymalne pokrycie wierzchołkowe grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $I \cup N(I)$.
+    \end{enumerate}
+  \end{definition}
+  Możliwość identyfikacji struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ jest ważna ze względu na fakt, iż każdy podzbiór $C=N(I)\cupC^\prime$, gdzie $C^\prime$ stanowi optymalne pokrycie wierzchołkowe dla grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I\cup N(I))$ stanowi optymalne pokrycie wierzchołkowe grafu $G$.
+  Zmniejszenie zaangażowania za pomocą struktury $(I, N(I))$ polega na tym, iż algorytm korzystający z tejże struktury angażuje się w odnajdywanie wyłącznie rozwiązań $C$ spełniających własność $C \cap (I \cup N(I)) = N(I)$, usuwa zbiór $I \cup N(I)$ z dziedziny poszukiwań w grafie $G$, redukując tym samym instancję problemu pokrycia wierzchołkowego do pomniejszonego grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I \cup N(I))$.
+
+  Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w grafie są tak zwane \emph{NT-dekompozycje}, stanowiące wynik \emph{NT-redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako instancji programu liniowego i rozwiązania go zgodnie z twierdzeniem~\ref{nt_lp}.
+  \begin{definition}\thlabel{def_nt_decomposition}
+    Mianem \emph{NT-dekompozycji} (dekompozycji Nemhausera-Trottera) określa się specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT-redukcji} (redukcji Nemhausera-Trottera).
+    Proces ten posługuje się funkcją $x: V \rightarrow \{0, \frac{1}{2}, 1\}$ różną od $x \equiv \frac{1}{2}$ określającą przynależność wierzchołków do optymalnego pokrycia wierzchołkowego.
+  \end{definition}
+  Przyjmując $V_i^x=\{u \in V| x(u)=i\}$ dla każdej wartości $i\in \{0, \frac{1}{2}, 1\}$ zaobserwować można, iż zbiór $V_0^x$ jest niezależny i niepusty w grafie $G$, oraz że zachowana zostaje własność $V_1^x = N(V_0^x)$.
+  Szeroko dostępny dowód twierdzenia~\ref{nt_lp} pokazuje, iż zbiór $V_1^x$ stanowi optymalne pokrycie wierzchołkowe grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_0^x \cup N(V_0^x)$ --- co prowadzi do wniosku, że para $(V_0^x, N(V_0^x))$ stanowi prawidłową strukturę zmniejszającą zaangażowanieg w grafie $G$.
+  Zaangażowanie zostaje zmniejszone do rozwiązań posiadających część wspólną ze zbiorem $V_0^x \cup V_1^x$ w zbiorze $V_1^x$, a przestrzeń poszukiwań zredukowana zostaje do grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_\frac{1}{2}^x$.
+}
+\par{
+  Autorzy pracy~\cite{chlebik:crown} obalają stwierdzenie jakoby koncepcja koron miała być ortogonalna względem NT-redukcji --- postuluje się, że korony stanowią wyspecjalizowaną podklasę NT-dekompozycji o właściwościach opisanych w następującym podrozdziale.
+}
+\subsubsection{\textbf{Właściwości koron}}
+\label{sss_kernelization_crown_main}
 \begin{definition}\thlabel{def_crown}
   Mianem \emph{korony} grafu $G=(V, E)$ nazywa się uporządkowaną parę
   podzbiorów wierzchołków $(I, H), I \subseteq V, H \subset V$, zachowujących
