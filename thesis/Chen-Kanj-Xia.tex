@@ -5,7 +5,7 @@
   Każdy z przestawionych dotychczas algorytmów może być wykorzystywany niezależnie --- ich działanie jest ortogonalne względem siebie.
   Fakt ten nie uszedł uwadze autorów pracy~\cite{ImprovedBounds10}, którzy dostrzegli potencjał optymalizacji drzemiący w zastosowaniu starannie zaprojektowanego i przeanalizowanego modelu redukcji dziedziny do jądra problemu.
   Model ten oparty jest na stosunkowo prostym algorytmie rekurencyjnym działającym zgodnie z zasadą drzewa poszukiwań z ograniczeniami, popartym wyczerpującą analizą mogących zaistnieć po drodze przypadków.
-  Wykorzystane w ramach działania algorytmu funkcje redukujące dziedzinę są od siebie mocno uzależnione oraz uruchamiane w ściśle określonej kolejności w celu zachowania poprawności logiki wysokopoziomowej i maksymalizacji pozytywnych efektów ich wykonywania.
+  Wykorzystane w ramach działania algorytmu funkcje redukujące dziedzinę są od siebie mocno uzależnione oraz uruchamiane w ściśle określonej kolejności w celu zachowania poprawności logiki wysokopoziomowej i maksymalizacji pozytywnych efektów ich wykonywania.\footnote{Zawarty w niniejszej pracy opis algorytmu Chen, Kanj, Xia stanowi syntezę analizy algorytmu przeprowadzonej w różnych wersjach pracy~\cite{ImprovedBounds10}. Zaznaczyć należy, iż pominięte zostały w szczególności dowody związane z pesymistyczną złożonością czasową algorytmu, co podyktowane jest ich obszernością. Niemniej jednak stanowią one wartościowe uzupełnienie wiedzy przy implementacji algorytmu w oparciu o przedstawioną analizę.}
 }
 \par{
   Wedle autorów, główną motywacją do stworzenia niniejszego algorytmu było udowodnienie wagi gruntownej analizy dziedziny algorytmu (w przeciwieństwie do znacznie powszechniejszej analizy opartej o charakterystyczne przypadki) w celu uzyskania jak najdokładniejszych wartości pesymistycznej złożoności obliczeniowej.
@@ -59,14 +59,14 @@
   W przypadku odnalezienia takiego zbioru, algorytm usuwa należące do niego wierzchołki z dziedziny i rekurencyjnie wywołuje sam siebie na zredukowanych instancjach problemu.
 
   Sposób redukcji instancji problemu oparty jest o następujące prawidłowości zaobserwowane w zachowaniu pokrycia wierzchołkowego w grafie.
-  \begin{theorem}
+  \begin{theorem}\thlabel{th_include_neighborhood}
     Dla pewnego wierzchołka $v$ w grafie $G$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(v)$ lub co najwyżej $|N(v)| - 2$ wierzchołków należących do zbioru $N(v)$.
   \end{theorem}
   \begin{bproof}
     Jeżeli pewne optymalne pokrycie wierzchołkowe $C$ grafu $G$ zawiera $|N(v)|-1$ wierzchołków należących do zbioru $N(v)$, to musi ono zawierać również wierzchołek $v$, ponieważ krawędź $(w \in N(v) \setminus C, v)$ również musi zostać pokryta.
     Stworzyć można zatem inne optymalne pokrycie wierzchołkowe $C^\prime$ grafu $G$ poprzez zastąpienie wierzchołka $v$ w zbiorze $C$ przez wierzchołek $w$, czego wynikiem jest optymalne pokrycie wierzchołkowe grafu $G$ zawierające $N(v)$.
   \end{bproof}
-  \begin{theorem}
+  \begin{theorem}\thlabel{th_exclude_additional_neighbor}
     Dla pewnych wierzchołków $u$ oraz $v$ połączonych krawędzią $(u, v) \in E$ w grafie $G=(V, E)$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające wierzchołek $v$ lub wykluczające wierzchołek $v$ oraz co najmniej jeden wierzchołek sąsiadujący z wierzchołkiem $u$.
   \end{theorem}
   \begin{bproof}
@@ -235,16 +235,18 @@
 \subsubsection{\textbf{Struktury ``pożyteczne''}}
 \label{sss_ckx_structures}
 \par{
-  Identyfikacja struktur ``pożytecznych'' (zwanych również po prostu \emph{strukturami}) w grafie związanym z rozpatrywaną instancją problemu pokrycia wierzchołkowego pozwala na maksymalizację efektywności procesu redukcji dziedziny do jądra problemu, co przekłąda się bezpośrednio na zmniejszenie złożoności czasowej algorytmu. Klasy struktur wraz z priorytetami zostały przez autorów pracy~\ref{ImprovedBounds10} wyznaczone drogą analityczną w oparciu o identyfikację i dekonstrukcję możliwie występujących w ogólnych grafach przypadków mających znaczenie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego.
+  Identyfikacja struktur ``pożytecznych'' (zwanych również po prostu \emph{strukturami}) w grafie związanym z rozpatrywaną instancją problemu pokrycia wierzchołkowego pozwala na maksymalizację efektywności procesu redukcji dziedziny do jądra problemu, co przekłąda się bezpośrednio na zmniejszenie złożoności czasowej algorytmu. Klasy struktur wraz z priorytetami zostały przez autorów pracy~\cite{ImprovedBounds10} wyznaczone drogą analityczną w oparciu o identyfikację i dekonstrukcję możliwie występujących w ogólnych grafach przypadków mających znaczenie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego.
   Wartość ``pożyteczności'' danej klasy struktur określana jest przede wszystkim na podstawie relacji pomiędzy składającymi się na nie wierzchołkami.
 }
 \par{
   Bardzo intensywnie wykorzystywanym w identyfikacji struktur pojęciem jest \emph{dominacja} oraz \emph{pseudodominacja} zachodząca pomiędzy wierzchołkami.
   \begin{definition}\thlabel{def_domination}
-    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{zdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{dominuje} nad wierzchołkeiem $u$) jeżeli są one połączone krawędzią $(u, v) \in E$ oraz zachodzi własność $N(u) \subseteq N[v]$.
+    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{zdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{dominuje} nad wierzchołkiem $u$) jeżeli są one połączone krawędzią $(u, v) \in E$ oraz zachodzi własność $N(u) \subseteq N[v]$.
+    W celu uproszczenia zapisu dla wyrażenia dominacji wierzchołka $v$ nad wierzchołkiem $u$ stosowana będzie notacja $v \ddagger u$.
   \end{definition}
   \begin{definition}\thlabel{def_almost_domination}
-    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{pseudozdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{pseudodominuje} nad wierzchołkeiem $u$) jeżeli są nie one połączone krawędzią $(u, v) \notin E$ oraz zachodzi własność $|N(u) \subseteq N(v)| \leq 1$.
+    W grafie $G=(V, E)$ pewien wierzchołek $u$ jest \emph{pseudozdominowany} przez pewien wierzchołek $v$ (wierzchołek $v$ \emph{pseudodominuje} nad wierzchołkeiem $u$) jeżeli są nie one połączone krawędzią $(u, v) \notin E$ oraz zachodzi własność $|N(u) \setminus N(v)| \leq 1$.
+    W celu uproszczenia zapisu dla wyrażenia pseudodominacji wierzchołka $v$ nad wierzchołkiem $u$ stosowana będzie notacja $v \dagger u$.
   \end{definition}
   \begin{theorem}
       Jeżeli w grafie $G=(V, E)$ pewien wierzchołek $v$ dominuje nad pewynm wierzchołkiem $u$, to istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające wierzchołek $v$.
