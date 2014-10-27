@@ -1,6 +1,6 @@
 \subsection{Odnajdywanie maksymalnego skojarzenia w grafie}\label{ss_edmonds}
 \par{
-  Każdy z opisywanych w pracy algorytmów działający w oparciu o twierdzenie\\Nemhausera-Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}) oraz algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według definicji \ref{def_maximum_matching}.
+  Każdy z opisywanych w pracy algorytmów działający w oparciu o twierdzenie\\Nemhausera-Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według definicji \ref{def_maximum_matching}.
   Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
 }
 
@@ -12,12 +12,12 @@
     Skojarzenie $M$ w grafie $G$ jest maksymalne wtedu i tylko wtedy gdy nie istnieje ścieżka powiększająca $P_a$ taka, że dla dowolnej pary kolejno następujących po sobie krawędzi $\{e_1, e_2\} \in P_a$ prawdziwe jest $e_1 \in M \oplus e_2 \in M$.
   \end{theorem}
    Należy zwrócić uwagę, iż ścieżka powiększająca $P_a$ opisywana w twierdzeniu \ref{th_Berge} jest $M$-przemienna w rozumieniu definicji~\ref{def_alternating_path}.
-   W kontekście poszukiwania skojarzeń poprzez ścieżki powiększające, graf można traktować jako odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
+   W kontekście poszukiwania skojarzeń przez ścieżki powiększające, graf można traktować jako odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
 }
 \par{
-  W przypadku grafów dwudzielnych z krawędziami o jednostkowej, problem odnalezienia maksymalnego skojarzenia sprowadza się do rozwiązania problemu maksymalnego przepływu.
-  Problem przeformułować należy poprzez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z zasadami opisanymi w podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z algorytmem Edmondsa-Karpa, opisanym w podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w jedną stronę pomiędzy podziałami grafu.
-  Poprawność takiego sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w sieci jest ugruntowana w fakcie, że każda krytyczna krawędź zostaje usunięta z sieci residualnej --- a branie pod uwagę przepływu tylko zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w rozwiązaniu.
+  W przypadku grafów dwudzielnych z krawędziami o jednostkowej wadze, problem odnalezienia maksymalnego skojarzenia sprowadza się do rozwiązania problemu maksymalnego przepływu.
+  Problem przeformułować należy przez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z zasadami opisanymi w podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z algorytmem Edmondsa-Karpa, opisanym w podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w jedną stronę pomiędzy podziałami grafu.
+  Poprawność sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w sieci jest ugruntowana tym, że każda krytyczna krawędź zostaje usunięta z sieci residualnej --- a branie pod uwagę przepływu tylko w jedną stronę zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w rozwiązaniu.
 }
 \par{
   Problem odnajdywania maksymalnego skojarzenia w dowolnym grafie nie jest zadaniem trywialnym --- wymaga zatem odpowiedniego, działającego w czasie wielomianowym narzędzia jego rozwiązywania w celu możliwości efektywnego rozwiązania problemów głównych.
@@ -30,7 +30,7 @@
   W objaśnianiu toku rozumowania pomocne są również następujące charakterystyczne zbiory wierzchołków.
   \begin{itemize}
     \item Zbiór \emph{wolnych} wierzchołków $V_F=\{v | v \notin M\}$.
-    \item Zbiór \emph{dobrych} wierzchołków $V_G=\{v | N(v) \bigcap V_G \setminus \{v\} \neq \emptyset\}$. Wierzchołek $v\in V$ nazywany jest dobrym w grafie gdy posiada co najmniej jeden nieskojarzony przez zbiór $M$ wierzchołek sąsiedni.
+    \item Zbiór \emph{dobrych} wierzchołków $V_G=\{v | N(v) \cap V_G \setminus \{v\} \neq \emptyset\}$. Wierzchołek $v\in V$ nazywany jest dobrym w grafie gdy ma co najmniej jeden nieskojarzony przez zbiór $M$ wierzchołek sąsiedni.
   \end{itemize}
   
   Odnajdywanie ścieżek powiększających w skierowanym grafie $H$ jest krokiem pozwalającym na odkrycie \emph{prostych} ścieżek powiększających w grafie $G$.
@@ -73,7 +73,7 @@
   \end{definition}
   Z powyższej definicji wynika, że przykładowo jeżeli pewien cykl składa się z $2k + 1$ wierzchołków oznacza to, że $k$ krawędzi musi zawierać się w pewnym skojarzeniu $M$ aby cykl ten mógł być kwiatem.
   \begin{definition}
-    Poprzez \emph{skurczenie} kwiatu $B$ w grafie $G=(V, E)$ rozumie się operację składającą się z następujących czynności.
+    przez \emph{skurczenie} kwiatu $B$ w grafie $G=(V, E)$ rozumie się operację składającą się z następujących czynności.
     \begin{enumerate}
        \item Zastąpieniu zbioru wszystkich wierzchołków $V_B=\{v: v \in B\}$ pojedynczym wierzchołkiem $v_B$. Konsekwencja zastąpienia każdego z wierzchołków kwiatu jest usunięcie przystających do niego krawędzi.
        \item Połączeniem wierzchołka $v_B$ krawędziami ze wszystkimi wierzchołkami spoza kwiatu, które sąsiadowały z nim przed wykonaniem kroku 1: \[V_N=\{v: v \in V \setminus V_B, \exists_{u \in V}:(u,v)\in E \lor (v, u)\in E\}.\]
@@ -93,21 +93,21 @@
 
         \State $M \gets \emptyset, H=(V_H, E_H) \gets G, W \gets M$
         \State $P \gets \{v: v \notin M\}, W \gets \emptyset, E_F \gets \emptyset$\label{init_edmonds}
-        \State $F \gets \Call{Las}{P \bigcup W, E_F}$
+        \State $F \gets \Call{Las}{P \cup W, E_F}$
         \State{Wybierz krawędź $(u, v); u \in P, v \notin W$}\label{pick_edge}
         \If{taka krawędź nie istnieje}
           \State{\textbf{return} $M$}
         \EndIf
-        \If{$v \notin P \bigcup W$}\label{put_matched_in_odd}
-          \State $N \gets N \bigcup \{v\}$
-          \State $P \gets P \bigcup \{M(v)\}$
-          \State $E_F \gets E_F \bigcup \{(v, M(v))\}$
+        \If{$v \notin P \cup W$}\label{put_matched_in_odd}
+          \State $N \gets N \cup \{v\}$
+          \State $P \gets P \cup \{M(v)\}$
+          \State $E_F \gets E_F \cup \{(v, M(v))\}$
         \ElsIf{$v \in P$ oraz $(u, v) \in E_F$}\label{even_connected}
           \Comment{Odnaleziono kwiat B.}
           \State $b \gets \Call{Skurcz}{B}$
           \State $H \gets H\setminus B$
           \State $W \gets W\setminus B$
-          \State $P \gets P \bigcup \{b\}$
+          \State $P \gets P \cup \{b\}$
           \State{Idź do kroku~\ref{pick_edge}}
         \ElsIf{$v \in P$ oraz $(u, v) \notin E_F$}\label{even_disjoint}
           \State\Comment{(Istnieje $W$-przemienna ścieżka powiększająca $\eta \in H$)}
@@ -161,10 +161,10 @@
     Kroki algorytmu w razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} zajmują się tym przypadkiem.
 
     Ścieżka $\eta$ zaczyna od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w algorytmie) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
-    Uzyskanie $M$-przemiennej ścieżki powiększającej w grafie $G$ jest możliwe poprzez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
+    Uzyskanie $M$-przemiennej ścieżki powiększającej w grafie $G$ jest możliwe przez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
     skojarzeń.
 
-    Założyć należy, że graf $H=(V_H, E_H)$ otrzymano z grafu $G=(V, E)$ poprzez skurczenie kwiatu $B$ do wierzchołka $b$.
+    Założyć należy, że graf $H=(V_H, E_H)$ otrzymano z grafu $G=(V, E)$ przez skurczenie kwiatu $B$ do wierzchołka $b$.
     W takiej sytuacji jeżeli ścieżka $\eta$ nie przechodzi przez wierzchołek $b$ oznacza to, że musi być ona również $M$-przemienną ścieżką powiększającą w grafie $G$. W przeciwnym wypadku --- gdy ścieżka $\eta$ zawiera w sobie wierzchołek $b$ --- mogą wystąpić dwie sytuacje:
     \begin{enumerate}
       \item Ścieżka $\eta$ kończy się w wierzchołku $b$.

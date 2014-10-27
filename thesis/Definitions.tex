@@ -4,8 +4,8 @@ Jeżeli nie zaznaczono inaczej, każda z nastepujących definicji odnosi się do
 grafu $G=(V,E)$.
 
 \begin{definition}
-  Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} do wierzchołka $v$,
-  jeżeli $u=v \lor w=v$.
+  Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} (sąsiednią) do wierzchołka $v$,
+  jeżeli $(u=v) \lor (w=v)$.
 \end{definition}
 
 \begin{definition}
@@ -15,9 +15,9 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}
-  Mianem \emph{stopnia} wierzchołka $v \in V$ określa się 
+  \emph{Stopniem} wierzchołka $v \in V$ określa się 
   liczbę krawędzi $e \in E$ przystających do wierzchołka $v$.
-  Stopień wierzchołka $v$ wyraża się w postaci $d(v)$.
+  Stopień wierzchołka $v$ oznacza się przez $d(v)$.
 \end{definition}
 
 \begin{definition}\thlabel{def_regular}
@@ -29,62 +29,59 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}\thlabel{def_isolated_vertex}
-  \emph{Wierzchołkiem izolowanym} nazywa się wierzchołek $v; d(v)=0$.
+  \emph{Wierzchołkiem izolowanym} nazywa się wierzchołek $v$, dla którego $d(v)=0$.
 \end{definition}
 
 \begin{definition}
-  \emph{Sąsiedztwem} wierzchołka $v; d(v)=p$ nazywa się zbiór 
-  wierzchołków $N={v_0, v_1, \ldots, v_p}$ taki, że 
+  \emph{Sąsiedztwem} wierzchołka $v$, gdzie $d(v)=p$ nazywa się zbiór 
+  wierzchołków $N=\{v_0, v_1, \ldots, v_p\}$ taki, że 
   $\forall_{v_n \in N}{(v,v_n) \in E \lor (v_n,v) \in E}$.
   Sąsiedztwo wierzchołka $v$ wyraża się w postaci $N(v)$.
 \end{definition}
 
 \begin{definition}
-  \emph{Sąsiedztwem połączonym} wierzchołka $v; d(v)=p$ nazywa się zbiór wierzchołków 
-  $N={v_0, v_1, \ldots, v_p}$ spełniający warunek:
-  $\not \exists_{v_n, v_m \in N}{(v_n,v_n) \in E \lor (v_n,v_m) \in E}$.
+  \emph{Sąsiedztwem połączonym} wierzchołka $v$, dla którego $d(v)=p$ nazywa się zbiór wierzchołków 
+  $N={v_0, v_1, \ldots, v_p}$ spełniający warunek:\\
+  $\not \exists_{v_n, v_m \in N}:{(v_n,v_n) \in E \lor (v_n,v_m) \in E}$.
 \end{definition}
 
 \begin{definition}\thlabel{def_vc}
-  \emph{Pokrywą wierzchołkową} grafu nazywa się taki zbiór wierzchołków
-  $VC \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $VC$.
+  \emph{Pokryciem wierzchołkowym} grafu nazywa się taki zbiór wierzchołków
+  $C \subseteq V$, że każda krawędź $e \in E$ jest pokryta przez $C$.
 \end{definition}
 
 \begin{definition}
-  Przez \emph{rozmiar} pokrywy wierzchołkowej $VC$ rozumie się liczebność ($|VC|$)
+  Przez \emph{rozmiar} lub \emph{liczebność} pokrycia wierzchołkowego $C$ rozumie się liczebność ($|C|$)
   zbioru wierzchołków reprezentującą tę pokrywę.
 \end{definition}
 
 \begin{definition}
-  \emph{Pokrywą wierzchołkową o optymalnym rozmiarze}, \emph{pokrywą 
-  wierzchołkową optymalnego rozmiaru} lub \emph{optymalną pokrywą wierzchołkową} 
-  nazywa się pokrywę wierzchołkową $VC_{opt}$ taką, że dla zbioru $VCS \in G$ 
-  wszystkich pokryw wierzchołkowych, 
-  $\forall_{VC \in VCS \setminus VC_{opt}}{|VC_{opt}| < |VC|}$.
+  \emph{Pokryciem wierzchołkowym o optymalnym rozmiarze}, \emph{pokrywą 
+  wierzchołkową optymalnego rozmiaru} lub \emph{optymalną pokryciem wierzchołkowym} 
+  nazywa się pokrycie wierzchołkowe $C_{\textnormal{OPT}}$ takie, że dla zbioru wszystkich pokryć wierzchołkowych $S \in V$ spełniona jest własność $\forall_{C \in S \setminus C_{\textnormal{OPT}}}{|C_{\textnormal{OPT}}| < |C|}$.
 \end{definition}
 
 \begin{definition}\thlabel{def_independent_set}
   \emph{Zbiorem niezależnym} nazywa się zbiór wierzchołków\\
-  $V_i=\{v_0, v_1, \ldots, v_p \}, V_i \in V$ spełniający warunek:
+  $V_i=\{v_0, v_1, \ldots, v_p \}, V_i \subseteq V$ spełniający warunek:
   $\forall_{v_i, v_j \in V_i}{(v_i, v_j) \notin E \land (v_j, v_i) \notin E}$.
 \end{definition}
 
 \begin{definition}
   \emph{Grafem dwudzielnym} lub \emph{bigrafem} nazywa się graf o zbiorze 
-  wierzchołków, który można rozdzielić na dwa zbiory niezależne $U, V$ takie, że
+  wierzchołków, który można rozdzielić na dwa zbiory niezależne $U, V$ takie, że spełniona jest własność
   $\forall_{u \in U}: \exists_{v \in V}: (u,v) \in E$.
-  Równoważym jest stwierdzenie, iż graf dwudzielny stanowi graf nie posiadający
+  Równoważym jest stwierdzenie, iż graf dwudzielny stanowi graf nie mający
   żadnego cyklu o nieparzystej długości.
 
-
   Graf dwudzielny oznaczać można jako $G=(U,V,E)$, nawiązując do poszczególnych
-  zbiorów wierzchołków oraz krawędzi między nimi.
+  podzbiorów wierzchołków oraz krawędzi między nimi.
 \end{definition}
 
 \begin{definition}\thlabel{def_matching}
   \emph{Skojarzeniem} nazywa się zbiór krawędzi $M=\{e_0, e_1, \ldots, e_p\}$
-  nie posiadających wspólnych wierzchołków: ${\not\exists{\{e_i=(u_i,v_i),
-  e_j=(u_j, v_j)\} \in M}: u_i=u_j \lor u_i=v_j \lor u_j,v_i \lor u_=v_j}$.
+  nie mających wspólnych wierzchołków.
+  \[\not\exists_{\{e_i=(u_i,v_i), e_j=(u_j, v_j)\} \in M}: (u_i=u_j) \lor (u_i=v_j) \lor (u_j=v_i) \lor (u_j=v_j)\]
   Za skojarzenie uznać można również cały graf zawierający jedynie krawędzie
   spełniające powyższy warunek.
 \end{definition}
@@ -92,12 +89,12 @@ grafu $G=(V,E)$.
 \begin{definition}
   Wierzchołek $v$ uznaje się za \emph{skojarzony}, jeżeli pokrywa dowolną
   krawędź należącą do skojarzenia.
-  W przeciwnym wypadku, wierzchołek jest \emph{nieskojarzony}.
+  W przeciwnym razie, wierzchołek jest \emph{nieskojarzony}.
 \end{definition}
 
 \begin{definition}\thlabel{def_maximal_matching}
   \emph{Największe skojarzenie} $M_{\max}$ jest skojarzeniem, do którego nie można
-  dołączyć żadnej nowej krawędzi bez złamania warunku wymaganego do istnienia
+  dołączyć żadnej nowej krawędzi bez naruszenia warunku wymaganego do istnienia
   skojarzenia. 
   Innymi słowy, skojarzenie jest największe, jeżeli wierzchołki zawartych w nim
   krawędzi pokrywają każdą krawędź $e \in E$.
@@ -105,24 +102,21 @@ grafu $G=(V,E)$.
 
 \begin{definition}\thlabel{def_maximum_matching}
   \emph{Skojarzenie maksymalne} lub \emph{skojarzenie o największej liczebności}
-  $M_{\textrm{MAX}}$ to skojarzenie zawierające największą możliwą liczbę krawędzi.
+  $M_{\textnormal{MAX}}$ to skojarzenie zawierające największą możliwą liczbę krawędzi.
   W grafie może istnieć wiele skojarzeń maksymalnych.\\
-  Należy zauważyć, iż $M=M_{\textrm{MAX}} \Rightarrow M=M_{\max}$.
+  Należy zauważyć, iż~$M=M_{\textnormal{MAX}} \Rightarrow M=M_{\max}$.
 \end{definition}
 
 \begin{definition}
   \emph{Ścieżką} nazywa się skończoną lub nieskończoną sekwencję krawędzi 
   $P \subseteq E$ łączących ze sobą sekwencję różnych wierzchołków
   $V_p \subseteq V$.
-  Ścieżka pomiędzy wierzchołkami $v,w$ opisywana może być jako $P_{v,w} = (v
-  \rightarrow \ldots \rightarrow w)$.
-  \begin{example}{Przykład}\\
-    $G=(V,E), V=\{v_0, v_1, \ldots\}, E=\{(v_a, v_b)| \{v_a, v_b\} \in V\}\\
-    P_{v_0, v_n}=\{(v_0, v_1), (v_1, v_2), \ldots, (v_{n-1}, v_n)\}$\\
-
-    W grafie nieskierowanym, ta sama ścieżka może przybrać różne postaci, gdyż
-    skierowanie krawędzi łączących określone wierzchołki nie ma znaczenia.
-  \end{example}
+  Ścieżka pomiędzy wierzchołkami $v$ oraz $w$ opisywana może być jako $P_{v,w} = (v \rightarrow \ldots \rightarrow w)$.
+  Przykład:
+  \[G=(V,E), V=\{v_0, v_1, \ldots\}, E=\{(v_a, v_b)| \{v_a, v_b\} \in V\}\]
+  \[P_{v_0, v_n}=\{(v_0, v_1), (v_1, v_2), \ldots, (v_{n-1}, v_n)\}\]
+  W grafie nieskierowanym, ta sama ścieżka może przybrać różne postaci, gdyż
+  skierowanie krawędzi łączących określone wierzchołki nie ma znaczenia.
 \end{definition}
 
 \begin{definition}\thlabel{def_alternating_path}

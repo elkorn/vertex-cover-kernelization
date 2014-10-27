@@ -21,7 +21,7 @@ W związku z faktem, iż programowanie całkowitoliczbowe samo w sobie stanowi
 problem $\mathcal{NP}$-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
 zapewni szerszy zakres prawdopodobnych rozwiązań.
 
-W~\cite{khuller02} zaproponowana została relaksacja przez zamianę wartości 
+W~pracy~\cite{khuller02} zaproponowana została relaksacja przez zamianę wartości 
 $X_u \in \{0,1\}$ na $X_u \geq 0$.
 Należy zauważyć, iż wartość $OPT_{LP}$ (ang. \emph{Linear Programming, LP}) zwracana przez rozwiązanie postaci 
 liniowej jest zawsze ograniczona z dołu przez wartość $OPT_{IP}$ zwracaną przez 
@@ -36,14 +36,13 @@ Definiując $V_0 = \{u : X_u=0\}, V_{\frac{1}{2}}=\{u: X_u=\frac{1}{2}\},
 V_1=\{u: X_u=1\}$, twierdzenie zapisać można jak następuje.
 
 \begin{theorem}[Pierwsze twierdzenie Nemhausera-Trottera]\thlabel{nt_lp}
-  Istnieje optymalne rozwiązanie $OPT$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach:
-  \begin{itemize}
-    \item[(a)] $OPT \subset V_1 \cup V_{\frac{1}{2}}$.
-    \item[(b)] $V_1 \subset OPT$.
-  \end{itemize}
+  Istnieje optymalne rozwiązanie $OPT$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach.
+  \begin{enumerate}[(a)]
+    \item $OPT \subset V_1 \cup V_{\frac{1}{2}}$.
+    \item $V_1 \subset OPT$.
+  \end{enumerate}
 \end{theorem}
-
-W celu wyspecjalizowania powyższej relaksacji do przypadku rozwiązania
+W celu sprowadzenia powyższej relaksacji do przypadku rozwiązania
 sparametryzowanego problemu pokrycia wierzchołkowego, zdefiniować należy zbiór 
 $\{ X_u : u \in V \}$ zawierający wartości przypisywane wierzchołkom grafu 
 $G=(V,E)$ przez funkcję celu oraz zbiory:\\
@@ -72,9 +71,8 @@ $V^\prime=Q; E^\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   Zauważyć należy, że $N(B) \cap Q = \emptyset$, co zapewnia właściwość 2.
   sformułowania, którego rozwiązaniem jest $OP_{IP}$.
 
-
   Jeżeli $|A|<|B|$, to zastąpienie $B$ przez $A$ w rozwiązaniu $OPT_{IP}$ (ang. \emph{Integer Programming, IP}) spowodowałoby
-  odkrycie przynajmniej jednej krawędzi graf --- ykluczając tym samym
+  odkrycie przynajmniej jednej krawędzi grafu --- wykluczając tym samym
   tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
   W prypadku gdy $|A|>|B|$, swiadczyłoby to, że istnieje możliwość
   otrzymania rozwiązania sformułowania liniowego lepszego niż $OPT_{IP}$ przez
@@ -85,15 +83,11 @@ $V^\prime=Q; E^\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   rozwiązanie sformułowania liniowego w~oparciu o~twierdzenie
   Nemhausera-Trottera~\ref{nt_lp}. Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
   czynienia to $|A|=|B|$.
-  Przypadek ten jest trywialn --- ~celu orzymania optymalnej pokrywy
+  Przypadek ten jest trywialny --- w~celu orzymania optymalnej pokrywy
   wierzchołkowej wystarczy zastąpić zbiór $A$ zbiorem $B$.
 \end{bproof}
-
-Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze
-$n^\prime=|V|-|P|-|R|$.
-
+Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze $n^\prime=|V|-|P|-|R|$.
 Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokrycia wierzchołkowego zmniejszona zostaje do $k^\prime=k-|P|$.
-
 \begin{theorem}
   Nie istnieje optymalne pokrycie wierzchołkowe $C^\prime_{\textnormal{OPT}}\in G^\prime,|C^\prime_{\textnormal{OPT}}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
 \end{theorem}
@@ -104,19 +98,11 @@ Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokr
   problemu, której wynik stanowi zbiór $Q$, nie byłaby w stanie zapewnić
   optymalnego rozwiązania, co byłoby sprzeczne z założeniami sformułowania.
 \end{bproof}
-
-W świetle powyższego dowodu można stwierdzić, że w sytuacji gdy
-$|Q|>2k^\prime$, można zakończyć działanie procesu poszukiwania pokrycia
-wierzchołkowego $C_{\textnormal{OPT}}, |C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej.
-
-Warto dodać, że powyższe sformułowanie algorytmu jest niepraktyczne dla
-grafów o~dużym zagęszczeniu ze względu na liczbę warunków ograniczających 
-sformułowania równą $|E|$.
-
-Sensowną optymalizacją podejścia dla takich przypadków jest przekształcenie
-problemu z~minimalizacyjnego do dualnego problemu maksymalizacyjnego, 
-w~którym liczba warunków ograniczających równa będzie $|V|$.
-
+\par{
+  W świetle powyższego dowodu można stwierdzić, że w sytuacji gdy $|Q|>2k^\prime$, można zakończyć działanie procesu poszukiwania pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o liczebności $|C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej.
+  Warto dodać, że powyższe sformułowanie algorytmu jest niepraktyczne dla grafów o~dużym zagęszczeniu ze względu na liczbę warunków ograniczających sformułowania równą $|E|$.
+  Właściwym podejściem do takich przypadków jest przekształcenie problemu z~minimalizacyjnego do dualnego problemu maksymalizacyjnego, w~którym liczba warunków ograniczających równa będzie $|V|$.
+}
 \subsubsection{\textbf{Rozwiązanie problemu dualnego}}
 
 W oparciu o~obserwację, iż koszt dowolnego prawdopodobnego rozwiązania problemu

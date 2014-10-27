@@ -2,28 +2,16 @@
 
 \subsection{Metoda podziału i ograniczeń}\label{ss_branch_and_bound}
 \par{
-  Metoda podziału i ograniczeń jest paradygmatem projektowania algorytmów
-  rozwiązujących problemy optymalizacyjne z dziedziny kombinatoryki i obliczeń
-  dyskretnych. 
-  Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu
-  poszczególnych \emph{rozwiązań kandydackich} poprzez przeszukiwanie
-  przestrzeni stanów.
-  Zbiór rozwiązań kandydackich tworzony jest w~postaci ukorzenionego drzewa,
-  gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem
-  stanów.
+  Metoda podziału i ograniczeń jest paradygmatem projektowania algorytmów rozwiązujących problemy optymalizacyjne z dziedziny kombinatoryki i optymalizacji dyskretnej.
+  Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu poszczególnych \emph{rozwiązań-kandydatów} przez przeszukiwanie pewnej \emph{przestrzeni stanów}, zdefiniowanej dziedziną danych wejściowych.
+  Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli n.p.całością przestrzeni poszukiwań lub zbiorem pustym, w zależności od natury rozwiązywanego problemu.
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
-  podzbiory zbioru rozwiązań.
-  Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest
-  sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji 
-  ograniczającej $f$.
-  w~przypadku, gdy wartości te odbiegają od znalezionego dotychczas przez
-  algorytm lub zadanego optimum, cała gałąź jest odrzucana---nie istnieje w
-  niej rozwiązanie spełniające założone wymagania. 
+  podzbiory pełnego zbioru rozwiązań.
+  Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji ograniczającej $f$.
+  W~przypadku, gdy wartości te są gorsze od znalezionego dotychczas przez algorytm lub zadanego jako parametr wejściowy optimum wartości funkcji $f$, cała gałąź jest odrzucan --- ie istnieje w niej rozwiązanie spełniające założone wymagania.
 }
 \par{
-  Koncepcja algorymów działających zgodnie z metodą podziału i ograniczeń
-  została wprowadzona w~\cite{land60} i~stanowi najpopularniejsze podejście
-  w~rowiązywaniu problemów klasy $\mathcal{NP}$-trudnych.
+  Koncepcja algorytmów działających zgodnie z metodą podziału i ograniczeń została wprowadzona w~pracy~\cite{land60} i~stanowi najpopularniejsze podejście w~rowiązywaniu problemów $\mathcal{NP}$-trudnych.
 }
 \subsection{Programowanie liniowe}\label{ss_lp}
 \par{
@@ -32,18 +20,11 @@
   matematycznym o wymaganiach określonych nierównościami liniowymi.
 }
 \par{
-  Formalnie, mianem programowania liniowego określa się technikę optymalizacji 
-  liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w~postaci równań 
-  lub nierówności liniowych.
-  \emph{Region dopuszczalnych rozwiązań} stanowi wypukły wielokąt stanowiący 
-  zbiór powstały w~wyniku przecięcia skończonej ilości półpłaszczyn wyznaczanych 
-  przez nierówności liniowe.
-  Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie
-  dopuszczalnych rozwiązań.
-  Algorytm programowania liniowego odnajduje punkt na wielościanie,
-  gdzie $z$ osiąga wartość optymalną w~kontekście formulacji zadania jeżeli taki
-  punkt istnieje. 
-  Przykładowy zapis kanonicznej formy wyrażania programów liniowych:\\
+  Formalnie, mianem programowania liniowego określa się technikę optymalizacji liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w~postaci równań lub nierówności liniowych.
+  \emph{Region dopuszczalnych rozwiązań} to wypukły wielokąt stanowiący zbiór powstały w~wyniku przecięcia skończonej liczby półpłaszczyn wyznaczanych przez nierówności liniowe.
+  Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie dopuszczalnych rozwiązań.
+  Algorytm programowania liniowego odnajduje punkt na wielościanie, gdzie $z$ osiąga wartość optymalną w~kontekście sformułowania zadania, jeżeli taki punkt istnieje. 
+  Przykładowy zapis programu liniowego wygląda następująco:\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
     \sum_{j=1}^{n} c_j x_j
@@ -62,7 +43,7 @@
     Ax \leq b\\
     x\geq 0
   \end{align*}\\
-  Gdzie:
+  gdzie:
   \begin{itemize}
     \item $x$ stanowi wektor zmiennych do wyznaczenia,
     \item $b$ oraz $c$ to wektory znanych współczynników,
@@ -76,7 +57,7 @@
   w~celu otrzymania optymalnego rozwiązania problemu programowania liniowego
   stosuje się jeden z~\emph{algorytmów programowania liniowego}.
   Do grupy algorytmów programowania liniowego zalicza się m.in.\ algorytm
-  simplex lub algorytm ``na krzyż'' (criss-cross).
+  simpleks lub algorytm ``na krzyż'' (ang. \emph{criss-cross}).
 }
 \par{
   Programowanie liniowe znajduje zastosowanie w~wielu dziedzinach nauki i~przemysłu. 
@@ -85,7 +66,7 @@
   z~planowaniem, trasowaniem, harmonogramowaniem, przydziałem zadań oraz
   projektowaniem.
   Wynika to z~faktu, iż wiele rzeczywistych problemów w~dziedzinie badań
-  operacyjnych, mających na celu optymalizację procesów decyzyjnych w~praktyce,
+  operacyjnych mających na celu optymalizację procesów decyzyjnych w~praktyce,
   może zostać wyrażone w~postaci zadań programowania liniowego.
   Wiele algorytmów rozwiązujących większe problemy optymalizacyjne wykorzystuje
   programowanie liniowe do rozwiązywania podproblemów częściowych jako zadania 
@@ -99,7 +80,7 @@
   Oznacza to, że problem pierwotny może zostać przekształcony w~odpowiadający mu
   problem \emph{wtórny}, zapewniający górną granicę optimum problemu
   pierwotnego. 
-  Przykładowo, pierwotny problem:\par
+  Przykładowo, pierwotny problem o postaci:\par
   Zmaksymalizować $c^{T}x$ przy ograniczeniach $Ax\leq b, x \geq 0$;\\
   zastąpić można odpowiadającym mu \emph{symetrycznym} problemem wtórnym,\par
   Zminimalizować $b^{T}y$ przy ograniczeniach $A^{T}y \geq c, y \geq 0$.\\
@@ -113,14 +94,14 @@
       ograniczenie optimum funkcji celu jego problemu dualnego.
   \end{enumerate}
 
-  \begin{theorem}[Twierdzenie o słabej dualności]
+  \begin{theorem}[Twierdzenie o słabej dualności~\cite{Boyd:2004:CO:993483}]
     Wartość funkcji celu problemu dualnego dla dowolnego prawdopodobnego
     rozwiązania jest większa bądź równa wartości funkcji celu pierwotnego dla
     dowolnego prawdopodobnego rozwiązania.
   \end{theorem}
-  \begin{theorem}[Twierdzenie o silnej dualności]
-    Jeżeli problem pierwotny posiada rozwiązanie optymalne $x*$, to problem 
-    wtórny również posiada rozwiązanie optymalne $y*; c^{T}x*=b^{T}y*$.
+  \begin{theorem}[Twierdzenie o silnej dualności~\cite{Boyd:2004:CO:993483}]
+    Jeżeli problem pierwotny ma rozwiązanie optymalne $x^*$, to problem 
+    wtórny również ma rozwiązanie optymalne $y^*; c^{T}x^*=b^{T}y^*$.
   \end{theorem}
 }
 
@@ -136,42 +117,39 @@
 \par{
   Programem liniowym całkowitoliczbowym nazywa się każdy program liniowy 
   z~dodatkowym ograniczeniem: $\forall_{x_n \in x}: x_n \in
-  \mathbb{Z}~\refstepcounter{equation}(\theequation)\label{ilp_bound}$.
+  \mathbb{Z}\label{ilp_bound}$.
   Ograniczenie to zwane jest \emph{warukiem całkowitoliczbowości}.
-  Większość problemów NP-trudnych jest wyrażalna w~postaci programu liniowego
+  Większość problemów $\mathcal{NP}$-trudnych jest wyrażalna w~postaci programu liniowego
   całkowitoliczbowego.
   Prowadzi to do wniosku, iż sam problem programowania liniowego
-  całkowitoliczbowego jest NP-trudny, co zaproponowano w~\cite{Kar72}.
+  całkowitoliczbowego jest $\mathcal{NP}$-trudny, co zaproponowano w pracy~\cite{Kar72}.
 }
 \par{  
   Charakterystyczną poddziedziną programowów całkowitoliczbowych są
   \emph{binarne programy całkowitoliczbowe}, charakteryzującę się zamianą
-  ograniczenia z~programu całkowitoliczbowego~\eqref{ilp_bound}, na następujące:
-  $\forall_{x_n \in x}: x_n \in \{0, 1\}~\refstepcounter{equation}(\theequation)\label{bilp_bound}$.
+  ograniczenia z~programu całkowitoliczbowego na następujące:
+  $\forall_{x_n \in x}: x_n \in \{0, 1\}\label{bilp_bound}$.
   Jedyne problemy programowania całkowitoliczbowego rozpatrywane w~niniejszej
   pracy dotyczyć będą wyłącznie binarnych programów całkowitoliczbowych.
 }
 \par{
-  w~celu przekształcenia problemu NP-trudnego, wyrażonego w~postaci binarnego 
-  programu całkowitoliczbowego, do problemu rozwiązywalnego w~czasie 
-  wielomianowym, wyrażonego w~postaci programu liniowego, należy dokonać 
-  \emph{relaksacji}.
+  w~celu przekształcenia problemu $\mathcal{NP}$-trudnego wyrażonego w~postaci binarnego programu całkowitoliczbowego, do problemu rozwiązywalnego w~czasie wielomianowym wyrażonego w~postaci programu liniowego, należy wykonać operację nazywaną \emph{relaksacją}.
   Istotą relaksacji jest zastąpienie warunku całkowitoliczbowości binarnego
   programu całkowitoliczbowego~\eqref{bilp_bound} na mniej restrykcyjne
   ograniczenie $\forall_{x_n\in x}: 0\leq x_n\leq 1$.
 }
 \par {
   Istotną cechą relaksacji jest jej \emph{dokładność}, która może zostać
-  stwierdzona gdy współrzędne każdego z wierzchołków regionu dopuszczalnych 
+  stwierdzona, gdy współrzędne każdego z wierzchołków regionu dopuszczalnych 
   rozwiązań są liczbami całkowitymi.
   Mając do czynienia z dokładną relaksacją, można na jej podstawie wprost 
   rozwiązać odpowiadający program całkowitoliczbowy w~czasie wielomianowym.
-  w~tym celu wykonać należy następujące kroki:
+  w~tym celu wykonać należy następujące kroki.
   \begin{enumerate}
-    \item otrzymać optimum $x*$ programu liniowego,
-    \item odnaleźć wierzchołek $x^{\prime}, z(x^{\prime})=z(x*)$,
-      \item zwrócić $x^{\prime}$ jako rozwiązanie programu całkowitoliczbowego.
-    \end{enumerate}
+    \item Obliczyć optimum $x^*$ programu liniowego.
+    \item Odnaleźć wierzchołek $x^{\prime}$ taki, że $z(x^{\prime})=z(x^*)$.
+    \item Zwrócić $x^{\prime}$ jako rozwiązanie programu całkowitoliczbowego.
+  \end{enumerate}
 }
 
 \subsection{Redukcja dziedziny do jądra problemu}\label{subsection_kernelization}
@@ -180,15 +158,15 @@
   rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
   Istotą redukcji dziedziny do jądra problemu przy problemach dotyczących grafów
   jest transformacja grafu $G=(V,E), |V|=n$, przy danym parametrze $k$, w~inny
-  graf $G^{\prime}=(V^{\prime}, E^{\prime}), V^{\prime} \subseteq V, E^{\prime} \subseteq E$
+  graf $G^{\prime}=(V^{\prime}, E^{\prime})$ taki, że $V^{\prime} \subseteq V, E^{\prime} \subseteq E$
   wraz z parametrem $k^{\prime} \leq k$.
   Celem tego procesu jest ograniczenie wartości $n^{\prime}$ przez jak najmniejszą
   funkcję $f(k^{\prime})$.
   Graf $G^{\prime}$ nazywany jest \emph{jądrem}.
   w~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
-  $G^{\prime}$ istnieje pokrywa wierzchołkowa $VC^{\prime}, |VC^{\prime}|\leq k^{\prime}$ 
-  wtedy i tylko wtedy, gdy w~grafie $G$ istnieje pokrywa wierzchołkowa $VC,
-  |VC| \leq k$.
+  $G^{\prime}$ istnieje pokrycie wierzchołkowe $C^{\prime}, |C^{\prime}|\leq k^{\prime}$ 
+  wtedy i tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C,
+  |C| \leq k$.
 }
 \par{
   Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
@@ -207,14 +185,14 @@
   empirycznych wyników czasu działania następujących metod redukcji dziedziny do
   jądra problemu:
   \begin{enumerate}
-    \item redukcja przez usunięcie wierzchołków wysokiego stopnia, zaproponowana
-      w~\cite{KernelizationAlgorithms04},
-    \item algorytm zaproponowany w~\cite{KernelizationAlgorithms04}, polegający
-      na redukcji opartej o programowanie liniowe: formulacji programu
-      całkowitoliczbowego i rozwiązanie jego liniowej relaksacji,
-    \item redukcja poprzez usunięcie koron grafu, zaproponowana
-      w~\cite{abukhzam03},
-    \item redukcja poprzez przebudowę oraz zwijanie koron grafu, zaproponowana
-      w~\cite{ImprovedBounds10}.
+    \item Redukcja przez usunięcie wierzchołków wysokiego stopnia, zaproponowana
+      w~pracy~\cite{KernelizationAlgorithms04}.
+    \item Algorytm zaproponowany w~\cite{KernelizationAlgorithms04}, polegający
+      na redukcji opartej na programowaniu liniowym: formulacji programu
+      całkowitoliczbowego i rozwiązanie jego liniowej relaksacji.
+    \item Redukcja przez usunięcie koron grafu, zaproponowana
+      w~pracy~\cite{abukhzam03}.
+    \item Redukcja przez przebudowę oraz zwijanie koron grafu, zaproponowana
+      w~pracy~\cite{ImprovedBounds10}.
   \end{enumerate}
 }

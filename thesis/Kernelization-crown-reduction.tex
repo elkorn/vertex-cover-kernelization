@@ -21,14 +21,14 @@
   Możliwość identyfikacji struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ jest ważna ze względu na fakt, iż każdy podzbiór $C=N(I)\cupC^\prime$, gdzie $C^\prime$ stanowi optymalne pokrycie wierzchołkowe dla grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I\cup N(I))$ stanowi optymalne pokrycie wierzchołkowe grafu $G$.
   Zmniejszenie zaangażowania za pomocą struktury $(I, N(I))$ polega na tym, iż algorytm korzystający z tejże struktury angażuje się w odnajdywanie wyłącznie rozwiązań $C$ spełniających własność $C \cap (I \cup N(I)) = N(I)$, usuwa zbiór $I \cup N(I)$ z dziedziny poszukiwań w grafie $G$, redukując tym samym instancję problemu pokrycia wierzchołkowego do pomniejszonego grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I \cup N(I))$.
 
-  Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w grafie są tak zwane \emph{NT-dekompozycje}, stanowiące wynik \emph{NT-redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako instancji programu liniowego i rozwiązania go zgodnie z twierdzeniem~\ref{nt_lp}.\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby (przykładem może być algorytm J.F. Bussa) --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające twierdzenia~\ref{nt_lp}.}
+  Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w grafie są tak zwane \emph{NT-dekompozycje}, stanowiące wynik \emph{NT-redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego i rozwiązania go zgodnie z twierdzeniem~\ref{nt_lp}.\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby (przykładem może być algorytm J.F. Bussa) --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające twierdzenia~\ref{nt_lp}.}
   \begin{definition}\thlabel{def_nt_decomposition}
     Mianem \emph{NT-dekompozycji} (dekompozycji Nemhausera-Trottera) określa się specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT-redukcji} (redukcji Nemhausera-Trottera).
     Proces ten posługuje się funkcją $x: V \rightarrow \{0, \frac{1}{2}, 1\}$ różną od $x \equiv \frac{1}{2}$ określającą przynależność wierzchołków do optymalnego pokrycia wierzchołkowego.
   \end{definition}
   Przyjmując $V_i^x=\{u \in V| x(u)=i\}$ dla każdej wartości $i\in \{0, \frac{1}{2}, 1\}$ zaobserwować można, iż zbiór $V_0^x$ jest niezależny i niepusty w grafie $G$, oraz że zachowana zostaje własność $V_1^x = N(V_0^x)$.
   Szeroko dostępny dowód twierdzenia~\ref{nt_lp} pokazuje, iż zbiór $V_1^x$ stanowi optymalne pokrycie wierzchołkowe grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_0^x \cup N(V_0^x)$ --- co prowadzi do wniosku, że para $(V_0^x, N(V_0^x))$ stanowi prawidłową strukturę zmniejszającą zaangażowanieg w grafie $G$.
-  Zaangażowanie zostaje zmniejszone do rozwiązań posiadających część wspólną ze zbiorem $V_0^x \cup V_1^x$ w zbiorze $V_1^x$, a przestrzeń poszukiwań zredukowana zostaje do grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_\frac{1}{2}^x$.
+  Zaangażowanie zostaje zmniejszone do rozwiązań mających część wspólną ze zbiorem $V_0^x \cup V_1^x$ w zbiorze $V_1^x$, a przestrzeń poszukiwań zredukowana zostaje do grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_\frac{1}{2}^x$.
 }
 \par{
   Autorzy pracy~\cite{chlebik:crown} obalają stwierdzenie jakoby koncepcja koron miała być ortogonalna względem NT-redukcji --- postuluje się, że korony stanowią wyspecjalizowaną podklasę NT-dekompozycji o właściwościach opisanych w następującym podrozdziale.
@@ -62,20 +62,20 @@
 \end{definition}
 \begin{theorem}\thlabel{th_crown_vc}
   Jeżeli graf $G=(V,E)$ zawiera koronę $(I,H)$, istnieje optymalna pokrywa 
-  wierzchołkowa $VC_{OPT} \in V, H \in VC_{OPT}, I \notin VC_{OPT}$.
+  wierzchołkowa $C_{\textnormal{OPT}} \in V, H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
 \end{theorem}
 \begin{bproof}
   Z własności 3.\ definicji~\ref{def_crown}.\ wynika, że każda pokrywa 
-  wierzchołkowa $VC$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
-  Na tej podstawie stwierdzić można, że $|VC|\geq|H|$.
-  Taki rozmiar pokrywy osiągnąć można przez umieszczenie $VC=VC\bigcup H$.
+  wierzchołkowa $C$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
+  Na tej podstawie stwierdzić można, że $|C|\geq|H|$.
+  Taki rozmiar pokrywy osiągnąć można przez umieszczenie $C=C\cup H$.
   Należy w~tym miejscu zaznaczyć, że wierzchołki $v_H$ są użyteczne w~kontekście
   możliwości pokrywania krawędzi $e \notin M$, podczas gdy wierzchołki $v_I \in
-  I$ nie posiadają tej cechy.
-  Mając to na uwadze łatwo zauważyć, że $|VC \bigcup H| \leq |VC \bigcup
+  I$ nie mają tej cechy.
+  Mając to na uwadze łatwo zauważyć, że $|C \cup H| \leq |C \bigcup
   I|$.
   Wniosek płynący z~tej obserwacji jest jednoznaczny: istnieje optymalna pokrywa
-  wierzchołkowa $VC_{OPT}; H \in VC_{OPT}, I \notin VC_{OPT}$.
+  wierzchołkowa $C_{\textnormal{OPT}}; H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
 \end{bproof}
 W celu odnalezienia korony w~grafie, zastosować można następujący algorytm.
 \begin{algorithm}
@@ -85,17 +85,17 @@ W celu odnalezienia korony w~grafie, zastosować można następujący algorytm.
     \State{$M_1\leftarrow$ największe skojarzenie $G$}
     \State{$O\leftarrow v \in V, \neg\exists_{e_{M_1}=(u, w) \in M_1}: u=v \lor w=v$}
     \If{$|M_1| \geq k$}
-    \State\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: |VC_{OPT}| \leq k$}
+    \State\textbf{return} nil\Comment{$\neg\exists{C_{\textnormal{OPT}} \in V}: |C_{\textnormal{OPT}}| \leq k$}
   \EndIf
   \State{$M_2 \leftarrow$ maksymalne skojarzenie na krawędziach $O\leftrightarrow N(O)$}
   \If{$|M_2| > k$}
-  \State{\textbf{return} nil\Comment{$\neg\exists{VC_{OPT} \in V}: |VC_{OPT}|\leq k$}}
+  \State{\textbf{return} nil\Comment{$\neg\exists{C_{\textnormal{OPT}} \in V}: |C_{\textnormal{OPT}}|\leq k$}}
 \EndIf
 \State{$I_0 \leftarrow v_O\in O, \neg\exists_{e_{M_2}=(u,v)\in M_2}: u=v_O\lor v=v_O$}
 \State($n \leftarrow 0$)
 \While{$I_{n-1} \neq I_n$}\label{findCrown_while}
 \State{$H_n \leftarrow N(I_n)$}\label{findCrown_makeH}
-\State{$I_{n+1} \leftarrow I_n\bigcup N_{M_2}(H_n)$}\label{findCrown_makeI}
+\State{$I_{n+1} \leftarrow I_n\cup N_{M_2}(H_n)$}\label{findCrown_makeI}
 \State{$n \leftarrow n+1$}
 \EndWhile
 \State{\textbf{return} $(I_n,H_n)$}\Comment{$n=N$}
@@ -137,7 +137,7 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   Utworzona ścieżka rozpościera się zatem pomiędzy dwoma nieskojarzonymi
   wierzchołkami, będąc zarazem $M_2$-przemienną.
   Istnienie takiej ścieżki oznaczałoby możliwość zwiększenia skojarzenia $M_2$
-  poprzez wykonanie operacji $M_2=M_2\oplus P$, co stoi w opozycji do
+  przez wykonanie operacji $M_2=M_2\oplus P$, co stoi w opozycji do
   założenia, iż $M_2$ stanowi skojarzenie maksymalne.
   Obserwacja ta prowadzi do stwierdzenia, iż każdy wierzchołek $h \in H$ musi
   być skojarzony w $M_2$.
@@ -148,24 +148,24 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
 
 \par{
   Rezultatem jednej iteracji algorytmu redukcji korony jest graf
-  $G\prime=(V\prime, E\prime);\\V\prime=V\setminus H \setminus I, E\prime = E
+  $G^\prime=(V^\prime, E^\prime);\\V^\prime=V\setminus H \setminus I, E^\prime = E
   \setminus \{H\leftrightarrow I\}$.
 
   Rozmiar dziedziny problemu ulega zmniejszeniu do wartości
-  $n\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k\prime=k-|H|$,
+  $n^\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k^\prime=k-|H|$,
   z~uwagi na fakt, że każdy z wierzchołków $h \in H$ musi należeć do optymalnej
-  pokrywy wierzchołkowej, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
+  pokrycia wierzchołkowego, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
   Należy zaobserwować, iż jeżeli w~grafie istnieje maksymalne skojarzenie
   $M_{MAX}, |M_{MAX}| > k$, wyklucza to istnienie optymalnej pokrywy
-  wierzchołkowej $VC_{OPT}, |VC_{OPT}|\leq k$.
+  wierzchołkowej $C_{\textnormal{OPT}}, |C_{\textnormal{OPT}}|\leq k$.
   Zatem, jeżeli rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest
   większy niż $k$, algorytm może zakończyć działanie, udzielając ekwiwalentu 
   odpowiedzi negatywnej.
   Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu 
-  wynikowego $|G\prime|$.
+  wynikowego $|G^\prime|$.
 }
 \begin{theorem}\thlabel{th_crown_domain_reduction}
-  $|M_1| \leq k, |M_2| \leq k \implies |V\prime \setminus I \setminus H|
+  $|M_1| \leq k, |M_2| \leq k \implies |V^\prime \setminus I \setminus H|
   \leq 3k$.
 \end{theorem}
 \begin{bproof}
@@ -176,8 +176,8 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   W związku z~faktem, że $|M_2| \leq k$, istnieje co najwyżej $k$ wierzchołków
   $v_O \in O$ skojarzonych przez $M_2$.
   Łatwo zauważyć, iż w~takim wypadku istnieje co najmniej $n-3k$ wierzchołków
-  $v_O \in O$ nieskojarzonych przez $M_2$---są one zawarte w $I_0$, a~zatem
-  także w~$I$.
+  $v_O \in O$ nieskojarzonych przez $M_2$ --- są one zawarte w $I_0$, a~zatem
+  także i~w~$I$.
   Ten tok rozumowania prowadzi do wniosku, iż $|V \setminus I \setminus H|
   \leq 3k$.
 \end{bproof}
@@ -190,15 +190,15 @@ Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
   dziedziny problemu.
   Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów 
   przetwarzania wstępnego przez każdą kolejną iteracją redukcji 
-  korony---usunięcie korony z~dużym prawdopodobieństwem prowadzić będzie do 
-  powstania wierzchołków niskiego stopnia, redukowalnych poprzez przetwarzanie
+  koron --- usunięcie korony z~dużym prawdopodobieństwem prowadzić będzie do 
+  powstania wierzchołków niskiego stopnia, redukowalnych przez przetwarzanie
   wstępne.
   Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie
-  skojarzenia maksymalnego $M_2$, zrealizowane w niniejszej pracy przy pomocy 
+  skojarzenia maksymalnego $M_2$, zrealizowane w niniejszej pracy za pomocą 
   algorytmu kwiatów Edmondsa.\footnote{
     Oryginalna implementacja, opisywana
-    w~\cite{KernelizationAlgorithms04} oparta jest o~reformulację problemu do
-    instancji zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica,
+    w~\cite{KernelizationAlgorithms04} oparta jest o~przeformułowanie problemu do
+    egzamplarza zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica,
     o~wynikowej złożoności czasowej $O(n^{\frac{5}{2}})$.
   }
 }

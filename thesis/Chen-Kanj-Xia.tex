@@ -21,7 +21,7 @@
   Na każdym z etapów algorytm wybiera strukturę o najwyższym priorytecie, zapewniającą najwięcej korzyści.
   Wybrana struktura przetwarzana jest w sposób \emph{jednolity} oraz \emph{nieświadomy} jej kształtu.
   W wyniku analiz udało się doprowadzić do stanu logiki, w której istnieją jedynie dwa możliwe sposoby (odzwierciedlone dwoma gałęziami algorytmu) przetwarzania dowolnej struktury.
-  Pozostałe operacje nie posiadają żadnych rozgałęzień --- stanowią działania pomocnicze ``oczyszczające'' graf (podobnie jak algorytmy przetwarzania wstępnego omówione w podrozdziale~\ref{Section_preprocessing}) w celu zapewnienia największej możliwej wydajności następujących operacji z rozgałęzieniami.
+  Pozostałe operacje nie mają żadnych rozgałęzień --- stanowią działania pomocnicze ``oczyszczające'' graf (podobnie jak algorytmy przetwarzania wstępnego omówione w podrozdziale~\ref{Section_preprocessing}) w celu zapewnienia największej możliwej wydajności następujących operacji z rozgałęzieniami.
 
   Złożoność czasowa algorytmu wynosi $O(1.2738^k + kn)$, co stawia go w światowej czołówce najszybszych algorytmów rozwiązujących parametryzowany wariant problemu pokrycia wierzchołkowego.
 }
@@ -35,47 +35,47 @@
   Dla pewnego wierzchołka $v \in V$:
   \begin{itemize}
     \item $N(v)$ stanowi zbiór wierzchołków sąsiednich względem wierzchołka $v$, to znaczy połączonych krawędzią z tym wierzchołkiem.
-    \item $N[v]$ stanowi zbiór $N(v) \bigcup \{v\}$.
+    \item $N[v]$ stanowi zbiór $N(v) \cup \{v\}$.
     \item $d(v)$ stanowi stopień wierzchołka $v$.
   \end{itemize}
   Dla pewnego zbioru wierzchołków $S \in V$:
   \begin{itemize}
     \item $N(S)$ stanowi sumę zbiorów wierzchołków sąsiednich dla każdego wierzchołka $v_S \in S$ z wyłączeniem $v_S$, to znaczy $N(S)=\bigcup_{v_S\in S}N(v_S) \setminus S$.
-    \item $N[S]$ oznacza zbiór wierzchołków $N(S) \bigcup S$.
+    \item $N[S]$ oznacza zbiór wierzchołków $N(S) \cup S$.
   \end{itemize}
 
   Przyjęte zostaje następujące założenie, oparte na drugim twierdzeniu Nemhausera-Trottera (twierdzenie~\ref{nt_lp}) oraz pojęciu NT-dekompozycji, opisanej w rozdziale~\ref{ss_nt_decomposition}.
   \begin{proposition}
-    Istnieje algorytm o złożoności czasowej $O(kn + k^3)$ który z instancji problemu pokrycia wierzchołkowego $(G, k)$, gdzie $|G|=n$ konstruuje inną instancję problemu  pokrycia wierzchołkowego $(G_1, k_1)$, dla której $k_1 \leq k$ oraz $|G_1| \leq 2k_1$ oraz $\tau(G) \leq k$ wtedy i tylko wtedy gdy $\tau(G_1) \leq k_1$.
+    Istnieje algorytm o złożoności czasowej $O(kn + k^3)$ który z egzemplarza problemu pokrycia wierzchołkowego $(G, k)$, gdzie $|G|=n$ konstruuje inny egzemplarz $(G_1, k_1)$, dla którego $k_1 \leq k$ oraz $|G_1| \leq 2k_1$ oraz $\tau(G) \leq k$ wtedy i tylko wtedy gdy $\tau(G_1) \leq k_1$.
   \end{proposition}
 
   \begin{definition}
-    Instancja $(G_1, k_1)$, otrzymana przez NT-dekompozycję instancji $(G, k)$, stanowi \emph{jądro} instancji $(G, k)$.
+    Egzemplarz $(G_1, k_1)$, otrzymany przez NT-dekompozycję egzemplarza $(G, k)$, stanowi \emph{jądro} egzemplarza $(G, k)$.
   \end{definition}
 }
 \par{
   Logika głównego algorytmu zrealizowana jest jako drzewo poszukiwań, zgodne z techniką opisywaną w podrozdziale~\ref{ss_branch_and_bound}.
-  Każda iteracja podejmuje próby redukcji wartości parametru $k$ instancji wejściowej problemu pokrycia wierzchołkowego $(G, k)$ przez identyfikację pewnego zbioru wierzchołków $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony.
+  Każda iteracja podejmuje próby redukcji wartości parametru $k$ egzemplarza początkowego problemu pokrycia wierzchołkowego $(G, k)$ przez identyfikację pewnego zbioru wierzchołków $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony.
   W przypadku odnalezienia takiego zbioru, algorytm usuwa należące do niego wierzchołki z dziedziny i rekurencyjnie wywołuje sam siebie na zredukowanych instancjach problemu.
 
-  Sposób redukcji instancji problemu oparty jest o następujące prawidłowości zaobserwowane w zachowaniu pokrycia wierzchołkowego w grafie.
+  Sposób redukcji egzemplarza problemu oparty jest o następujące prawidłowości zaobserwowane w zachowaniu pokrycia wierzchołkowego w grafie.
   \begin{theorem}\thlabel{th_include_neighborhood}
     Dla pewnego wierzchołka $v$ w grafie $G$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(v)$ lub co najwyżej $|N(v)| - 2$ wierzchołków należących do zbioru $N(v)$.
   \end{theorem}
   \begin{bproof}
     Jeżeli pewne optymalne pokrycie wierzchołkowe $C$ grafu $G$ zawiera $|N(v)|-1$ wierzchołków należących do zbioru $N(v)$, to musi ono zawierać również wierzchołek $v$, ponieważ krawędź $(w \in N(v) \setminus C, v)$ również musi zostać pokryta.
-    Stworzyć można zatem inne optymalne pokrycie wierzchołkowe $C^\prime$ grafu $G$ poprzez zastąpienie wierzchołka $v$ w zbiorze $C$ przez wierzchołek $w$, czego wynikiem jest optymalne pokrycie wierzchołkowe grafu $G$ zawierające $N(v)$.
+    Stworzyć można zatem inne optymalne pokrycie wierzchołkowe $C^\prime$ grafu $G$ przez zastąpienie wierzchołka $v$ w zbiorze $C$ przez wierzchołek $w$, czego wynikiem jest optymalne pokrycie wierzchołkowe grafu $G$ zawierające $N(v)$.
   \end{bproof}
   \begin{theorem}\thlabel{th_exclude_additional_neighbor}
     Dla pewnych wierzchołków $u$ oraz $v$ połączonych krawędzią $(u, v) \in E$ w grafie $G=(V, E)$ istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające wierzchołek $v$ lub wykluczające wierzchołek $v$ oraz co najmniej jeden wierzchołek sąsiadujący z wierzchołkiem $u$.
   \end{theorem}
   \begin{bproof}
     Jeżeli każde optymalne pokrycie wierzchołkowe $C$ grafu $G$ wykluczałoby wierzchołek $v$, zawierając zarazem wszystkie wierzchołki sąsiadujące z wierzchołkiem $u$ w grafie $G$, to pokrycie $C$ musi również zawierać wierzchołek $u$ --- krawędź $(u, v)$ musi zostać pokryta.
-    W tej sytuacji pokrycie $C^\prime=(C \setminus \{u\}) \bigcup \{v\}$ stanowiłoby zgodne z definicją~\ref{def_vc} optymalne pokrycie wierzchołkowe zawierające $v$, przeczące założeniu że każde optymalne pokrycie wierzchołkowe musi wykluczać wierzchołek $v$.
+    W tej sytuacji pokrycie $C^\prime=(C \setminus \{u\}) \cup \{v\}$ stanowiłoby zgodne z definicją~\ref{def_vc} optymalne pokrycie wierzchołkowe zawierające $v$, przeczące założeniu że każde optymalne pokrycie wierzchołkowe musi wykluczać wierzchołek $v$.
   \end{bproof}
   \begin{definition}
-    W przypadku odnalezienia w grafie $G$ pewnej instancji $(G, k)$ problemu pokrycia wierzchołkowego zbioru $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony mówi się, że algorytm \emph{rozgałęzia się na zbiorze $S$}.
-    Oznacza to, iż algorytm konstruuje dwie zredukowane instancje problemu.
+    W przypadku odnalezienia w grafie $G$ pewnego egzemplarza $(G, k)$ problemu pokrycia wierzchołkowego zbioru $S$, który w całości przynależy do optymalnego pokrycia wierzchołkowego grafu $G$ lub też w całości jest z niego wykluczony mówi się, że algorytm \emph{rozgałęzia się na zbiorze $S$}.
+    Oznacza to, iż algorytm konstruuje dwa zredukowane egzemplarze problemu.
     \begin{enumerate}
       \item Instancja zawierająca zbiór $S$ w częściowym pokryciu wierzchołkowym.
       \item Instancja wykluczająca zbiór $S$ z częściowego pokrycia wierzchołkowego i zawierająca wszystkie wierzchołki sąsiadujące ze zbiorem $S$ w częściowym pokryciu wierzchołkowym.
@@ -94,7 +94,7 @@
     Dla pewnych dwóch wierzchołków $u$ oraz $v$ grafu $G=(V, E)$ zbiór $\{u, v\}$ określa się mianem \emph{antykrawędzi} w grafie $G$ jeżeli $(u, v) \notin E$.
   \end{definition}
 
-  Przyjąć należy pewien wierzchołek $v_0$ należący do grafu $G$ oraz posiadający zestaw wierzchołków sąsiednich $N(v_0)=\{v_1, v_2, \ldots, v_p\}$.
+  Przyjąć należy pewien wierzchołek $v_0$ należący do grafu $G$ oraz mający zestaw wierzchołków sąsiednich $N(v_0)=\{v_1, v_2, \ldots, v_p\}$.
   Graf strukturyzowany $G^\prime$ konstruowany jest według następujących kroków.
   \begin{enumerate}
     \item Usuń wierzchołki $v_N \in N[v_0]$ z grafu G i dla każdej antykrawędzi $\{v_i, v_j\}$ w grafie $G$, gdzie $0 < i < j \leq p$ wprowadź nowy wierzchołek $v_{ij}$ do grafu strukturyzowanego $G^\prime$.
@@ -119,7 +119,7 @@
 }
 \subsubsection{\textbf{Uogólniona operacja zwijania}}\label{sss_ckx_general_fold}
 \par{
-  Uogólniona operacja zwijania stanowi drugą z podstawowych, nieposiadających rozgałęzień procedur utrzymujących strukturę grafu w postaci spełniającej warunki umożliwiające maksymalizację efektywności działania algorytmu głównego.
+  Uogólniona operacja zwijania stanowi drugą z podstawowych, niemających rozgałęzień procedur utrzymujących strukturę grafu w postaci spełniającej warunki umożliwiające maksymalizację efektywności działania algorytmu głównego.
   Wywodzi się ona z techniki przetwarzania wstępnego opartej na zwijaniu wierzchołków stopnia 2. wraz z sąsiedztwem.
   Metodologia postępowania tego algorytmu jest jednak podobna do techniki opisywanej w podrozdziale~\ref{Section_preprocessing} jedynie na poziomie konceptualnym.
   Uogólnienie jej czynności pozwalające na uwolnienie się od ograniczenia stopnia zwijanego wierzchołka do 2 wymaga sięgnięcia do koncepcji NT-dekompozycji oraz koron grafu.
@@ -131,7 +131,7 @@
     Wobec takich założeń, następujące implikacje są prawdziwe.
     \begin{enumerate}
       \item Jeżeli graf zaindukowany z grafu $G$ zbiorem $N(I)$ (w rozumieniu definicji~\ref{def_induced_graph}) nie stanowi zbioru niezależnego oznacza to, że istnieje optymalne opkrycie wierzchołkowe zawierające zbiór $N(I)$ i nie zawierające zbioru $I$.
-      \item Jeżeli graf zaindukowany z grafu $G$ zbiorem $N(I)$ stanowi zbiór niezależny, należy przyjąć graf $G^\prime=(V^\prime, E^\prime)$ uzyskany z grafu $G$ tak, że $V^\prime=V \setminus (I \bigcup N(I)) \bigcup \{u_I\}$ gdzie $u_I$ stanowi nowo dodany wierzchołek, który należy połączyć z każdym wierzchołkiem $v \in V^\prime$ sąsiadującym w grafie $G$ z dowolnym wierzchołkiem $u \in N(I)$.
+      \item Jeżeli graf zaindukowany z grafu $G$ zbiorem $N(I)$ stanowi zbiór niezależny, należy przyjąć graf $G^\prime=(V^\prime, E^\prime)$ uzyskany z grafu $G$ tak, że $V^\prime=V \setminus (I \cup N(I)) \cup \{u_I\}$ gdzie $u_I$ stanowi nowo dodany wierzchołek, który należy połączyć z każdym wierzchołkiem $v \in V^\prime$ sąsiadującym w grafie $G$ z dowolnym wierzchołkiem $u \in N(I)$.
       W przypadku spełnienia tych założeń prawdziwa jest równość $\tau(G^\prime)=\tau(G)-|I|$.
     \end{enumerate}
   \end{theorem}
@@ -139,13 +139,13 @@
     Następujące części kolejno dowodzą przypadków opisanych twierdzeniem.
     \begin{itemize}
       \item[(0):] Dla grafu $G=(V, E)$ istnieje optymalne pokrycie wierzchołkowe $C$ zawierające zbiór $N(I)$ oraz wyłączające zbiór $I$.
-      Przyjąć należy zbiory $\emptyset \neq X=C \bigcap I$ oraz $\emptyset \neq Y=C \bigcap N(I)$.
+      Przyjąć należy zbiory $\emptyset \neq X=C \cap I$ oraz $\emptyset \neq Y=C \cap N(I)$.
       Ponieważ zbiór $C$ stanowi pokrycie wierzchołkowe grafu $G$ widocznym jest, że jeżeli $X=\emptyset$ to wtedy $Y=N(I)$ --- podobnie jak i w sytuacji gdyby $Y=\emptyset$, wtedy $X=I$.
       Pozwala to przyjąć założenie, że zarówno $X\neq \emptyset$ jak i $Y\neq \emptyset$.
       Ponownie z założenia, że zbiór $C$ stanowi pokrycie wierzchołkowe grafu $G$ stwierdzić można, iż zachodzi $N(I-X)\subseteq Y$.
       W sytuacji gdy $I \supset X$, założenia twierdzenia dotyczące rozmiarów zbioru sąsiedztwa $N(I)$ pozwala stwierdzić, że prawdziwa jest nierówność $|Y| \geq |N(I \setminus X)| \geq |I \setminus X| + 1 = |I| - |X| + 1$.
       W sytuacji gdy $I = X$, w związku z faktem, że $Y \neq \emptyset$, tak jak w poprzednim przypadku spełniona jest nierówność $|Y|\geq|I|-|X|+1$.
-      Ponieważ zbiór $I$ jest niezależny w grafie $G$, zastąpienie zbioru $Y \bigcup X$ zbiorem $N(I)$ w pokryciu wierzchołkowym $C$ owocuje pokryciem wierzchołkowym $C^\prime$ grafu $G$ o liczebności $|C^\prime| \leq |C|$.
+      Ponieważ zbiór $I$ jest niezależny w grafie $G$, zastąpienie zbioru $Y \cup X$ zbiorem $N(I)$ w pokryciu wierzchołkowym $C$ owocuje pokryciem wierzchołkowym $C^\prime$ grafu $G$ o liczebności $|C^\prime| \leq |C|$.
       Wobec tego toku rozumowania łatwo zauważyć, że zbiór $C^\prime$ stanowi pokrycie wierzchołkowe grafu $G$ o najmniejszej liczebności, które zawiera zbiór $N(I)$ oraz wyłącza zbiór niezależny $I$.
       \item[(1):] Założyć należy istnienie pokrycia wierzchołkowego $C$ spełniającego założenia części (0) dowodu.
       Jeżeli graf zaindukowany z grafu $G$ zbiorem $N(I)$ nie stanowi zbioru niezależnego oznacza to, że każde z istniejących pokryć wierzchołkowych grafu $G$, a w szczególności zbiór $C$, musi zawierac zbiór $N(I)$.
@@ -156,7 +156,7 @@
       W sytuacji gdzie zachodzi $C \supseteq N(I)$, zbiór $C^\prime=(C \setminus N(I))\bigcup\{u_I\}$ stanowi pokrycie wierzchołkowe grafu $G^\prime$ o liczebności $\tau(G)-(|I|+1)+1=\tau(G)-|I|$ oraz ponownie spełniona jest nierówność $\tau(G^\prime)\leq\tau(G)-|I|$ \textit{(2.2)}.
 
       Patrząc z perspektywy wierzchołka $u_I$, jeżeli zbiór $C^\prime$ stanowi optymalne pokrycie wierzchołkowe grafu $G^\prime$, musi on albo zawierać wierzchołek $u_I$ albo wykluczać wierzchołek $u_I$ zawierać zbiór jego sąsiedztwa $N(u_I)$.
-      Jeżeli zbiór $C^\prime$ zawiera wierzchołek $u_I$, wtedy zbiór $(C^\prime - \{u_I\}) \bigcup N(I)$ stanowi pokrycie wierzchołkowe grafu $G$ o liczebności $|C^\prime|+|I|$, co powoduje spełnienie nierówności $\tau(G^\prime)\geq \tau(G)-|I|$ \textit{(2.3)}.
+      Jeżeli zbiór $C^\prime$ zawiera wierzchołek $u_I$, wtedy zbiór $(C^\prime - \{u_I\}) \cup N(I)$ stanowi pokrycie wierzchołkowe grafu $G$ o liczebności $|C^\prime|+|I|$, co powoduje spełnienie nierówności $\tau(G^\prime)\geq \tau(G)-|I|$ \textit{(2.3)}.
 
       Jeżeli zbiór $C^\prime$ wyklucza wierzchołek $u_I$, zawierając jednocześnie zbiór jego sąsiedztwa $N(u_I)$, wtedy zbiór $C^\prime$ ponownie stanowi pokrycie wierzchołkowe grafu $G$ o liczebności $|C^\prime|+|I|$ i ponownie spełniona jest nierówność $\tau(G^\prime)\geq \tau(G)-|I|$ \textit{(2.4)}.
 
@@ -180,62 +180,62 @@
     Dla dwudzielnego grafu $G$ o podziale $(A, B)$ skojarzenie pokrywające całość zbioru $A$ może istnieć wtedy i tylko wtedy jeżeli każdy podzbiór $X \subseteq A$ spełnia własność $|N(X)| \geq |X|$.
   \end{theorem}
 
-  Krokiem kluczowym dla odnalezienia struktury pseudokorony w nieposiadającym koron grafie $G$ jest istnienie pewnego wierzchołka $v$, który stanowi jedyny wierzchołek czyniący strukturę grafu $G$ wolną od koron, czego analiza przeprowadzona zostaje w ramach dowodu następującego twierdzenia.
+  Krokiem kluczowym dla odnalezienia struktury pseudokorony w niemającym koron grafie $G$ jest istnienie pewnego wierzchołka $v$, który stanowi jedyny wierzchołek czyniący strukturę grafu $G$ wolną od koron, czego analiza przeprowadzona zostaje w ramach dowodu następującego twierdzenia.
 
   \begin{theorem}\thlabel{th_almost_crown}
     Wolny od koron graf $G=(V, E)$ zawiera pseudokoronę wtedy i tylko wtedy, jeżeli istnieje wierzchołek $v \in V$ taki, że graf zaindukowany z grafu $G$ zbiorem $V\setminus \{v\}$ zawiera równą koronę (w rozumieniu definicji~\ref{def_equal_crown}).
   \end{theorem}
   \begin{bproof}
-    Zakładając, iż graf $G$ posiada pseudokoronę $(I, H=N(I))$, spełnione muszą być własności $|H| = |I| + 1$ oraz $\forall_{\emptyset\neq S \subseteq I}:{|N(S)|\geq|S|+1}$.
+    Zakładając, iż graf $G$ ma pseudokoronę $(I, H=N(I))$, spełnione muszą być własności $|H| = |I| + 1$ oraz $\forall_{\emptyset\neq S \subseteq I}:{|N(S)|\geq|S|+1}$.
     Przyjąć za dane należy dowolny wierzchołek $v \in H$ oraz zbiór $H^\prime=H \setminus \{v\}$ --- w takiej sytuacji spełniona jest równość $|H^\prime|=|I|$.
     Łatwo zauważyć, że w tym przypadku $(I, H^\prime)$ stanowi równą koronę w grafie $G^\prime$ zaindukowanym z grafu $G$ zbiorem $V \setminus \{v\}$.
     W konsekwencji widać, że w grafie $G^\prime$ musi zachodzić równość $H^\prime = N(I)$.
     W związku z faktem, że graf $G$ nie zawiera żadnej korony, dla każdego niepustego podzbioru $S \subseteq I$ spełniona w grafie $G$ jest nierówność $|N(S)| \geq |S|+1$, co z kolei implikuje, że dla każdego ze zbiorów $S$  w grafie $G^\prime$ zachodzi nierówność $|N(S)| \geq |S|$.
     Twierdzenie~\ref{th_hall} pozwala stwierdzić, że zbiór $I$ kojarzy zbiór $H^\prime$ a zatem, na mocy równości $|H^\prime|=|I|$, zbiór $H^\prime$ musi w ten sam sposób kojarzyć zbiór $I$, co dopełnia definicji równej korony i dowodzi, że graf $G^\prime$ musi taką koronę zawierać.
 
-    Spoglądając z innej perspektywy --- utrzymując założenie, że graf $G$ nie zawiera koron i istniej wierzchołek $v \in V$, taki że graf $G^\prime$ zaindukowany z grafu $G$ zbiorem $V \setminus \{v\}$ posiada równą koronę $(I, H^\prime)$ postuluje się, iż struktura $(I, H=H^\prime \bigcup\{v\})$ stanowi pseudokoronę w grafie $G$.
+    Spoglądając z innej perspektywy --- utrzymując założenie, że graf $G$ nie zawiera koron i istniej wierzchołek $v \in V$, taki że graf $G^\prime$ zaindukowany z grafu $G$ zbiorem $V \setminus \{v\}$ ma równą koronę $(I, H^\prime)$ postuluje się, iż struktura $(I, H=H^\prime \bigcup\{v\})$ stanowi pseudokoronę w grafie $G$.
     Zaobserwować należy, iż wierzchołek $v$ musi należeć do zbioru $N(I)$ w grafie $G$ --- w przeciwnym wypadku w grafie $G$ spełniona musiałaby być równość $H^\prime=N(I)$, w wyniku czego struktura $(I, H^\prime)$ musiałaby stanowić koronę w grafie $G$, co przeczy założeniu o braku koron w grafie $G$.
     W konsekwencji stwierdzić można, że w grafie $G$ spełnione są własności $H=N(I)$ oraz $|H|=|I|+1$.
     Zakładając istnienie niepustego podzbioru $S \subseteq I$ oraz mając na uwadze fakt, iż struktura $(I, H^\prime)$ stanowi równą koronę w grafie $G^\prime$ i zbiór $I$ jest w pełni skojarzony ze zbiorem $H^\prime$ stwierdzić można, że $|N(S) \geq |S|$ w grafie $G^\prime$.
     W tej sytuacji, w przypadku gdy wierzchołek $v$ sąsiaduje w grafie $G$ ze zbiorem $N(S)$, spełniona jest nierówność $|N(S)| \geq |S| + 1$.
     W przeciwnym wypadku, to znaczy gdy wierzchołek $v \notin N(S)$, zbiór $N(S)$ jest identyczny zarówno w grafie $G$ jak i $G^\prime$.
     Jeżeli zatem spełnione jest równanie $|N(S)|=|S|$ --- w związku z faktem, iż zbiór $S$ jest skojarzony ze zbiorem $N(S)$, musiałoby to oznaczać, że zbiór $N(S)$ jest skojarzony ze zbiorem $S$.
-    W konsekwencji struktura $(S, N(S))$ musiałaby stanowić koronę w grafie $G$, co przeczy założeniu, iż nie posiada on żadnej korony.
+    W konsekwencji struktura $(S, N(S))$ musiałaby stanowić koronę w grafie $G$, co przeczy założeniu, iż nie ma on żadnej korony.
     Wobec tej sprzeczności jeżeli wierzchołek $v$ nie sąsiaduje ze zbiorem $S$ w grafie $G$, to spełniona musi być właściwość $|N(S)| \geq |S| + 1$.
 
     W efekcie, bez względu na to czy wierzchołek $v$ sąsiaduje ze zbiorem $S$ czy nie, nierówność $|N(S)| \geq |S| + 1$ jest spełniona dla każdego niepustego podzbioru $S \subseteq I$ --- co zaświadcza, iż struktura $(I, H=N(I))$ stanowi pseudokoronę w grafie G.
   \end{bproof}
 
   Jak wspomniano wcześniej, uogólniona operacja zwijania posługuje się strukturami realizującymi koncepcje NT-dekompozycji i koron.
-  Celem operacji jest jak największa redukcji dziedziny problemu, możliwa w danym momencie realizacji aktualnej gałęzi algorytmu głównego.
+  Celem operacji jest jak największa redukcja dziedziny problemu, możliwa w danym momencie realizacji aktualnej gałęzi algorytmu głównego.
   Algorytm realizujący uogólnioną operację zwijania musi zatem pozbyć się z aktualnej postaci grafu wszystkich struktur koron i pseudokoron.
 
   \begin{theorem}
-    Istnieje algorytm $\mathcal{A}$ o złożoności $O(k^3\sqrt{k})$ redukujący dowolną instancję $(G=(V, E), k)$ problemu pokrycia wierzchołkowego o rozmiarze $|V|\leq 2k$ do nieposiadającej koron ani pseudokoron instancji $(G^\prime=(V^\prime, E^\prime), k^\prime)$ o parametrach $|V^\prime| \leq |V|$ oraz $k^\prime \leq k$.
+    Istnieje algorytm $\mathcal{A}$ o złożoności $O(k^3\sqrt{k})$ redukujący dowolny egzemplarz $(G=(V, E), k)$ problemu pokrycia wierzchołkowego o rozmiarze $|V|\leq 2k$ do niemającego koron ani pseudokoron egzemplarza $(G^\prime=(V^\prime, E^\prime), k^\prime)$ o parametrach $|V^\prime| \leq |V|$ oraz $k^\prime \leq k$.
   \end{theorem}
   \begin{bproof}
-    W celu usnięcia struktur koron z grafu, należy aplikować na grafie NT-dekompozycje do momentu otrzymania trywialnej instancji takiej dekompozycji (w rozumieniu definicji~\ref{def_nt_decomposition_trivial}).
-    Zgodnie z drugim twierdzeniem Nemhausera-Trottera~\ref{nt_lp}, każde zastosowanie NT-dekompozycji wymaga $O(|V|\sqrt{|E|})$ czasu.
-    W związku z udowodnieniem, iż rozmiary grafu w rozpatrywanej instancji problemu pokrycia wierzchołkowego wynoszą odpowiednio $|V|=O(k)$ oraz $|E|=O(k^2)$ łatwo zauważyć, że każda NT-dekompozycja zajmie tak naprawdę $O(k^2\sqrt{k})$ czasu.
-    Każda z NT-dekompozycji redukuję dziedzinę grafu a zatem do momentu uzyskania trywialnej instancji NT-dekompozycji operacja wykonana zostanie $O(k)$ razy.
-    Po tym czasie załozyć można, iż zredukowany graf nie posiada żadnych koron, zgodnie z~twierdzeniem~\ref{th_crown_free_graph}.
-    Łatwo zaobserwować, że w czasie $O(k^3\sqrt(k))$ można zredukować instancję $(G, k)$ problemu pokrycia wierzchołkowego do instancji $(G^\prime, k^\prime)$, gdzie graf $G^\prime$ nie zawiera żadnych koron.
-    Należy również zauważyć, że każda aplikacja NT-dekompozycji owocująca nietrywialną jej instancją powoduje zmniejszenie parametru $k$ o wartość odpowiadającą szerokości korony (w rozumieniu definicji~\ref{def_crown_head}) zawartej w danej instancji.
+    W celu usnięcia struktur koron z grafu, należy aplikować na grafie NT-dekompozycje do momentu otrzymania trywialnej egzemplarza takiej dekompozycji (w rozumieniu definicji~\ref{def_nt_decomposition_trivial}).
+    Zgodnie z drugim twierdzeniem Nemhausera-Trottera~\ref{nt_lp}, każde zastosowanie NT-redukcji wymaga $O(|V|\sqrt{|E|})$ czasu.
+    W związku z udowodnieniem, iż rozmiary grafu w rozpatrywanym egzemplarzu problemu pokrycia wierzchołkowego wynoszą odpowiednio $|V|=O(k)$ oraz $|E|=O(k^2)$ łatwo zauważyć, że każda NT-dekompozycja zajmie tak naprawdę $O(k^2\sqrt{k})$ czasu.
+    Każda NT-dekompozycja redukuje dziedzinę grafu, a zatem do momentu uzyskania trywialnego egzemplarza NT-dekompozycji operacja wykonana zostanie $O(k)$ razy.
+    Po tym czasie załozyć można, iż zredukowany graf nie ma żadnych koron, zgodnie z~twierdzeniem~\ref{th_crown_free_graph}.
+    Łatwo zaobserwować, że w czasie $O(k^3\sqrt(k))$ można zredukować egzemplarz $(G, k)$ problemu pokrycia wierzchołkowego do egzemplarza $(G^\prime, k^\prime)$, gdzie graf $G^\prime$ nie zawiera żadnych koron.
+    Należy również zauważyć, że każda aplikacja NT-redukcji owocująca nietrywialnym jej egzemplarzem powoduje zmniejszenie parametru $k$ o wartość odpowiadającą szerokości korony (w rozumieniu definicji~\ref{def_crown_head}) zawartej w danym egzemplarzu.
 
     Podążając za dowodem twierdzenia~\ref{th_almost_crown}, struktura pseudokorony może istnieć w grafie $G^\prime$ wtedy i tylko wtedy, kiedy zawiera on wierzchołek $v$ taki, że graf zaindukowany z grafu $G^\prime$ zbiorem $V \setminus \{v\}$ zawiera równą koronę.
-    Sposób odnalezienia pseudokorony polega zatem na przeprowadzeniu NT-dekompozycji na grafie zaindukowanym z grafu $G^\prime$ zbiorem $V \setminus \{v\}$ dla każdego wierzchołka $v \in G^\prime$.
-    Jeżeli dowolna z przeprowadzonych NT-dekompozycji owocuje instancją korony, na mocy twierdzenia~\ref{th_almost_crown} musi to być korona równa --- w przeciwnym wypadku graf $G^\prime$ musiałby zawierać koronę.
+    Sposób odnalezienia pseudokorony polega zatem na przeprowadzeniu NT-redukcji na grafie zaindukowanym z grafu $G^\prime$ zbiorem $V \setminus \{v\}$ dla każdego wierzchołka $v \in G^\prime$.
+    Jeżeli dowolna z przeprowadzonych NT-redukcji owocuje egzemplarzem korony, na mocy twierdzenia~\ref{th_almost_crown} musi to być korona równa --- w przeciwnym wypadku graf $G^\prime$ musiałby zawierać koronę.
     W efekcie odkryta została struktura pseudokorony, to znaczy wierzchołka $v_c$ wraz z koroną otrzymaną z NT-dekompozycji grafu zaindukowanego z grafu $G^\prime$ zbiorem $V \setminus \{v_c\}$.
     Operacja odnalezienia pseudokorony zajmuje $O(k^{\prime}^3\sqrt{k^\prime})=O(k^3\sqrt{k})$ czasu, ponieważ należy przeprowadzić co najwyżej $O(k)$ NT-dekompozycji dla zaindukowanych grafów.
 
     Po wykonaniu powyższych operacji otrzymany graf nie zawiera koron ani pseudokoron.
-    W oparciu  otwierdzenie~\ref{th_crown_domain_reduction} można stwierdzić, że rozmiar wynikowej instancji problemu wynosi $|V^\prime| \leq 2k^prime$.
+    W oparciu  otwierdzenie~\ref{th_crown_domain_reduction} można stwierdzić, że rozmiar wynikowego egzemplarza problemu wynosi $|V^\prime| \leq 2k^prime$.
   \end{bproof}
 }
 \subsubsection{\textbf{Struktury ``pożyteczne''}}
 \label{sss_ckx_structures}
 \par{
-  Identyfikacja struktur ``pożytecznych'' (zwanych również po prostu \emph{strukturami}) w grafie związanym z rozpatrywaną instancją problemu pokrycia wierzchołkowego pozwala na maksymalizację efektywności procesu redukcji dziedziny do jądra problemu, co przekłąda się bezpośrednio na zmniejszenie złożoności czasowej algorytmu. Klasy struktur wraz z priorytetami zostały przez autorów pracy~\cite{ImprovedBounds10} wyznaczone drogą analityczną w oparciu o identyfikację i dekonstrukcję możliwie występujących w ogólnych grafach przypadków mających znaczenie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego.
+  Identyfikacja struktur ``pożytecznych'' (zwanych również po prostu \emph{strukturami}) w grafie związanym z rozpatrywanym egzemplarzem problemu pokrycia wierzchołkowego pozwala na maksymalizację efektywności procesu redukcji dziedziny do jądra problemu, co przekłąda się bezpośrednio na zmniejszenie złożoności czasowej algorytmu. Klasy struktur wraz z priorytetami zostały przez autorów pracy~\cite{ImprovedBounds10} wyznaczone drogą analityczną w oparciu o identyfikację i dekonstrukcję możliwie występujących w ogólnych grafach przypadków mających znaczenie dla parametryzowanego wariantu problemu pokrycia wierzchołkowego.
   Wartość ``pożyteczności'' danej klasy struktur określana jest przede wszystkim na podstawie relacji pomiędzy składającymi się na nie wierzchołkami.
 }
 \par{
@@ -261,7 +261,7 @@
   Głównym zastosowaniem dobrych par jest maksymalizacja efektywności redukcji dziedziny w momencie rozgałęziania się głównego algorytmu.
   \begin{definition}
     W grafie $G=(V, E)$ mianem \emph{dobrej pary} nazywa się parę wierzchołków $\{u, z\}$ wybranych wedle następujących kryteriów.
-    Dla każdego wierzchołka $u \in V$ posiadającego zbiór wierzchołków sąsiednich $N(u)=\{u_1, u_2, \ldots, u_d\}$ zdefiniować należy jego \emph{etykietę} (zapisywaną jako \emph{etykieta(u)}) jako wektor $\eta=\<\eta_1, \eta_2, \ldots, \eta_d\>$, gdzie $\eta_1$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o największym stopniu $u_{a} \in N(u), d(u_{a})=\max\{d(u_n) | u_n \in N(u)\}$, $\eta_2$ jest stopniem wierzchołka sąsiadującego z wierzchołkiem $u$ o drugim w kolejności największym stopniu $u_{b} \in N(u), d(u_{b})=\max\{d(u_n) | u_n \in N(u) \setminus \{u_{a}\}\}$ itd. --- $\eta_d$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o najniższym stopniu spośród wszystkich wierzchołków zbioru $N(u)$ $u_{z} \in N(u), d(u_{z})=\min\{d(u_n) | u_n \in N(u)\}$.
+    Dla każdego wierzchołka $u \in V$ mającego zbiór wierzchołków sąsiednich $N(u)=\{u_1, u_2, \ldots, u_d\}$ zdefiniować należy jego \emph{etykietę} (zapisywaną jako \emph{etykieta(u)}) jako wektor $\eta=\<\eta_1, \eta_2, \ldots, \eta_d\>$, gdzie $\eta_1$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o największym stopniu $u_{a} \in N(u), d(u_{a})=\max\{d(u_n) | u_n \in N(u)\}$, $\eta_2$ jest stopniem wierzchołka sąsiadującego z wierzchołkiem $u$ o drugim w kolejności największym stopniu $u_{b} \in N(u), d(u_{b})=\max\{d(u_n) | u_n \in N(u) \setminus \{u_{a}\}\}$ itd. --- $\eta_d$ stanowi stopień wierzchołka sąsiadującego z wierzchołkiem $u$ o najniższym stopniu spośród wszystkich wierzchołków zbioru $N(u)$ $u_{z} \in N(u), d(u_{z})=\min\{d(u_n) | u_n \in N(u)\}$.
 
     W celu określenia pierwszego wierzchołka pewnej dobrej pary należy wybrać wierzchołek $u \in V$ spełniający następujące własności w podanym porządku.
     \begin{enumerate}[(i)]
@@ -274,7 +274,7 @@
     \begin{enumerate}[(a)]
       \item Jeżeli istnieją pewne dwa wierzchołki $v \in N(u)$ oraz $w \in N(u)$, z których wierzchołek $v$ jest pseudozdominowany przez wierzchołek $w$, to wierzchołek $z$ jest pseudozdominowany przez pewien wierzchołek $x \in N(u)$.
       \item Stopień wierzchołka $d(z)$ jest największy z możliwych wśród wierzchołków sąsiadujących z wierzchołkiem $u$, spełniających własność (a).
-      W sytuacji gdy żaden wierzchołek $v \in N(u)$ nie pseudodominuje żadnego innego wierzchołka $w \in N(u)$, własność (a) jest spełniona w sposób przechodni przez każdy wierzchołek sąsiadujący z wierzchołkiem $u$ --- woerzchołek $z$ będzie wtedy po prostu sąsiadem największego stopnia wierzchołka $u$.
+      W sytuacji gdy żaden wierzchołek $v \in N(u)$ nie pseudodominuje żadnego innego wierzchołka $w \in N(u)$, własność (a) jest spełniona w sposób przechodni przez każdy wierzchołek sąsiadujący z wierzchołkiem $u$ --- wierzchołek $z$ będzie wtedy po prostu sąsiadem największego stopnia wierzchołka $u$.
       \item Wierzchołek $z$ jest połączony krawędzią z jak najmniejszą liczbą wierzchołków należących do sąsiedztwa wierzchołka $u$ spośród wszystkich wierzchołków, dla kórych zachodzą własności (a) i (b).
       \item Liczba wierzchołków sąsiednich współdzielonych pomiędzy wierzchołkiem $z$ oraz innym wierzchołkiem nalężącym do sąsiedztwa wierzchołka $u$ jest największa z możliwych spośród wszystkich elementów zbioru $N(u)$, dla których zachodzą własności (a), (b) i (c).
     \end{enumerate}
@@ -286,7 +286,7 @@
   Szczególnie ważną klasę identyfikowanych w grafie struktur z punktu widzenia redukcji przestrzeni poszukiwań stanowią \emph{krotki}.
   \begin{definition}
     Mianem \emph{krotki} określa się uporządkowaną parę $(S, q)$, gdzie $S$ stanowi zbiór wierzchołków, a wartość $q$ jest liczbą całkowitą.
-    Krotka niesie ze sobą informację, że w aktualnie rozpatrywanej instancji problemu pokrycia wierzchołkowego $(G, k)$ można prowadzić poszukiwania optymalnego pokrycia wierzchołkowego z wyłączeniem co najmniej $q$ wierzchołków należących do zbioru $S$.
+    Krotka niesie ze sobą informację, że w aktualnie rozpatrywanego egzemplarza problemu pokrycia wierzchołkowego $(G, k)$ można prowadzić poszukiwania optymalnego pokrycia wierzchołkowego z wyłączeniem co najmniej $q$ wierzchołków należących do zbioru $S$.
   \end{definition}
   W praktyce algorytm rozpatruje wyłącznie krotki $(S, q)$ dla wartości $q \leq 2$ --- wyłącznie na nich skupiona jest również analiza.
   Najbardziej wartościowym podzbiorem krotek są tak zwane \emph{2-krotki} oraz \emph{silne 2-krotki}.
@@ -310,12 +310,12 @@
   Aby uwidocznić wysoką wartość krotek, należy wytłumaczyć w jaki sposób algorytm wykorzystuje te struktury podczas rozgałęziania.
   Dla potrzeb wyjaśnienia przyjąc należy, że algorytm rozgałęzia się na pewnym wierzchołku $z$ o sąsiedztwie $N(z)$.
   Na podstawie obserwacji dokonanej w ramach twierdzenia~\ref{th_include_neighborhood} stwierdzić można, że istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(z)$ lub wykluczające co najmniej dwa wierzchołki należące do tego zbioru.
-  Wobec tego w momencie rozgałęziania algorytmu, w instancji zawierającej wierzchołek $z$ przestrzeń poszukiwań może zostać ograniczona do pokrycia wierzchołkowego zbioru wykluczającego co najmniej dwa wierzchołki należące do sąsiedztwa wierzchołka $z$ --- istnieje pewność poprawności takiej operacji, ponieważ jeżeli takie pokrycie nie istnieje, druga gałąź rozpatrująca instancję zawierającą całość zbioru $N(z)$ odnajdzie optymalne pokrycie wierzchołkowe jeżeli takowe istnieje.
+  Wobec tego w momencie rozgałęziania algorytmu, w egzemplarzu zawierającym wierzchołek $z$ przestrzeń poszukiwań może zostać ograniczona do pokrycia wierzchołkowego zbioru wykluczającego co najmniej dwa wierzchołki należące do sąsiedztwa wierzchołka $z$ --- istnieje pewność poprawności takiej operacji, ponieważ jeżeli takie pokrycie nie istnieje, druga gałąź rozpatrująca egzemplarz zawierający całość zbioru $N(z)$ odnajdzie optymalne pokrycie wierzchołkowe jeżeli takowe istnieje.
   Pojęcie wykluczenia co najmniej dwóch wierzchołków sąsiadujących z wierzchołkiem $z$ jest materializowane przez stworzenie w momencie rozgałęziania krotki $(N(z), q=2)$.
 
-  W sytuacji gdy algorytm rozgałęzia się na pewnym wierzchołku $z$ posiadającym pewien sąsiedni wierzchołek $u$, zgodnie z obserwacją dokonaną w ramach twierdzenia~\ref{th_exclude_additional_neighbor} musi istnieć optymalne pokrycie wierzchołkowe, które albo zawiera wierzchołek $z$ albo wyklucza wierzchołek $z$ oraz co najmniej jeden wierzchołek należący do sąsiedztwa wierzhołka $u$.
+  W sytuacji gdy algorytm rozgałęzia się na pewnym wierzchołku $z$ mającym pewien sąsiedni wierzchołek $u$, zgodnie z obserwacją dokonaną w ramach twierdzenia~\ref{th_exclude_additional_neighbor} musi istnieć optymalne pokrycie wierzchołkowe, które albo zawiera wierzchołek $z$ albo wyklucza wierzchołek $z$ oraz co najmniej jeden wierzchołek należący do sąsiedztwa wierzhołka $u$.
   Przestrzeń poszukiwań w ramach tej gałęzi algorytmu może być zatem ograniczona do zbioru wykluczającego co najmniej dwa wierzchołki należące do zbioru $N(u)$.
-  Pojęcie wykluczenia tychże wierzchołków materializowane jest poprzez utworzenie w momencie rozgałęziania krotki $(N(u), q=2)$.
+  Pojęcie wykluczenia tychże wierzchołków materializowane jest przez utworzenie w momencie rozgałęziania krotki $(N(u), q=2)$.
 }
 \subsubsection{\textbf{Aktualizacja krotek}}
 \label{sss_ckx_updating_tuples}
@@ -362,18 +362,18 @@
         \algorithmicensure{Liczebność ($\leq k$) optymalnego pokrycia wierzchołkowego grafu $G$ jeżeli takowe istnieje lub zgłoszenie porażki}
 
         \If{$k \leq 7$}
-        \State{Rozwiąż instancję metodą siłową i zakończ działanie}
+        \State{Rozwiąż egzemplarz metodą siłową i zakończ działanie}
         \EndIf
         \State$\Call{Redukcja}$
         \State{Wybierz strukturę $\Gamma$ o najwyższym priorytecie z kolejki $T$}
         \If {$(\Gamma$ jest 2-krotką $(\{u, z\}, 1))$ \textbf{ or }\\
              \hspace{2.6em}($\Gamma$ jest dobrą parą $(u, z)$ gdzie $z\dagger v\in N(u))$ \textbf{or}\\
              \hspace{2.6em}($\Gamma$ jest wierzchołkiem $z$ stopnia $d(z) \geq 7$)}
-          \State{\textbf{return} $\min\{1+\Call{VC}{G \setminus \{z\}, T \bigcup (N(z), 2), k-1},$\label{ckx_tuple_1}\\
+          \State{\textbf{return} $\min\{1+\Call{VC}{G \setminus \{z\}, T \cup (N(z), 2), k-1},$\label{ckx_tuple_1}\\
                                        \hspace{8.9em}$ d(z) + \Call{VC}{G \setminus N[z], T, k - d(z)}\}$}
         \Else\Comment{$\Gamma$ jest dobrą parą $(u, z)$ gdzie $\neg(z \dagger v \in N(u))$}
           \State{\textbf{return} $\min\{1+\Call{VC}{G \setminus \{z\}, T, k-1},$\\
-                                       \hspace{8.9em}$d(z) + \Call{VC}{G \setminus N[z], T \bigcup (N(u), 2), k - d(z)}\}$}\label{ckx_tuple_2}
+                                       \hspace{8.9em}$d(z) + \Call{VC}{G \setminus N[z], T \cup (N(u), 2), k - d(z)}\}$}\label{ckx_tuple_2}
         \EndIf
       \EndFunction
     \end{algorithmic}
@@ -386,7 +386,7 @@
     \item Funkcja \textsc{War\_Strukt}, działająca zgodnie z pseudokodem~\ref{alg_ckx_conditional_struction}.
   \end{itemize}
 
-  Do zadań funkcji pomocniczej \textsc{Redukcja} należy dekompozycja istniejących krotek do odpowiadających im nowych 2-krotek, redukcja przestrzeni poszukiwań przez wykonywanie operacji strukturyzacji i uogólnionej operacji zwijania na grafie, a także utrzymywanie odpowiedniego stanu kolejki $T$ w celu uniknięcia konfliktów pomiędzy ograniczeniami nałożonymi na aktualnie rozpatrywaną instancję problemu przez kolejne redukcje dziedziny.
+  Do zadań funkcji pomocniczej \textsc{Redukcja} należy dekompozycja istniejących krotek do odpowiadających im nowych 2-krotek, redukcja przestrzeni poszukiwań przez wykonywanie operacji strukturyzacji i uogólnionej operacji zwijania na grafie, a także utrzymywanie odpowiedniego stanu kolejki $T$ w celu uniknięcia konfliktów pomiędzy ograniczeniami nałożonymi na aktualnie rozpatrywany egzemplarz problemu przez kolejne redukcje dziedziny.
 
   \begin{algorithm}
    \caption{Algorytm Chen, Kanj, Xia --- funkcja \textsc{Redukcja}}\label{alg_ckx_reduction}
@@ -397,12 +397,12 @@
           \State{Odrzuć krotkę $(S, q)$}
         \EndIf
         \ForAll{$u \in S$}
-          \State$T \gets T \bigcup \{(S \setminus \{u\}, q-1)\}$\label{a2}\Comment{Dekompozycja krotki}
+          \State$T \gets T \cup \{(S \setminus \{u\}, q-1)\}$\label{a2}\Comment{Dekompozycja krotki}
         \EndFor
         \If{$S$ nie jest zbiorem niezależnym w $G$}
           \State$T \gets T \cup (\bigcup_{(u, v) \in E; u,v \in S}\{(S \setminus \{u, v\}, q-1)\})$\label{a3}\Comment{Dekomp. krotki}
         \EndIf
-        \If{$\exists_{v \in V}: |N(v) \bigcap S|\geq |S| - q + 1$}\label{a4}
+        \If{$\exists_{v \in V}: |N(v) \cap S|\geq |S| - q + 1$}\label{a4}
           \State{\textbf{return} $(1 + $VC($G \setminus \{v\}, T, k-1$)$)$}
         \EndIf
       \EndFor
@@ -417,7 +417,7 @@
    \end{algorithmic}
   \end{algorithm}
 
-  Funkcje pomocnicze~\textsc{War\_Zwijanie} oraz \textsc{War\_Strukt} podejmują decyzję o zastosowaniu odpowiednio uogólnionej operacji zwijania oraz operacji strukturyzacji wobec wartości redukcji parametru $k$ możliwych do uzyskania dla aktualnej instancji problemu oraz aktualnie wybranej krotki.
+  Funkcje pomocnicze~\textsc{War\_Zwijanie} oraz \textsc{War\_Strukt} podejmują decyzję o zastosowaniu odpowiednio uogólnionej operacji zwijania oraz operacji strukturyzacji wobec wartości redukcji parametru $k$ możliwych do uzyskania dla aktualnego egzemplarza problemu oraz aktualnie wybranej krotki.
 
   \begin{algorithm}
    \caption{Algorytm Chen, Kanj, Xia --- funkcja \textsc{War\_Zwijanie}}\label{alg_ckx_conditional_gf}
@@ -489,7 +489,7 @@
     \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=3$ oraz gdzie wszystkie wierzchołki sąsiednie $v_u \in N(u)$ są stopnia $d(v_u)=5$ i nie współdzielą żadnych wierzchołków sąsiednich poza wierzchołkiem $u$.
     \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=3, d(z) \geq 5$.
     \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=3, d(z) \geq 4$.
-    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=4$ oraz gdzie wierzchołek $u$ posiada co najmniej trzy wierzchołki sąsiednie $v_u \in N(u)$ stopnia $d(v_u)=5$ i dodatkowo wśród wierzchołków $v_u$ istnieje co najmniej jedna krawędź.
+    \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=4$ oraz gdzie wierzchołek $u$ ma co najmniej trzy wierzchołki sąsiednie $v_u \in N(u)$ stopnia $d(v_u)=5$ i dodatkowo wśród wierzchołków $v_u$ istnieje co najmniej jedna krawędź.
     \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniu wierzchołka $u$ wynoszącym $d(u)=3$ oraz gdzie wszystkie wierzchołki sąsiednie $v_u \in N(u)$ są stopnia $d(v_u)=5$ i nie współdzielą żadnych wierzchołków sąsiednich poza wierzchołkiem $u$.
     \item Struktura $\Gamma$ jest jednoelementowym zbiorem $\{z\}$, gdzie stopień wierzchołka $z$ wynosi $d(z) \geq 8$.
     \item Struktura $\Gamma$ jest dobrą parą wierzchołków $(u, z)$ o stopniach wierzchołków wynoszących $d(u)=4, d(z) \geq 5$.
@@ -504,8 +504,8 @@
   \end{theorem}
   \begin{bproof}
     Założyć wpierw należy, że stopień wierzchołków w grafie $G$ nie jest ograniczony z góry wartością 2 --- w przeciwnym wypadku funkcja \textsc{Redukcja} przetworzyłąby graf, zmieniając jego strukturę --- oraz, że graf $G$ jest spójny (dla grafów niespójnych algorytm \textsc{VC} wywoła się rekurencyjnie na każdej ze spójnych składowych).
-    Jeżeli graf $G$ posiada wierzchołek $v$ stopnia $d(v) \geq 7$, spełniona musi być przynajmniej jedna z własności (8), (11).
-    W przeciwnym wypadku graf $G$ posiada wierzchołek $v$ stopnia $d(v) \leq 6$.
+    Jeżeli graf $G$ ma wierzchołek $v$ stopnia $d(v) \geq 7$, spełniona musi być przynajmniej jedna z własności (8), (11).
+    W przeciwnym wypadku graf $G$ ma wierzchołek $v$ stopnia $d(v) \leq 6$.
     Jeżeli graf $G$ jest regularny (w rozumieniu definicji~\ref{def_regular}), wtedy dla każdej dobrej pary $(u, z)$ spełniona jest własność $d(u)=d(z)$ --- w tej sytuacji jedynie własność (12) znajduje zastosowanie.
     Jeżeli graf $G$ nie jest regularny, przyjąć należy $u$ jako wierzchołek najmniejszego stopnia w grafie $G$.
     Zauważyć należy, że ponieważ graf $G$ nie jest regularny i maksymalny stopień wierzchołka w grafie $G$ wynosi $d_{\max} \leq 6$, graf $G$ musi zawierać wierzchołek $u$ stopnia $d(u) \leq 5$.

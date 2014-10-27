@@ -1,6 +1,6 @@
 \subsection{Rozwiązywanie problemu maksymalnego przepływu w~sieci}\label{ss_max_flow}
 \par{
-  Problem przepływu w sieci jest kwestią o dużym znaczeniu dla opisywanego w podrozdziale \ref{Kernelization_network_flow} sformułowania redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako instancji przepływu w sieci dla odpowiadającego grafu dwudzielnego. 
+  Problem przepływu w sieci jest kwestią o dużym znaczeniu dla opisywanego w podrozdziale \ref{Kernelization_network_flow} sformułowania redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w sieci dla odpowiadającego grafu dwudzielnego. 
   Wymagana jest zatem solidna podstawa umożliwiająca rozwiązanie tegoż problemu w czasie wielomianowym.
 }
 \subsubsection{\textbf{Metoda Forda-Fulkersona}}
@@ -20,7 +20,7 @@
 }
 \par{
   Metoda Forda-Fulkersona jest metodą iteracyjną z~zerową wartością początkową przepływu w~sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
-  W każdej iteracji wartość przepływu zostaje zwiększona poprzez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
+  W każdej iteracji wartość przepływu zostaje zwiększona przez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
   Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
   Zgodnie z~twierdzeniem \ref{th_max_flow}, przepływ otrzymany w~tym momencie jest maksymalny.
   \begin{algorithm}
@@ -76,9 +76,9 @@
     \begin{equation*}
     f_{P_a}(u, v) = \left\{
     \begin{array}{rl}
-    c_f(P_a) & \text{jeżeli } (u, v) \in P_a,\\
-    -c_f(P_a) & \text{jeżeli } (v, u) \in P_a,\\
-    0 & \text{w przeciwnym wypadku }.
+    c_f(P_a) & \textnormal{jeżeli } (u, v) \in P_a,\\
+    -c_f(P_a) & \textnormal{jeżeli } (v, u) \in P_a,\\
+    0 & \textnormal{w przeciwnym wypadku }.
     \end{array} \right.
     \end{equation*}
   \end{definition}
@@ -98,11 +98,11 @@
   \end{definition}
 }
 \par{
-  Nadmienić należy, iż przepływ netto przez przekrój $(S, T)$ składa się z~dodatnich przepływów w~obu kierunkach; to znaczy dodatniego przepływu z~$S$ do $T$, branego ze znakiem plus oraz dodatniego przepływu z~$T$ do $S$, branego ze znakiem minus.
+  Dodać należy, iż przepływ netto przez przekrój $(S, T)$ składa się z~dodatnich przepływów w~obu kierunkach; to znaczy dodatniego przepływu z~$S$ do $T$, branego ze znakiem plus oraz dodatniego przepływu z~$T$ do $S$, branego ze znakiem minus.
   Przepustowość przekroju $c(S, T)$ jest jednak obliczna wyłącznie na podstawie przepustowości krawędzi prowadzących z~$S$ do $T$.
 }
 \par{
-  Dowolny przekrój $(S, T)$ w~sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ posiada dwie kluczowe cechy czyniące tę koncepcję kluczową dla rozwiązania problemu największego przepływu.
+  Dowolny przekrój $(S, T)$ w~sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ ma dwie kluczowe cechy czyniące tę koncepcję kluczową dla rozwiązania problemu największego przepływu.
   \begin{enumerate}
     \item Wartość dowolnego przepływu $f$ w~sieci $N$ jest równa wartości przepływu netto $f(S,T)$.
     \item Wartość dowolnego przepływu $f$ w~sieci $N$ jest nie większa niż przepustowość przekroju $(S, T)$.
@@ -117,7 +117,7 @@
     Implikuje to, iż wartość przepływu $f$ musiałaby być większa niż $|f|$ co przeczy założeniu, że $f$ jest maksymalny.
 
     \underline{(2) $\implies$ (3)}: Założyć należy, że sieć residualna $N_f=(V_f, E_f)$ dla sieci $N$ ze źródłem $s$ i ujściem $t$ nie zawiera żadnej ścieżki powiększającej.
-    Przyjąć należy istnienie przekroju $(S, T)$, $S=\{v \in V:\text{ istnieje ścieżka z }s\text{ do }v\text{ w~}N_f\}$ oraz zbioru $T=V\setminus S$.
+    Przyjąć należy istnienie przekroju $(S, T)$, $S=\{v \in V:\textnormal{ istnieje ścieżka z }s\textnormal{ do }v\textnormal{ w~}N_f\}$ oraz zbioru $T=V\setminus S$.
     W oparciu o cechę 1. dowolnego przekroju w~sieci stwierdzić można, iż $s \in S$ oraz $t \notin S$, gdyż nie istnieje ścieżka z $s$ do $t$ w~sieci residualnej $N_f$.
     Dla każdej pary wierzchołków $u \in S, v \in T$ musi zachodzić równość $f(u, v)=c(u, v)$, gdyż w~przeciwnym wypadku spełniony byłby warunek klasyfikujący krawędź $(u,v)$ jako krawędź residualną i w~konsekwencji następowałoby $v \in S$, co przeczy założeniu, iż $v \in T$.
     Widocznym zatem jest, iż $|f|=f(S, T)=c(S, T)$.
@@ -160,7 +160,7 @@ Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki po
   }
 \par{
   Jednym z praktycznie stosowanych algorytmów, gwarantującym wielomianową złożoność czasową jest algorytm Edmondsa-Karpa.
-  Stanowi on uściślenie preudokodu \ref{alg_fordFulkersonConcrete}, poprzez zastosowanie przeszukiwania wszerz sieci przepływowej, co zapewnia iż ścieżka powiększająca $P_a$ odnaleziona przez linię \algref{alg_fordFulkersonConcrete}{shortestPath} będzie za każdym razem najkrótsza spośród możliwych w kontekście liczby składających się na nią krawędzi.
+  Stanowi on uściślenie preudokodu \ref{alg_fordFulkersonConcrete}, przez zastosowanie przeszukiwania wszerz sieci przepływowej, co zapewnia iż ścieżka powiększająca $P_a$ odnaleziona przez linię \algref{alg_fordFulkersonConcrete}{shortestPath} będzie za każdym razem najkrótsza spośród możliwych w kontekście liczby składających się na nią krawędzi.
   \begin{definition}
     Mianem \emph{długości} ścieżki w sieci residualnej $N_f=(V_f, E_f)$ pomiędzy wierzchołkami $\{u, v\} \in V_f$ określa się wartosć $\delta_f(u, v)$, stanowiącą długość najkrótszej ścieżki z wierzchołka $u$ do wierzchołka $v$ przy założeniu jednostkowej długości każdej z krawędzi składowych.
   \end{definition}
