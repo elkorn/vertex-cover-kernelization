@@ -1,13 +1,4 @@
 \section{Opis dziedziny problemu}\label{Section_Domain}
-\par{
-  Niniejsza praca skupia się na implementacji oraz opisie wybranych metod 
-  rozwiązywania problemu pokrycia wierzchołkowego z wykorzystaniem technik
-  zaliczanych do grupy metod parametryzacji.
-
-  Rozpatrywane w ramach niniejszej pracy metody wykorzystują pozostałe techniki,
-  w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych
-  lub redukcji problemu pokrycia wierzchołkowego.
-}
 \subsection{Wybrane klasy złożoności problemów}\label{subsection_p_np}
 \par{
   Mianem \emph{klasy złożoności} określa się zbiór problemów o~podobnej
@@ -24,6 +15,7 @@
 \[
 \textbf{TODO: write about the SNP complexity class.}
 \]
+\par{
 \begin{itemize}
   \item $\mathcal{P}$, obejmująca problemy decyzyjne rozwiązywalne przez
     deterministyczną maszynę Turinga w czasie wielomianowym,
@@ -63,6 +55,8 @@
     stałych parametrów} (fixed-parameter tractable problems). .
 \end{itemize}
 
+Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryzację złożoności obliczeniowej, rozpatrywane w ramach niniejszej pracy metody wykorzystują również pozostałe techniki, w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych lub redukcji problemu pokrycia wierzchołkowego.
+}
 \subsubsection{\textbf{Kwestia $\mathcal{P}=\mathcal{NP}$}}
 \label{sss_problem_p_neq_np}
 \par{
@@ -140,13 +134,8 @@
   złożoność $O(2^{n}m)$.
 \end{bproof}
 \par{
-  Jak widać, postać rozwiązania ``wprost'' problemu pokrycia wierzchołkowego
-  wymaga czasu wielomianowego względem rozmiaru grafu wejściowego.
-  Jednak z pomocą opisywanych w niniejszej pracy technik istnieje możliwość
-  takiej preparacji zbioru danych wejściowych, by całkowity czas potrzebny na
-  rozwiązanie ograniczyć pesymistyczną~złożonością wielomianową względem
-  wartości parametru ograniczającego rozmiar poszukiwanej pokrywy
-  wierzchołkowej.
+  Jak widać, postać rozwiązania ``wprost'' problemu pokrycia wierzchołkowego wymaga czasu wykładniczego względem rozmiaru grafu wejściowego.
+  Jednak z pomocą opisywanych w niniejszej pracy technik istnieje możliwość takiej modyfikacji struktury danych wejściowych, by całkowity czas potrzebny na rozwiązanie obramować pesymistyczną~złożonością wielomianową względem ich rozmiaru oraz pewnej wartości parametru ograniczającego rozmiar poszukiwanej pokrywy wierzchołkowej.
 }
 \par{
   W celu uproszczenia zapisu dalszego rozumowania, wprowadzona zostanie notacja
