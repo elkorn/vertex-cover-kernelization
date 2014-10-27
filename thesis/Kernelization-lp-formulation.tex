@@ -1,35 +1,33 @@
-\subsection{Formulacja problemu jako programu liniowego }\label{section_kernelization_lp_formulation}
+\subsection{Sformułowanie problemu pokrycia wierzchołkowego jako problemu programowania liniowego}\label{section_kernelization_lp_formulation}
 
-Proces rozwiązywania problemu pokrycia wierzchołkowego może być zoptymalizowany
-przy zastosowaniu heurystyki zaproponowanej w~\cite{hochbaum82}, opartej 
-o~programowanie całkowitoliczbowe. \\
-Opisywany algorytm~\cite[rozdz.~4.2.2]{abukhzam03} korzysta z~\cite{hochbaum82} 
+Proces rozwiązywania problemu pokrycia wierzchołkowego może być rozwiązany
+przy zastosowaniu heurystyki zaproponowanej w pracy~\cite{hochbaum82}, opartej 
+na~programowaniu całkowitoliczbowym.
+Opisywany algorytm~\cite[rozdz.~4.2.2]{abukhzam03} korzysta z~ heurystyki proponowanej w~pracy~\cite{hochbaum82} 
 w~następujący sposób.
 
 \subsubsection{\textbf{Rozwiązanie problemu oryginalnego}}\label{ss_lp_original}
-
-Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ przypisać należy wartość $X_u
+Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ należy przypisać wartość $X_u
 \in \{0, 1\}$, z zachowaniem następujących własności:
 \begin{enumerate}
-  \item $\sum_{u}X_u = \min$,
-  \item $\{u,v\} \in E \implies X_U + X_v \geq 1$.
+  \item $\sum_{u \in V}X_u = \min$,
+  \item $\{u,v\} \in E \implies X_u + X_v \geq 1$.
 \end{enumerate}
 
-Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrywy 
-wierzchołkowej $|VC|$.
+Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrycia wierzchołkowego $|C|$.
 Zbiór rozwiązań prawdopodobnych składa się z~funkcji $V \to \{0, 1\}$,
 spełniających warunek 2.
 W związku z faktem, iż programowanie całkowitoliczbowe samo w sobie stanowi
-problem NP-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
+problem $\mathcal{NP}$-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
 zapewni szerszy zakres prawdopodobnych rozwiązań.
 
-W~\cite{khuller02} zaproponowana została relaksacja poprzez zamianę wartości 
+W~\cite{khuller02} zaproponowana została relaksacja przez zamianę wartości 
 $X_u \in \{0,1\}$ na $X_u \geq 0$.
-Należy zauważyć, iż wartość $OPT_{LP}$ zwracana przez rozwiązanie postaci 
+Należy zauważyć, iż wartość $OPT_{LP}$ (ang. \emph{Linear Programming, LP}) zwracana przez rozwiązanie postaci 
 liniowej jest zawsze ograniczona z dołu przez wartość $OPT_{IP}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
-Co więcej, w~\cite{khuller02} udowodniono, że $OPT_{IP} \leq 2*OPT_{LP}$.
-Zależność ta oparta jest na twierdzeniu Nemhausera-Trottera korzystającym
+Co więcej, w~pracy~\cite{khuller02} udowodniono, że $OPT_{IP} \leq 2*OPT_{LP}$.
+Zależność ta wynika z twierdzenia Nemhausera-Trottera korzystającego
 z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
 $X_u \in \{0, \frac{1}{2}, 1\}$.
@@ -38,9 +36,9 @@ Definiując $V_0 = \{u : X_u=0\}, V_{\frac{1}{2}}=\{u: X_u=\frac{1}{2}\},
 V_1=\{u: X_u=1\}$, twierdzenie zapisać można jak następuje.
 
 \begin{theorem}[Pierwsze twierdzenie Nemhausera-Trottera]\thlabel{nt_lp}
-  Istnieje optymalne rozwiązanie $OPT$ o następujących właściwościach:
+  Istnieje optymalne rozwiązanie $OPT$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach:
   \begin{itemize}
-    \item[(a)] $OPT \subset V_1 \bigcup V_{\frac{1}{2}}$.
+    \item[(a)] $OPT \subset V_1 \cup V_{\frac{1}{2}}$.
     \item[(b)] $V_1 \subset OPT$.
   \end{itemize}
 \end{theorem}
@@ -57,66 +55,63 @@ $R=\{u \in V : X_u<\frac{1}{2}\}$.\\
 
 
 Istotą redukcji dziedziny problemu do jądra jest dołączenie wszystkich
-wierzchołków $u_P \in P$ do częściowej pokrywy wierzchołkowej $VC$ oraz 
-usunięcie z~niej wszystkich wierzchołków $u_R \in R$.
-Graf wynikowy $G\prime=(V\prime, E\prime)$ zaindukowany jest elementami $Q$: 
-$V\prime=Q; E\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
+wierzchołków $u_P \in P$ do częściowego pokrycia wierzchołkowego $C$ oraz 
+usunięcie z~niego wszystkich wierzchołków $u_R \in R$.
+Graf wynikowy $G^\prime=(V^\prime, E^\prime)$ zaindukowany jest elementami $Q$: 
+$V^\prime=Q; E^\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
 
 \begin{theorem}
-  Istnieje optymalna pokrywa wierzchołkowa
-  $VC, VC \in G;\\P \subset VC, VC \bigcap R = \emptyset$.
+  Istnieje optymalne pokrycie wierzchołkowe
+  $C, C \in G;\\P \subset C, C \cap R = \emptyset$.
 \end{theorem}
 \begin{bproof}
-  Należy założyć pewne rozwiązanie całkowitoliczbowej formulacji problemu 
+  Należy założyć pewne rozwiązanie całkowitoliczbowego sformułowania problemu 
   pokrycia wierzchołkowego $OPT_{IP}$ oraz zbiory 
-  ${A = P \setminus OPT_{IP}, B = R \bigcap OPT_{IP}}$.
+  ${A = P \setminus OPT_{IP}, B = R \cap OPT_{IP}}$.
   % Dowód przeprowadzony będzie zatem przy założeniu $|A|\neq |B|$.
-  Zauważyć należy, że $N(B) \bigcap Q = \emptyset$, co zapewnia właściwość 2.
-  formulacji, której rozwiązaniem jest $OP_{IP}$.
+  Zauważyć należy, że $N(B) \cap Q = \emptyset$, co zapewnia właściwość 2.
+  sformułowania, którego rozwiązaniem jest $OP_{IP}$.
 
 
-  Jeżeli $|A|<|B|$, zastąpienie $B$ przez $A$ w $OPT_{IP}$ spowodowałoby
-  odkrycie przynajmniej jednej krawędzi grafu---wykluczając tym samym
-  tak otrzymaną pokrywę jako rozwiązanie.
+  Jeżeli $|A|<|B|$, to zastąpienie $B$ przez $A$ w rozwiązaniu $OPT_{IP}$ (ang. \emph{Integer Programming, IP}) spowodowałoby
+  odkrycie przynajmniej jednej krawędzi graf --- ykluczając tym samym
+  tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
   W prypadku gdy $|A|>|B|$, swiadczyłoby to, że istnieje możliwość
-  otrzymania rozwiązania formulacji liniowej lepszego niż $OPT_{IP}$ poprzez
+  otrzymania rozwiązania sformułowania liniowego lepszego niż $OPT_{IP}$ przez
   ustanowienie $\epsilon &= \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
   zastąpienie $\forall{u \in B}:X_u \leftarrow X_u + \epsilon$; 
   $\forall{v \in A}: X_v \leftarrow X_v -\epsilon$.
   Jest to niemożliwe ze względu na fakt, iż wynik $OPT_{IP}$ stanowi optymalne 
-  rozwiązanie formulacji liniowej w~oparciu o~twierdzenie
-  Nemhausera-Trottera~\ref{nt_lp}.
-
-  Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
+  rozwiązanie sformułowania liniowego w~oparciu o~twierdzenie
+  Nemhausera-Trottera~\ref{nt_lp}. Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
   czynienia to $|A|=|B|$.
-  Przypadek ten jest trywialny---w~celu orzymania optymalnej pokrywy
+  Przypadek ten jest trywialn --- ~celu orzymania optymalnej pokrywy
   wierzchołkowej wystarczy zastąpić zbiór $A$ zbiorem $B$.
 \end{bproof}
 
 Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze
-$n\prime=|V|-|P|-|R|$.
+$n^\prime=|V|-|P|-|R|$.
 
-Wartość wynikowa parametru określającego maksymalny rozmiar optymalnej pokrywy
-wierzchołkowej zmniejszona zostaje do $k\prime=k-|P|$.
+Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokrycia wierzchołkowego zmniejszona zostaje do $k^\prime=k-|P|$.
 
 \begin{theorem}
-  Nie istnieje optymalna pokrywa wierzchołkowa $VC\prime_{OPT}\in G\prime,|VC\prime_{OPT}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
+  Nie istnieje optymalne pokrycie wierzchołkowe $C^\prime_{\textnormal{OPT}}\in G^\prime,|C^\prime_{\textnormal{OPT}}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
 \end{theorem}
 \begin{bproof}
-  Należy mieć na uwadze fakt, iż rozmiar funkcji celu formulacji liniowej 
-  ogranicza od dołu rozmiar funkcji celu formulacji całkowitoliczbowej.
-  W przeciwnym wypadku, procedura rozwiązująca początkową formulację liniową
+  Zauważmy, że rozmiar funkcji celu sformułowania liniowej 
+  ogranicza od dołu rozmiar funkcji celu sformułowania całkowitoliczbowego.
+  W przeciwnym wypadku, procedura rozwiązująca początkowe sformułowanie liniowe
   problemu, której wynik stanowi zbiór $Q$, nie byłaby w stanie zapewnić
-  optymalnego rozwiązania, co byłoby sprzeczne z założeniami formulacji.
+  optymalnego rozwiązania, co byłoby sprzeczne z założeniami sformułowania.
 \end{bproof}
 
-W świetle powyższego dowodu stwierdzić można, że w sytuacji gdy
-$|Q|>2k\prime$, można zakończyć działanie całego procesu poszukiwania pokrywy
-wierzchołkowej $VC_{OPT}, |VC_{OPT}|\leq k$, udzielając odpowiedzi negatywnej.
+W świetle powyższego dowodu można stwierdzić, że w sytuacji gdy
+$|Q|>2k^\prime$, można zakończyć działanie procesu poszukiwania pokrycia
+wierzchołkowego $C_{\textnormal{OPT}}, |C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej.
 
-Warto nadmienić, że powyższe sformułowanie algorytmu jest niepraktyczne dla
+Warto dodać, że powyższe sformułowanie algorytmu jest niepraktyczne dla
 grafów o~dużym zagęszczeniu ze względu na liczbę warunków ograniczających 
-formulacji równą $|E|$.
+sformułowania równą $|E|$.
 
 Sensowną optymalizacją podejścia dla takich przypadków jest przekształcenie
 problemu z~minimalizacyjnego do dualnego problemu maksymalizacyjnego, 
@@ -125,14 +120,14 @@ w~którym liczba warunków ograniczających równa będzie $|V|$.
 \subsubsection{\textbf{Rozwiązanie problemu dualnego}}
 
 W oparciu o~obserwację, iż koszt dowolnego prawdopodobnego rozwiązania problemu
-dualnego do oryginalnej formulacji liniowej problemu pokrycia
-wierzchołkowego~\ref{ss_lp_original} stanowi dolną granicę dla optimum
-\ref{ss_lp_original} poprzez słabą dualność. 
+dualnego do oryginalnego sformułowania liniowego problemu pokrycia
+wierzchołkowego~(\ref{ss_lp_original}) stanowi dolną granicę dla optimum
+(\ref{ss_lp_original}) poprzez słabą dualność. 
 
-Konstrukcja formulacji liniowej dualnego problemu maksymalizacyjnego wygląda
+Konstrukcja sformułowania liniowego dualnego problemu maksymalizacyjnego wygląda
 następująco.
 
-Każdej krawędzi $e=(u,v) \in E$ grafu $G=(V,E)$ przypisać należy wartość
+Każdej krawędzi $e=(u,v) \in E$ grafu $G=(V,E)$ należy przypisać wartość
 $Y_(u,v) \geq 0$, z zachowaniem następujących własności:
 \begin{enumerate}
   \item $\sum_{(u,v)}Y_{(u,v)} = \max$,
