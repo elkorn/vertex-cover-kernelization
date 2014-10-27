@@ -6,6 +6,7 @@ import (
 
 	"github.com/deckarep/golang-set"
 	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/graphviz"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -55,6 +56,7 @@ func TestCalculateLowerBound(t *testing.T) {
 	g.AddEdge(1, 6)
 	g.AddEdge(8, 9)
 
+	graphviz.ShowGraph(graph.ScanGraph("../examples/example_4"))
 	selection := mapset.NewThreadUnsafeSet()
 
 	assert.Equal(t, 3, computeLowerBound(g, selection))
