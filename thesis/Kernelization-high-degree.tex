@@ -1,31 +1,31 @@
-\subsection{Usuwanie węzłów wysokiego stopnia}\label{section_kernelization_high-degree}
+\subsection{Usuwanie wierzchołków wysokiego stopnia}\label{section_kernelization_high-degree}
 
 \begin{theorem}
-  Każdy wierzchołek $v; d(v) > k$ musi należeć do optymalnej pokrywy wierzchołkowej 
-  $VC; |VC| \leq k$.
+  Każdy wierzchołek $v$, gdzie $d(v) > k$ musi należeć do optymalnego pokrycia wierzchołkowego 
+  $C; |C| \leq k$.
 \end{theorem}
 \begin{bproof}
-  W~celu uzyskania pokrywy wierzchołkowej podgrafu $G\prime=(V\prime,E\prime)$
-  grafu $G=(V,E)$, gdzie $V\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\}, V\prime
+  W~celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$
+  grafu $G=(V,E)$, gdzie $V^\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\}, V^\prime
   \subseteq V, d(v_0)=k$ oraz \\
-  $E\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0, v_k), (v_0,v_{k+1})\}$,
-  należy pokryć każdą krawędź $e \in E\prime$.
-  Łatwo zauważyć, iż \\ jeżeli $ve_1=\{v_0,v_1\}, ve_2=\{v_0,v_2\}, \ldots,
-  ve_k=\{v_0,v_k\},ve_{k+1}=\{v_0,v_{k+1}\}$,
-  to ${VC_1=ve_1 \bigcup ve_2 \bigcup \ldots \bigcup ve_k \bigcup ve_{k+1}}$ spełnia warunki 
-  wymagane do uzyskania statusu pokrywy wierzchołkowej, jednak $|VC_1| = k +1$.\\
-  Jeżeli $VC_2=ve_1 \bigcap ve_2 \bigcap \ldots \bigcap ve_k \bigcap ve_{k+1}; VC_2 \neq \emptyset$,
-  stwierdzić można, iż $VC_2$ nadal stanowi pokrywę wierzchołkową $G\prime$ oraz
-  $|VC_2|=1$.
-  Gdyby usunąć wierzchołek należący do $VC_2$, $VC_3=ve_1 \oplus ve_2 \oplus \ldots \oplus ve_k \oplus ve_{k+1}$ nadal
-  również stanowi pokrywę wierzchołkową, jednak $|VC_3|=k$.
-  Dowolny zbiór $VC_4=VC_3 \setminus \{v\}$ nie spełnia jednak warunków pokrywy
-  wierzchołkowej $G\prime$.
-  Na tej podstawie stwierdzić można, iż dowolna pokrywa wierzchołkowa 
-  $VC, |VC| \leq k$ grafu $G$ niezawierająca $v_0$, musi zawierać całe jego
+  $E^\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0, v_k), (v_0,v_{k+1})\}$,
+  należy pokryć każdą krawędź $e \in E^\prime$.
+  Łatwo zauważyć, iż zakładając istnienie zbiorów \[V_1=\{v_0,v_1\}, V_2=\{v_0,v_2\}, \ldots,
+  V_k=\{v_0,v_k\},V_{k+1}=\{v_0,v_{k+1}\}\]
+  zbiór $C_1=V_1 \cup V_2 \cup \ldots \cup V_k \cup V_{k+1}}$ spełnia warunki 
+  wymagane do uzyskania statusu pokrycia wierzchołkowego, jednak $|C_1| = k +1$.\\
+  Jeżeli $C_2=V_1 \cap V_2 \cap \ldots \cap V_k \cap V_{k+1}; C_2 \neq \emptyset$,
+  stwierdzić można, iż zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe $G^\prime$ oraz
+  $|C_2|=1$.
+  Gdyby usunąć wierzchołek należący do $C_2$, $C_3=V_1 \oplus V_2 \oplus \ldots \oplus V_k \oplus V_{k+1}$ nadal
+  również stanowi pokrycie wierzchołkowe, jednak $|C_3|=k$.
+  Dowolny zbiór $C_4=C_3 \setminus \{v\}$ nie spełnia jednak warunków pokrywy
+  wierzchołkowej $G^\prime$.
+  Na tej podstawie stwierdzić można, iż dowolna pokrycie wierzchołkowe 
+  $C, |C| \leq k$ grafu $G$ niezawierająca $v_0$, musi zawierać całe jego
   sąsiedztwo. Pokrywa ta nie może być jednak optymalna dla $k > 1$.
-  Obserwacja ta prowadzi do wniosku, iż optymalna pokrywa wierzchołkowa
-  $|VC_{opt}|$ grafu $G$ musi zawierać każdy wierzchołek $v \in V, d(v) \geq k$.
+  Obserwacja ta prowadzi do wniosku, iż Optymalne pokrycie wierzchołkowe
+  $|C_{opt}|$ grafu $G$ musi zawierać każdy wierzchołek $v \in V, d(v) \geq k$.
 \end{bproof}
 
 \begin{theorem}
@@ -41,32 +41,31 @@
 
 Zastosowanie algorytmu usuwania wierzchołków wysokiego stopnia w połączeniu 
 z~technikami przetwarzania wstępnego ogranicza rozmiar dziedziny problemu przez
-fakt, iż każdy wierzchołek $v, v \in V\prime$ jest stopnia $d(v)$ takiego, iż
-$3 \leq d(v) \leq k\prime$.
+fakt, iż każdy wierzchołek $v, v \in V^\prime$ jest stopnia $d(v)$ takiego, iż
+$3 \leq d(v) \leq k^\prime$.
 
 \begin{theorem}
-  Jeżeli mianem $G\prime$ określa się graf o pokrywie wierzchołkowej rozmiaru
-  $k\prime$, który nie zawiera wierzchołka $v, d(v) > k\prime \lor d(v) > 3$, to
-  wtedy $n\prime \leq \frac{k\prime^2}{3} + k\prime$.
+  Jeżeli mianem $G^\prime$ określa się graf o pokryciu wierzchołkowym rozmiaru
+  $k^\prime$, który nie zawiera wierzchołka $v, d(v) > k^\prime \lor d(v) > 3$, to
+  wtedy $n^\prime \leq \frac{k^\prime^2}{3} + k^\prime$.
 \end{theorem}
 \begin{bproof}
-  Przyjąć należy ${VC,|VC|=k\prime}$ jako pokrywę wierzchołkową grafu
-  $G\prime$.
-  Dopełnienie $\overline{VC}$ zbioru $VC$ stanowi niezależny zbiór
-  $n\prime-k\prime$ wierzchołków.
-  Przyjąć należy zbiór $F=\{f_0,f_1, \ldots, f_p\}, f \in F \Rightarrow f \in E\prime$
-  krawędzi pokrytych przez $\overline{VC}$.
-  W związku z faktem, iż $\forall_{v \in \overline{VC}}{d(v) \geq 3}$, każdy
-  wierzchołek $v \in \overline{VC}$ musi posiadać przynajmniej 3 wierzchołki sąsiednie
+  Przyjąć należy ${C,|C|=k^\prime}$ jako pokrycie wierzchołkowe grafu
+  $G^\prime$.
+  Dopełnienie $\overline{C}$ zbioru $C$ stanowi niezależny zbiór
+  $n^\prime-k^\prime$ wierzchołków.
+  Przyjąć należy zbiór $F=\{f_0,f_1, \ldots, f_p\}, f \in F \Rightarrow f \in E^\prime$
+  krawędzi pokrytych przez $\overline{C}$.
+  W związku z tym, iż $\forall_{v \in \overline{C}}{d(v) \geq 3}$, każdy
+  wierzchołek $v \in \overline{C}$ musi mieć przynajmniej 3 wierzchołki sąsiednie
   $w \in C$.
-  Prowadzi to do wniosku, iż $|F| \geq 3(n\prime - k\prime)$.
-  Liczba krawędzi pokrytych przez $C$ nie może być mniejsza niż $|F|$ --- nie
-  może być również większa niż $k\prime|C|$, ponieważ po wykonaniu
-  przetwarzania wstępnego oraz procedury usuwania węzłów wysokiego stopnia,
-  $\forall_{v \in V}{|N(v)|\leq~k\prime}$.
-  Pamiętając, że $|C|=k\prime$, można stwierdzić, iż
-  ${3(n\prime-k\prime)\leq|F|\leq~k\prime^2}$, co sprowadza się do
-  ${n\prime\leq\frac{k\prime^2}{3}+k\prime}$.
+  Prowadzi to do wniosku, iż $|F| \geq 3(n^\prime - k^\prime)$.
+  Liczba krawędzi pokrytych przez zbiór $C$ nie może być mniejsza niż $|F|$ --- nie
+  może być również większa niż $k^\prime|C|$, ponieważ po wykonaniu
+  przetwarzania wstępnego oraz procedury usuwania wierzchołków wysokiego stopnia,
+  $\forall_{v \in V}{|N(v)|\leq~k^\prime}$.
+  Biorąc pod uwagę, że $|C|=k^\prime$, można stwierdzić, iż
+  ${3(n^\prime-k^\prime)\leq|F|\leq~k^\prime^2}$, co daje ${n^\prime\leq\frac{k^\prime^2}{3}+k^\prime}$.
 \end{bproof}
 
 
