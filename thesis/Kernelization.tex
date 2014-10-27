@@ -1,19 +1,19 @@
 \section{Techniki redukcji dziedziny do jądra problemu}\label{s_kernelization}
 
 Proces redukcji dziedziny do jądra problemu realizowany jest przed właściwym 
-poszukiwaniem pokrywy wierzchołkowej. 
+poszukiwaniem pokrycia wierzchołkowego. 
 Polega on na usunięciu z dziedziny problemu wierzchołków, które z~pewnością nie 
-należą lub z~pewnością należą do optymalnej pokrywy wierzchołkowej grafu 
-wejściowego o~rozmiarze $k\prime \leq k$.
+należą lub z~pewnością należą do optymalnego pokrycia wierzchołkowego grafu 
+wejściowego o~rozmiarze $k^\prime \leq k$.
 Dzięki parametryzacji maksymalną wartością oczekiwanego rozmiaru wyniku,
 istnieje możliwość zakończenia przetwarzania z~odpowiedzią negatywną bez
-angażowania właściwej logiki wyszukiwania pokrywy wierzchołkowej, co pozytywnie
+angażowania właściwego wyszukiwania pokrycia wierzchołkowego, co pozytywnie
 wpływa na średnią złożoność obliczeniową procesu.
 
 Opisane algorytmy zawężające dziedzinę problemu są od siebie niezależne.
 Wynikiem działania każdego z~nich jest zbiór wierzchołków nietrywialnych do
-rozpatrzenia z~perspektywy podjęcia decyzji o~przynależności do optymalnej
-pokrywy wierzchołkowej.
+rozpatrzenia z~perspektywy podjęcia decyzji o~przynależności do optymalnego
+pokrycia wierzchołkowego.
 
 \input{Kernelization-high-degree.tex}
 \input{Kernelization-lp-formulation.tex}
