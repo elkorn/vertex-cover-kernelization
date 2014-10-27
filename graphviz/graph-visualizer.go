@@ -20,6 +20,7 @@ var allowedLayouts map[string]bool = map[string]bool{
 	"dot":   true,
 	"neato": true,
 	"sfdp":  true,
+	"circo": true,
 }
 
 var displayTools map[string]string = map[string]string{
@@ -82,6 +83,10 @@ func mkGraphVisualizer(g *graph.Graph, layoutAlgorithm string) *graphVisualizer 
 }
 
 func MkGraphVisualizer(g *graph.Graph) *graphVisualizer {
+	if g.NEdges() >= g.NVertices()*g.NVertices()/2 {
+		return mkGraphVisualizer(g, "circo")
+	}
+
 	if g.NVertices() > 100 {
 		return mkGraphVisualizer(g, "sfdp")
 	} else {
