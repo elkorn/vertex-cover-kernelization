@@ -70,7 +70,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
   $\mathcal{P}\neq\mathcal{NP}$ nie są oparte na ścisłym matematycznym
   rozumowaniu, a raczej na empirycznych obserwacjach otaczającego świata.
   Głównym argumentem za $\mathcal{P}\neq\mathcal{NP}$ jest brak znaczących
-  postępów w~dziedzinie wyszukiwania wyczerpującego oraz stwierdzenia
+  postępów w~dziedzinie wyszukiwania wyczerpującego oraz sTwierdzenia
   unaoczniające, iż gdyby $\mathcal{P}=\mathcal{NP}$ było spełnione, nie 
   istniałyby znaczące różnice w~trudności między rozwiązaniem 
   problemu $\mathcal{NP}$-zupełnego, a~zweryfikowaniem poprawności gotowego 
@@ -147,7 +147,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
     Zakładając istnienie zbioru $C \subseteq V$ kandydującego do miana pokrycia wierzchołkowego, dla każdej krawędzi $(u, v) \in E$ zachodzić musi własność  $u \in C \lor v \in C$.
     Jeżeli więc istnieje krawędź łącząca dwa wierzchołki $(u, v) \in E$, z których żaden nie należy do zbioru $C$, należy dodać jeden z~wierzchołków do $C$.
     Rekurencyjnie realizowane są obydwie możliwości.
-    Z~definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
+    Z~Definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
     W~związku z~tym przed rozpoczęciem każdej kolejnej iteracji, wierzchołek podlegający rozpatrzeniu wraz z~przystającymi do niego krawędziami należy usunąć z~dziedziny problemu w~celu sprawdzenia istnienia pokrycia wierzchołkowego o rozmiarze co najwyżej $k-1$ w~pozostałej części grafu.
     Kiedy rekurencja dociera do momentu, gdzie $k=0$ i istnieje krawędx $e=(u,v) \in E$ spełniająca własność $\neg(u \in C \lor v \in C)$, wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i należy je odrzucić.
     Zaobserwować należy, że bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
@@ -159,7 +159,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
       Algorytm kończy działanie odpowiedzią przeczącą po $O^\star(2^k)$ iteracjach.
     \end{enumerate}
   \end{bproof}
-  Przedstawiony w~dowodzie twierdzenia~\ref{th_vc_naive} tok rozumowania odzwierciedlony jest w pseudokodzie~\ref{alg_VC1}.
+  Przedstawiony w~dowodzie Twierdzenia~\ref{th_vc_naive} tok rozumowania odzwierciedlony jest w pseudokodzie~\ref{alg_VC1}.
   \begin{algorithm}
     \caption{Algorytm siłowy rozwiązujący problem pokrycia wierzchołkowego}\label{alg_VC1}
     \begin{algorithmic}[1]

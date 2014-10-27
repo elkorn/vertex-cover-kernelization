@@ -7,7 +7,7 @@
 \par{
   Metoda Forda-Fulkersona stanowi podstawę kilku algorytmów rozwiązujących problem maksmalnego przepływu, o~różnych czasach działania.
   Kluczowymi pojęciami, na których operuje metoda Forda-Fulkersona są \emph{sieci residualne}, \emph{ścieżki powiększające} oraz \emph{przekroje}.
-  Pojęcia te mają istotne znaczenie w~praktyce rozwiązywania problemów dotyczących przepływów w~sieciach i~stanowią zasadnicze koncepcje w~twierdzeniu o~maksymalnym przepływie i~minimalnym przekroju.
+  Pojęcia te mają istotne znaczenie w~praktyce rozwiązywania problemów dotyczących przepływów w~sieciach i~stanowią zasadnicze koncepcje w~Twierdzeniu o~maksymalnym przepływie i~minimalnym przekroju.
   \begin{theorem}[Twierdzenie o~maksymalnym przepływie i~minimalnym przekroju Forda-Fulkersona]\thlabel{th_max_flow}
     Przyjmując za $f$ przepływ w~sieci $N=(V,E)$ ze źródłem $s$ i~ujściem $t$, to następujące warunki są równoważne:
     \begin{enumerate}
@@ -16,13 +16,13 @@
       \item Dla pewnego przekroju $(S, T)$ w~sieci $N$ zachodzi $|f|=c(S,T)$.
     \end{enumerate}
   \end{theorem}
-  Dowód powyższego twierdzenia przedstawiony zostanie pod koniec sekcji, po objaśnieniach pojęć składowych.
+  Dowód powyższego Twierdzenia przedstawiony zostanie pod koniec sekcji, po objaśnieniach pojęć składowych.
 }
 \par{
   Metoda Forda-Fulkersona jest metodą iteracyjną z~zerową wartością początkową przepływu w~sieci: $\forall_{\{u,v\}\in V}: f(u,v)=0$.
   W każdej iteracji wartość przepływu zostaje zwiększona przez odnalezienie ścieżki powiększającej, stanowiącej ścieżkę ze źródła $s$ do ujścia $t$, której pojemność pozwala na przesłanie dodatkowego przepływu.
   Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki powiększającej.
-  Zgodnie z~twierdzeniem \ref{th_max_flow}, przepływ otrzymany w~tym momencie jest maksymalny.
+  Zgodnie z~Twierdzeniem \ref{th_max_flow}, przepływ otrzymany w~tym momencie jest maksymalny.
   \begin{algorithm}
     \caption{Pseudokod postępowania metody Forda-Fulkersona}\label{alg_fordFulkerson}
     \begin{algorithmic}[1]
@@ -53,11 +53,11 @@
     Krawędź $(u, v)$ może pojawić się w sieci residualnej $N_f$ wtedy i~tylko wtedy, gdy co najmniej jedna z~krawędzi $\{(u, v), (v, u)\}$ występuje w~sieci pierwotnej, co daje $|E_f| \leq 2|E|$.
   \end{theorem}
   \begin{bproof}
-    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) < c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) > 0$, co z~definicji sieci residualnej świadczy, iż krawędź $(u, v) \in E_f$ jest w~niej zawarta.
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) < c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) > 0$, co z~Definicji sieci residualnej świadczy, iż krawędź $(u, v) \in E_f$ jest w~niej zawarta.
 
-    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) > c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) < 0$, co z~definicji sieci residualnej świadczy, iż krawędź przeciwna $(v, u) \in E_f$  jest w~niej zawarta.
+    Jeżeli dla pewnej krawędzi $(u, v) \in E$ zachodzi $f(u, v) > c(u, v)$, to wtedy $c_f(u, v) = c(u, v) - f(u, v) < 0$, co z~Definicji sieci residualnej świadczy, iż krawędź przeciwna $(v, u) \in E_f$  jest w~niej zawarta.
 
-    Jeżeli żadna z~krawędzi $\{(u, v), (v, u)\}$ nie występuje w~pierwotnej sieci, zachodzi wtedy $c(u, v) = c(v, u) = f(u, v) = f(v, u) = c_f(u, v) = c_f(v, u)=0$. Żadna z~tych krawędzi nie dopuszcza dodatniego przepływu, co zgodnie z~definicją sieci residualnej wyklucza ją ze zbioru krawędzi residualnych.
+    Jeżeli żadna z~krawędzi $\{(u, v), (v, u)\}$ nie występuje w~pierwotnej sieci, zachodzi wtedy $c(u, v) = c(v, u) = f(u, v) = f(v, u) = c_f(u, v) = c_f(v, u)=0$. Żadna z~tych krawędzi nie dopuszcza dodatniego przepływu, co zgodnie z~Definicją sieci residualnej wyklucza ją ze zbioru krawędzi residualnych.
   \end{bproof}
 }
 
@@ -66,7 +66,7 @@
   \begin{definition}
     Dla danej sieci $N=(V,E)$ i~przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w~sieci residualnej $N_f$.
   \end{definition}
-  Zgodnie z~definicją sieci residualnej każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
+  Zgodnie z~Definicją sieci residualnej każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
   Największą możliwą wartość, o~którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej ścieżki powiększającej}, definiowanej jak następuje.
   \begin{definition}
     Przepustowość residualna ścieżki powiększającej $P_a$ odpowiada najmniejszej przepustowości residualnej spośród przynależących do niej krawędzi, $c_f(P_a) = min\{c_f(u, v):(u, v)\in P_a\}$.
@@ -109,10 +109,10 @@
   \end{enumerate}
 }
 \par{
-  Opisawszy niezbędne elementy składowe, można przedstawić dowód twierdzenia o~maksymalnym przepływie i~minimalnym przekroju.
+  Opisawszy niezbędne elementy składowe, można przedstawić dowód Twierdzenia o~maksymalnym przepływie i~minimalnym przekroju.
 \\
 \\
-  \begin{bproof}{(twierdzenia o~maksymalnym przepływie i~minimalnym przekroju)\\}
+  \begin{bproof}{(Twierdzenia o~maksymalnym przepływie i~minimalnym przekroju)\\}
     \underline{(1) $\implies$ (2)}: Jeżeli dla maksymalnego przepływu $f$ w~sieci $N$ sieć residualna $N_f$ zawierałaby ścieżkę powiększającą $P_a$, wartość przepływu $f$ musiałaby zostać powiększona o wartość przepływu $f_{P_a}$.
     Implikuje to, iż wartość przepływu $f$ musiałaby być większa niż $|f|$ co przeczy założeniu, że $f$ jest maksymalny.
 
@@ -171,13 +171,13 @@ Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki po
     Łączna liczba powiększeń przepływu w algorytmie Edmondsa-Karpa dla dowolnej sieci przepływowej $N=(V, E)$ o źródle $s$ i ujściu $t$ wynosi $O(VE)$.
   \end{theorem}
   \begin{bproof}
-    Zaobserwować należy, że każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z sieci residualnej $N_f$ w oparciu o definicję \ref{def_residual_net}.
+    Zaobserwować należy, że każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z sieci residualnej $N_f$ w oparciu o Definicję \ref{def_residual_net}.
     Prowadzi to do wniosku, że co najmniej jedna krawędź na dowolnej ścieżce ścieżce powiększającej musi być krytyczna.
     Założyć należy istnienie wierzchołków $\{u, v\} \in V$ takich, że $(u, v) \in E$.
     W związku z założeniem algorytmu Edmondsa-Karpa, iż ścieżki powiększające są najkrótsze, w momencie gdy krawędź $(u, v)$ jest krytyczna po raz pierwszy, zachodzi $\delta_f(s, v)=\delta_f(s, u)+1$.
-    Powiększenie przepływu wzdłuż krawędzi $(u, v)$ powoduje jej usunięcie z sieci residualnej $N_f$, zgodnie z definicją \ref{def_residual_net}.
+    Powiększenie przepływu wzdłuż krawędzi $(u, v)$ powoduje jej usunięcie z sieci residualnej $N_f$, zgodnie z Definicją \ref{def_residual_net}.
     Dodatkowo, krawędź ta nie może ona zostać na powrót włączona do sieci residualnej do momentu gdy przepływ pomiędzy wierzchołkami $u$ i $v$ nie ulegnie zmniejszeniu.
-    Zgodnie z definicją \ref{def_flow_values}, jedyną sytuacją pozwalającą na takie zdarzenie jest znalezienie się krawędzi $(v, u)$ na pewnej ścieżce powiększającej.
+    Zgodnie z Definicją \ref{def_flow_values}, jedyną sytuacją pozwalającą na takie zdarzenie jest znalezienie się krawędzi $(v, u)$ na pewnej ścieżce powiększającej.
     Przepływ w sieci $N$ w momencie odnalezienia takiej ścieżki oznaczony zostanie jako $f^\prime$.
     Zgodnie z dotychczasowym rozumowaniem łatwo zauważyć, że $\delta_{f^\prime}(s, u)=\delta_{f^\prime}(s, v) + 1$.
     Ponieważ $\delta_{f^\prime}(s, v) \leq \delta_{f^\prime}(s, u)$ oraz w związku z faktem, iż dla żadnego wierzchołka $v \in V\setminus \{s, t\}$ odległość $\delta_f(s, v)$ nie może maleć stwierdzić można, iż zachodzi \begin{align*}
