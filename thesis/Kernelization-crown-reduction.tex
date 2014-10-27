@@ -10,20 +10,21 @@
 \subsubsection{\textbf{Kontekst struktur koron w grafach}}
 \label{sss_kernelization_crown_context}
 \par{
-  Bardzo ważna dla opisywanej koncepcji jest praca~\cite{chlebik:crown}, gdzie usystematyzowano miejsce koron wśród szerszej klasy tzw. \emph{struktur zmniejszających zaangażowanie} w grafach.
+  Bardzo ważna dla opisywanej koncepcji jest praca~\cite{chlebik:crown}, gdzie określono miejsce koron wśród szerszej klasy tzw. \emph{struktur zmniejszających zaangażowanie} w grafach.
   \begin{definition}
-    Dla grafu $G=(V, E)$ i pewnego podzbioru $U \subseteq V$ ze zbiorem wierzchołków sąsiednich $N(U)$ \emph{strukturą zmniejszającą zaangażowanie} nazywa się uporządkowaną parę $(I, N(I))$ podzbiorów zbioru wierzchołków $V$ spełniającą następujące własności.
+    Dla grafu $G=(V, E)$ i pewnego podzbioru $U \subseteq V$ ze zbiorem wierzchołków sąsiednich $N(U)$ \emph{strukturę zmniejszającą zaangażowanie} stanowi uporządkowana para $(I, N(I))$ podzbiorów zbioru wierzchołków $V$ spełniającą następujące własności.
     \begin{enumerate}
       \item $I \neq \emptyset$ stanowi niezależny zbiór wierzchołków w grafie $G$.
       \item $N(I)$ stanowi optymalne pokrycie wierzchołkowe grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $I \cup N(I)$.
     \end{enumerate}
   \end{definition}
   Możliwość identyfikacji struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ jest ważna ze względu na fakt, iż każdy podzbiór $C=N(I)\cupC^\prime$, gdzie $C^\prime$ stanowi optymalne pokrycie wierzchołkowe dla grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I\cup N(I))$ stanowi optymalne pokrycie wierzchołkowe grafu $G$.
-  Zmniejszenie zaangażowania za pomocą struktury $(I, N(I))$ polega na tym, iż algorytm korzystający z tejże struktury angażuje się w odnajdywanie wyłącznie rozwiązań $C$ spełniających własność $C \cap (I \cup N(I)) = N(I)$, usuwa zbiór $I \cup N(I)$ z dziedziny poszukiwań w grafie $G$, redukując tym samym instancję problemu pokrycia wierzchołkowego do pomniejszonego grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I \cup N(I))$.
-
+  Zmniejszenie zaangażowania za pomocą struktury $(I, N(I))$ polega na zaangażowaniu algorytmu korzystającego z tejże struktury w odnajdywanie wyłącznie rozwiązań $C$ spełniających własność $C \cap (I \cup N(I)) = N(I)$, usuwając zbiór $I \cup N(I)$ z dziedziny poszukiwań w grafie $G$, redukując tym samym egzepmlarz problemu pokrycia wierzchołkowego do pomniejszonego grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V \setminus (I \cup N(I))$.
+}
+\par{
   Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w grafie są tak zwane \emph{NT-dekompozycje}, stanowiące wynik \emph{NT-redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego i rozwiązania go zgodnie z Twierdzeniem~\ref{nt_lp}.\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby (przykładem może być algorytm J.F. Bussa) --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające Twierdzenia~\ref{nt_lp}.}
   \begin{definition}\thlabel{def_nt_decomposition}
-    Mianem \emph{NT-dekompozycji} (dekompozycji Nemhausera-Trottera) określa się specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT-redukcji} (redukcji Nemhausera-Trottera).
+    Mianem \emph{NT-dekompozycji} (dekompozycji Nemhausera -- Trottera) określa się specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT-redukcji} (redukcji Nemhausera -- Trottera).
     Proces ten posługuje się funkcją $x: V \rightarrow \{0, \frac{1}{2}, 1\}$ różną od $x \equiv \frac{1}{2}$ określającą przynależność wierzchołków do optymalnego pokrycia wierzchołkowego.
   \end{definition}
   Przyjmując $V_i^x=\{u \in V| x(u)=i\}$ dla każdej wartości $i\in \{0, \frac{1}{2}, 1\}$ zaobserwować można, iż zbiór $V_0^x$ jest niezależny i niepusty w grafie $G$, oraz że zachowana zostaje własność $V_1^x = N(V_0^x)$.
@@ -31,195 +32,134 @@
   Zaangażowanie zostaje zmniejszone do rozwiązań mających część wspólną ze zbiorem $V_0^x \cup V_1^x$ w zbiorze $V_1^x$, a przestrzeń poszukiwań zredukowana zostaje do grafu zaindukowanego z grafu $G$ zbiorem wierzchołków $V_\frac{1}{2}^x$.
 }
 \par{
-  Autorzy pracy~\cite{chlebik:crown} obalają sTwierdzenie jakoby koncepcja koron miała być ortogonalna względem NT-redukcji --- postuluje się, że korony stanowią wyspecjalizowaną podklasę NT-dekompozycji o właściwościach opisanych w następującym podrozdziale.
+  Autorzy pracy~\cite{chlebik:crown} obalają stwierdzenie jakoby koncepcja koron miała być ortogonalna względem NT-redukcji --- postuluje się, że korony stanowią wyspecjalizowaną podklasę NT-dekompozycji o właściwościach opisanych w następującym podrozdziale.
 }
 \subsubsection{\textbf{Właściwości koron}}
 \label{sss_kernelization_crown_main}
 \begin{definition}\thlabel{def_crown}
-  Mianem \emph{korony} grafu $G=(V, E)$ nazywa się uporządkowaną parę
-  podzbiorów wierzchołków $(I, H), I \subseteq V, H \subset V$, zachowujących
-  następujące własności.
+  Przez \emph{koronę} grafu $G=(V, E)$ rozumie się uporządkowaną parę podzbiorów wierzchołków $(I, H), I \subseteq V, H \subset V$, o następujących własnościach.
   \begin{enumerate}
-    \item $I \neq \emptyset$ stanowi zbiór niezależny w $G$.
+    \item $I \neq \emptyset$ stanowi zbiór niezależny w grafie $G$.
     \item $H=N(I)$.
-    \item Istnieje skojarzenie $M=\{e_0, e_1, \ldots, e_p\}, \forall_{e_M=(u,v) \in
-      M}: (u\in I \land v\in H) \lor (u \in H \land v \in I)$ takie, że
-      $\forall_{v_h \in H}\exists_{e_M=(u,v)\in M}: u = v_h \oplus v = v_h$.
+    \item Istnieje skojarzenie $M=\{e_0, e_1, \ldots, e_p\}, \forall_{e_M=(u,v) \in M}: (u\in I \land v\in H) \lor (u \in H \land v \in I)$ takie, że $\forall_{v_h \in H}\exists_{e_M=(u,v)\in M}: u = v_h \oplus v = v_h$.
     \item Spełniona jest nierówność $|H| \leq |I|$. (własność przechodnia z własności 3)
   \end{enumerate}
 \end{definition}
 \begin{definition}
-  Zbiór $H$ określa się mianem \emph{głowy korony}.
+  Zbiór $H$ określa się jako \emph{głowę korony}.
 \end{definition}
 \begin{definition}\thlabel{def_crown_head}
-  Mianem \emph{szerokości korony} określa się liczebność zbioru stanowiącego jej głowę $|H|$.
+  \emph{Szerokość korony} stanowi liczebność zbioru $|H|$.
 \end{definition}
 \begin{definition}\thlabel{def_strict_crown}
-  Mianem korony \emph{ścisłej} określa się koronę $(I, H)$, dla której spełniona jest nierówność $|H| < |I|$.
+  Korona \emph{ścisła} jest szczególnym rodzajem korony $(I, H)$, dla której spełniona jest nierówność $|H| < |I|$.
 \end{definition}
 \begin{definition}\thlabel{def_equal_crown}
-  Mianem korony \emph{równej} określa się koronę $(I, H)$, dla której spełniona jest równość $|H| = |I|$.
+  Korona \emph{równa} jest szczególnym rodzajem korony $(I, H)$, dla której spełniona jest równość $|H| = |I|$.
+\end{definition}
+\begin{definition}\thlabel{def_trivial_crown}
+  Egzemplarz korony $(I, H)$, gdzie zbiory składowe $I$ oraz $H$ są puste stanowi jest \emph{trywialny}.
+  Wynika to z braku korzyści płynących z wykorzystania takiego egzemplarza do redukcji przestrzeni poszukiwań pokrycia wierzchołkowego.
 \end{definition}
 \begin{theorem}\thlabel{th_crown_vc}
-  Jeżeli graf $G=(V,E)$ zawiera koronę $(I,H)$, istnieje optymalna pokrywa 
-  wierzchołkowa $C_{\textnormal{OPT}} \in V, H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
+  Jeżeli graf $G=(V,E)$ zawiera koronę $(I,H)$, to istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{OPT}} \in V, H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
 \end{theorem}
 \begin{bproof}
-  Z własności 3.\ Definicji~\ref{def_crown}.\ wynika, że każda pokrywa 
-  wierzchołkowa $C$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
+  Z własności 3\ Definicji~\ref{def_crown}\ wynika, że każde pokrycie wierzchołkowe $C$ musi zawierać przynajmniej jeden wierzchołek $v_H \in H$.
   Na tej podstawie stwierdzić można, że $|C|\geq|H|$.
-  Taki rozmiar pokrywy osiągnąć można przez umieszczenie $C=C\cup H$.
-  Należy w~tym miejscu zaznaczyć, że wierzchołki $v_H$ są użyteczne w~kontekście
-  możliwości pokrywania krawędzi $e \notin M$, podczas gdy wierzchołki $v_I \in
+  Taki rozmiar pokrycia osiągnąć można przez zastąpienie zbioru $C$ zbiorem $C\cup H$.
+  Należy w~tym miejscu oznaczyć, że wierzchołki $v_H$ są użyteczne w~kontekście możliwości pokrywania krawędzi $e \notin M$, podczas gdy wierzchołki $v_I \in
   I$ nie mają tej cechy.
-  Mając to na uwadze łatwo zauważyć, że $|C \cup H| \leq |C \bigcup
-  I|$.
-  Wniosek płynący z~tej obserwacji jest jednoznaczny: istnieje optymalna pokrywa
-  wierzchołkowa $C_{\textnormal{OPT}}; H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
+  Mając to na uwadze łatwo zauważyć, że $|C \cup H| \leq |C \cup I|$.
+  Wniosek płynący z~tej obserwacji jest jednoznaczny: istnieje optymalne pokrycie wierzchołkowa $C_{\textnormal{OPT}}; H \in C_{\textnormal{OPT}}, I \notin C_{\textnormal{OPT}}$.
 \end{bproof}
-W celu odnalezienia korony w~grafie, zastosować można następujący algorytm.
+W celu wyznaczenia korony w~grafie, zastosować można algorytm działający zgodnie z pseudokodem~\ref{alg_findCrown}.
 \begin{algorithm}
-  \caption{Algorytm odnajdujący koronę w~grafie $G$}\label{alg_findCrown}
+  \caption{Algorytm wyznaczający koronę w~grafie $G$}\label{alg_findCrown}
   \begin{algorithmic}[1]
     \Function{findCrown}{G, k}
     \State{$M_1\leftarrow$ największe skojarzenie $G$}
     \State{$O\leftarrow v \in V, \neg\exists_{e_{M_1}=(u, w) \in M_1}: u=v \lor w=v$}
-    \If{$|M_1| \geq k$}
-    \State\textbf{return} nil\Comment{$\neg\exists{C_{\textnormal{OPT}} \in V}: |C_{\textnormal{OPT}}| \leq k$}
+    \If{$|M_1| \geq k$} \Comment{nie istnieje pokr. wierzch. $C$ o liczebności $|C| \leq k$}
+    \State\textbf{return} nil
   \EndIf
   \State{$M_2 \leftarrow$ maksymalne skojarzenie na krawędziach $O\leftrightarrow N(O)$}
-  \If{$|M_2| > k$}
-  \State{\textbf{return} nil\Comment{$\neg\exists{C_{\textnormal{OPT}} \in V}: |C_{\textnormal{OPT}}|\leq k$}}
+  \If{$|M_2| > k$} \Comment{nie istnieje pokr. wierzch. $C$ o liczebności $|C| \leq k$}
+  \State{\textbf{return} nil
 \EndIf
 \State{$I_0 \leftarrow v_O\in O, \neg\exists_{e_{M_2}=(u,v)\in M_2}: u=v_O\lor v=v_O$}
-\State($n \leftarrow 0$)
+\State($n \leftarrow 1$)
 \While{$I_{n-1} \neq I_n$}\label{findCrown_while}
 \State{$H_n \leftarrow N(I_n)$}\label{findCrown_makeH}
 \State{$I_{n+1} \leftarrow I_n\cup N_{M_2}(H_n)$}\label{findCrown_makeI}
 \State{$n \leftarrow n+1$}
-\EndWhile
-\State{\textbf{return} $(I_n,H_n)$}\Comment{$n=N$}
+\EndWhile\label{findCrown_endWhile}
+\State $N \gets n$
+\State{\textbf{return} $(I_N,H_N)$}
   \EndFunction
 \end{algorithmic}
 \end{algorithm}\\
-Rezultatem działania algorytmu jest korona $(I,H); I=I_N, H=H_N$.
-
+Rezultatem działania algorytmu jest korona $(I,H)$, na którą składają się zbiory $I=I_N$ oraz $H=H_N$.
 \begin{theorem}
-  Algorytm~\ref{alg_findCrown}.\ jest w stanie odnaleźć koronę pod warunkiem, że
-  $I_0\neq\emptyset$.
+  Algorytm~\ref{alg_findCrown}\ wyznacza koronę pod warunkiem, że $I_0\neq\emptyset$.
 \end{theorem}
-\begin{bproof} (Spełnienie własności 1.\ Definicji~\ref{def_crown}.)
-  \par{
-    Bazując na fakcie, iż $M_1$ stanowi największe skojarzenie $G$, stwierdzić
-    można, że zarówno $O$ jak i $I \subset O$ stanowią zbiory niezależne.
-  }
-\end{bproof}
-\begin{bproof} (Spełnienie własności 2.\ Definicji~\ref{def_crown}.)
-  \par{
-    Z definciji wynika $H=N(I_{N-1})$.
-    Z warunku zakończenia pętli~\algref{alg_findCrown}{findCrown_while} wynika 
-    $I=I_N=I_{N-1}$.
-    Na tej podsawie widocznym jest, że $H=N(I)$.
-  }
-\end{bproof}
-\begin{bproof} (Spełnienie własności 3.\ Definicji~\ref{def_crown}., dowód przez
-  sprzeczność)\par{
-    Założyć należy istnienie elementu $h \in H, \neg\exists_{e_{M_2}=(u,v) \in
-  M_2}: u=h \lor v = h$.
-  Rezultatem budowy $H$ byłaby zatem ścieżka rozszerzająca $P$ o nieparzystej
-  długości. 
-  Warunkiem przynależności $h \in H$ jest istnienie nieskojarzonego wierzchołka
-  $v_O \in O$, stanowiącego początek tejże ścieżki.
-  W takim wypadku, wynikiem linii~\ref{findCrown_makeH}.\ algorytmu byłaby
-  zawsze krawędź nieskojarzona, podczas gdy wynikiem
-  linii~\ref{findCrown_makeI}.\ byłaby  krawędź stanowiąca część~skojarzenia.
+\begin{bproof} Udowodnione zostaną trzy kolejne własności Definicji~\ref{def_crown}.
+\begin{enumerate}
+  \item Ponieważ $M_1$ stanowi największe skojarzenie w grafie $G$, zbioru $O$ oraz $I \subset O$ są niezależne.
+  \item  Z definicji wynika, że $H=N(I_{N-1})$.
+    Z warunku zakończenia pętli~\algref{alg_findCrown}{findCrown_while} wynika, że $I=I_N=I_{N-1}$.
+    Na tej podstawie mamy $H=N(I)$.
+  \item Założyć należy istnienie elementu $h \in H$ takiego, że dla dowolnego wierzchołka $u \in V$ nie istnieje krawędź $(u, h) \in E$ ani $(h, u) \in E$ skojarzona przez zbiór $M_2$ w grafie $G$.
+  Rezultatem budowy $H$ byłaby zatem ścieżka rozszerzająca $P$ o nieparzystej długości. 
+  Warunkiem przynależności $h \in H$ jest istnienie nieskojarzonego wierzchołka $v_O \in O$, stanowiącego początek tejże ścieżki.
+  W takim przypadku, wynikiem wiersza~\ref{findCrown_makeH}\ algorytmu byłaby
+  zawsze krawędź nieskojarzona, podczas gdy wynikiem wiersza~\ref{findCrown_makeI}\ byłaby krawędź stanowiąca część~skojarzenia.
   Proces ten powtarzałby się do momentu osiągnięcia wierzchołka $h$.
-  Utworzona ścieżka rozpościera się zatem pomiędzy dwoma nieskojarzonymi
-  wierzchołkami, będąc zarazem $M_2$-przemienną.
-  Istnienie takiej ścieżki oznaczałoby możliwość zwiększenia skojarzenia $M_2$
-  przez wykonanie operacji $M_2=M_2\oplus P$, co stoi w opozycji do
-  założenia, iż $M_2$ stanowi skojarzenie maksymalne.
-  Obserwacja ta prowadzi do sTwierdzenia, iż każdy wierzchołek $h \in H$ musi
-  być skojarzony w $M_2$.
+  Utworzona ścieżka prowadzi między dwoma nieskojarzonymi wierzchołkami, będąc zarazem $M_2$-przemienną.
+  Istnienie takiej ścieżki oznaczałoby możliwość zwiększenia skojarzenia $M_2$ przez wykonanie operacji $M_2=M_2\oplus P$, co stoi w opozycji do założenia, iż $M_2$ stanowi skojarzenie maksymalne.
+  Obserwacja ta prowadzi do stwierdzenia, iż każdy wierzchołek $h \in H$ musi być skojarzony w $M_2$.
   Właściwe skojarzenie użyte w strukturze korony to skojarzenie $M_2$, z
-  dziedziną ograniczoną do krawędzi $H \leftrightarrow I$.
-}
+  dziedziną ograniczoną do krawędzi pomiędzy wierzchołkami należącymi do zbiorów $H$ oraz $I$.
 \end{bproof}
-
 \par{
-  Rezultatem jednej iteracji algorytmu redukcji korony jest graf
+  Rezultatem jednej iteracji algorytmu redukcji korony (wiersze~\algref{alg_findCrown}{findCrown_while} -- \algref{alg_findCrown}{findCrown_endWhile}) jest graf
   $G^\prime=(V^\prime, E^\prime);\\V^\prime=V\setminus H \setminus I, E^\prime = E
-  \setminus \{H\leftrightarrow I\}$.
-
-  Rozmiar dziedziny problemu ulega zmniejszeniu do wartości
-  $n^\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k^\prime=k-|H|$,
-  z~uwagi na fakt, że każdy z wierzchołków $h \in H$ musi należeć do optymalnej
-  pokrycia wierzchołkowego, co udowodniono dla Twierdzenia~\ref{th_crown_vc}.
-  Należy zaobserwować, iż jeżeli w~grafie istnieje maksymalne skojarzenie
-  $M_{MAX}, |M_{MAX}| > k$, wyklucza to istnienie optymalnej pokrywy
-  wierzchołkowej $C_{\textnormal{OPT}}, |C_{\textnormal{OPT}}|\leq k$.
-  Zatem, jeżeli rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest
-  większy niż $k$, algorytm może zakończyć działanie, udzielając ekwiwalentu 
-  odpowiedzi negatywnej.
-  Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu 
-  wynikowego $|G^\prime|$.
+  \setminus \{H\leftrightarrow I\}$, gdzie zbiór $\{H\leftrightarrow I\}$ zawiera krawędzie pomiędzy wierzchołkami należącymi do zbiorów $H$ oraz $I$.
+  Rozmiar dziedziny problemu ulega zmniejszeniu do wartości $n^\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k^\prime=k-|H|$,
+  z~uwagi na to, że każdy z wierzchołków $h \in H$ musi należeć do optymalnego pokrycia wierzchołkowego, co udowodniono dla Twierdzenia~\ref{th_crown_vc}.
+  Zauważmy, że jeżeli w~grafie istnieje maksymalne skojarzenie $M_{MAX}, |M_{MAX}| > k$, wyklucza to istnienie optymalnego pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o liczebności $|C_{\textnormal{OPT}}|\leq k$.
+  Zatem, jeżeli rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest większy niż $k$, to algorytm może zakończyć działanie, udzielając odpowiedzi negatywnej --- czyli zwrócić trywialny (zgodnie z Definicją~\ref{def_trivial_crown}) egzemplarz korony.
+  Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu wynikowego $|G^\prime|$.
 }
 \begin{theorem}\thlabel{th_crown_domain_reduction}
-  $|M_1| \leq k, |M_2| \leq k \implies |V^\prime \setminus I \setminus H|
-  \leq 3k$.
+  Jeżeli utworzone w ramach algorytmu~\ref{alg_findCrown} skojarzenia $M_1$ oraz $M_2$ zawierają co najwyżej $k$ krawędzi, to zbiór wierzchołków $D=V \setminus I \setminus H$, stanowiący jądro egzemplarza problemu pokrycia wierzchołkowego jest rozmiaru $|D| \leq 3k$.
 \end{theorem}
 \begin{bproof}
-  Ponieważ skojarzenie $M_1, |M_1| \leq k$ stanowi zbiór krawędzi, wnioskować
-  można, iż $V_{M_1}=\{v, u|v, u \in V, (u,v)\in M_1 \lor (v,u) \in M_1\}, |V_{M_1}| \leq
-  2k$.
-  Z tego wynika, iż $|O| \geq n-2k$.
-  W związku z~faktem, że $|M_2| \leq k$, istnieje co najwyżej $k$ wierzchołków
-  $v_O \in O$ skojarzonych przez $M_2$.
-  Łatwo zauważyć, iż w~takim wypadku istnieje co najmniej $n-3k$ wierzchołków
-  $v_O \in O$ nieskojarzonych przez $M_2$ --- są one zawarte w $I_0$, a~zatem
-  także i~w~$I$.
-  Ten tok rozumowania prowadzi do wniosku, iż $|V \setminus I \setminus H|
-  \leq 3k$.
+  Ponieważ skojarzenie $M_1$ o rozmiarze $|M_1| \leq k$ stanowi zbiór krawędzi, to zbiór wierzchołków tychże krawędzi $V_{M_1}=\{v, u|v, u \in V, (u,v)\in M_1 \lor (v,u) \in M_1\}$ musi być rozmiaru $ |V_{M_1}| \leq 2k$.
+  Z tego wynika, że $|O| \geq n-2k$.
+  Ponieważ mamy $|M_2| \leq k$, istnieje co najwyżej $k$ wierzchołków $v_O \in O$ skojarzonych przez $M_2$.
+  Łatwo zauważyć, że w~takim przypadku istnieje co najmniej $n-3k$ wierzchołków $v_O \in O$ nieskojarzonych przez $M_2$ --- są one zawarte w~zbiorze $I_0$, a~zatem także w~zbiorze~$I$.
+  Ten tok rozumowania prowadzi do wniosku, iż rozmiar zbioru wierzchołków stanowiącego jądro egzemplarza problemu pokrycia wierzchołkowego wynosi $|V \setminus I \setminus H| \leq 3k$.
 \end{bproof}
 \par{
-  Należy zauważyć, że kształt odnalezionej przez algorytm korony podyktowany
-  jest trukturą wybranego największego skojarzenia $M_1$.
-  Prowadzi to do wniosku, iż pożądane jest wykonywanie algorytmu redukcji korony
-  wielokrotnie, wykorzystując różne największe skojarzenia tak, by zlokalizować 
-  i~zredukować jak największą ilość koron, co pozwoli na maksymalną redukcję
-  dziedziny problemu.
-  Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów 
-  przetwarzania wstępnego przez każdą kolejną iteracją redukcji 
-  koron --- usunięcie korony z~dużym prawdopodobieństwem prowadzić będzie do 
-  powstania wierzchołków niskiego stopnia, redukowalnych przez przetwarzanie
-  wstępne.
-  Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie
-  skojarzenia maksymalnego $M_2$, zrealizowane w niniejszej pracy za pomocą 
-  algorytmu kwiatów Edmondsa.\footnote{
+  Kształt odnalezionej przez algorytm korony jest podyktowany strukturą wybranego największego skojarzenia $M_1$.
+  Oznacza to, że pożądane jest wykonywanie algorytmu redukcji korony wielokrotnie, wykorzystując różne największe skojarzenia tak, by zlokalizować i~zredukować jak największą liczbę koron, co pozwoli na maksymalne zawężenie dziedziny problemu.
+  Rozsądnym krokiem jest również wykonanie jednej iteracji algorytmów przetwarzania wstępnego przed każdą kolejną iteracją redukcji koron --- usunięcie korony z~dużym prawdopodobieństwem prowadzić będzie do powstania wierzchołków niskiego stopnia, redukowalnych za pomocą przetwarzania wstępnego.
+  Najbardziej złożoną obliczeniowo częścią algorytmu jest odnalezienie maksymalnego skojarzenia $M_2$, zrealizowane w niniejszej pracy za pomocą algorytmu kwiatów Edmondsa.\footnote{
     Oryginalna implementacja, opisywana
     w~\cite{KernelizationAlgorithms04} oparta jest o~przeformułowanie problemu do
-    egzamplarza zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica,
+    egzemplarza zadania przepływu w sieci, rozwiązanej za pomocą algorytmu Dinica,
     o~wynikowej złożoności czasowej $O(n^{\frac{5}{2}})$.
   }
 }
-
 \begin{theorem}
-  Implementacja algorytmu redukcji korony grafu $G=(V,E); |V|=n,|E|=m$ 
-  w~oparciu o~algorytm kwiatów Edmondsa znajduje koronę w~czasie $O(n^{4})$.
+  Implementacja algorytmu redukcji korony grafu $G=(V,E)$ o rozmiarach $|V|=n$ oraz $|E|=m$ w~oparciu o~algorytm kwiatów Edmondsa wyznacza koronę w~czasie $O(n^{4})$.
 \end{theorem}
 \begin{bproof}
-  Z~teoretycznego punktu widzenia, dwie najbardziej obciążające operacje to
-  odnalezienie skojarzenia maksymalnego $M_2$ oraz odnalezienie skojarzenia
-  największego $M_1$.
-  W celu odnalezienia skojarzenia największego $M_1$ grafu należy
-  sprawdzić wszystkie krawędzie $e\in E$ w celu poszukiwania wspólnych
-  wierzchołków.
-  Wykorzystując koncepcję zaznaczania wierzchołków krawędzi dołączanych do 
-  skojarzenia jako odwiedzonych, złożoność operacji sprowadza się do $O(m)$.
+  Z~teoretycznego punktu widzenia, dwie najbardziej obciążające operacje to odnalezienie maksymalnego skojarzenia $M_2$ oraz odnalezienie największego skojarzenia $M_1$.
+  W celu odnalezienia skojarzenia największego $M_1$ grafu należy sprawdzić wszystkie krawędzie $e\in E$ w celu poszukiwania wspólnych wierzchołków.
+  Wykorzystując koncepcję oznaczania wierzchołków krawędzi dołączanych do skojarzenia jako odwiedzonych, złożoność operacji sprowadza się do $O(m)$.
   W grafie może znajdować się maksymalnie $O(n^{2})$ krawędzi.
-  W celu odnalezienia skojarzenia maksymalnego zastosowano algorytm Edmondsa,
-  którego złożoność wynosi $O(n^{4})$, co opisano 
-  w~podrozdziale~\ref{ss_edmonds}.
-  Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony jest 
-  w~stanie znaleźć koronę w~grafie w~czasie $O(n^{4} + n^{2})=O(n^{4})$.
+  W celu odnalezienia skojarzenia maksymalnego zastosowano algorytm Edmondsa, którego złożoność wynosi $O(n^{4})$, co opisano w~podrozdziale~\ref{ss_edmonds}.
+  Powyższe obserwacje prowadzą do wniosku, iż algorytm redukcji korony wyznacza koronę w~grafie $G$ w~czasie $O(n^{4} + n^{2})=O(n^{4})$.
 \end{bproof}
