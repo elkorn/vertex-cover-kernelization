@@ -1,6 +1,6 @@
 \subsection{Odnajdywanie maksymalnego skojarzenia w grafie}\label{ss_edmonds}
 \par{
-  Każdy z opisywanych w pracy algorytmów działający w oparciu o Twierdzenie\\Nemhausera-Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
+  Każdy z opisywanych w pracy algorytmów działający w oparciu o Twierdzenie\\Nemhausera -- Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
   Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
 }
 
@@ -55,7 +55,7 @@
   \end{theorem}
   \begin{bproof}
     Fakt, iż ścieżka $\tau$ nie jest powiększająca implikuje, że nie jest ona również prosta, to znaczy zawiera krawędzie nawrotowe.
-    Jest to równoznaczne ze sTwierdzeniem, iż ścieżka $\tau$ zawiera cykl.
+    Jest to równoznaczne ze stwierdzeniem, iż ścieżka $\tau$ zawiera cykl.
     Jeżeli cykl ten miałby być parzystej długości, ścież $\tau_H$ musiałaby co najmniej dwukrotnie przechodzić przez pewien wierzchołek, co przeczy założeniu, iż stanowi jest ona prostą ścieżką skierowaną.
   \end{bproof}
   Mając na uwadze te zależności, można przejść do analizy algorytmu Edmondsa.

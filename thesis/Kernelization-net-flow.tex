@@ -1,9 +1,9 @@
 \subsection{Sformułowanie problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w sieci}\label{Kernelization_network_flow}
 Algorytm ten, zaproponowany w~pracy~\cite{KernelizationAlgorithms04}, opiera się na
 algorytmie użytym w~pracy~\cite{Niedermeier02} do udowodnienia Twierdzenia
-Nemhausera-Trottera.
+Nemhausera -- Trottera.
 
-\begin{theorem}[Drugie Twierdzenie Nemhausera-Trottera]\thlabel{theorem_nt}
+\begin{theorem}[Drugie Twierdzenie Nemhausera -- Trottera]\thlabel{theorem_nt}
   Dla grafu $G=(V,E), |V|=n, |E|=m$, dwa rozłączne zbiory $C_0 \subseteq V,
   V_0 \subseteq V$ mogą zostać obliczone w czasie $O(\sqrt{n}m)$ przy zachowaniu
   następujących własności.
@@ -27,7 +27,7 @@ za pomocą algorytmu Forda-Fulkersona.\footnote{Algorytm Forda-Fulkersona
   zastosowany został w niniejszej pracy, oryginalna implementacja oparta została
 na algorytmie Dinica.}
 Złożoność czasowa algorytmu wynosi $O(\sqrt{n}m)$, zgodnie z~Twierdzeniem
-Nemhausera-Trottera. 
+Nemhausera -- Trottera. 
 W związku z faktem, iż w grafie może istnieć maksymalnie~$n^2$ krawędzi, można
 wyrazić tę złożoność~w~formie $O(n^{5/2})$.
 Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
@@ -93,7 +93,7 @@ Zależność ta sformułowana została jako Twierdzenie K\"oniga:
   grafu $H$.
 \end{theorem}
 \begin{bproof}
-  W przypadku 1 zachodzi $A = C \oplus B = C$.
+  W przypadku 1 zachodzi $A = C$ albo $B = C$.
   Na tej podstawie stwierdzić można, iż ${|A|=|B|=|M|}$.
   Przyjmując $C = A$, $\forall{f=(u,v), f\in F}: u \in C \oplus v \in C$, co
   w konsekwencji oznacza, iż każda krawędź $f$ jest pokryta przez $C$, czyniąc

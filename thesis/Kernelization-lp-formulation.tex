@@ -27,7 +27,7 @@ Należy zauważyć, iż wartość $OPT_{LP}$ (ang. \emph{Linear Programming, LP}
 liniowej jest zawsze ograniczona z dołu przez wartość $OPT_{IP}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
 Co więcej, w~pracy~\cite{khuller02} udowodniono, że $OPT_{IP} \leq 2*OPT_{LP}$.
-Zależność ta wynika z Twierdzenia Nemhausera-Trottera korzystającego
+Zależność ta wynika z Twierdzenia Nemhausera -- Trottera korzystającego
 z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
 $X_u \in \{0, \frac{1}{2}, 1\}$.
@@ -35,7 +35,7 @@ $X_u \in \{0, \frac{1}{2}, 1\}$.
 Definiując $V_0 = \{u : X_u=0\}, V_{\frac{1}{2}}=\{u: X_u=\frac{1}{2}\},
 V_1=\{u: X_u=1\}$, Twierdzenie zapisać można jak następuje.
 
-\begin{theorem}[Pierwsze Twierdzenie Nemhausera-Trottera]\thlabel{nt_lp}
+\begin{theorem}[Pierwsze Twierdzenie Nemhausera -- Trottera]\thlabel{nt_lp}
   Istnieje optymalne rozwiązanie $OPT$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach.
   \begin{enumerate}[(a)]
     \item $OPT \subset V_1 \cup V_{\frac{1}{2}}$.
@@ -81,7 +81,7 @@ $V^\prime=Q; E^\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
   $\forall{v \in A}: X_v \leftarrow X_v -\epsilon$.
   Jest to niemożliwe ze względu na fakt, iż wynik $OPT_{IP}$ stanowi optymalne 
   rozwiązanie sformułowania liniowego w~oparciu o~Twierdzenie
-  Nemhausera-Trottera~\ref{nt_lp}. Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
+  Nemhausera -- Trottera~\ref{nt_lp}. Nasuwa się konkluzja, iż jedyny przypadek z~jakim można mieć w tym miejscu do 
   czynienia to $|A|=|B|$.
   Przypadek ten jest trywialny --- w~celu orzymania optymalnej pokrywy
   wierzchołkowej wystarczy zastąpić zbiór $A$ zbiorem $B$.

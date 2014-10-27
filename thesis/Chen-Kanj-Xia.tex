@@ -44,7 +44,7 @@
     \item $N[S]$ oznacza zbiór wierzchołków $N(S) \cup S$.
   \end{itemize}
 
-  Przyjęte zostaje następujące założenie, oparte na drugim Twierdzeniu Nemhausera-Trottera (Twierdzenie~\ref{nt_lp}) oraz pojęciu NT-dekompozycji, opisanej w rozdziale~\ref{ss_nt_decomposition}.
+  Przyjęte zostaje następujące założenie, oparte na drugim Twierdzeniu Nemhausera -- Trottera (Twierdzenie~\ref{nt_lp}) oraz pojęciu NT-dekompozycji, opisanej w rozdziale~\ref{ss_nt_decomposition}.
   \begin{proposition}
     Istnieje algorytm o złożoności czasowej $O(kn + k^3)$ który z egzemplarza problemu pokrycia wierzchołkowego $(G, k)$, gdzie $|G|=n$ konstruuje inny egzemplarz $(G_1, k_1)$, dla którego $k_1 \leq k$ oraz $|G_1| \leq 2k_1$ oraz $\tau(G) \leq k$ wtedy i tylko wtedy gdy $\tau(G_1) \leq k_1$.
   \end{proposition}
@@ -215,7 +215,7 @@
   \end{theorem}
   \begin{bproof}
     W celu usnięcia struktur koron z grafu, należy aplikować na grafie NT-dekompozycje do momentu otrzymania trywialnej egzemplarza takiej dekompozycji (w rozumieniu Definicji~\ref{def_nt_decomposition_trivial}).
-    Zgodnie z drugim Twierdzeniem Nemhausera-Trottera~\ref{nt_lp}, każde zastosowanie NT-redukcji wymaga $O(|V|\sqrt{|E|})$ czasu.
+    Zgodnie z drugim Twierdzeniem Nemhausera -- Trottera~\ref{nt_lp}, każde zastosowanie NT-redukcji wymaga $O(|V|\sqrt{|E|})$ czasu.
     W związku z udowodnieniem, iż rozmiary grafu w rozpatrywanym egzemplarzu problemu pokrycia wierzchołkowego wynoszą odpowiednio $|V|=O(k)$ oraz $|E|=O(k^2)$ łatwo zauważyć, że każda NT-dekompozycja zajmie tak naprawdę $O(k^2\sqrt{k})$ czasu.
     Każda NT-dekompozycja redukuje dziedzinę grafu, a zatem do momentu uzyskania trywialnego egzemplarza NT-dekompozycji operacja wykonana zostanie $O(k)$ razy.
     Po tym czasie załozyć można, iż zredukowany graf nie ma żadnych koron, zgodnie z~Twierdzeniem~\ref{th_crown_free_graph}.

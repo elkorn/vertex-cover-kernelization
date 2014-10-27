@@ -3,7 +3,7 @@
 \par{
   W obliczu charakterystyki pracy to znaczy podjęcia się analizy i implementacji szerokiej gamy technik związanych z parametryzacją złożoności obliczeniowej pokrycia wierzchołkowego, kwestią wymagającą uwagi jest sposób reprezentacji grafu.
   W związku ze zróżnicowaniem podejść do problemu, reprezentacja struktur grafowych za pomocą wyłącznie macierzy incydencji lub też listy incydencji okazuje się nie tyle niewystarczająca, co nieoptymalna.
-  Podczas gdy niektóre z technik operują na grafie przede wszystkim za pomocą wierzchołków (głównie metody oparte na sformułowaniu problemu jako egzamplarza przepływu w sieci), inne zdecydowanie traktują graf jako zbiór krawędzi pomiędzy pewnymi punktami.
+  Podczas gdy niektóre z technik operują na grafie przede wszystkim za pomocą wierzchołków (głównie metody oparte na sformułowaniu problemu jako egzemplarza przepływu w sieci), inne zdecydowanie traktują graf jako zbiór krawędzi pomiędzy pewnymi punktami.
   Jako iż jednym z pomniejszych celów pracy jest stworzenie ogólnej platformy użytecznej do testowania rozwiązań różnych problemów związanych z grafami, zdecydowano się zaimplementować strukturę grafu jako reprezentację zawierającą zarówno macierz incydencji jak i listę krawędzi.
 }
 \par{
@@ -15,7 +15,7 @@
   Zabieg ten pozwala na zastosowanie zwykłych tablic w miejsce tablic haszujących, co pozwala na obniżenie złożoności obliczeniowej związanych z takimi strukturami operacji.
 
   Wartości wierzchołków często występują obok liczb całkowitych, pełniących zazwyczaj w tym kontekście rolę indeksów tablic.
-  Aby łatwiej było odróżnić egzamplarze wierzchołków od zwykłych liczb całkowitych, przyjęto konwencję numeracji wartości wierzchołków grafu od 1.
+  Aby łatwiej było odróżnić egzemplarze wierzchołków od zwykłych liczb całkowitych, przyjęto konwencję numeracji wartości wierzchołków grafu od 1.
   \begin{lstlisting}[language=go, caption=Typy reprezentujące krawędzie grafu.]
   type Edge struct {
     From      Vertex
