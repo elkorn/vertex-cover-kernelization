@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,4 +26,15 @@ func TestScanGraph(t *testing.T) {
 	for _, edge := range expected.edges {
 		assert.True(t, g.HasEdge(edge.From, edge.To), fmt.Sprintf("The resulting graph should contain an edge %v->%v", edge.From, edge.To))
 	}
+}
+
+func TestScanDot(t *testing.T) {
+	g := ScanDot("./test.dot")
+	assert.Equal(t, 7, g.NVertices())
+	assert.Equal(t, 3, g.NEdges())
+	assert.True(t, g.HasEdge(2, 3))
+	assert.True(t, g.HasEdge(1, 6))
+	assert.True(t, g.HasEdge(5, 7))
+	g = ScanDot("./test-big.dot")
+	assert.Equal(t, 168, g.NEdges())
 }
