@@ -25,3 +25,7 @@ func removeVerticesWithDegreeGreaterThan(self *graph.Graph, k int) (graph.Neighb
 
 	return result, removed
 }
+
+func KernelizationHighDegree(g *graph.Graph, k int) (graph.Neighbors, int) {
+	return removeVerticesWithDegreeGreaterThan(g, k)
+}

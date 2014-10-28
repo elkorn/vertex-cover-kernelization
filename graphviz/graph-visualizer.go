@@ -12,7 +12,6 @@ import (
 
 	"github.com/deckarep/golang-set"
 	"github.com/elkorn/vertex-cover-kernelization/graph"
-	"github.com/elkorn/vertex-cover-kernelization/kernelization"
 	"github.com/elkorn/vertex-cover-kernelization/utility"
 )
 
@@ -29,7 +28,7 @@ var displayTools map[string]string = map[string]string{
 }
 
 var defaultOutputFormat string = "jpg"
-var defaultLayoutAlgorithm string = "sfdp"
+var defaultLayoutAlgorithm string = "dot"
 
 type graphVisualizer struct {
 	g               *graph.Graph
@@ -210,12 +209,12 @@ func (self *graphVisualizer) HighlightCover(cover mapset.Set, color string) {
 	}
 }
 
-func (self *graphVisualizer) HighlightCrown(crown *kernelization.Crown) {
-	for vInter := range crown.I.Iter() {
+func (self *graphVisualizer) HighlightCrown(I, H mapset.Set) {
+	for vInter := range I.Iter() {
 		self.HighlightVertex(vInter.(graph.Vertex), "lightgray")
 	}
 
-	for vInter := range crown.H.Iter() {
+	for vInter := range H.Iter() {
 		self.HighlightVertex(vInter.(graph.Vertex), "yellow")
 	}
 }

@@ -290,6 +290,6 @@ func TestPreprocessingMainRoutine(t *testing.T) {
 	cov := vc.BranchAndBound(g, nil, utility.MAX_INT)
 	parameterReduction, folds := Preprocessing(g)
 	cov2 := vc.BranchAndBound(g, nil, utility.MAX_INT)
-	size := computeUnfoldedVertexCoverSize(folds, cov2) + parameterReduction
+	size := ComputeUnfoldedVertexCoverSize(folds, cov2) + parameterReduction
 	assert.Equal(t, cov.Cardinality(), size)
 }

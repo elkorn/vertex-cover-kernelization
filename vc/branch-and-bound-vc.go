@@ -64,7 +64,6 @@ func resolveConflict(g *graph.Graph, v1, v2 graph.Vertex) graph.Vertex {
 }
 
 func getEdgeEndpoints(g *graph.Graph) mapset.Set {
-	// TODO: Refactor to not use the containment map.
 	result := mapset.NewThreadUnsafeSet()
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {
 		result.Add(edge.From)
@@ -110,6 +109,7 @@ func BranchAndBound(g *graph.Graph, halt chan<- bool, k int) mapset.Set {
 	utility.Debug("Edge endpoints: %v", vertices)
 	// 3. Generate the first node with initial selection and compute its lower bound.
 	// 4. Insert the node into the PQ.
+	// O(m)
 	queue.Push(mkBnbNode(g, bestSelection, 0))
 	total++
 	bestLowerBound := utility.MAX_INT
@@ -139,6 +139,7 @@ func BranchAndBound(g *graph.Graph, halt chan<- bool, k int) mapset.Set {
 			} else { // 13. If not (9.)...
 				// 14. For all vertices v such that v is not in the selection of the parent...
 				// utility.Debug("Does not cover all edges.")
+				// O(V^2)
 				for vInter := range vertices.Iter() {
 					v := vInter.(graph.Vertex)
 					if node.selection.Contains(v) {

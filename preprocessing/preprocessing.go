@@ -282,7 +282,7 @@ func Preprocessing(g *graph.Graph) (int, mapset.Set) {
 	return parameterReduction, folds
 }
 
-func computeUnfoldedVertexCoverSize(folds, vc mapset.Set) int {
+func ComputeUnfoldedVertexCoverSize(folds, vc mapset.Set) int {
 	size := vc.Cardinality()
 	for foldInter := range folds.Iter() {
 		fold := foldInter.(*fold)
