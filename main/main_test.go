@@ -1,38 +1,96 @@
 package main
 
+import (
+	"fmt"
+	"log"
+	"os"
+	"testing"
+
+	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"github.com/elkorn/vertex-cover-kernelization/kernelization"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
+	"github.com/elkorn/vertex-cover-kernelization/vc"
+)
+
 var k int = 250
+var rng []int = []int{50, 100, 200, 500}
+var n int = len(rng)
+var filename = "./results"
 
-// func TestHighDegreeKernelization(b *testing.T) {
-// 	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
-// 	pre, _ := preprocessing.Preprocessing(g)
-// 	preprocessing.Preprocessing(g)
+func writeln(data string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0600)
 
-// 	log.Println(pre)
-// 	_, removed := kernelization.KernelizationHighDegree(g, 100)
-// 	log.Println(removed)
-// 	log.Println("Start.")
-// 	vc.BranchAndBound(g, nil, 250-pre-removed)
-// 	log.Println("End.")
-// }
+	if nil != err {
+		log.Fatal(err)
+		return
+	}
 
-// func BenchmarkHighDegreeKernelization(b *testing.B) {
-// 	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
-// 	pre, _ := preprocessing.Preprocessing(g)
-// 	preprocessing.Preprocessing(g)
+	file.WriteString(fmt.Sprintf("%v\n", data))
+	file.Close()
+}
 
-// 	_, removed := kernelization.KernelizationHighDegree(g, 250-pre)
+func calcPos(i, j int) int {
+	return (i * (n)) + j + 1
+}
 
-// 	graphs := make([]*graph.Graph, 1000)
-// 	utility.InVerboseContext(func() {
-// 		utility.Debug("Kernelized.")
-// 		for i := 0; i < 1000; i++ {
-// 			graphs[i] = g.Copy()
-// 		}
+func bnb(g *graph.Graph) (bool, int) {
+	result := vc.BranchAndBound(g, nil, utility.MAX_INT)
+	return result.Cardinality() > 0, result.Cardinality()
+}
 
-// 		utility.Debug("Copied.")
-// 	})
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		vc.BranchAndBound(graphs[i], nil, 250-pre-removed)
-// 	}
-// }
+func TestBnbGenerated(t *testing.T) {
+	writeln("TestBnbGenerated")
+	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
+	for i, val1 := range rng {
+		for j, val2 := range rng {
+			m := takeMeasurement(
+				"bnb",
+				graph.ScanDot(fmt.Sprintf("../results/%v_%v.dot", val1, val2)),
+				bnb)
+			m.positional = calcPos(i, j)
+			writeln(m.Str())
+			fmt.Println(m.Str())
+		}
+	}
+}
+
+func TestKernelizationCrownReduction(t *testing.T) {
+	writeln("TestKernelizationCrownReduction")
+	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
+	for i, val1 := range rng {
+		for j, val2 := range rng {
+			g := graph.ScanDot(fmt.Sprintf("../results/%v_%v.dot", val1, val2))
+			_, h := kernelization.ReduceCrown(g, nil, k)
+			m := takeMeasurement(
+				"bnb_crown",
+				g,
+				bnb)
+			m.coverSize += h.Cardinality()
+			m.positional = calcPos(i, j)
+			writeln(m.Str())
+			fmt.Println(m.Str())
+		}
+	}
+}
+
+func TestKernelizationNetworkFlow(t *testing.T) {
+	writeln("TestKernelizationNetworkFlow")
+	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
+	for i, val1 := range rng {
+		for j, val2 := range rng {
+			g := graph.ScanDot(fmt.Sprintf("../results/%v_%v.dot", val1, val2))
+			reduction := kernelization.KernelizationNetworkFlow(g, k)
+			m := takeMeasurement(
+				"bnb_nf",
+				g,
+				bnb)
+			m.positional = calcPos(i, j)
+			m.coverSize += reduction
+			writeln(m.Str())
+			fmt.Println(m.Str())
+		}
+	}
+}
