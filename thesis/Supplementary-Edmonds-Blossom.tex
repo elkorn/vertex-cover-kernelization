@@ -1,6 +1,6 @@
 \subsection{Odnajdywanie maksymalnego skojarzenia w grafie}\label{ss_edmonds}
 \par{
-  Każdy z opisywanych w pracy algorytmów działający w oparciu o Twierdzenie\\Nemhausera -- Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
+  Każdy z opisywanych w pracy algorytmów działający w oparciu o Twierdzenie\\Nemhausera--Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
   Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
 }
 
@@ -35,7 +35,7 @@
   
   Odnajdywanie ścieżek powiększających w skierowanym grafie $H$ jest krokiem pozwalającym na odkrycie \emph{prostych} ścieżek powiększających w grafie $G$.
   \begin{definition}
-    Mianem \emph{prostej} ścieżki w grafie $G=(V, E)$ określa się ścieżkę, która prowadzi dwa razy przez ten sam wierzchołek $v \in V$.
+    \emph{Prostą} ścieżkę w grafie $G=(V, E)$ stanowi ścieżka, która nie prowadzi dwa razy przez ten sam wierzchołek $v \in V$.
   \end{definition}
   \begin{definition}
     Dla pewnego grafu $G=(V, E)$ oraz grafu skierowanego $H=(V_H,E_H)$, skonstruowanego z grafu $G$, mianem ścieżki \emph{pseudorozszerzającej} określa się prostą ścieżkę w~grafie $H$ prowadzącą od pewnego wierzchołka $v \in v_H$ do pewnego dobrego wierzchołka $w \in V_H$.
@@ -69,7 +69,7 @@
 }
 \par{
   \begin{definition}
-    W dowolnym grafie $G=(V, E)$, mianem \emph{kwiatu} $B$ względem skojarzenia $M \in E$ określa się cykl o nieparzystej długości i największej liczbie krawędzi składowych skojarzonych w $M$. 
+    W dowolnym grafie $G=(V, E)$, \emph{kwiat} $B$ względem skojarzenia $M \subseteq E$ stanowi cykl o nieparzystej długości i największej liczbie krawędzi składowych skojarzonych w $M$. 
   \end{definition}
   Z powyższej Definicji wynika, że przykładowo jeżeli pewien cykl składa się z $2k + 1$ wierzchołków oznacza to, że $k$ krawędzi musi zawierać się w pewnym skojarzeniu $M$ aby cykl ten mógł być kwiatem.
   \begin{definition}
@@ -124,13 +124,13 @@
   W oparciu o notatki~\cite{Tutte-Berge:notes} oraz artykuł~\cite{cohen:hal-00358468} (stanowiące syntezę koncepcji pracy~\cite{Tutte-Berge:original}),  można posłużyć się następującą własnością, u podstaw której leży wzór Tutte-Berge'a.
 
   Dla dowolnego zbioru wierzchołków $U$, przyjąć należy oznaczenie $\circ (G \setminus U)$ jako określenie liczby spójnych składowych grafu $G^\prime=(V^\prime, E^\prime)$ zaindukowanego z grafu $G=(V \setminus U, E)$ o nieparzystej liczebności.
-  Należy zaobserwować, że dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \in E^\prime$ musi kojarzyć mniej niż $\circ (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
+  Dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \subseteq E^\prime$ musi kojarzyć mniej niż $\circ (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
   Co więcej, wierzchołki te skojarzone mogą być jedynie ze zbiorem wierzchołków $U$.
   \begin{definition}[ (Oparta na wzorze Tutte-Berge'a)]\thlabel{def_edmonds_max_matching}
     Skojarzenie $M$ jest maksymalne, jeżeli liczba wierzchołków nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \circ (G \setminus U) - |U|$, a zatem $|M|\leq \frac{|V|+|U| - \circ (G \setminus U)}{2}$.
   \end{definition}
   \begin{definition}
-  Mianem \emph{zbioru zaświadczającego} określa się zbiór wierzchołków spełniający wzór Tutte-Berge'a.
+  \emph{Zbiór zaświadczający} to zbiór wierzchołków spełniający wzór Tutte-Berge'a.
   \end{definition}
   W przypadku spełnienia założeń Definicji~\ref{def_edmonds_max_matching}, zbiór $U$ zaświadcza o tym, że skojarzenie $M$ jest maksymalne.
   W pseudokodzie~\ref{alg_Edmonds} zbiorem zaświadczającym jest zbiór $N$.

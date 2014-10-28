@@ -8,7 +8,7 @@
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
   podzbiory pełnego zbioru rozwiązań.
   Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji ograniczającej $f$.
-  W~przypadku, gdy wartości te są gorsze od znalezionego dotychczas przez algorytm lub zadanego jako parametr wejściowy optimum wartości funkcji $f$, cała gałąź jest odrzucan --- ie istnieje w niej rozwiązanie spełniające założone wymagania.
+  W~przypadku, gdy wartości te są gorsze od znalezionego dotychczas przez algorytm lub zadanego jako parametr wejściowy optimum wartości funkcji $f$, cała gałąź jest odrzucana --- nie istnieje w niej rozwiązanie spełniające założone wymagania.
 }
 \par{
   Koncepcja algorytmów działających zgodnie z metodą podziału i ograniczeń została wprowadzona w~pracy~\cite{land60} i~stanowi najpopularniejsze podejście w~rowiązywaniu problemów $\mathcal{NP}$-trudnych.
@@ -101,7 +101,7 @@
   \end{theorem}
   \begin{theorem}[Twierdzenie o silnej dualności~\cite{Boyd:2004:CO:993483}]
     Jeżeli problem pierwotny ma rozwiązanie optymalne $x^*$, to problem 
-    wtórny również ma rozwiązanie optymalne $y^*; c^{T}x^*=b^{T}y^*$.
+    wtórny również ma rozwiązanie optymalne $y^*$ takie, że $c^{T}x^*=b^{T}y^*$.
   \end{theorem}
 }
 

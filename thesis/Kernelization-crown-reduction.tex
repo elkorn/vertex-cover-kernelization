@@ -24,7 +24,7 @@
 \par{
   Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w grafie są tak zwane \emph{NT--dekompozycje}, stanowiące wynik \emph{NT--redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego i rozwiązania go zgodnie z Twierdzeniem~\ref{nt_lp}.\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby (przykładem może być algorytm J.F. Bussa) --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające Twierdzenia~\ref{nt_lp}.}
   \begin{definition}\thlabel{def_nt_decomposition}
-    Mianem \emph{NT--dekompozycji} (dekompozycji Nemhausera -- Trottera) określa się specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT--redukcji} (redukcji Nemhausera -- Trottera).
+    \emph{NT--dekompozycja} (dekompozycja Nemhausera--Trottera) stanowi specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT--redukcji} (redukcji Nemhausera--Trottera).
     Proces ten posługuje się funkcją $x: V \rightarrow \{0, \frac{1}{2}, 1\}$ różną od $x \equiv \frac{1}{2}$ określającą przynależność wierzchołków do optymalnego pokrycia wierzchołkowego.
   \end{definition}
   Przyjmując $V_i^x=\{u \in V| x(u)=i\}$ dla każdej wartości $i\in \{0, \frac{1}{2}, 1\}$ zaobserwować można, iż zbiór $V_0^x$ jest niezależny i niepusty w grafie $G$, oraz że zachowana zostaje własność $V_1^x = N(V_0^x)$.

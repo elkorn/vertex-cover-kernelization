@@ -64,7 +64,7 @@
 \subsubsection{\textbf{Ścieżki powiększające}}
 \par{
   \begin{definition}
-    Dla danej sieci $N=(V,E)$ i~przepływu $f$ mianem \emph{ścieżki powiększającej} określa się każdą ścieżkę ze źródła $s$ do ujścia $t$ w~sieci residualnej $N_f$.
+    Dla danej sieci $N=(V,E)$ i~przepływu $f$ \emph{ścieżka powiększająca} to każda ścieżka ze źródła $s$ do ujścia $t$ w~sieci residualnej $N_f$.
   \end{definition}
   Zgodnie z~Definicją sieci residualnej każda krawędź $(u, v)$ na ścieżce powiększającej dopuszcza dodatkowy dodatni przepły bez naruszenia warunku przepustowości.
   Największą możliwą wartość, o~którą zwiększyć można przepływ na każdej krawędzi ścieżki powiększającej $P_a$ określa się mianem \emph{przepustowości residualnej ścieżki powiększającej}, definiowanej jak następuje.
@@ -88,13 +88,13 @@
   Ostatnim z~pojęć potrzebnych do pełnego zrozumienia metody Forda-Fulkersona są przekroje w~sieciach.
   Stanowią one jednocześnie ważny element całości, gdyż maksymalny przepływ w~sieci bezpośrednio koreluje z~przepustowością najmniejszego jej przekroju.
   \begin{definition}
-    Dla sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ każdy podział zbioru $V$ na podzbiory $S$ oraz $T=V\setminus S$ określa się mianem \emph{przekroju} $(S,T)$ w~sieci $N$.
+    Dla sieci $N=(V, E)$ ze źródłem $s$ i~ujściem $t$ każdy podział zbioru $V$ na podzbiory $S$ oraz $T=V\setminus S$ stanowi \emph{przekrój} $(S,T)$ w~sieci $N$.
 
     Jeżeli w~sieci zdefiniowany jest przepływ $f$, to \emph{przepływem netto} przez przekrój $(S, T)$ definiowany jest jako $f(S, T)$.
 
-    Mianem \emph{przepustowości} przekroju $(S, T)$ określa się $c(S, T)$.
+    \emph{Przepustowości} przekroju $(S, T)$ oznacza się jako $c(S, T)$.
 
-    \emph{Przekrojem minimalnym} w~sieci $N$ nazywa się przekrój, którego przepustowość jest najmniejsza spośród przekrojów istniejących w~$N$.
+    \emph{Przekrój minimalny} w~sieci $N$ stanowi przekrój, którego przepustowość jest najmniejsza spośród przekrojów istniejących w~$N$.
   \end{definition}
 }
 \par{
@@ -162,16 +162,16 @@ Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki po
   Jednym z praktycznie stosowanych algorytmów, gwarantującym wielomianową złożoność czasową jest algorytm Edmondsa-Karpa.
   Stanowi on uściślenie preudokodu \ref{alg_fordFulkersonConcrete}, przez zastosowanie przeszukiwania wszerz sieci przepływowej, co zapewnia iż ścieżka powiększająca $P_a$ odnaleziona przez linię \algref{alg_fordFulkersonConcrete}{shortestPath} będzie za każdym razem najkrótsza spośród możliwych w kontekście liczby składających się na nią krawędzi.
   \begin{definition}
-    Mianem \emph{długości} ścieżki w sieci residualnej $N_f=(V_f, E_f)$ pomiędzy wierzchołkami $\{u, v\} \in V_f$ określa się wartosć $\delta_f(u, v)$, stanowiącą długość najkrótszej ścieżki z wierzchołka $u$ do wierzchołka $v$ przy założeniu jednostkowej długości każdej z krawędzi składowych.
+    \emph{Długość} ścieżki w sieci residualnej $N_f=(V_f, E_f)$ pomiędzy wierzchołkami $\{u, v\} \in V_f$ stanowi wartosć $\delta_f(u, v)$, będącą liczbą odcinków składowych najkrótszej ścieżki z wierzchołka $u$ do wierzchołka $v$ przy założeniu jednostkowej długości każdej z krawędzi składowych.
   \end{definition}
   \begin{definition}
     Mówi się, że krawędź $(u, v)$ w sieci residualnej $N_f=(V_f, E_f)$ o źródle $s$ i ujściu $y$ jest \emph{krytyczna} na ścieżce powiększającej $P_a$, jeżeli przepustowość residualna ścieżki $c_f(P_a)$ jest równa przepustowości residualnej tejże krawędzi, $c_f(P_a)=c_f(u, v)$.
   \end{definition}
   \begin{theorem}\thlabel{th_augentation_complexity}
-    Łączna liczba powiększeń przepływu w algorytmie Edmondsa-Karpa dla dowolnej sieci przepływowej $N=(V, E)$ o źródle $s$ i ujściu $t$ wynosi $O(VE)$.
+    Łączna liczba powiększeń przepływu w algorytmie Edmondsa-Karpa dla dowolnej sieci przepływowej $N=(V, E)$ o źródle $s$ i ujściu $t$ wynosi $O(|V||E|)$.
   \end{theorem}
   \begin{bproof}
-    Zaobserwować należy, że każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z sieci residualnej $N_f$ w oparciu o Definicję \ref{def_residual_net}.
+    Każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z sieci residualnej $N_f$ w oparciu o Definicję \ref{def_residual_net}.
     Prowadzi to do wniosku, że co najmniej jedna krawędź na dowolnej ścieżce ścieżce powiększającej musi być krytyczna.
     Założyć należy istnienie wierzchołków $\{u, v\} \in V$ takich, że $(u, v) \in E$.
     W związku z założeniem algorytmu Edmondsa-Karpa, iż ścieżki powiększające są najkrótsze, w momencie gdy krawędź $(u, v)$ jest krytyczna po raz pierwszy, zachodzi $\delta_f(s, v)=\delta_f(s, u)+1$.
@@ -190,8 +190,8 @@ Proces ten powtarzany jest do momentu gdy sieć nie zawiera żadnej ścieżki po
     Prowadzi to do obserwacji, że żaden z wierzchołków $\{s, u, t\}$ nie może stanowić wierzchołka pośredniego na dowolnej najkrótszej ścieżce ze źródła $s$ do wierzchołka $u$.
     Na tej podstawie stwierdzić można, że jeżeli wierzchołek $u$ przestanie być osiągalny ze źródła $s$ za pomocą ścieżki powiększającej, to jego odległość od $s$ może wzrosnąć co najwyżej do $|V|-2$.
     W efekcie krawędź $(u, v)$ może stać się krytyczna co najwyżej $\frac{|V|-2}{2}$ razy.
-    W związku z faktem, iż w sieci residualnej może istnieć co najwyżej $O(E)$ par wierzchołków, pomiędzy którymi istnieje krawędź stwierdzić można, że łączna liczba krawędzi krytycznych istniejących w czasie działania algorytmu wynosi co najwyżej $O(\frac{|V|-2}{2}E)=O(VE)$.
+    W związku z faktem, iż w sieci residualnej może istnieć co najwyżej $O(|E|)$ par wierzchołków, pomiędzy którymi istnieje krawędź stwierdzić można, że łączna liczba krawędzi krytycznych istniejących w czasie działania algorytmu wynosi co najwyżej $O(\frac{|V|-2}{2}|E|)=O(|V||E|)$.
   \end{bproof}
 
-  Poza odnajdywaniem ścieżek powiększających, pozostałe operacje w algorytmie można zaimplementować jako działania ograniczone złożonością $O(E)$, co w efekcie daje całkowitą złożoność czasową $O(VE^2)$.
+  Poza odnajdywaniem ścieżek powiększających, pozostałe operacje w algorytmie można zaimplementować jako działania ograniczone złożonością $O(|E|)$, co w efekcie daje całkowitą złożoność czasową $O(|V||E|^2)$, która w grafie pełnym, gdzie $|E| = |V|^2$ wynosić będzie $O(|V|^5)$.
 }

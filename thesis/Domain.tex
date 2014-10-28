@@ -1,7 +1,7 @@
 \section{Opis dziedziny problemu}\label{Section_Domain}
 \subsection{Wybrane klasy złożoności problemów}\label{subsection_p_np}
 \par{
-  Mianem \emph{klasy złożoności} określa się zbiór problemów o~podobnej
+  Jako \emph{klasę złożoności} określa się zbiór problemów o~podobnej
   złożoności w~pewnym kontekście. 
   Proste klasy złożoności określić można za pomocą podstawowych czynników, takich
   jak rodzaj problemu (obliczeniowy, decyzyjny, optymalizacyjny etc.), model
@@ -12,9 +12,6 @@
 
 \subsubsection{Wybrane popularne klasy problemów:}
 \label{sss_popular_cplx_classes}
-\[
-\textbf{TODO: write about the SNP complexity class.}
-\]
 \par{
 \begin{itemize}
   \item Klasa $\mathcal{P}$ obejmuje problemy decyzyjne rozwiązywalne przez
@@ -52,7 +49,7 @@
         działaniu algorytmu.
     \end{itemize}
   \item $\mathcal{FPT}$, obejmująca problemy \emph{łatwe względem
-    stałych parametrów} (fixed-parameter tractable problems). .
+    stałych parametrów} (ang. fixed-parameter tractable problems). .
 \end{itemize}
 
 Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryzację złożoności obliczeniowej, rozpatrywane w~ramach niniejszej pracy metody wykorzystują również pozostałe techniki, w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych lub redukcji problemu pokrycia wierzchołkowego.
@@ -97,7 +94,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
   Polega on na udzieleniu odpowiedzi na pytanie ``Czy w~grafie $G=(V,E)$
   istnieje zbiór wierzchołków $C \in V, |C| \leq k$ pokrywający każdą krawędź tego grafu?''.
-  Mianem pokrycia wierzchołkowego określa się zbiór wierzchołków $C
+  Pokrycie wierzchołkowe stanowi zbiór wierzchołków $C
   \subseteq V; \forall_{e=(u,v) \in E}:u\in C\lor v\in C$.
   Problem pokrycia wierzchołkowego należy do klasy problemów 
   $\mathcal{NP}$-zupełnych, co udowodniono w~\cite{Kar72}.
@@ -150,7 +147,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
     Z~Definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
     W~związku z~tym przed rozpoczęciem każdej kolejnej iteracji, wierzchołek podlegający rozpatrzeniu wraz z~przystającymi do niego krawędziami należy usunąć z~dziedziny problemu w~celu sprawdzenia istnienia pokrycia wierzchołkowego o rozmiarze co najwyżej $k-1$ w~pozostałej części grafu.
     Kiedy rekurencja dociera do momentu, gdzie $k=0$ i istnieje krawędx $e=(u,v) \in E$ spełniająca własność $\neg(u \in C \lor v \in C)$, wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i należy je odrzucić.
-    Zaobserwować należy, że bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
+    Bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
     Łatwo zauważyć, że istnieją dwa warunki zakończenia działania algorytmu:
     \begin{enumerate}
       \item Zbiór krawędzi dziedziny problemu $E$ jest pusty co oznacza, że wierzchołki włączone dotychczas do rozwiązania pokrywają wszystkie krawędzie grafu.
@@ -170,7 +167,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
         \algorithmicensure{informacja czy istnieje pokr. wierzch. o liczebności $\leq k$}
 
         \If {$E=\emptyset$}
-          \Return{true}
+          \Return{true}\Comment{Odnaleziono pokr. wierzch. liczebności $\leq k$}
         \EndIf
         \If {$k=0$}
           \Return{false}\Comment{Rozwiązanie nieoptymalne}
