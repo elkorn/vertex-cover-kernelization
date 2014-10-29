@@ -10,8 +10,9 @@ import (
 	"github.com/elkorn/vertex-cover-kernelization/vc"
 )
 
-var k int = 250
+var k int = utility.MAX_INT
 var filenameBnB = "./results_bnb"
+var filenameNaive = "./results_naive"
 var filenameNF = "./results_nf"
 var filenameCrown = "./results_cr"
 
@@ -27,27 +28,36 @@ func naive(g *graph.Graph) (bool, int) {
 
 func MeasureBnb() {
 	setOutputFile(filenameBnB)
+	fmt.Println("MeasureBnb")
 	writeln(measurementHeader())
 	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
+		var r1 int
+		g := graph.ScanDot(fmt.Sprintf(dataFile.path))
+		// r1, _ = preprocessing.Preprocessing(g)
 		m := takeMeasurement(
 			fmt.Sprintf("bnb %v_%v", dataFile.vertices, dataFile.degreeDistribution),
-			graph.ScanDot(fmt.Sprintf(dataFile.path)),
+			g,
 			bnb)
 		m.positional = i + 1
+		m.coverSize += r1
+		m.degreeDistribution = dataFile.degreeDistribution
 		writeln(m.Str())
 		fmt.Println(m.Str())
 	}
 }
 
 func MeasureNaive() {
-	setOutputFile(filenameBnB)
+	setOutputFile(filenameNaive)
+	fmt.Println("MeasureNaive")
+	fmt.Println(measurementHeader())
 	writeln(measurementHeader())
 	for i, dataFile := range dataFiles {
 		m := takeMeasurement(
 			fmt.Sprintf("naive %v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			graph.ScanDot(dataFile.path),
 			naive)
+		m.degreeDistribution = dataFile.degreeDistribution
 		m.positional = i + 1
 		writeln(m.Str())
 		fmt.Println(m.Str())
@@ -56,13 +66,18 @@ func MeasureNaive() {
 
 func MeasureKernelizationCrownReduction() {
 	setOutputFile(filenameCrown)
+	fmt.Println("MeasureKernelizationCrownReduction")
 	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
-		fmt.Println(dataFile.path)
+		var r1, r2, r3 int
 		g := graph.ScanDot(dataFile.path)
-		reduction := kernelization.ReduceAllCrowns(g, k)
+		// r1, _ = preprocessing.Preprocessing(g)
+		r2 = kernelization.ReduceAllCrowns(g, k)
+		// r3, _ = preprocessing.Preprocessing(g)
+
 		var m *measurement
-		if reduction == -1 {
+		if r2 == -1 {
 			m = &measurement{
 				name:       fmt.Sprintf("bnb_crown %v_%v", dataFile.vertices, dataFile.degreeDistribution),
 				vertices:   g.NVertices(),
@@ -72,13 +87,14 @@ func MeasureKernelizationCrownReduction() {
 				coverSize:  0,
 			}
 		} else {
-			m := takeMeasurement(
+			m = takeMeasurement(
 				fmt.Sprintf("bnb_crown %v_%v", dataFile.vertices, dataFile.degreeDistribution),
 				g,
-				naive)
-			m.coverSize += reduction
+				bnb)
+			m.coverSize += r1 + r2 + r3
 		}
 
+		m.degreeDistribution = dataFile.degreeDistribution
 		m.positional = i + 1
 		writeln(m.Str())
 		fmt.Println(m.Str())
@@ -87,16 +103,21 @@ func MeasureKernelizationCrownReduction() {
 
 func MeasureKernelizationNetworkFlow() {
 	setOutputFile(filenameNF)
+	fmt.Println("MeasureKernelizationNetworkFlow")
 	writeln(measurementHeader())
 	for i, dataFile := range dataFiles {
+		var r1, r2, r3 int
 		g := graph.ScanDot(dataFile.path)
-		reduction := kernelization.KernelizationNetworkFlow(g, k)
+		// r1, _ = preprocessing.Preprocessing(g)
+		r2 = kernelization.KernelizationNetworkFlow(g, k)
+		// r3, _ = preprocessing.Preprocessing(g)
 		m := takeMeasurement(
 			fmt.Sprintf("bnb_nf %v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			g,
-			naive)
+			bnb)
 		m.positional = i + 1
-		m.coverSize += reduction
+		m.degreeDistribution = dataFile.degreeDistribution
+		m.coverSize += r1 + r2 + r3
 		writeln(m.Str())
 		fmt.Println(m.Str())
 	}

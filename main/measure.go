@@ -12,16 +12,18 @@ type measurement struct {
 	name                       string
 	time                       time.Duration
 	coverFound                 bool
+	degreeDistribution         int
 	vertices, edges, coverSize int
 }
 
 func measurementHeader() string {
-	return fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v",
+	return fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v\t%v",
 		"pos",
 		"V",
 		"E",
 		"C",
 		"T",
+		"Ts",
 		"name")
 }
 
@@ -41,26 +43,18 @@ func takeMeasurement(name string, g *graph.Graph, action func(*graph.Graph) (boo
 
 func (self *measurement) withPositional(str string) string {
 	if self.positional > 0 {
-		return fmt.Sprintf("%v.\t%v", self.positional, str)
+		return fmt.Sprintf("%v\t%v", self.positional, str)
 	}
 
 	return fmt.Sprintf("\t%v", str)
 }
 
 func (self *measurement) Str() string {
-	return self.withPositional(fmt.Sprintf("%v\t%v\t%v\t%v\t[%v]",
+	return self.withPositional(fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t[%v]",
 		self.vertices,
 		self.edges,
 		self.coverSize,
 		self.time,
-		self.name))
-}
-
-func (self *measurement) StrSeconds() string {
-	return self.withPositional(fmt.Sprintf("%v\t%v\t%v\t%v\t[%v]",
-		self.vertices,
-		self.edges,
-		self.coverSize,
 		self.time.Seconds(),
 		self.name))
 }

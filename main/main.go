@@ -10,7 +10,6 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
-	"strings"
 )
 
 var currentfname string
@@ -60,25 +59,49 @@ var testCases map[string]func() = map[string]func(){
 
 var dataFiles []dataFileDescriptor
 
-func listInFiles(dir string) {
+func forAllFilesInDir(dir string, match string, action func(os.FileInfo)) {
 	infiles, err := ioutil.ReadDir(dir)
 	if nil != err {
 		panic(err)
 	}
-
-	dataFiles = make([]dataFileDescriptor, 0, len(infiles))
 	for _, infile := range infiles {
-		if strings.HasSuffix(infile.Name(), ".dot") {
-			input := regexp.MustCompile("\\d+").FindAllStringSubmatch(infile.Name(), 2)
-			descriptor := dataFileDescriptor{
-				path: path.Join(dir, infile.Name()),
-			}
-
-			descriptor.vertices, _ = strconv.Atoi(input[0][0])
-			descriptor.degreeDistribution, _ = strconv.Atoi(input[1][0])
-			dataFiles = append(dataFiles, descriptor)
+		if regexp.MustCompile(match).MatchString(infile.Name()) {
+			action(infile)
 		}
 	}
+}
+
+func listRandomInFiles(dir string) {
+	dataFiles = make([]dataFileDescriptor, 0)
+	forAllFilesInDir(dir, "\\d+_\\d+\\.dot", func(infile os.FileInfo) {
+		input := regexp.MustCompile("\\d+").FindAllStringSubmatch(infile.Name(), 2)
+		descriptor := dataFileDescriptor{
+			path: path.Join(dir, infile.Name()),
+		}
+
+		descriptor.vertices, _ = strconv.Atoi(input[0][0])
+		descriptor.degreeDistribution, _ = strconv.Atoi(input[1][0])
+		dataFiles = append(dataFiles, descriptor)
+	})
+
+	sorter := &fileSorter{
+		files: dataFiles,
+	}
+
+	sort.Sort(sorter)
+}
+
+func listExInFiles(dir string) {
+	dataFiles = make([]dataFileDescriptor, 0)
+	forAllFilesInDir(dir, "ex_\\d+\\.dot", func(infile os.FileInfo) {
+		input := regexp.MustCompile("\\d+").FindAllStringSubmatch(infile.Name(), 1)
+		descriptor := dataFileDescriptor{
+			path: path.Join(dir, infile.Name()),
+		}
+
+		descriptor.vertices, _ = strconv.Atoi(input[0][0])
+		dataFiles = append(dataFiles, descriptor)
+	})
 
 	sorter := &fileSorter{
 		files: dataFiles,
@@ -88,7 +111,7 @@ func listInFiles(dir string) {
 }
 
 func main() {
-	listInFiles("../results")
+	listRandomInFiles("../results")
 	currentFlags := defineFlags()
 	for key, testCase := range testCases {
 		if regexp.MustCompile(*(currentFlags.runPattern)).MatchString(key) {
