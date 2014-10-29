@@ -96,3 +96,11 @@ func TestColor(t *testing.T) {
 	gv.HighlightEdge(g.Edges[2], "purple")
 	// gv.Display()
 }
+
+func TestSaveDot(t *testing.T) {
+	g := graph.ScanGraph("../examples/sh2/sh2-3.dim")
+	gv := MkGraphVisualizer(g)
+	gv.SaveDot("TestSaveDot.dot")
+	g2 := graph.ScanDot("TestSaveDot.dot")
+	assert.Equal(t, g.NEdges(), g2.NEdges())
+}

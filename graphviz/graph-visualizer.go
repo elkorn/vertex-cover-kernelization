@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -18,6 +19,7 @@ import (
 var allowedLayouts map[string]bool = map[string]bool{
 	"dot":   true,
 	"neato": true,
+	"fdp":   true,
 	"sfdp":  true,
 	"circo": true,
 }
@@ -28,7 +30,7 @@ var displayTools map[string]string = map[string]string{
 }
 
 var defaultOutputFormat string = "jpg"
-var defaultLayoutAlgorithm string = "dot"
+var defaultLayoutAlgorithm string = "fdp"
 
 type graphVisualizer struct {
 	g               *graph.Graph
@@ -311,4 +313,9 @@ func (self *graphVisualizer) Display() {
 	if nil != err {
 		log.Fatal(err)
 	}
+}
+
+func (self *graphVisualizer) SaveDot(path string) {
+	buf := self.toDot("G")
+	ioutil.WriteFile(path, buf.Bytes(), 0666)
 }
