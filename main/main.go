@@ -1,71 +1,91 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"time"
-
-	"github.com/elkorn/vertex-cover-kernelization/graph"
+	"io/ioutil"
+	"log"
+	"os"
+	"path"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
-type measurement struct {
-	positional                 int
-	name                       string
-	time                       time.Duration
-	coverFound                 bool
-	vertices, edges, coverSize int
+var currentfname string
+
+func setOutputFile(filename string) {
+	currentfname = filename
+	ioutil.WriteFile(filename, []byte{}, os.ModeAppend)
 }
 
-func measurementHeader() string {
-	return fmt.Sprintf("\t%v\t%v\t%v\t%v",
-		"|V|",
-		"|E|",
-		"|C|",
-		" T ")
-}
+func writeln(data string) {
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE, 0777)
 
-func takeMeasurement(name string, g *graph.Graph, action func(*graph.Graph) (bool, int)) (result *measurement) {
-	result = &measurement{
-		name:     name,
-		vertices: g.NVertices(),
-		edges:    g.NEdges(),
+	if nil != err {
+		log.Fatal(err)
+		return
 	}
 
-	result.time = measure(func() {
-		result.coverFound, result.coverSize = action(g)
-	})
+	file.WriteString(fmt.Sprintf("%v\n", data))
+	file.Close()
+}
 
+type flags struct {
+	runPattern *string
+}
+
+type dataFileDescriptor struct {
+	path               string
+	vertices           int
+	degreeDistribution int
+}
+
+func defineFlags() (result flags) {
+	result = flags{
+		runPattern: flag.String("run", ".*", "Regexp for which measurements should be run"),
+	}
+
+	flag.Parse()
 	return
 }
 
-func (self *measurement) withPositional(str string) string {
-	if self.positional > 0 {
-		return fmt.Sprintf("%v.\t%v", self.positional, str)
+var testCases map[string]func() = map[string]func(){
+	// "MeasureNaive":                       MeasureNaive,
+	"MeasureBnb":                         MeasureBnb,
+	"MeasureKernelizationCrownReduction": MeasureKernelizationCrownReduction,
+	"MeasureKernelizationNetworkFlow":    MeasureKernelizationNetworkFlow,
+}
+
+var dataFiles []dataFileDescriptor
+
+func listInFiles(dir string) {
+	infiles, err := ioutil.ReadDir(dir)
+	if nil != err {
+		panic(err)
 	}
 
-	return fmt.Sprintf("\t%v", str)
-}
+	dataFiles = make([]dataFileDescriptor, 0, len(infiles))
+	for _, infile := range infiles {
+		if strings.HasSuffix(infile.Name(), ".dot") {
+			input := regexp.MustCompile("\\d+").FindAllStringSubmatch(infile.Name(), 2)
+			descriptor := dataFileDescriptor{
+				path: path.Join(dir, infile.Name()),
+			}
 
-func (self *measurement) Str() string {
-	return self.withPositional(fmt.Sprintf("%v\t%v\t%v\t%v",
-		self.vertices,
-		self.edges,
-		self.coverSize,
-		self.time))
-}
-
-func (self *measurement) StrSeconds() string {
-	return self.withPositional(fmt.Sprintf("%v\t%v\t%v\t%v",
-		self.vertices,
-		self.edges,
-		self.coverSize,
-		self.time.Seconds()))
-}
-
-func measure(action func()) time.Duration {
-	start := time.Now()
-	action()
-	return time.Since(start)
+			descriptor.vertices, _ = strconv.Atoi(input[0][0])
+			descriptor.degreeDistribution, _ = strconv.Atoi(input[1][0])
+			dataFiles = append(dataFiles, descriptor)
+		}
+	}
 }
 
 func main() {
+	listInFiles("../results")
+	currentFlags := defineFlags()
+	for key, testCase := range testCases {
+		if regexp.MustCompile(*(currentFlags.runPattern)).MatchString(key) {
+			testCase()
+		}
+	}
 }
