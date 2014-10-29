@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -20,7 +21,7 @@ func setOutputFile(filename string) {
 }
 
 func writeln(data string) {
-	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE, 0777)
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 
 	if nil != err {
 		log.Fatal(err)
@@ -78,6 +79,12 @@ func listInFiles(dir string) {
 			dataFiles = append(dataFiles, descriptor)
 		}
 	}
+
+	sorter := &fileSorter{
+		files: dataFiles,
+	}
+
+	sort.Sort(sorter)
 }
 
 func main() {
