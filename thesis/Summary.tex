@@ -1,4 +1,28 @@
-\chapter{Podsumowanie i kireunki dalszych prac}
+\chapter{Podsumowanie i kierunki dalszych prac}
 \label{summary}
 \section{Proponowane usprawnienia}
+  \subsubsection{\textbf{Wydajność implementacji technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego.}}
+
+  Widoczny pozytywny wpływ technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego pozostaje jednak widoczny, co zaświadcza o poprawności implementacji.
+  Uzyskane wyniki testów wydajnościowych pokazują jednak, że implementacje opisywanych technik zrealizowane w ramach pracy magisterskiej wymagają poprawy w celu uzyskania wydajności zbliżonej do zapewnianej przez teoretyczne koncepcje.
+  \subsubsection{\textbf{Pełna implementacja algorytmu Chen, Kanj, Xia.}}
+
+  Ze względu na wysoką złożoność analityczną algorytmu Chen, Kanj, Xia nie udało się ukończyć jego implementacji w stopniu pozwalającym na przeprowadzenie jakichkolwiek testów z jej wykorzystaniem.
+  Głównym problemem był dobór NT--dekompozycji, którą posługuje się funkcja \textsc{Zwijanie}, działająca zgodnie z pseudokodem~\ref{alg_ckx_gf}.
+  Problem ten polegał na zastosowaniu dekompozycja wyznaczającej korony w grafie, zaimplementowanej zgodnie z wytycznymi opisywanymi w pracy~\cite{KernelizationAlgorithms04} i działająca zgodnie z pseudokodem~\ref{alg_findCrown} w kontekście odszukiwania pseudokoron.
+  % TODO: explain wtf is going on here.
+  Korona odnaleziona po usunięciu z grafu wierzchołka stanowiących o tym, że graf nie posiada korony zawiera wierzchołki składowe w nieodpowiednich zbiorach --- to znaczy, głowa korony pozostaje pusta.
+
+  Poprawienie logiki związanej z funkcją \textsc{Zwijanie} sprawi, że implementacja algorytmu Chen, Kanj, Xia będzie kompletna w około 90\%.
+  %TODO: what's left to implement aside from generalFold?
+  \subsubsection{\textbf{Wydajność czasowa implementacji sformułowania problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w sieci.}}
+
+  Mimo poprawności procedury, implementacja sformułowania problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w sieci boryka się z problemami wydajnościowymi w związku z wyznaczaniem zbioru $R$, zawierającego wierzchołki osiągalne ze zbioru $S$ poprzez $M$-przemienne ścieżki.
+
+  \subsubsection{\textbf{Złożoność pamięciowa implementacji.}}
+
+  W związku z ograniczoną ilością czasu w połączeniu ze trudnością analityczną zagdanienia, jednym z elementów implementacji, którym poświęcono mniejszą uwagę jest złożoność pamięciowa.
+  Przedkładając czytelność kodu nad zużycie pamięci, uwagę skupiono na odzwierciedleniu wyników pośrednich w postaci zmiennych oraz jak najłatwiejszym korzystaniu ze struktur, na których opierają się implementowane techniki.
+  W załączonej implementacji wszelkie struktury inicjowane są z maksymalną pesymistyczną pojemnością względem analizowanej struktury danych, nie biorąc pod uwagę na przykład wierzchołków czy krawędzi usuniętych z grafu.
+  Pożądaną optymalizacją jest stworzenie wersji kodu oszczędniej korzystającej ze zmiennych, a także bardziej konserwatywnie rezerwującej potrzebną pamięć.
 \section{Podsumowanie}
