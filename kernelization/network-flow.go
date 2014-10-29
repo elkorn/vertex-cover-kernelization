@@ -54,12 +54,12 @@ func (self *Net) Residuum(edge *graph.Edge) int {
 
 func mkNet(g *graph.Graph) Net {
 	result := Net{
-		arcs:   make([][]*NetArc, g.NVertices()),
-		length: make([]int, g.NVertices()),
+		arcs:   make([][]*NetArc, g.CurrentVertexIndex),
+		length: make([]int, g.CurrentVertexIndex),
 	}
 
-	for i := 0; i < g.NVertices(); i++ {
-		result.arcs[i] = make([]*NetArc, g.NVertices())
+	for i := 0; i < g.CurrentVertexIndex; i++ {
+		result.arcs[i] = make([]*NetArc, g.CurrentVertexIndex)
 	}
 
 	g.ForAllEdges(func(edge *graph.Edge, done chan<- bool) {

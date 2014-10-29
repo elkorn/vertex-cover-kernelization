@@ -38,7 +38,7 @@ func end(name string, args ...interface{}) {
 	utility.Debug("end: "+name, args...)
 }
 
-func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*/ {
+func KernelizationNetworkFlow(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*/ {
 	// Step 1: Convert graphg G to a bipartite graph H.
 	// Step 2: Convert H to a network flow problem instance H'.
 	start("mkNetworkFlow")
@@ -135,5 +135,5 @@ func NetworkFlowKernelization(G *graph.Graph, k int) /*(*graph.Graph,*/ int /*)*
 		}
 	}
 
-	return /*G, */ k - x
+	return /*G, */ x
 }

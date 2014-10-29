@@ -16,6 +16,11 @@ type Crown struct {
 	// such that all elements of H are matched.
 }
 
+var emptyCrown *Crown = &Crown{
+	I: mapset.NewSet(),
+	H: mapset.NewSet(),
+}
+
 func (self *Crown) Width() int {
 	return self.H.Cardinality()
 }
@@ -40,7 +45,6 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 	// 	})
 	// }
 	if M1.NEdges() > k {
-		halt <- true
 		return nil
 	}
 
@@ -63,7 +67,6 @@ func findCrown(G *graph.Graph, halt chan<- bool, k int) *Crown {
 
 	// If either the cardinality of M1 or M2 is > k, the process can be halted.
 	if M2.NEdges() > k {
-		halt <- true
 		return nil
 	}
 
@@ -197,11 +200,8 @@ func reduceCrown(G *graph.Graph, crown *Crown) {
 
 func ReduceCrown(G *graph.Graph, halt chan bool, k int) (kPrime int, partialCover mapset.Set) {
 	crown := findCrown(G, halt, k)
-	select {
-	case <-halt:
-		halt <- true
+	if crown == nil {
 		return -1, nil
-	default:
 	}
 
 	reduceCrown(G, crown)
@@ -211,4 +211,26 @@ func ReduceCrown(G *graph.Graph, halt chan bool, k int) (kPrime int, partialCove
 	kPrime = k - crown.Width()
 	partialCover = crown.H
 	return kPrime, partialCover
+}
+
+func ReduceAllCrowns(g *graph.Graph, k int) (reduction int) {
+	// Test according to F.N.Abu-Khzam et al. paper. (Table 1)
+	kPrimePrev, kPrime := k, 0
+
+	for {
+		kPrime, _ = ReduceCrown(g, nil, kPrimePrev)
+		if kPrime == -1 {
+			reduction = -1
+			return
+		}
+
+		if kPrimePrev == kPrime {
+			break
+		}
+
+		reduction += kPrimePrev - kPrime
+		kPrimePrev = kPrime
+	}
+
+	return
 }
