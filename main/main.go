@@ -51,10 +51,17 @@ func defineFlags() (result flags) {
 }
 
 var testCases map[string]func() = map[string]func(){
-	// "MeasureNaive":                       MeasureNaive,
-	"MeasureBnb":                         MeasureBnb,
-	"MeasureKernelizationCrownReduction": MeasureKernelizationCrownReduction,
-	"MeasureKernelizationNetworkFlow":    MeasureKernelizationNetworkFlow,
+	"MeasureNaive":                                      MeasureNaive,
+	"MeasureVCBnb":                                      MeasureBnb,
+	"MeasureVCKernelizationCrownReduction":              MeasureKernelizationCrownReduction,
+	"MeasureVCKernelizationNetworkFlow":                 MeasureKernelizationNetworkFlow,
+	"MeasureVCPreprocessingBnb":                         MeasureBnb,
+	"MeasureVCPreprocessingKernelizationCrownReduction": MeasureKernelizationCrownReduction,
+	"MeasureVCPreprocessingKernelizationNetworkFlow":    MeasureKernelizationNetworkFlow,
+	"MeasureKernelizationCrownReduction":                MeasureKernelizationCrownReduction,
+	"MeasureKernelizationNetworkFlow":                   MeasureKernelizationNetworkFlow,
+	"MeasurePreprocessingKernelizationCrownReduction":   MeasureKernelizationCrownReduction,
+	"MeasurePreprocessingKernelizationNetworkFlow":      MeasureKernelizationNetworkFlow,
 }
 
 var dataFiles []dataFileDescriptor

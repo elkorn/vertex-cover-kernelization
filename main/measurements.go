@@ -6,23 +6,22 @@ import (
 
 	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/kernelization"
-	"github.com/elkorn/vertex-cover-kernelization/utility"
 	"github.com/elkorn/vertex-cover-kernelization/vc"
 )
 
-var k int = utility.MAX_INT
+var k int = 805
 var filenameBnB = "./results_bnb"
 var filenameNaive = "./results_naive"
 var filenameNF = "./results_nf"
 var filenameCrown = "./results_cr"
 
 func bnb(g *graph.Graph) (bool, int) {
-	result := vc.BranchAndBound(g, nil, utility.MAX_INT)
+	result := vc.BranchAndBound(g, nil, k)
 	return result.Cardinality() > 0, result.Cardinality()
 }
 
 func naive(g *graph.Graph) (bool, int) {
-	found, result := vc.NaiveVC(g, utility.MAX_INT)
+	found, result := vc.NaiveVC(g, k)
 	return found, result.Cardinality()
 }
 
@@ -36,7 +35,7 @@ func MeasureBnb() {
 		g := graph.ScanDot(fmt.Sprintf(dataFile.path))
 		// r1, _ = preprocessing.Preprocessing(g)
 		m := takeMeasurement(
-			fmt.Sprintf("bnb %v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			fmt.Sprintf("bnb:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			g,
 			bnb)
 		m.positional = i + 1
