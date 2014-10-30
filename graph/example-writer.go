@@ -6,9 +6,6 @@ import (
 	"strconv"
 )
 
-// TODO: Write a simple algorithm for generating random graphs.
-// (use Vertex_CoverCOLOR.pdf for guidelines)
-
 var bs = make([]byte, 4)
 
 type edgeWriter struct {
