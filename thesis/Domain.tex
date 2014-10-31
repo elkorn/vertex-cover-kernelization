@@ -1,13 +1,9 @@
 \section{Opis dziedziny problemu}\label{Section_Domain}
 \subsection{Wybrane klasy złożoności problemów}\label{subsection_p_np}
 \par{
-  Jako \emph{klasę złożoności} określa się zbiór problemów o~podobnej
-  złożoności w~pewnym kontekście. 
-  Proste klasy złożoności określić można za pomocą podstawowych czynników, takich
-  jak rodzaj problemu (obliczeniowy, decyzyjny, optymalizacyjny etc.), model
-  obliczeniowy (deterministyczna lub niedeterministyczna maszyna Turinga etc.)
-  oraz wymagane do obliczeń zasoby wraz z~ich ograniczeniami (czas wielomianowy,
-  liniowa przestrzeń etc.).
+  \emph{Klasa złożoności} to zbiór problemów o~podobnej złożoności mierzonej pewnym kryterium. 
+  Proste klasy złożoności określić można za pomocą podstawowych czynników, takich jak rodzaj problemu (obliczeniowy, decyzyjny, optymalizacyjny etc.), model  obliczeniowy (deterministyczna lub niedeterministyczna maszyna Turinga etc.)
+  oraz wymagane do obliczeń zasoby wraz ze związanymi z nimi gwarancjami i ograniczeniami (czas wielomianowy, liniowa przestrzeń etc.).
 }
 
 \subsubsection{Wybrane popularne klasy problemów:}
@@ -32,27 +28,26 @@
     danych wejściowych.
     Istnieją jednak ogólne techniki rozwiązywania problemów obliczeniowych,
     które pozwalają na uzyskanie czasów wielomianowych dla niektórych problemów
-    $\mathcal{NP}$-zupełnych przy zachowaniu pewnych ograniczeń:
+    $\mathcal{NP}$-zupełnych przy zachowaniu pewnych ograniczeń.
     \begin{itemize}
       \item \underline{Aproksymacja}: poświęcenie dokładności rozwiązania
-        w~celu uzyskania przyspieszenia, polegające na zbliżaniu się do
+        w~celu uzyskania przyspieszenia procesu decyzyjnego, polegające na zbliżaniu się do
         optimum zamiast poszukiwania dokładnego rozwiązania.
       \item \underline{Parametryzacja}: często istnieje możliwość rozwiązania
         problemu w~czasie wielomianowym przez zastosowanie parametrów wpływających na warunki
         poszukiwań rozwiązania.
       \item \underline{Heurystyka}: zastosowanie algorytmów działających
         ``wystarczająco'' dobrze w~większości przypadków, jednak co do których
-        nie ma pewności, iż zawsze zapewnią prawidłowy wynik w~rozsądnym czasie.
+        nie ma pewności, że zawsze zapewnią prawidłowy wynik w~rozsądnym czasie.
       \item \underline{Randomizacja}: przy dopuszczeniu niewielkiego
         prawdopodobieństwa porażki istnieje szansa na poprawienie
         średniego czasu działania przez zastosowanie elementu losowości w
         działaniu algorytmu.
     \end{itemize}
-  \item $\mathcal{FPT}$, obejmująca problemy \emph{łatwe względem
-    stałych parametrów} (ang. fixed-parameter tractable problems). .
+  \item $\mathcal{FPT}$, obejmująca problemy \emph{łatwe względem stałych parametrów} (ang. fixed-parameter tractable problems).
 \end{itemize}
 
-Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryzację złożoności obliczeniowej, rozpatrywane w~ramach niniejszej pracy metody wykorzystują również pozostałe techniki, w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych lub redukcji problemu pokrycia wierzchołkowego.
+Należy zazanczyć, że mimo skupienia uwagi na podejściu opartym o parametryzację złożoności obliczeniowej, rozpatrywane w~ramach niniejszej pracy metody wykorzystują również pozostałe techniki, w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych lub redukcji problemu pokrycia wierzchołkowego.
 }
 \subsubsection{\textbf{Kwestia $\mathcal{P}=\mathcal{NP}$}}
 \label{sss_problem_p_neq_np}
@@ -80,49 +75,40 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
 \subsection{Parametryczna złożoność obliczeniowa}
 \label{sss_parametric_complexity}
 \par{
-  Problemy klasy $\mathcal{FPT}$ są rozwiązywalne w~czasie $f(k)*n^{O(1)}$, gdzie $n$ stanowi rozmiar danych wejściowych, dla
-  pewnej obliczalnej funkcji $f$ --- w~praktyce będącej zazwyczaj funkcją 
-  wykładniczą, jak na przykład $2^{O(k)}$.
+  Problemy klasy $\mathcal{FPT}$ są rozwiązywalne w~czasie $f(k)*n^{O(1)}$ --- gdzie $n$ stanowi rozmiar danych wejściowych, a $k$ parametr ograniczający w pewien sposób parametry wyniku poszukiwań --- dla pewnej obliczalnej funkcji $f$.
+  Funkcja $f$ w~praktyce jest zazwyczaj funkcją wykładniczą, jak na przykład $2^{O(k)}$.
   Definicja dopuszcza jednak funkcje jescze bardziej strome.
-  Najważeniejszą przesłanką sformułowania klasy $\mathcal{FPT}$ jest wykluczenie
-  postaci funkcji $f(n,k)$, uniemożliwiającej rozwiązanie problemu 
-  $\mathcal{NP}$-zupełnego w~czasie lepszym niż wykładniczy.
+  Najważeniejszą przesłanką sformułowania klasy $\mathcal{FPT}$ jest wykluczenie postaci funkcji $f(n,k)$, uniemożliwiającej rozwiązanie problemu $\mathcal{NP}$-zupełnego w~czasie lepszym niż wykładniczy.
 }
 
 \subsection{Problem pokrycia wierzchołkowego}\label{s_vertex_cover_domain}
 \par{
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
   Polega on na udzieleniu odpowiedzi na pytanie ``Czy w~grafie $G=(V,E)$
-  istnieje zbiór wierzchołków $C \in V, |C| \leq k$ pokrywający każdą krawędź tego grafu?''.
-  Pokrycie wierzchołkowe stanowi zbiór wierzchołków $C
-  \subseteq V; \forall_{e=(u,v) \in E}:u\in C\lor v\in C$.
-  Problem pokrycia wierzchołkowego należy do klasy problemów 
-  $\mathcal{NP}$-zupełnych, co udowodniono w~\cite{Kar72}.
+  istnieje zbiór wierzchołków $C \in V$ o liczebności $|C| \leq k$ pokrywający każdą krawędź tego grafu?''.
+  Pokrycie wierzchołkowe stanowi zbiór wierzchołków $C \subseteq$ spełniający zależność $V\forall_{e=(u,v) \in E}:u\in C\lor v\in C$.
+  Problem pokrycia wierzchołkowego należy do klasy problemów $\mathcal{NP}$-zupełnych, co udowodniono w pracy~\cite{Kar72}.
 }
 \par{
-  Problem pokrycia wierzchołkowego jest popularny w~dziedzinie biologii
-  obliczeniowej. 
-  Do praktycznych zastosowań algorytmów rozwiązujących problem pokrycia
-  wierzchołkowego można zaliczyć:
+  Problem pokrycia wierzchołkowego jest popularny w~dziedzinie biologii obliczeniowej. 
+  Do praktycznych zastosowań algorytmów rozwiązujących problem pokrycia wierzchołkowego można zaliczyć:
   \begin{itemize}
     \item odnajdywanie drzew filogenetycznych na podstawie informacji
       dotyczących domen białkowych,
     \item analiza genetycznych cech ilościowych,
     \item analiza danych na mikromacierzach DNA.\@
   \end{itemize}
-  Jednym z~zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym
-  wykrywaniem wyścigów w~danych~\cite{O'Callahan:2003:HDD:781498.781528}.
+  Jednym z~zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym wykrywaniem wyścigów w~danych~\cite{O'Callahan:2003:HDD:781498.781528}.
 }
 \begin{theorem}
-  Optymalne pokrycie wierzchołkowe grafu $G=(V,E), |V|=n, |E|=m$ może zostać 
-  odnalezione w~czasie $O(2^{n}m)$.
+  Optymalne pokrycie wierzchołkowe grafu $G=(V,E)$ o rozmiarach $|V|=n, |E|=m$ może zostać odnalezione w~czasie $O(2^{n}m)$.
 \end{theorem}
 \begin{bproof}
   Aby zweryfikować czy dany podzbiór $V_s \subseteq V$ pokrywa każdą krawędź
   $e \in E$, należy wykonać $O(m)$ porównań.
   Aby wykonać operację na wszystkich podzbiorach $V_s$, należy wykonać tę
   czynność dla wszystkich zbiorów należących do zbioru potęgowego 
-  $P(V), |P(V)| = 2^{n}$.
+  $P(V)$ o liczebności $|P(V)| = 2^{n}$.
   Aby odnaleźć pokrycie wierzchołkowe wśród podzbiorów $V$, należy dla każdego z~nich zrealizować operację weryfikacji pokrycia krawędzi, co w~rezultacie daje 
   złożoność $O(2^{n}m)$.
 \end{bproof}
@@ -142,17 +128,17 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
   \end{theorem}
   \begin{bproof}
     Zakładając istnienie zbioru $C \subseteq V$ kandydującego do miana pokrycia wierzchołkowego, dla każdej krawędzi $(u, v) \in E$ zachodzić musi własność  $u \in C \lor v \in C$.
-    Jeżeli więc istnieje krawędź łącząca dwa wierzchołki $(u, v) \in E$, z których żaden nie należy do zbioru $C$, należy dodać jeden z~wierzchołków do $C$.
+    Jeżeli więc istnieje krawędź $(u, v) \in E$ łącząca dwa wierzchołki, z których żaden nie należy do zbioru $C$, to należy dodać jeden z~tych wierzchołków do zbioru $C$.
     Rekurencyjnie realizowane są obydwie możliwości.
-    Z~Definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
-    W~związku z~tym przed rozpoczęciem każdej kolejnej iteracji, wierzchołek podlegający rozpatrzeniu wraz z~przystającymi do niego krawędziami należy usunąć z~dziedziny problemu w~celu sprawdzenia istnienia pokrycia wierzchołkowego o rozmiarze co najwyżej $k-1$ w~pozostałej części grafu.
-    Kiedy rekurencja dociera do momentu, gdzie $k=0$ i istnieje krawędx $e=(u,v) \in E$ spełniająca własność $\neg(u \in C \lor v \in C)$, wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i należy je odrzucić.
-    Bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
+    Z~definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
+    W~związku z~tym przed rozpoczęciem każdej kolejnej iteracji wierzchołek podlegający rozpatrzeniu wraz z~przystającymi do niego krawędziami należy usunąć z~dziedziny problemu w~celu wyznaczenia pokrycia wierzchołkowego o~rozmiarze co najwyżej $k-1$ w~pozostałej części grafu.
+    Kiedy rekurencja dociera do momentu, gdzie zachodzi $k=0$ i istnieje krawędź $e=(u,v) \in E$ niepokryta przez zbiór $C$ wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i należy je odrzucić.
+    Bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm z~każdą iteracją konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
     Łatwo zauważyć, że istnieją dwa warunki zakończenia działania algorytmu:
     \begin{enumerate}
       \item Zbiór krawędzi dziedziny problemu $E$ jest pusty co oznacza, że wierzchołki włączone dotychczas do rozwiązania pokrywają wszystkie krawędzie grafu.
       Oznacza to, iż odnaleziono minimalne pokrycie wierzchołkowe o rozmiarze co najwyżej $k$ --- algorytm kończy działanie odpowiedzią twierdzącą po $O^\star(2^{k^\prime \leq k})=O^\star(2^k)$ operacjach.
-      \item Wartość parametru osiągnęła $k=0$ co oznacza, iż odnalezione minimalne częściowe pokrycie wierzchołkowe zawiera już $k$ wierzchołków, lecz nadal nie pokrywa ono każdej krawędzi grafu $e \in E$.
+      \item Wartość parametru osiągnęła $k=0$ co oznacza, iż odnalezione minimalne częściowe pokrycie wierzchołkowe zawiera już $k$ wierzchołków, lecz nadal nie pokrywa każdej krawędzi grafu $e \in E$.
       Algorytm kończy działanie odpowiedzią przeczącą po $O^\star(2^k)$ iteracjach.
     \end{enumerate}
   \end{bproof}
@@ -167,7 +153,7 @@ Należy zazanczyć, iż mimo skupienia uwagi na podejściu opartym o parametryza
         \algorithmicensure{informacja czy istnieje pokr. wierzch. o liczebności $\leq k$}
 
         \If {$E=\emptyset$}
-          \Return{true}\Comment{Odnaleziono pokr. wierzch. liczebności $\leq k$}
+          \Return{true}\Comment{Odnaleziono pokr. wierzch. o~liczebności $\leq k$}
         \EndIf
         \If {$k=0$}
           \Return{false}\Comment{Rozwiązanie nieoptymalne}
