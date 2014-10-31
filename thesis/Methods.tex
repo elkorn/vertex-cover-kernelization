@@ -4,7 +4,7 @@
 \par{
   Metoda podziału i ograniczeń jest paradygmatem projektowania algorytmów rozwiązujących problemy optymalizacyjne z dziedziny kombinatoryki i optymalizacji dyskretnej.
   Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu poszczególnych \emph{rozwiązań-kandydatów} przez przeszukiwanie pewnej \emph{przestrzeni stanów}, zdefiniowanej dziedziną danych wejściowych.
-  Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli n.p.całością przestrzeni poszukiwań lub zbiorem pustym, w zależności od natury rozwiązywanego problemu.
+  Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli na przykład całością przestrzeni poszukiwań lub zbiorem pustym, w zależności od natury rozwiązywanego problemu.
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
   podzbiory pełnego zbioru rozwiązań.
   Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest sprawdzenie szacunkowych dolnych i górnych granic wartości pewnej funkcji ograniczającej $f$.
@@ -20,10 +20,10 @@
   matematycznym o wymaganiach określonych nierównościami liniowymi.
 }
 \par{
-  Formalnie, mianem programowania liniowego określa się technikę optymalizacji liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w~postaci równań lub nierówności liniowych.
-  \emph{Region dopuszczalnych rozwiązań} to wypukły wielokąt stanowiący zbiór powstały w~wyniku przecięcia skończonej liczby półpłaszczyn wyznaczanych przez nierówności liniowe.
+  Formalnie mianem programowania liniowego określa się technikę optymalizacji liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w~postaci równań lub nierówności liniowych.
+  \emph{Region dopuszczalnych rozwiązań} to wypukły wielościan stanowiący zbiór powstały w~wyniku przecięcia skończonej liczby półpłaszczyn wyznaczanych przez nierówności liniowe.
   Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie dopuszczalnych rozwiązań.
-  Algorytm programowania liniowego odnajduje punkt na wielościanie, gdzie $z$ osiąga wartość optymalną w~kontekście sformułowania zadania, jeżeli taki punkt istnieje. 
+  Algorytm programowania liniowego odnajduje na wielościanie punkt, w którym funkcja $z$ osiąga wartość optymalną w~kontekście sformułowania zadania, jeżeli taki punkt istnieje --- w przeciwnym wypadku dane sformułowanie problemu programowania liniowego jest \emph{nieograniczone}.
   Przykładowy zapis programu liniowego wygląda następująco:\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
@@ -33,8 +33,7 @@
     \sum_{j=1}^{n}a_{ij}x_j \leq b_i; i =1, 2, \ldots, m\\
     x_j \geq 0, j=1, 2, \ldots, n
   \end{align*}
-  Nieco wygodniejszą~formą zapisu programów liniowych jest tzw.
-  \emph{postać~wektorowa}:\\
+  Nieco wygodniejszą~formą zapisu programów liniowych jest tak zwana \emph{postać~wektorowa}, zapisywana w następujący sposób.\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
     z(x)={c^T}x
@@ -78,15 +77,18 @@
   Cechą każdego problemu wyrażonego jako zadanie programowania liniowego,
   nazywanego problemem \emph{pierwotnym}, jest dwoistość.
   Oznacza to, że problem pierwotny może zostać przekształcony w~odpowiadający mu
-  problem \emph{wtórny}, zapewniający górną granicę optimum problemu
+  problem \emph{dualny}, zapewniający górną granicę optimum problemu
   pierwotnego. 
-  Przykładowo, pierwotny problem o postaci:\par
-  Zmaksymalizować $c^{T}x$ przy ograniczeniach $Ax\leq b, x \geq 0$;\\
-  zastąpić można odpowiadającym mu \emph{symetrycznym} problemem wtórnym,\par
-  Zminimalizować $b^{T}y$ przy ograniczeniach $A^{T}y \geq c, y \geq 0$.\\
+  Przykładowo, pierwotny problem o postaci:\[
+  \textnormal{Zmaksymalizować $c^{T}x$ przy ograniczeniach $Ax\leq b, x \geq 0$}
+  \]
+  zastąpić można odpowiadającym mu \emph{symetrycznym} problemem wtórnym.
+  \[
+  \textnormal{Zminimalizować $b^{T}y$ przy ograniczeniach $A^{T}y \geq c, y \geq 0$.}
+  \]
 }
 \par{
-  Twierdzenia dualności oparte są na dwóch fundamentalnych koncepcjach:
+  Twierdzenia dualności oparte są na dwóch fundamentalnych koncepcjach.
   \begin{enumerate}
     \item Problem wtórny symetrycznego problemu dualnego dwoistego programu
       liniowego stanowi pierwotny program liniowy.
@@ -106,8 +108,8 @@
 }
 
 \par{
-  w~kontekście niniejszej pracy, dualność problemów problemów programowania
-  liniowego jest szczególnie wartościowa ze względu na fakt, iż problemem
+  w~kontekście niniejszej pracy dualność problemów problemów programowania
+  liniowego jest szczególnie wartościowa ze względu na to, że problemem
   wtórnym względem problemu pokrycia wierzchołkowego dowolnego grafu jest 
   problem maksymalnego skojarzenia grafu.
 }
@@ -115,17 +117,15 @@
 \subsubsection{\textbf{Programowanie całkowitoliczbowe i relaksacje}}
 \label{sss_ilp_relaxations}
 \par{
-  Programem liniowym całkowitoliczbowym nazywa się każdy program liniowy 
+  Całkowitoliczbowym programem liniowym nazywa się każdy program liniowy 
   z~dodatkowym ograniczeniem: $\forall_{x_n \in x}: x_n \in
-  \mathbb{Z}\label{ilp_bound}$.
-  Ograniczenie to zwane jest \emph{warukiem całkowitoliczbowości}.
-  Większość problemów $\mathcal{NP}$-trudnych jest wyrażalna w~postaci programu liniowego
-  całkowitoliczbowego.
-  Prowadzi to do wniosku, iż sam problem programowania liniowego
-  całkowitoliczbowego jest $\mathcal{NP}$-trudny, co zaproponowano w pracy~\cite{Kar72}.
+  \mathbb{Z}$\label{ilp_bound}.
+  Ograniczenie to stanowi \emph{warunek całkowitoliczbowości}.
+  Większość problemów $\mathcal{NP}$-trudnych jest wyrażalna w~postaci całkowitoliczbowego programu liniowego.
+  Prowadzi to do wniosku, że sam problem całkowitoliczbowego programowania liniowego jest $\mathcal{NP}$-trudny, co zaproponowano w pracy~\cite{Kar72}.
 }
 \par{  
-  Charakterystyczną poddziedziną programowów całkowitoliczbowych są
+  Charakterystyczną poddziedziną programów całkowitoliczbowych są
   \emph{binarne programy całkowitoliczbowe}, charakteryzującę się zamianą
   ograniczenia z~programu całkowitoliczbowego na następujące:
   $\forall_{x_n \in x}: x_n \in \{0, 1\}\label{bilp_bound}$.
@@ -133,7 +133,7 @@
   pracy dotyczyć będą wyłącznie binarnych programów całkowitoliczbowych.
 }
 \par{
-  w~celu przekształcenia problemu $\mathcal{NP}$-trudnego wyrażonego w~postaci binarnego programu całkowitoliczbowego, do problemu rozwiązywalnego w~czasie wielomianowym wyrażonego w~postaci programu liniowego, należy wykonać operację nazywaną \emph{relaksacją}.
+  w~celu przekształcenia problemu $\mathcal{NP}$-trudnego, wyrażonego w~postaci binarnego programu całkowitoliczbowego do problemu rozwiązywalnego w~czasie wielomianowym, wyrażonego w~postaci programu liniowego należy wykonać operację \emph{relaksacji}.
   Istotą relaksacji jest zastąpienie warunku całkowitoliczbowości binarnego
   programu całkowitoliczbowego~\eqref{bilp_bound} na mniej restrykcyjne
   ograniczenie $\forall_{x_n\in x}: 0\leq x_n\leq 1$.
@@ -157,16 +157,14 @@
   Redukcja dziedziny do jądra problemu jest techniką wykorzystywaną przy
   rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
   Istotą redukcji dziedziny do jądra problemu przy problemach dotyczących grafów
-  jest transformacja grafu $G=(V,E), |V|=n$, przy danym parametrze $k$, w~inny
+  jest transformacja grafu $G=(V,E)$ o rozmiarze $|V|=n$ przy danym parametrze $k$ w~inny
   graf $G^{\prime}=(V^{\prime}, E^{\prime})$ taki, że $V^{\prime} \subseteq V, E^{\prime} \subseteq E$
   wraz z parametrem $k^{\prime} \leq k$.
   Celem tego procesu jest ograniczenie wartości $n^{\prime}$ przez jak najmniejszą
   funkcję $f(k^{\prime})$.
-  Graf $G^{\prime}$ nazywany jest \emph{jądrem}.
+  Graf $G^{\prime}$ nazywany jest \emph{jądrem} dziedziny problemu.
   w~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
-  $G^{\prime}$ istnieje pokrycie wierzchołkowe $C^{\prime}, |C^{\prime}|\leq k^{\prime}$ 
-  wtedy i tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C,
-  |C| \leq k$.
+  $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$, o rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o liczebności $|C| \leq k$.
 }
 \par{
   Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
@@ -175,10 +173,8 @@
   rozwiązywanie problemów klasy $\mathcal{FPT}$ w~czasie wielomianowym przy
   ustaleniu ograniczeń dotyczących wartości paramametru $k$, dyktującego z kolei
   postać podproblemów lub poddziedziny.
-  Po uzyskaniu jądra, jeżeli odpowiedź negatywna nie została udzielona
-  w~międzyczasie, proces rozwiązywania problemu pokrycia wierzchołkowego
-  wykonuje Algorytm~\ref{alg_VC1}.\ do momentu otrzymania konkretnego
-  rezultatu.
+  Po uzyskaniu jądra, jeżeli w~międzyczasie nie została udzielona odpowiedź negatywna, proces rozwiązywania problemu pokrycia wierzchołkowego
+  wykonuje algorytm~\ref{alg_VC1}\ do momentu otrzymania jednozancznego rezultatu.
 }
 \par{
   Niniejsza praca koncentruje się na opisie, implementacji oraz porównaniu
