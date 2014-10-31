@@ -1,71 +1,60 @@
 \subsection{Usuwanie wierzchołków wysokiego stopnia}\label{section_kernelization_high-degree}
 
 \begin{theorem}
-  Każdy wierzchołek $v$, gdzie $d(v) > k$ musi należeć do optymalnego pokrycia wierzchołkowego 
-  $C; |C| \leq k$.
+  Każdy wierzchołek $v$ stopnia $d(v) > k$ musi należeć do optymalnego pokrycia wierzchołkowego 
+  $C$ rozmiaru $|C| \leq k$.
 \end{theorem}
 \begin{bproof}
   W~celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$
-  grafu $G=(V,E)$, gdzie $V^\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\}, V^\prime
-  \subseteq V, d(v_0)=k$ oraz \\
-  $E^\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0, v_k), (v_0,v_{k+1})\}$,
-  należy pokryć każdą krawędź $e \in E^\prime$.
-  Łatwo zauważyć, iż zakładając istnienie zbiorów \[V_1=\{v_0,v_1\}, V_2=\{v_0,v_2\}, \ldots,
+  grafu $G=(V,E)$, gdzie $V^\prime=\{v_0, v_1, \ldots, v_k, v_{k+1}\} \subseteq V$, $d(v_0)=k$ oraz \\
+  $E^\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0,v_{k+1})\}$ należy pokryć każdą krawędź $e \in E^\prime$.
+  Zakładając istnienie zbiorów \[V_1=\{v_0,v_1\}, V_2=\{v_0,v_2\}, \ldots,
   V_k=\{v_0,v_k\},V_{k+1}=\{v_0,v_{k+1}\}\]
-  zbiór $C_1=V_1 \cup V_2 \cup \ldots \cup V_k \cup V_{k+1}}$ spełnia warunki 
-  wymagane do uzyskania statusu pokrycia wierzchołkowego, jednak $|C_1| = k +1$.\\
-  Jeżeli $C_2=V_1 \cap V_2 \cap \ldots \cap V_k \cap V_{k+1}; C_2 \neq \emptyset$,
-  stwierdzić można, iż zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe $G^\prime$ oraz
+  zbiór $C_1=V_1 \cup V_2 \cup \ldots \cup V_k \cup V_{k+1}}$ stanowi pokrycie wierzchołkowe, jednak $|C_1| = k +1$.\\
+  Jeżeli $C_2=V_1 \cap V_2 \cap \ldots \cap V_k \cap V_{k+1} \neq \emptyset$, to zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$ o liczebności
   $|C_2|=1$.
-  Gdyby usunąć wierzchołek należący do $C_2$, $C_3=V_1 \oplus V_2 \oplus \ldots \oplus V_k \oplus V_{k+1}$ nadal
+  Gdyby usunąć wierzchołek należący do zbioru $C_2$, $C_3=V_1 \oplus V_2 \oplus \ldots \oplus V_k \oplus V_{k+1}$ nadal
   również stanowi pokrycie wierzchołkowe, jednak $|C_3|=k$.
   Dowolny zbiór $C_4=C_3 \setminus \{v\}$ nie spełnia jednak warunków pokrywy
   wierzchołkowej $G^\prime$.
-  Na tej podstawie stwierdzić można, iż dowolna pokrycie wierzchołkowe 
-  $C, |C| \leq k$ grafu $G$ niezawierająca $v_0$, musi zawierać całe jego
-  sąsiedztwo. Pokrywa ta nie może być jednak optymalna dla $k > 1$.
-  Obserwacja ta prowadzi do wniosku, iż Optymalne pokrycie wierzchołkowe
-  $|C_{opt}|$ grafu $G$ musi zawierać każdy wierzchołek $v \in V, d(v) \geq k$.
+  Na tej podstawie stwierdzić można, iż dowolne pokrycie wierzchołkowe grafu $G$ 
+  $C$ o rozmiarze $|C| \leq k$ wykluczające wierzchołek $v_0$ musi zawierać całe jego
+  sąsiedztwo. Pokrycie to nie może być jednak optymalna dla $k > 1$.
+  Obserwacja ta prowadzi do wniosku, że optymalne pokrycie wierzchołkowe
+  $C_{\textnormal{opt}}$ grafu $G$ musi zawierać każdy wierzchołek $v \in V$ stopnia $d(v) \geq k$.
 \end{bproof}
 
 \begin{theorem}
-  Procedura usuwania wierzchołków wysokiego stopnia realizowana jest w czasie
-  $O(n^2)$.
+  Procedura usuwania wierzchołków wysokiego stopnia realizowana jest w czasie $O(n^2)$.
 \end{theorem}
 \begin{bproof}
-  Aby określić stopień dowolnego wierzchołka $v$ w grafie $G=(V,E)$, należy 
-  dokonać $O(n), n=|V|$ porównań w celu wyznaczenia jego sąsiedztwa.
-  Operacja musi zostać zrealizowana $n$ razy w celu określenia stopnia
-  wszystkich wierzchołków $G$, co w rezultacie daje złożoność $O (n^2)$.
+  Aby określić stopień dowolnego wierzchołka $v$ w grafie $G=(V,E)$ należy 
+  dokonać $O(|V|)$ porównań w celu wyznaczenia jego sąsiedztwa.
+  Operacja musi zostać zrealizowana $|V|$ razy w celu określenia stopnia
+  wszystkich wierzchołków $v \in V$, co w rezultacie daje złożoność $O (|V|^2)$.
 \end{bproof}
 
-Zastosowanie algorytmu usuwania wierzchołków wysokiego stopnia w połączeniu 
+Zastosowanie algorytmu usuwania wierzchołków wysokiego stopnia w~połączeniu 
 z~technikami przetwarzania wstępnego ogranicza rozmiar dziedziny problemu przez
-fakt, iż każdy wierzchołek $v, v \in V^\prime$ jest stopnia $d(v)$ takiego, iż
-$3 \leq d(v) \leq k^\prime$.
+to, że każdy wierzchołek $v \in V^\prime$ jest stopnia $3 \leq d(v) \leq k^\prime$.
 
 \begin{theorem}
-  Jeżeli przez $G^\prime$ określa się graf o pokryciu wierzchołkowym rozmiaru
-  $k^\prime$, który nie zawiera wierzchołka $v, d(v) > k^\prime \lor d(v) > 3$, to
-  wtedy $n^\prime \leq \frac{k^\prime^2}{3} + k^\prime$.
+  Jeżeli $G^\prime$ stanowi graf o~pokryciu wierzchołkowym rozmiaru $k^\prime$, który nie zawiera wierzchołka $v$ stopnia $d(v) > k^\prime \lor d(v) > 3$, to
+  wtedy zawiera on co najwyżej $\frac{k^\prime^2}{3} + k^\prime$ wierzchołków.
 \end{theorem}
 \begin{bproof}
-  Przyjąć należy ${C,|C|=k^\prime}$ jako pokrycie wierzchołkowe grafu
-  $G^\prime$.
+  Przyjąć należy $C$ jako pokrycie wierzchołkowe grafu $G^\prime$ rozmiaru $|C|=k^\prime$.
   Dopełnienie $\overline{C}$ zbioru $C$ stanowi niezależny zbiór
-  $n^\prime-k^\prime$ wierzchołków.
-  Przyjąć należy zbiór $F=\{f_0,f_1, \ldots, f_p\}, f \in F \Rightarrow f \in E^\prime$
-  krawędzi pokrytych przez $\overline{C}$.
-  W związku z tym, iż $\forall_{v \in \overline{C}}{d(v) \geq 3}$, każdy
+  $|V^\prime|-k^\prime$ wierzchołków.
+  Przyjąć należy zbiór $F=\{f_0,f_1, \ldots, f_p\} \subseteq E^\prime$ krawędzi pokrytych przez $\overline{C}$.
+  Ponieważ zachodzi $\forall_{v \in \overline{C}}{d(v) \geq 3}$, każdy
   wierzchołek $v \in \overline{C}$ musi mieć przynajmniej 3 wierzchołki sąsiednie
   $w \in C$.
-  Prowadzi to do wniosku, iż $|F| \geq 3(n^\prime - k^\prime)$.
+  Prowadzi to do wniosku, iż $|F| \geq 3(|V^\prime| - k^\prime)$.
   Liczba krawędzi pokrytych przez zbiór $C$ nie może być mniejsza niż $|F|$ --- nie
   może być również większa niż $k^\prime|C|$, ponieważ po wykonaniu
-  przetwarzania wstępnego oraz procedury usuwania wierzchołków wysokiego stopnia,
-  $\forall_{v \in V}{|N(v)|\leq~k^\prime}$.
-  Biorąc pod uwagę, że $|C|=k^\prime$, można stwierdzić, iż
-  ${3(n^\prime-k^\prime)\leq|F|\leq~k^\prime^2}$, co daje ${n^\prime\leq\frac{k^\prime^2}{3}+k^\prime}$.
+  przetwarzania wstępnego oraz procedury usuwania wierzchołków wysokiego stopnia spełniona musi być własność $\forall_{v \in V}{|N(v)|\leq~k^\prime}$.
+  Biorąc pod uwagę, że $|C|=k^\prime$, można stwierdzić, iż zbiór $F$ jest rozmiaru ${3(|V^\prime|-k^\prime)\leq|F|\leq~k^\prime^2}$, co daje ${|V^\prime|\leq\frac{k^\prime^2}{3}+k^\prime}$.
 \end{bproof}
 
 
