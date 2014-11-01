@@ -28,4 +28,5 @@ scratchpad*
 *.prof
 *.ps
 *.bcf
-*.run.xml
+*.run.xml.RData
+.RHistory
