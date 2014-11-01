@@ -20,7 +20,7 @@ func setOutputFile(filename string) {
 }
 
 func writeln(data string) {
-	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 
 	if nil != err {
 		log.Fatal(err)
@@ -55,13 +55,13 @@ var testCases map[string]func() = map[string]func(){
 	"MeasureVCBnb":                                      MeasureBnb,
 	"MeasureVCKernelizationCrownReduction":              MeasureKernelizationCrownReduction,
 	"MeasureVCKernelizationNetworkFlow":                 MeasureKernelizationNetworkFlow,
-	"MeasureVCPreprocessingBnb":                         MeasureBnb,
-	"MeasureVCPreprocessingKernelizationCrownReduction": MeasureKernelizationCrownReduction,
-	"MeasureVCPreprocessingKernelizationNetworkFlow":    MeasureKernelizationNetworkFlow,
-	"MeasureKernelizationCrownReduction":                MeasureKernelizationCrownReduction,
-	"MeasureKernelizationNetworkFlow":                   MeasureKernelizationNetworkFlow,
-	"MeasurePreprocessingKernelizationCrownReduction":   MeasureKernelizationCrownReduction,
-	"MeasurePreprocessingKernelizationNetworkFlow":      MeasureKernelizationNetworkFlow,
+	"MeasureVCPreprocessingBnb":                         MeasureBnbPreprocessing,
+	"MeasureVCPreprocessingKernelizationCrownReduction": MeasureKernelizationCrownReductionPreprocessing,
+	"MeasureVCPreprocessingKernelizationNetworkFlow":    MeasureKernelizationNetworkFlowPreprocessing,
+	// "MeasureKernelizationCrownReduction":                MeasureKernelizationCrownReduction,
+	// "MeasureKernelizationNetworkFlow":                   MeasureKernelizationNetworkFlow,
+	// "MeasurePreprocessingKernelizationCrownReduction":   MeasureKernelizationCrownReduction,
+	// "MeasurePreprocessingKernelizationNetworkFlow":      MeasureKernelizationNetworkFlow,
 }
 
 var dataFiles []dataFileDescriptor
