@@ -11,7 +11,7 @@ maxnum <- function(col) {
 lwd = 2
 
 yMax = max(maxnum(bnb$Ts), maxnum(nf$Ts), maxnum(cr$Ts))
-x <- bnb$V#range(c(1, 1600), 10)
+x <- bnb$E#range(c(1, 1600), 10)
 c <- rainbow(3)
 # lm.out = lm(y ~ x)
 # plot(y ~ x)
