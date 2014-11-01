@@ -261,14 +261,13 @@ func Preprocessing(g *graph.Graph) (int, mapset.Set) {
 	parameterReduction := 0
 	// 1. Disjoint vertices cannot be in a vertex cover - remove them.
 	removeVerticesOfDegree(g, 0)
-	// 2. Vertices interconnected with only themselves are useless - remove them.
-	removeVerticesOfDegree(g, 1)
+	// 2. One of two Vertices interconnected with only themselves must be in the cover - remove them.
+	parameterReduction += removeVerticesOfDegree(g, 1)
 	removeVerticesOfDegree(g, 0)
 
 	// 3. Remove vertices with degree 2 which have connected neighbors.
 	// Then, remove nodes whose degree has dropped to 0.
 	red := removeVertivesOfDegreeWithOnlyAdjacentNeighbors(g, 2)
-	utility.Debug("Removed %v vertices of deg. 2 with adj. neighbors.", red)
 	parameterReduction += red
 	removeVerticesOfDegree(g, 0)
 
