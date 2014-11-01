@@ -11,7 +11,7 @@
   Problem pokrycia wierzchołkowego należy do klasy problemów $\mathcal{NP}$-zupełnych, stanowiących podzbiór problemów klasy $\mathcal{NP}$.
   Problem pokrycia wierzchołkowego został uwzględniony w~zestawie 21 problemów $\mathcal{NP}$-zupełnych w~pracy~\cite{DBLP:Karp10} Richarda Karpa z~roku 1972.
   Studium klasy problemów $\mathcal{NP}$-zupełnych od ponad 50 lat stanowi bardzo aktywną i obszerną dziedzinę algorytmiki oraz teorii obliczeń.
-  Mimo niezwykle bogatego dorobku naukowego związanego z~analizą problemów $\mathcal{NP}$-zupełnych, pytanie czy klasy problemów $\mathcal{NP}$ i $\mathcal{P}$ są jednoznaczne nadal pozostaje otwarte --- nie udzielono na nie popartej konstruktywnymi dowodami odpowiedzi.
+  Mimo niezwykle bogatego dorobku naukowego związanego z~analizą problemów $\mathcal{NP}$-zupełnych pytanie czy klasy problemów $\mathcal{NP}$ i $\mathcal{P}$ są jednoznaczne nadal pozostaje otwarte --- nie udzielono na nie popartej konstruktywnymi dowodami odpowiedzi.
   Fakt ten warunkuje dalsze postępy w~tej dziedzinie i jednocześnie zachęca do zgłębiania opisywanej tematyki, oferując szerokie pole dla nowego wkładu w~jej rozwój.
   Głównym celem pracy jest przedstawienie fundamentalnej teoretycznej wiedzy dotyczącej podejścia do rozwiązywania problemów $\mathcal{NP}$-zupełnych opartego o techniki parametryzacji na przykładzie problemu pokrycia wierzchołkowego grafu oraz materializacji koncepcji teoretycznych w~postaci implementacji opisywanych algorytmów.
   Za cele dodatkowe pracy uznaje się przedstawienie skomplikowanej matematycznie problematyki w~sposób przystępny dla czytelnika o tle inżynierskim, stanowiące zrozumiałą podporę w~dalszych badaniach lub adaptacji przedstawionych rozwiązań do konkretnych problemów praktycznych oraz utworzenie możliwie jednolitej platformy ułatwiającej implementację i badania eksperymentalne nad algorytmami związanymi z~problemami poruszającymi tematykę grafów.
@@ -24,12 +24,12 @@
 \par{
   Rozdział~\ref{Chapter_Domain} zawiera opis teoretyczny oraz analizę koncepcji związanych z~poruszaną tematyką.
 
-  Podrozdział~\ref{Section_Domain} stanowi szczegółowe wprowadzenie do domeny problemu pokrycia wierzchołkowego oraz oględnie przedstawia uznane grupy technik ograniczania złożoności obliczeniowej algorytmów rozwiązujących problemy należące do zbioru problemów $\mathcal{NP}$-zupełnych.
+  Podrozdział~\ref{Section_Domain} stanowi szczegółowe wprowadzenie do domeny problemu pokrycia wierzchołkowego oraz oględnie przedstawia uznane grupy technik ograniczania złożoności obliczeniowej algorytmów rozwiązujących problemy $\mathcal{NP}$-zupełne.
 
   Podrozdziały~\ref{s_methods} oraz~\ref{s_kernelization} skupiają się na opisie i analizie konkretnych technik należących do grup opisanych w~podrozdziale~\ref{Section_Domain} --- w~szczególności do grupy technik parametryzacji --- wykorzystanych do realizacji założonych w~niniejszej pracy celów.
 
-  Podrozdział~\ref{s_definitions} stanowi zbiór Definicji podstawowych pojęć wykorzystywanych w~dalszych częściach pracy, których znajomość jest wymagana do zrozumienia prezentowanego toku rozumowania.
-  Pojęcia zdefiniowane w~ramach podrozdziału~\ref{s_definitions} są wykorzystywane w~analizie wszystkich następujących koncepcji --- dlatego też zostały zagregowane w~miejscu je poprzedzającym.
+  Podrozdział~\ref{s_definitions} stanowi zbiór definicji podstawowych pojęć wykorzystywanych w~dalszych częściach pracy, których znajomość jest wymagana do zrozumienia prezentowanego toku rozumowania.
+  Pojęcia zdefiniowane w~ramach podrozdziału~\ref{s_definitions} są wykorzystywane w~analizie wszystkich następujących koncepcji --- dlatego też zostały zagregowane w~poprzedzającym ją miejscu.
   Pojęcia związane bezpośrednio z~konkretnym algorytmem zawarte są w~odpowiadającym mu podrozdziale.
 
   Podrozdział~\ref{Section_preprocessing} przybliża proste techniki modyfikacji struktury grafu stanowiące uzupełnienie mające na celu zwiększenie efektywności algorytmów opisywanych w~podrozdziale~\ref{s_kernelization}.
@@ -44,11 +44,11 @@
 }
 \subsection{Specyfikacja wewnętrzna}
 \par{
-  Rozdział~\ref{s_internals} obejmuje opis wykorzystanych technologii, narzędzi i bibliotek zewnętrznych, architektury załączonego kodu źródłowego oraz wybrane pakiety oraz implementacje niektórych algorytmów przedstawionych w~opisie zagadanienia.
+  Rozdział~\ref{s_internals} obejmuje opis wykorzystanych technologii, narzędzi i bibliotek zewnętrznych, architektury załączonego kodu źródłowego, wybranych pakietów oraz implementacji niektórych algorytmów przedstawionych w~opisie zagadanienia.
 }
 \subsection{Badania eksperymentalne i analiza wyników}
 \par{
-  Rozdział~\ref{results} poświęcony jest w~całości prezentacji wyników badań eksperymentalnych.
+  Rozdział~\ref{results} poświęcony jest w~całości prezentacji i analizie wyników badań eksperymentalnych.
 }
 \subsection{Podsumowanie i kierunki dalszych prac}
 \par{

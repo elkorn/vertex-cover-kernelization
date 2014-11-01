@@ -131,7 +131,7 @@ pdftex}
 \newtheorem{corollary}{\parindent=0pt{\textbf{Wniosek}}}[section]
 \newtheorem{definition}{\parindent=0pt{\textbf{Definicja}}}[section]
 \newtheorem{proposition}{\parindent=0pt{\textbf{Założenie}}}[section]
-\newtheorem{conjecture}{\parindent=0pt{\textbf{Przpyuszczenie}}}[section]
+\newtheorem{conjecture}{\parindent=0pt{\textbf{Przypuszczenie}}}[section]
 \newtheorem{note}{\parindent=0pt{\textbf{Uwaga}}}[chapter]
 \newenvironment{bproof}{\parindent=0pt{\textbf{Dowód.} }}{\begin{flushright}$\square$\end{flushright}}
 

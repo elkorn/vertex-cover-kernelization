@@ -28,7 +28,7 @@
 
   Krawędzie grafu nie są reprezentowane idiomatycznie, to znaczy jako pary wierzchołków stanowiących ich zakończenia.
   Wynika to z praktycznej potrzeby związanej ze zwijaniem krawędzi w ramach operacji przetwarzania wstępnego (podrozdział~\ref{Section_preprocessing}), działania algorytmu Edmondsa (podrozdział~\ref{ss_edmonds_blossom}) oraz algorytmu Chen, Kanj, Xia (podrozdział~\ref{s_ckx}).
-  Praktyka pokazuje, iż znacznie łatwiejsze i bardziej wydajne jest oznaczanie krawędzi grafu jako usuniętych zamiast właściwego ich usuwania --- głównie ze względu na fakt, iż w większości przypadków zostają one w późniejszym momencie przywrócone do grafu na przykład w celu określenia pełnej postaci odnalezionej ścieżki powiększającej.
+  Praktyka pokazuje, iż znacznie łatwiejsze i bardziej wydajne jest oznaczanie krawędzi grafu jako usuniętych zamiast właściwego ich usuwania --- głównie ze względu na to, że w większości przypadków zostają one w późniejszym momencie przywrócone do grafu na przykład w celu określenia pełnej postaci odnalezionej ścieżki powiększającej.
 
   \begin{lstlisting}[language=go, caption=Struktura reprezentująca graf.]
   type Graph struct {
