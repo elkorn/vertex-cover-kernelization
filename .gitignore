@@ -30,4 +30,4 @@ scratchpad*
 *.bcf
 *.run.xml
 *.RData
-*.RHistory
+*.Rhistory
