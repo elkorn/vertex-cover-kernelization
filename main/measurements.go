@@ -11,10 +11,6 @@ import (
 )
 
 var k int = 805
-var filenameBnB = "./results_bnb"
-var filenameNaive = "./results_naive"
-var filenameNF = "./results_nf"
-var filenameCrown = "./results_cr"
 
 func bnb(g *graph.Graph) (bool, int) {
 	result := vc.BranchAndBound(g, nil, k)
@@ -26,9 +22,9 @@ func naive(g *graph.Graph) (bool, int) {
 	return found, result.Cardinality()
 }
 
-func MeasureBnb() {
-	setOutputFile(filenameBnB)
-	fmt.Println("MeasureBnb")
+func MeasureBnb(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
@@ -47,9 +43,9 @@ func MeasureBnb() {
 	}
 }
 
-func MeasureBnbPreprocessing() {
-	setOutputFile(filenameBnB)
-	fmt.Println("MeasureBnb")
+func MeasureBnbPreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
@@ -68,9 +64,9 @@ func MeasureBnbPreprocessing() {
 	}
 }
 
-func MeasureNaive() {
-	setOutputFile(filenameNaive)
-	fmt.Println("MeasureNaive")
+func MeasureNaive(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	fmt.Println(measurementHeader())
 	writeln(measurementHeader())
 	for i, dataFile := range dataFiles {
@@ -85,17 +81,35 @@ func MeasureNaive() {
 	}
 }
 
-func MeasureKernelizationCrownReduction() {
-	setOutputFile(filenameCrown)
-	fmt.Println("MeasureKernelizationCrownReduction")
+func MeasureNaivePreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	fmt.Println(measurementHeader())
+	writeln(measurementHeader())
+	for i, dataFile := range dataFiles {
+		g := graph.ScanDot(dataFile.path)
+		r1, _ := preprocessing.Preprocessing(g)
+		m := takeMeasurement(
+			fmt.Sprintf("naive:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			naive)
+		m.degreeDistribution = dataFile.degreeDistribution
+		m.coverSize += r1
+		m.positional = i + 1
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasureVCCrownReduction(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
 		var r1, r2, r3 int
 		g := graph.ScanDot(dataFile.path)
-		// r1, _ = preprocessing.Preprocessing(g)
 		r2 = kernelization.ReduceAllCrowns(g, k)
-		// r3, _ = preprocessing.Preprocessing(g)
 
 		var m *measurement
 		if r2 == -1 {
@@ -122,9 +136,9 @@ func MeasureKernelizationCrownReduction() {
 	}
 }
 
-func MeasureKernelizationNetworkFlow() {
-	setOutputFile(filenameNF)
-	fmt.Println("MeasureKernelizationNetworkFlow")
+func MeasureVCNetworkFlow(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	for i, dataFile := range dataFiles {
 		var r1, r2, r3 int
@@ -144,9 +158,9 @@ func MeasureKernelizationNetworkFlow() {
 	}
 }
 
-func MeasureKernelizationCrownReductionPreprocessing() {
-	setOutputFile(filenameCrown)
-	fmt.Println("MeasureKernelizationCrownReduction")
+func MeasureVCCrownReductionPreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	fmt.Println(measurementHeader())
 	for i, dataFile := range dataFiles {
@@ -181,9 +195,9 @@ func MeasureKernelizationCrownReductionPreprocessing() {
 	}
 }
 
-func MeasureKernelizationNetworkFlowPreprocessing() {
-	setOutputFile(filenameNF)
-	fmt.Println("MeasureKernelizationNetworkFlow")
+func MeasureVCNetworkFlowPreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
 	writeln(measurementHeader())
 	for i, dataFile := range dataFiles {
 		var r1, r2, r3 int
@@ -198,6 +212,92 @@ func MeasureKernelizationNetworkFlowPreprocessing() {
 		m.positional = i + 1
 		m.degreeDistribution = dataFile.degreeDistribution
 		m.coverSize += r1 + r2 + r3
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasureKernelizationCrownReduction(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
+	for i, dataFile := range dataFiles {
+		g := graph.ScanDot(dataFile.path)
+		var m *measurement
+		m = takeMeasurement(
+			fmt.Sprintf("k_crown:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			func(g *graph.Graph) (bool, int) {
+				return true, kernelization.ReduceAllCrowns(g, k)
+			})
+		m.degreeDistribution = dataFile.degreeDistribution
+		m.positional = i + 1
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasureKernelizationNetworkFlow(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	writeln(measurementHeader())
+	for i, dataFile := range dataFiles {
+		g := graph.ScanDot(dataFile.path)
+		m := takeMeasurement(
+			fmt.Sprintf("k_nf:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			func(g *graph.Graph) (bool, int) {
+				return true, kernelization.KernelizationNetworkFlow(g, k)
+			})
+		m.positional = i + 1
+		m.degreeDistribution = dataFile.degreeDistribution
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasureKernelizationCrownReductionPreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	writeln(measurementHeader())
+	fmt.Println(measurementHeader())
+	for i, dataFile := range dataFiles {
+		var r1, r2 int
+		g := graph.ScanDot(dataFile.path)
+		var m *measurement
+		m = takeMeasurement(
+			fmt.Sprintf("k_crown_p:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			func(g *graph.Graph) (bool, int) {
+				r1, _ = preprocessing.Preprocessing(g)
+				r2 = kernelization.ReduceAllCrowns(g, k)
+				return true, r1 + r2
+			})
+		m.degreeDistribution = dataFile.degreeDistribution
+		m.positional = i + 1
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasureKernelizationNetworkFlowPreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	writeln(measurementHeader())
+	for i, dataFile := range dataFiles {
+		var r1, r2 int
+		g := graph.ScanDot(dataFile.path)
+		m := takeMeasurement(
+			fmt.Sprintf("k_nf_p:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			func(g *graph.Graph) (bool, int) {
+				r1, _ = preprocessing.Preprocessing(g)
+				r2 = kernelization.KernelizationNetworkFlow(g, k)
+				return true, r1 + r2
+			})
+		m.positional = i + 1
+		m.degreeDistribution = dataFile.degreeDistribution
 		writeln(m.Str())
 		fmt.Println(m.Str())
 	}

@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"runtime"
 	"sort"
 	"strconv"
 )
@@ -16,11 +17,10 @@ var currentfname string
 
 func setOutputFile(filename string) {
 	currentfname = filename
-	ioutil.WriteFile(filename, []byte{}, os.ModeAppend)
 }
 
 func writeln(data string) {
-	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE, 0666)
 
 	if nil != err {
 		log.Fatal(err)
@@ -29,6 +29,18 @@ func writeln(data string) {
 
 	file.WriteString(fmt.Sprintf("%v\n", data))
 	file.Close()
+}
+
+func whoami() string {
+	pc, _, _, ok := runtime.Caller(0)
+	if !ok {
+		return "unknown"
+	}
+	me := runtime.FuncForPC(pc)
+	if me == nil {
+		return "unnamed"
+	}
+	return me.Name()
 }
 
 type flags struct {
@@ -50,18 +62,19 @@ func defineFlags() (result flags) {
 	return
 }
 
-var testCases map[string]func() = map[string]func(){
-	"MeasureNaive":                                      MeasureNaive,
-	"MeasureVCBnb":                                      MeasureBnb,
-	"MeasureVCKernelizationCrownReduction":              MeasureKernelizationCrownReduction,
-	"MeasureVCKernelizationNetworkFlow":                 MeasureKernelizationNetworkFlow,
-	"MeasureVCPreprocessingBnb":                         MeasureBnbPreprocessing,
-	"MeasureVCPreprocessingKernelizationCrownReduction": MeasureKernelizationCrownReductionPreprocessing,
-	"MeasureVCPreprocessingKernelizationNetworkFlow":    MeasureKernelizationNetworkFlowPreprocessing,
-	// "MeasureKernelizationCrownReduction":                MeasureKernelizationCrownReduction,
-	// "MeasureKernelizationNetworkFlow":                   MeasureKernelizationNetworkFlow,
-	// "MeasurePreprocessingKernelizationCrownReduction":   MeasureKernelizationCrownReduction,
-	// "MeasurePreprocessingKernelizationNetworkFlow":      MeasureKernelizationNetworkFlow,
+var testCases map[string]func(string) = map[string]func(string){
+	"MeasureBnb":                                      MeasureBnb,
+	"MeasureBnbPreprocessing":                         MeasureBnbPreprocessing,
+	"MeasureNaive":                                    MeasureNaive,
+	"MeasureNaivePreprocessing":                       MeasureNaivePreprocessing,
+	"MeasureVCCrownReduction":                         MeasureVCCrownReduction,
+	"MeasureVCNetworkFlow":                            MeasureVCNetworkFlow,
+	"MeasureVCCrownReductionPreprocessing":            MeasureVCCrownReductionPreprocessing,
+	"MeasureVCNetworkFlowPreprocessing":               MeasureVCNetworkFlowPreprocessing,
+	"MeasureKernelizationCrownReduction":              MeasureKernelizationCrownReduction,
+	"MeasureKernelizationNetworkFlow":                 MeasureKernelizationNetworkFlow,
+	"MeasureKernelizationCrownReductionPreprocessing": MeasureKernelizationCrownReductionPreprocessing,
+	"MeasureKernelizationNetworkFlowPreprocessing":    MeasureKernelizationNetworkFlowPreprocessing,
 }
 
 var dataFiles []dataFileDescriptor
@@ -122,7 +135,7 @@ func main() {
 	currentFlags := defineFlags()
 	for key, testCase := range testCases {
 		if regexp.MustCompile(*(currentFlags.runPattern)).MatchString(key) {
-			testCase()
+			testCase(key)
 		}
 	}
 }
