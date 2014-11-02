@@ -12,7 +12,7 @@ rangeRx = "(\d+)-(\d+),(\d+)"
 options = None
 
 def parseRange(m):
-  return range(int(m.groups(0)[0]), int(m.groups(0)[1]), int(m.groups(0)[2]))
+  return range(int(m.groups(0)[0]), int(m.groups(0)[1]) + 1, int(m.groups(0)[2]))
 
 def main():
   p = optparse.OptionParser()
@@ -26,7 +26,6 @@ def main():
   options, arguments = p.parse_args()
   mv =re.match(rangeRx, options.vertices)
   md = re.match(rangeRx, options.degree_distribution)
-  print(mv)
   if hasattr(mv, 'groups'):
     if hasattr(md,'groups'):
       for verts in parseRange(mv):
