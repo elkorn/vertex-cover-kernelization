@@ -8,15 +8,15 @@ import (
 	"os"
 	"path"
 	"regexp"
-	"runtime"
 	"sort"
 	"strconv"
+	"time"
 )
 
 var currentfname string
 
 func setOutputFile(filename string) {
-	currentfname = filename
+	currentfname = filename + "_" + strconv.FormatInt(time.Now().UnixNano(), 10)
 }
 
 func writeln(data string) {
@@ -29,18 +29,6 @@ func writeln(data string) {
 
 	file.WriteString(fmt.Sprintf("%v\n", data))
 	file.Close()
-}
-
-func whoami() string {
-	pc, _, _, ok := runtime.Caller(0)
-	if !ok {
-		return "unknown"
-	}
-	me := runtime.FuncForPC(pc)
-	if me == nil {
-		return "unnamed"
-	}
-	return me.Name()
 }
 
 type flags struct {
@@ -75,6 +63,8 @@ var testCases map[string]func(string) = map[string]func(string){
 	"MeasureKernelizationNetworkFlow":                 MeasureKernelizationNetworkFlow,
 	"MeasureKernelizationCrownReductionPreprocessing": MeasureKernelizationCrownReductionPreprocessing,
 	"MeasureKernelizationNetworkFlowPreprocessing":    MeasureKernelizationNetworkFlowPreprocessing,
+	"MeasurePreprocessing":                            MeasurePreprocessing,
+	"WriteGraphSizes":                                 WriteGraphSizes,
 }
 
 var dataFiles []dataFileDescriptor

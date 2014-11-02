@@ -7,10 +7,11 @@ import (
 	"github.com/elkorn/vertex-cover-kernelization/graph"
 	"github.com/elkorn/vertex-cover-kernelization/kernelization"
 	"github.com/elkorn/vertex-cover-kernelization/preprocessing"
+	"github.com/elkorn/vertex-cover-kernelization/utility"
 	"github.com/elkorn/vertex-cover-kernelization/vc"
 )
 
-var k int = 805
+var k int = utility.MAX_INT
 
 func bnb(g *graph.Graph) (bool, int) {
 	result := vc.BranchAndBound(g, nil, k)
@@ -195,6 +196,14 @@ func MeasureVCCrownReductionPreprocessing(whoami string) {
 	}
 }
 
+func WriteGraphSizes(whoami string) {
+	fmt.Println(whoami)
+	for _, dataFile := range dataFiles {
+		g := graph.ScanDot(dataFile.path)
+		fmt.Println(g.NVertices(), g.NEdges())
+	}
+}
+
 func MeasureVCNetworkFlowPreprocessing(whoami string) {
 	setOutputFile(whoami)
 	fmt.Println(whoami)
@@ -265,12 +274,12 @@ func MeasureKernelizationCrownReductionPreprocessing(whoami string) {
 	for i, dataFile := range dataFiles {
 		var r1, r2 int
 		g := graph.ScanDot(dataFile.path)
+		r1, _ = preprocessing.Preprocessing(g)
 		var m *measurement
 		m = takeMeasurement(
 			fmt.Sprintf("k_crown_p:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			g,
 			func(g *graph.Graph) (bool, int) {
-				r1, _ = preprocessing.Preprocessing(g)
 				r2 = kernelization.ReduceAllCrowns(g, k)
 				return true, r1 + r2
 			})
@@ -288,13 +297,33 @@ func MeasureKernelizationNetworkFlowPreprocessing(whoami string) {
 	for i, dataFile := range dataFiles {
 		var r1, r2 int
 		g := graph.ScanDot(dataFile.path)
+		r1, _ = preprocessing.Preprocessing(g)
 		m := takeMeasurement(
 			fmt.Sprintf("k_nf_p:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			g,
 			func(g *graph.Graph) (bool, int) {
-				r1, _ = preprocessing.Preprocessing(g)
 				r2 = kernelization.KernelizationNetworkFlow(g, k)
 				return true, r1 + r2
+			})
+		m.positional = i + 1
+		m.degreeDistribution = dataFile.degreeDistribution
+		writeln(m.Str())
+		fmt.Println(m.Str())
+	}
+}
+
+func MeasurePreprocessing(whoami string) {
+	setOutputFile(whoami)
+	fmt.Println(whoami)
+	writeln(measurementHeader())
+	for i, dataFile := range dataFiles {
+		g := graph.ScanDot(dataFile.path)
+		m := takeMeasurement(
+			fmt.Sprintf("k_nf_p:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
+			g,
+			func(g *graph.Graph) (bool, int) {
+				r1, _ := preprocessing.Preprocessing(g)
+				return true, r1
 			})
 		m.positional = i + 1
 		m.degreeDistribution = dataFile.degreeDistribution
