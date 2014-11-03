@@ -1,17 +1,17 @@
 \subsection{Język programowania Go} % (fold)
 \label{ss_internals_go}
 \par{
-Go jest statycznie typowanym, imperatywnym, strukturalnym językiem programowania, którego historia rozpoczęła się w 2007. roku w firmie Google. Autorzy oryginalnej specyfikacji wraz z implementacją to: Rob Pike, Robert Griesemer oraz Ken Thompson.
+Go jest statycznie typowanym, imperatywnym, strukturalnym językiem programowania, którego historia rozpoczęła się w 2007. roku w firmie Google. Autorzy oryginalnej specyfikacji wraz z implementacją to: Rob Pike, Robert Griesemer oraz Ken Thompson.
 Najnowsza stabilna wersja języka na dzień pisania niniejszej pracy to 1.3.3.
 }
 \par{
-Składnia Go silnie nawiązuje do języka C --- dokonano jednak wielu modyfikacji skupiających się przede wsyzstkim na jej uproszczeniu, eliminacji możliwości popełniania błędów oraz zwiększeniu zwięzłości.
+Składnia Go silnie nawiązuje do języka C --- dokonano jednak wielu modyfikacji skupiających się przede wsyzstkim na jej uproszczeniu, eliminacji możliwości popełniania błędów oraz zwiększeniu zwięzłości.
 Dużo uwagi poświęca się również pielęgnacji ekosystemu wokół Go w celu uczynienia go narzędziem jak najłatwiejszym i najbardziej praktycznym w użyciu.
 Dla osiągnięcia tych założeń zastosowano wzorce znane zarówno z języków statycznie jak i dynamicznie typowanych.
 }
-\par{Deklaracja i inicjalizacja zmiennych odbywa się za pomocą mechanizmu domniemania typów, w większości przypadków zwalniającego programistę z obowiązku jawnego oznaczania typu zmiennych oraz metod. Zamiast zapisu \textit{\lstinline{int x = 0;}}, znanego z języka C, stosuje się tu krótszy zapis \textit{\lstinline{x := 0}}. Warto również zwrócić uwagę na brak wymagania stawiania średników jako zakończeń wyrażeń.
+\par{Deklaracja i inicjalizacja zmiennych odbywa się za pomocą mechanizmu domniemania typów, w większości przypadków zwalniającego programistę z obowiązku jawnego oznaczania typu zmiennych oraz metod. Zamiast zapisu \textit{\lstinline{int x = 0;}}, znanego z języka C, stosuje się tu krótszy zapis \textit{\lstinline{x := 0}}. Warto również zwrócić uwagę na brak wymagania stawiania średników jako zakończeń wyrażeń.
 }
- \par{Mimo możliwości korzystania ze wskaźników, bezpośredni dostęp do nich jest niemożliwy, co zapobiega błędom związanym z niezgodnością typów. W połączeniu ze statycznym typowaniem oznacza to, iż programista nie jest w stanie wprowadzić rozbieżności na poziomie typów zmiennych prowadzących do awarii aplikacji niewykrytych przez kompilator. Konsekwencją zablokowania bezpośredniego dostępu do wskaźników jest również brak możliwości wykonywania na nich działań arytmetycznych.
+ \par{Mimo możliwości korzystania ze wskaźników, bezpośredni dostęp do nich jest niemożliwy, co zapobiega błędom związanym z niezgodnością typów. W połączeniu ze statycznym typowaniem oznacza to, iż programista nie jest w stanie wprowadzić rozbieżności na poziomie typów zmiennych prowadzących do awarii aplikacji niewykrytych przez kompilator. Konsekwencją zablokowania bezpośredniego dostępu do wskaźników jest również brak możliwości wykonywania na nich działań arytmetycznych.
  }
  \par{
 Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wynikającym z nieprawidłowego zarządzania wskaźnikami. W aktualnej wersji wykorzystywana jest współbieżna wersja algorytmu \textit{mark and sweep}.
@@ -36,7 +36,7 @@ Dzięki mechanizmowi Garbage Collection, język zapobiega wyciekom pamięci wyni
       *Writer
     }
   \end{lstlisting}
-  Kluczowa różnica pomiędzy dziedziczeniem a osadzaniem typów polega na właściwości, iż metody typu osadzanego zostają włączone do typu zewnętrznego --- jednak podczas wywołania danej metody, jej odbiorcą jest egzemplarz typu osadzonego. \cite{godoc:embedding}
+  Kluczowa różnica pomiędzy dziedziczeniem a osadzaniem typów polega na właściwości, iż metody typu osadzanego zostają włączone do typu zewnętrznego --- jednak podczas wywołania danej metody, jej odbiorcą jest egzemplarz typu osadzonego. \cite{godoc:embedding}
 }
 \par {
 W celu uproszczenia składni głównie względem C++, argumentowanym przez jednego z autorów w notatce \cite{Pike:LessIsMore}, wyłączono ze specyfikacji wiele funkcji oferowanych przez podobne języki, poza wymienionymi wcześniej.
@@ -51,8 +51,8 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
 \par{
   Dla wygody programisty wprowadzono do Go zestaw podstawowych typów, wyrażających elementy brakujące zdaniem autorów w czystym C.
   \begin{itemize}
-    \item \emph{Plastry} (slices), zapisywane jako \textit{\lstinline{[]type}}, wskazują na tablicę obiektów przechowywanych w pamięci, przechowując wskaźnik do początku danego plastra, jego długość oraz \emph{pojemność}, określającą liczebność elementów plastra, która wymagać alokacji dodatkowej pamięci w celu rozszerzenia odpowiadającej tablicy.
-    \item Niezmienne ciągi znaków (typ \textit{\lstinline{string}}), zawierające przeważnie tekst w kodowaniu UTF-8. Mogą jednak przechowywać dowolne bajty.
+    \item \emph{Plastry} (slices), zapisywane jako \textit{\lstinline{[]type}}, wskazują na tablicę obiektów przechowywanych w pamięci, przechowując wskaźnik do początku danego plastra, jego długość oraz \emph{pojemność}, określającą liczebność elementów plastra, która wymagać alokacji dodatkowej pamięci w celu rozszerzenia odpowiadającej tablicy.
+    \item Niezmienne ciągi znaków (typ \textit{\lstinline{string}}), zawierające przeważnie tekst w kodowaniu UTF-8. Mogą jednak przechowywać dowolne bajty.
     \item Tablica haszująca, zapisywana jako \textit{\lstinline{map[key\_type]value\_type}}.
   \end{itemize}
 }
@@ -68,12 +68,12 @@ W celu uproszczenia składni głównie względem C++, argumentowanym przez jedne
 
 \par{
   Ostatnim elementem, o którym należy wspomnieć są wbudowane mechanizmy służące do programowania współbieżnego.
-  Za bardzo wartościową cechę języka Go uznaje się zawarcie w jego specyfikacji oraz implementacji prymitywów zapewniających logiczne i wygodne w użyciu konstrukcje tworzące poziom abstrakcji ponad technikaliami związanymi z zarządzaniem wątkami i procesami oraz ich synchronizacją, zarówno jak i aspektami programowania asynchronicznego.
-  Cechy te stanowią silny argument przemawiający za wartościowością Go jako języka docelowego dla aplikacji serwerowych o wysokiej przepustowości.
+  Za bardzo wartościową cechę języka Go uznaje się zawarcie w jego specyfikacji oraz implementacji prymitywów zapewniających logiczne i wygodne w użyciu konstrukcje tworzące poziom abstrakcji ponad technikaliami związanymi z zarządzaniem wątkami i procesami oraz ich synchronizacją, zarówno jak i aspektami programowania asynchronicznego.
+  Cechy te stanowią silny argument przemawiający za wartościowością Go jako języka docelowego dla aplikacji serwerowych o wysokiej przepustowości.
   \begin{itemize}
     \item Wyrażenie \textit{\lstinline{go}}, pozwalające na uruchomienie dowolnej funkcji w tzw. \emph{lekkim procesie}, enkapsulującym pojedynczy wątek jądra systemu i współdzielącym przestrzeń adresową z innymi wątkami wykorzystywanymi przez podobne procesy.
-    \item Typ kanałowy, \textit{\lstinline{chan type}}, pozwalający na synchronizowaną wymianę informacji pomiędzy lekkimi procesami. Instancje kanałów obsługiwane są przede wszystkim za pomocą operatorów wysyłania (\textit{\lstinline{chan\_instance <- value}}) oraz odbioru (\textit{\lstinline{variable <- chan\_instance}}). Obydwie te operacje blokują wykonywanie programu w ramach danego procesu dopóki dowolny z innych procesów nie umieści danych w kanale.
-    \item Wyrażenie \textit{\lstinline{select}}, będące rozwiązaniem podobnym do konstrukcji \textit{\lstinline{switch}} z różnicą polegającą na fakcie, iż predykaty przypadków nie są oparte na wartościach określonej zmiennej lecz na stanie kanałów w sensie pojawiania się na nich danych.
+    \item Typ kanałowy, \textit{\lstinline{chan type}}, pozwalający na synchronizowaną wymianę informacji pomiędzy lekkimi procesami. Instancje kanałów obsługiwane są przede wszystkim za pomocą operatorów wysyłania (\textit{\lstinline{chan\_instance <- value}}) oraz odbioru (\textit{\lstinline{variable <- chan\_instance}}). Obydwie te operacje blokują wykonywanie programu w ramach danego procesu dopóki dowolny z innych procesów nie umieści danych w kanale.
+    \item Wyrażenie \textit{\lstinline{select}}, będące rozwiązaniem podobnym do konstrukcji \textit{\lstinline{switch}} z różnicą polegającą na fakcie, iż predykaty przypadków nie są oparte na wartościach określonej zmiennej lecz na stanie kanałów w sensie pojawiania się na nich danych.
   \end{itemize}
   Podstawowe elementy umożliwiają budowę bardziej skomplikowanych mechanizmów zarządzania przepływem kontroli w systemach współbieżnych dostosowanych do poszczególnych przypadków użycia, takich jak pule robotników lub łańcuchy przetwarzania.
 }

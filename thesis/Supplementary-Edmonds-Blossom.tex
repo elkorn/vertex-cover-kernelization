@@ -1,31 +1,31 @@
 \subsection{Odnajdywanie maksymalnego skojarzenia w grafie}\label{ss_edmonds}
 \par{
-  Każdy z opisywanych w pracy algorytmów działający w oparciu o Twierdzenie\\Nemhausera--Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chen, Kanj, Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
+  Każdy z opisywanych w pracy algorytmów działający w oparciu o twierdzenie\\Nemhausera--Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chena, Kanji oraz Xia (podrozdział~\ref{s_ckx}), wymaga w pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
   Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
 }
 
 \subsubsection{\textbf{Problem odnajdywania maksymalnego skojarzenia w grafach}}
 \par{
   Zgodnie z Definicją \ref{def_matching}, w dowolnym grafie $G=(V,E)$~skojarzenie $M$ stanowi zbiór krawędzi $e \in E$, które nie współdzielą ze sobą żadnych wierzchołków: \[\not\exists_{\{(u_1,v_1), (u_2, v_2)\} \in M}:{u_1 = u_2 \lor u_1 = v_2 \lor v_1 = u_2 \lor v_1 = v_2}.\]
-  Skojarzenie maksymalne opisywane jest Twierdzeniem Berge'a, na którym opiera się Definicja \ref{def_maximum_matching}.
+  Skojarzenie maksymalne opisywane jest twierdzeniem Berge'a, na którym opiera się Definicja \ref{def_maximum_matching}.
   \begin{theorem}[Twierdzenie Berge'a]\thlabel{th_Berge}
-    Skojarzenie $M$ w grafie $G$ jest maksymalne wtedu i tylko wtedy gdy nie istnieje ścieżka powiększająca $P_a$ taka, że dla dowolnej pary kolejno następujących po sobie krawędzi $\{e_1, e_2\} \in P_a$ prawdziwe jest $e_1 \in M \oplus e_2 \in M$.
+    Skojarzenie $M$ w grafie $G$ jest maksymalne wtedy i tylko wtedy, gdy nie istnieje ścieżka powiększająca $P_a$ taka, że dla dowolnej pary kolejno następujących po sobie krawędzi $\{e_1, e_2\} \in P_a$ prawdziwe jest $e_1 \in M \oplus e_2 \in M$.
   \end{theorem}
-   Należy zwrócić uwagę, iż ścieżka powiększająca $P_a$ opisywana w Twierdzeniu \ref{th_Berge} jest $M$-przemienna w rozumieniu Definicji~\ref{def_alternating_path}.
+   Należy zwrócić uwagę, iż ścieżka powiększająca $P_a$ opisywana w Twierdzeniu~\ref{th_Berge} jest $M$-przemienna w rozumieniu Definicji~\ref{def_alternating_path}.
    W kontekście poszukiwania skojarzeń przez ścieżki powiększające, graf można traktować jako odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
 }
 \par{
   W przypadku grafów dwudzielnych z krawędziami o jednostkowej wadze, problem odnalezienia maksymalnego skojarzenia sprowadza się do rozwiązania problemu maksymalnego przepływu.
-  Problem przeformułować należy przez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z zasadami opisanymi w podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z algorytmem Edmondsa-Karpa, opisanym w podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w jedną stronę pomiędzy podziałami grafu.
-  Poprawność sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w sieci jest ugruntowana tym, że każda krytyczna krawędź zostaje usunięta z sieci residualnej --- a branie pod uwagę przepływu tylko w jedną stronę zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w rozwiązaniu.
+  Problem przeformułować należy przez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z zasadami opisanymi w podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z algorytmem Edmondsa-Karpa, opisanym w podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w jedną stronę pomiędzy podziałami grafu.
+  Poprawność sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w sieci jest ugruntowana tym, że każda krytyczna krawędź zostaje usunięta z sieci residualnej --- a branie pod uwagę przepływu tylko w jedną stronę zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w rozwiązaniu.
 }
 \par{
   Problem odnajdywania maksymalnego skojarzenia w dowolnym grafie nie jest zadaniem trywialnym --- wymaga zatem odpowiedniego, działającego w czasie wielomianowym narzędzia jego rozwiązywania w celu możliwości efektywnego rozwiązania problemów głównych.
   Narzędzie takie stanowi algorytm skurczania kwiatów Edmondsa, zwany w dalszej części podrozdziału algorytmem Edmondsa lub po prostu algorytmem.
 }
-\subsubsection{\textbf{Poszukiwanie ścieżek powiększających zaczynających się w dowolnym wierzchołku grafu}}
+\subsubsection{\textbf{Poszukiwanie ścieżek powiększających zaczynających się w dowolnym wierzchołku grafu}}
 \par{
-  Aby móc dowieść poprawności algorytmu Edmondsa, należy wytłumaczyć kilka dodatkowych koncepcji, na których jest on oparty.
+  Aby móc dowieść poprawności algorytmu Edmondsa, należy wyjaśnić kilka dodatkowych koncepcji, na których jest on oparty.
   U podstaw teoretycznych algorytmu leży skonstruowany z grafu wejściowego $G=(V, E)$ graf skierowany $H=(V_H, E_H)$ taki, że $V_H=V$ oraz $E_H=\{(u, v)|\exists_{w\in V\}}:(u, w) \notin M \land (w, v) \in M\}$.
   W objaśnianiu toku rozumowania pomocne są również następujące charakterystyczne zbiory wierzchołków.
   \begin{itemize}
@@ -35,10 +35,10 @@
   
   Odnajdywanie ścieżek powiększających w skierowanym grafie $H$ jest krokiem pozwalającym na odkrycie \emph{prostych} ścieżek powiększających w grafie $G$.
   \begin{definition}
-    \emph{Prostą} ścieżkę w grafie $G=(V, E)$ stanowi ścieżka, która nie prowadzi dwa razy przez ten sam wierzchołek $v \in V$.
+    \emph{Prostą} ścieżkę w grafie $G=(V, E)$ stanowi ścieżka, która nie prowadzi dwa razy przez ten sam wierzchołek $v \in V$.
   \end{definition}
   \begin{definition}
-    Dla pewnego grafu $G=(V, E)$ oraz grafu skierowanego $H=(V_H,E_H)$, skonstruowanego z grafu $G$, mianem ścieżki \emph{pseudorozszerzającej} określa się prostą ścieżkę w~grafie $H$ prowadzącą od pewnego wierzchołka $v \in v_H$ do pewnego dobrego wierzchołka $w \in V_H$.
+    Dla pewnego grafu $G=(V, E)$ oraz grafu skierowanego $H=(V_H,E_H)$, skonstruowanego z grafu $G$, mianem ścieżki \emph{pseudorozszerzającej} określa się prostą ścieżkę w~grafie $H$ prowadzącą od pewnego wierzchołka $v \in v_H$ do pewnego dobrego wierzchołka $w \in V_H$.
   \end{definition}
 
   Udowodnienie następujących twierdzeń kładzie fundamenty teoretyczne potrzebne do późniejszego uzasadnienia poprawności przyjętego podejścia do algorytmu Edmondsa.
@@ -46,8 +46,8 @@
     W grafie $G=(V, E)$ dla grafu skierowanego $H=(V_H,E_H)$ skonstruowanego z grafu $G$ oraz skojarzenia $M$, $M$-przemienna ścieżka powiększająca o początku w wierzchołku $v \in V$ może istnieć wtedy i tylko wtedy jeżeli istnieje skierowana ścieżka $\rho$ prowadząca od wierzchołka $v$ do dobrego wierzchołka $w$, która odpowiada prostej ścieżce w grafie $G$.
   \end{theorem}
   \begin{bproof}
-    Założyć należy istnienie w grafie $G=(V, E)$ $M$-przemiennej ścieżki $\tau$ zaczynającej się od wierzchołka $v \in V$ i kończącej w dobrym wierzchołku $w \in V$. Przyjąć należy wierzchołek $u \in V$ jako należący do sąsiedztwa wierzchołka $w$, $u \in N(w)$, znajdującego się na ścieżce $\tau$.
-    Zgodnie z założeniem Twierdzenia, że wierzchołek $w$ jest dobry, wierzchołek $u$ również musi być dobry.
+    Założyć należy istnienie w grafie $G=(V, E)$ $M$-przemiennej ścieżki $\tau$ zaczynającej się od wierzchołka $v \in V$ i kończącej w dobrym wierzchołku $w \in V$. Przyjąć należy wierzchołek $u \in V$ jako należący do sąsiedztwa wierzchołka $w$, $u \in N(w)$, znajdującego się na ścieżce $\tau$.
+    Zgodnie z założeniem twierdzenia, że wierzchołek $w$ jest dobry, wierzchołek $u$ również musi być dobry.
     Łatwo zauważyć zatem, iż ścieżce składowej $\tau^\prime \subset \tau$ pomiędzy wierzchołkami $v$ oraz $u$ odpowiada prosta ścieżka $\tau_H \in E_H$, prowadząca od wierzchołka $v$ do wierzchołka $u$ --- jedynymi krawędziami mogącymi stanowić różnicę pomiędzy $\tau$ oraz $\tau_H$ są krawędzie należące do nawrotów w ścieżce $\tau$.
   \end{bproof}
   \begin{theorem}
@@ -56,30 +56,30 @@
   \begin{bproof}
     Fakt, iż ścieżka $\tau$ nie jest powiększająca implikuje, że nie jest ona również prosta, to znaczy zawiera krawędzie nawrotowe.
     Jest to równoznaczne ze stwierdzeniem, iż ścieżka $\tau$ zawiera cykl.
-    Jeżeli cykl ten miałby być parzystej długości, ścież $\tau_H$ musiałaby co najmniej dwukrotnie przechodzić przez pewien wierzchołek, co przeczy założeniu, iż stanowi jest ona prostą ścieżką skierowaną.
+    Jeżeli cykl ten miałby być parzystej długości, ścież $\tau_H$ musiałaby co najmniej dwukrotnie przechodzić przez pewien wierzchołek, co przeczy założeniu, iż stanowi jest ona prostą ścieżką skierowaną.
   \end{bproof}
   Mając na uwadze te zależności, można przejść do analizy algorytmu Edmondsa.
 }
 \subsubsection{\textbf{Algorytm skurczania kwiatów Edmondsa}}\label{ss_edmonds_blossom}
 \par{
   Algorytm Edmondsa poszukuje ścieżek powiększających w grafie stanowiącym odpowiednik sieci przepływowej o jednostkowych pojemnościach każdej z krawędzi.
-  Realizacja odbywa się w oparciu o drzewo poszukiwań ze specjalnym traktowaniem występujących w grafie cykli o nieparzystej długości.
+  Realizacja odbywa się w oparciu o drzewo poszukiwań ze specjalnym traktowaniem występujących w grafie cykli o nieparzystej długości.
   Algorytm Edmondsa przedstawiany jest w ten sposób, ponieważ najczęściej zestawia się go jako działającą w dowolnych grafach alternatywę dla innych algorytmów poszukujących maksymalnego skojarzenia w grafach dwudzielnych.
-  Cykle o nieparzystej długości są charakterystyczne jedynie dla grafów niedwudzielnych i określane są mianem \emph{kwiatów}.
+  Cykle o nieparzystej długości są charakterystyczne jedynie dla grafów niedwudzielnych i określane są mianem \emph{kwiatów}.
 }
 \par{
   \begin{definition}
-    W dowolnym grafie $G=(V, E)$, \emph{kwiat} $B$ względem skojarzenia $M \subseteq E$ stanowi cykl o nieparzystej długości i największej liczbie krawędzi składowych skojarzonych w $M$. 
+    W dowolnym grafie $G=(V, E)$, \emph{kwiat} $B$ względem skojarzenia $M \subseteq E$ stanowi cykl o nieparzystej długości i największej liczbie krawędzi składowych skojarzonych w $M$. 
   \end{definition}
-  Z powyższej definicji wynika, że przykładowo jeżeli pewien cykl składa się z $2k + 1$ wierzchołków oznacza to, że $k$ krawędzi musi zawierać się w pewnym skojarzeniu $M$ aby cykl ten mógł być kwiatem.
+  Z powyższej definicji wynika, że przykładowo jeżeli pewien cykl składa się z $2k + 1$ wierzchołków oznacza to, że $k$ krawędzi musi zawierać się w pewnym skojarzeniu $M$ aby cykl ten mógł być kwiatem.
   \begin{definition}
-    przez \emph{skurczenie} kwiatu $B$ w grafie $G=(V, E)$ rozumie się operację składającą się z następujących czynności.
+    przez \emph{skurczenie} kwiatu $B$ w grafie $G=(V, E)$ rozumie się operację składającą się z następujących czynności.
     \begin{enumerate}
        \item Zastąpieniu zbioru wszystkich wierzchołków $V_B=\{v: v \in B\}$ pojedynczym wierzchołkiem $v_B$. Konsekwencja zastąpienia każdego z wierzchołków kwiatu jest usunięcie przystających do niego krawędzi.
        \item Połączeniem wierzchołka $v_B$ krawędziami ze wszystkimi wierzchołkami spoza kwiatu, które sąsiadowały z nim przed wykonaniem kroku 1: \[V_N=\{v: v \in V \setminus V_B, \exists_{u \in V}:(u,v)\in E \lor (v, u)\in E\}.\]
      \end{enumerate}
   \end{definition}
-  Konsekwencją skurczenia kwiatu $B=(V_B, E_B)$ jest zmniejszenie skojarzenia $M$ do $M^\prime = M \setminus E_B$.
+  Konsekwencją skurczenia kwiatu $B=(V_B, E_B)$ jest zmniejszenie skojarzenia $M$ do $M^\prime = M \setminus E_B$.
   W celu zwiększenia efektywności odnajdywania skierowanych ścieżek w grafie $H$, algorytm przechowuje dane o odwiedzonych krawędziach w strukturze lasu.\\
   Algorytm Edmondsa działa według schematu opisanego pseudokodem~\ref{alg_Edmonds}.
   \begin{algorithm}
@@ -111,7 +111,7 @@
           \State{Idź do kroku~\ref{pick_edge}}
         \ElsIf{$v \in P$ oraz $(u, v) \notin E_F$}\label{even_disjoint}
           \State\Comment{(Istnieje $W$-przemienna ścieżka powiększająca $\eta \in H$)}
-          \State{Znajdź $M$-przemienną ścieżkę powiększającą $\rho \in G$}
+          \State{Znajdź $M$-przemienną ścieżkę powiększającą $\rho \in G$}
           \State{Idź do kroku~\ref{init_edmonds}}
         \EndIf
       \EndFunction
@@ -120,12 +120,12 @@
   \begin{theorem}\thlabel{th_edmonds_max_matching}
     W momencie zakończenia działania algorytmu, zbiór $N$ stanowi maksymalne skojarzenie w grafie $H$.
   \end{theorem}
-  Aby dowieść poprawności tego Twierdzenia, przygotować należy metrykę pozwalającą na sprawdzenie czy dane skojarzenie rzeczywiście jest maksymalne.
+  Aby dowieść poprawności tego twierdzenia, przygotować należy metrykę pozwalającą na sprawdzenie czy dane skojarzenie rzeczywiście jest maksymalne.
   W oparciu o notatki~\cite{Tutte-Berge:notes} oraz artykuł~\cite{cohen:hal-00358468} (stanowiące syntezę koncepcji pracy~\cite{Tutte-Berge:original}),  można posłużyć się następującą własnością, u podstaw której leży wzór Tutte-Berge'a.
 
-  Dla dowolnego zbioru wierzchołków $U$, przyjąć należy oznaczenie $\circ (G \setminus U)$ jako określenie liczby spójnych składowych grafu $G^\prime=(V^\prime, E^\prime)$ zaindukowanego z grafu $G=(V \setminus U, E)$ o nieparzystej liczebności.
+  Dla dowolnego zbioru wierzchołków $U$, przyjąć należy oznaczenie $\circ (G \setminus U)$ jako określenie liczby spójnych składowych grafu $G^\prime=(V^\prime, E^\prime)$ indukowanego z grafu $G=(V \setminus U, E)$ o nieparzystej liczebności.
   Dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \subseteq E^\prime$ musi kojarzyć mniej niż $\circ (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
-  Co więcej, wierzchołki te skojarzone mogą być jedynie ze zbiorem wierzchołków $U$.
+  Co więcej, wierzchołki te skojarzone mogą być jedynie ze zbiorem wierzchołków $U$.
   \begin{definition}[ (Oparta na wzorze Tutte-Berge'a)]\thlabel{def_edmonds_max_matching}
     Skojarzenie $M$ jest maksymalne, jeżeli liczba wierzchołków nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \circ (G \setminus U) - |U|$, a zatem $|M|\leq \frac{|V|+|U| - \circ (G \setminus U)}{2}$.
   \end{definition}
@@ -134,8 +134,8 @@
   \end{definition}
   W przypadku spełnienia założeń Definicji~\ref{def_edmonds_max_matching}, zbiór $U$ zaświadcza o tym, że skojarzenie $M$ jest maksymalne.
   W pseudokodzie~\ref{alg_Edmonds} zbiorem zaświadczającym jest zbiór $N$.
-  Zaznaczyć należy, iż nazewnictwo zmiennych $P$ oraz $N$ jest nieprzypadkowe --- wierzchołki należące do zbioru $P$ znajdują się w parzystej odległości od korzenia pewnego drzewa $T \in F$, natomiast wierzchołki należące do zbioru $N$, analogicznie, w odległości nieparzystej od korzenia drzewa $T$.
-  Przez odległość rozumie się długość ścieżki prowadzącej do danego wierzchołka z korzenia drzewa $T$.\\\\
+  Zaznaczyć należy, iż nazewnictwo zmiennych $P$ oraz $N$ jest nieprzypadkowe --- wierzchołki należące do zbioru $P$ znajdują się w parzystej odległości od korzenia pewnego drzewa $T \in F$, natomiast wierzchołki należące do zbioru $N$, analogicznie, w odległości nieparzystej od korzenia drzewa $T$.
+  Przez odległość rozumie się długość ścieżki prowadzącej do danego wierzchołka z korzenia drzewa $T$.\\\\
   \begin{bproof} (Dla Twierdzenia~\ref{th_edmonds_max_matching})\\
     W momencie zakończenia działania algorytmu na grafie $G=(V, E)$, zbiór wierzchołków $V$ jest podzielony na trzy podzbiory: $P$, $N$ oraz podzbiór $R = V \setminus P \setminus N$.
     Zbiór $N$ jest niezależny w grafie $H=(V_H, E_H)$ (w rozumieniu Definicji~\ref{def_independent_set}) --- w przeciwnym wypadku warunek~\algref{alg_Edmonds}{even_connected} lub~\algref{alg_Edmonds}{even_disjoint} algorytmu Edmondsa byłby spełniony co przeczy założeniu, iż algorytm zakończył działanie.
@@ -143,7 +143,7 @@
     Tym samym zagwarantowana jest właściwość, że każdy wierzchołek $v_P \in P$ jest skojarzony przez zbiór $W$ wyłącznie z innym wierzchołkiem $v_N \in N$.
     Krok~\algref{alg_Edmonds}{pick_edge} zapewnia, że w momencie zakończenia działania algorytmu nie może istnieć krawędź $(v_P, v_R); v_P \in P, v_R \in R$ pomiędzy zbiorami $P$ oraz $R$.
     Łatwo zauważyć, że po usunięciu z dziedziny zbioru $P$ każdy wierzchołek $v_P \in P$ sam w sobie stanowi spójną składową grafu $H$.
-    W związku z faktem, iż wszystkie wierzchołki $v_R \in R$ są skojarzone przez zbiór $W$ w ramach zbioru $R$ można stwierdzić, że po usunięciu zbioru $N$ z dziedziny składowe należące do zbioru $R$ są parzystej liczebności.
+    W związku z faktem, iż wszystkie wierzchołki $v_R \in R$ są skojarzone przez zbiór $W$ w ramach zbioru $R$ można stwierdzić, że po usunięciu zbioru $N$ z dziedziny składowe należące do zbioru $R$ są parzystej liczebności.
     Prowadzi to do wniosku, że spełnione są założenia wzoru Tutte-Berge'a, przybliżone w artykule~\cite{cohen:hal-00358468}.
     \begin{align*}
         \circ(H \setminus N) = |P| &= |N| + |R|\\
@@ -158,18 +158,18 @@
   \end{theorem}
   \begin{bproof}
     Jeżeli skojarzenie $W \setminus B$ nie byłoby maksymalne, w grafie $H$musiałaby istnieć $W$-przemienna ścieżka powiększająca $\eta$.
-    Kroki algorytmu w razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} zajmują się tym przypadkiem.
+    Kroki algorytmu w razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} zajmują się tym przypadkiem.
 
     Ścieżka $\eta$ zaczyna od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w algorytmie) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
-    Uzyskanie $M$-przemiennej ścieżki powiększającej w grafie $G$ jest możliwe przez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
+    Uzyskanie $M$-przemiennej ścieżki powiększającej w grafie $G$ jest możliwe przez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
     skojarzeń.
 
     Założyć należy, że graf $H=(V_H, E_H)$ otrzymano z grafu $G=(V, E)$ przez skurczenie kwiatu $B$ do wierzchołka $b$.
-    W takiej sytuacji jeżeli ścieżka $\eta$ nie przechodzi przez wierzchołek $b$ oznacza to, że musi być ona również $M$-przemienną ścieżką powiększającą w grafie $G$. W przeciwnym wypadku --- gdy ścieżka $\eta$ zawiera w sobie wierzchołek $b$ --- mogą wystąpić dwie sytuacje:
+    W takiej sytuacji jeżeli ścieżka $\eta$ nie przechodzi przez wierzchołek $b$ oznacza to, że musi być ona również $M$-przemienną ścieżką powiększającą w grafie $G$. W przeciwnym wypadku --- gdy ścieżka $\eta$ zawiera w sobie wierzchołek $b$ --- mogą wystąpić dwie sytuacje:
     \begin{enumerate}
       \item Ścieżka $\eta$ kończy się w wierzchołku $b$.
       Może to nastąpić wyłącznie w przypadku, gdy w kwiecie $B$ występuje korzeń zawierającego go drzewa $T$, w przeciwnym razie wierzchołek $b$ nie byłby wolny w grafie $H$.
-      W tejże sytuacji zakończeniem ścieżki $\eta$ w grafie $G$ jest pewien wierzchołek $v_B \in B$, z którego można dotrzeć do korzenia podążajac we właściwym kierunku --- to znaczy tym, który zawiera skojarzoną przez zbiór $M$ krawędź łączącą kwiat $B$ z najbliższym wierzchołkiem z zewnątrz.
+      W tejże sytuacji zakończeniem ścieżki $\eta$ w grafie $G$ jest pewien wierzchołek $v_B \in B$, z którego można dotrzeć do korzenia podążajac we właściwym kierunku --- to znaczy tym, który zawiera skojarzoną przez zbiór $M$ krawędź łączącą kwiat $B$ z najbliższym wierzchołkiem z zewnątrz.
       \item Ścieżka $\eta$ przechodzi przez wierzchołek $b$.
       Przyjąć należy, że ścieżka $\eta$ w grafie $G$ dociera do pewnego wierzchołka $x$ należącego do kwiatu $B$.
       W takiej sytuacji jedyna skojarzona przez zbiór $M$ krawędź wychodząca z kwiatu $B$ prowadzi z pewnego wierzchołka $y$ do korzenia drzewa $T$.

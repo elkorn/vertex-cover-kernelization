@@ -1,28 +1,28 @@
 \section{Szczegóły techniczne implementacji}\label{s_internals_implementation}
 \subsection{Architektura aplikacji}\label{ss_internals_architecture}
 \par{
-  Zgodnie z kanonem podyktowanym przez specyfikację języka Go, kod aplikacji podzielony został na \emph{pakiety}.
-  Należy zaznaczyć, iż pakiety w rozumienia języka Go są czymś innym niż pakiety opisywane w podrozdziale~\ref{ss_internals_misc}.
+  Zgodnie z kanonem podyktowanym przez specyfikację języka Go, kod aplikacji podzielony został na \emph{pakiety}.
+  Należy zaznaczyć, iż pakiety w rozumienia języka Go są czymś innym niż pakiety opisywane w podrozdziale~\ref{ss_internals_misc}.
   W kontekście obecnego rozdziału przez pakiety rozumie się logiczne jednostki organizacji kodu w języku Go, pakiety omawiane w podrozdziale~\ref{ss_internals_misc} stanowią zewnętrzne biblioteki, z których korzystano w ramach prac implementacyjnych.
-  Projektując strukturę kodu, nacisk położony został na logiczne rozdzielenie części programu związanych z poszczególnymi aspektami domeny problemu.
+  Projektując strukturę kodu, nacisk położony został na logiczne rozdzielenie części programu związanych z poszczególnymi aspektami domeny problemu.
   W związku z tym zdefiniowano następujące pakiety:
   \begin{itemize}
     \item \texttt{graph} --- pakiet zawierający strukturę reprezentującą graf wraz ze zbiorem metod i funkcji do odczytywania związanych z nim danych, tworzenia oraz modyfikacji jego konstrukcji;
     \item \texttt{preprocessing} --- pakiet zawierający zestaw funkcji realizujących zadanie przetwarzania wstępnego grafu, realizując koncepcje opisane w podrozdziale~\ref{Section_preprocessing};
-    \item \texttt{kernelization} --- pakiet zawierający implementacje koncepcji związanych z redukcją dziedziny do jądra problemu pokrycia wierzchołkowego, opisanych w podrozdziale~\ref{s_kernelization};
+    \item \texttt{kernelization} --- pakiet zawierający implementacje koncepcji związanych z redukcją dziedziny do jądra problemu pokrycia wierzchołkowego, opisanych w podrozdziale~\ref{s_kernelization};
     \item \texttt{vc} --- pakiet zawierający implementacje algorytmów rozwiązujących problem pokrycia wierzchołkowego: podstawowego algorytmu rekurencyjnego opisanego pseudokodem~\ref{alg_VC1} w podrozdziale~\ref{s_vertex_cover_domain} oraz implementacji własnej metody opartej na drzewie poszukiwań z ograniczeniami, opisanej w podrozdziale~\ref{ss_internals_bnb};
     \item \texttt{matching} --- pakiet zawierający funkcje związane z poszukiwaniem skojarzeń w grafie, opisywane w podrozdziale~\ref{s_supplementary_algorithms}
     \item \texttt{containers} --- pakiet zawierający implementacje wykorzystywanych w pracy struktur danych nie udostępnionych przez biblioteki standardowe języka Go takich jak kolejka priorytetowa i stos;
-    \item \texttt{graphviz} --- pakiet stanowiącą ograniczoną do minimum w kontekście oferowanych funkcji bibliotekę opakowującą pakiet Graphviz, opisywany w podrozdziale~\ref{sss_internals_misc_graphviz};
+    \item \texttt{graphviz} --- pakiet stanowiącą ograniczoną do minimum w kontekście oferowanych funkcji bibliotekę opakowującą pakiet Graphviz, opisywany w podrozdziale~\ref{sss_internals_misc_graphviz};
     \item \texttt{utility} --- pakiet zawierający funkcje pomocnicze, niezwiązane konkretnie z żadnym aspektem domeny pracy, przydatne jednak podczas implementacji opisywanych koncepcji, jak na przykład wypisywanie dowolnych wartości do standardowego wyjścia w celu ułatwienia analizy wykonywania programu;
-    \item \texttt{main} --- pakiet stanowiący punkt wejściowy programu. Tutaj znajdują się testy logiczne oraz wydajnościowe stanowiące źródło danych do badań eksperymentalnych przeprowadzonych w rozdziale~\ref{results}.
+    \item \texttt{main} --- pakiet stanowiący punkt wejściowy programu. Tutaj znajdują się testy logiczne oraz wydajnościowe stanowiące źródło danych do badań eksperymentalnych przeprowadzonych w rozdziale~\ref{results}.
   \end{itemize}
 }
 \par{
   Organizacja kodu zorientowana na pakiety wykazuje kilka kluczowych zalet, z których główną jest luźne powiązanie komponentów odpowiadających za poszczególne aspekty domeny problemu oraz funkcje potrzebne do ich obsługi.
-  Dzięki temu o wiele łatwiej jest pisać testy jednostkowe, izolując poszczególne części logiki w celu weryfikacji poprawności ich działania. 
-  Bezpośrednio przekłada się to na rozszerzalność kodu dla osób wykorzystujących lub rozwijających go w przyszłości celem podjęcia nowych wyzwań z zakresu opisywanej w niniejszej pracy problematyki.
-  Kod otoczony siecią testów jednostkowych jest wytrzymały --- można poddawać go dowolnym modyfikacjom bez obaw o utracenie poprawności działania poszczególnych jego elementów.
-  Dodatkową zaletą płynącą z tego faktu jest zwiększona przejrzystość wynikająca z podziału całości logiki na jasno określone części o dużej czytelności oraz wartości.
+  Dzięki temu o wiele łatwiej jest pisać testy jednostkowe, izolując poszczególne części logiki w celu weryfikacji poprawności ich działania. 
+  Bezpośrednio przekłada się to na rozszerzalność kodu dla osób wykorzystujących lub rozwijających go w przyszłości celem podjęcia nowych wyzwań z zakresu opisywanej w niniejszej pracy problematyki.
+  Kod otoczony siecią testów jednostkowych jest wytrzymały --- można poddawać go dowolnym modyfikacjom bez obaw o utracenie poprawności działania poszczególnych jego elementów.
+  Dodatkową zaletą płynącą z tego faktu jest zwiększona przejrzystość wynikająca z podziału całości logiki na jasno określone części o dużej czytelności oraz wartości.
   Testy jednostkowe pełnią również rolę dokumentacji i przykładów zastosowania funkcji, a także oczekiwanych względem testowych danych wejściowych wyników.
 }

@@ -3,7 +3,7 @@
 \subsection{Metoda podziału i ograniczeń}\label{ss_branch_and_bound}
 \par{
   Metoda podziału i ograniczeń jest paradygmatem projektowania algorytmów rozwiązujących problemy optymalizacyjne z dziedziny kombinatoryki i optymalizacji dyskretnej.
-  Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu poszczególnych \emph{rozwiązań-kandydatów} przez przeszukiwanie pewnej \emph{przestrzeni stanów}, zdefiniowanej dziedziną danych wejściowych.
+  Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu poszczególnych \emph{rozwiązań-kandydatów} przez przeszukiwanie pewnej \emph{przestrzeni stanów}, zdefiniowanej dziedziną danych wejściowych.
   Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli na przykład całością przestrzeni poszukiwań lub zbiorem pustym, w zależności od natury rozwiązywanego problemu.
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
   podzbiory pełnego zbioru rozwiązań.
@@ -33,7 +33,7 @@
     \sum_{j=1}^{n}a_{ij}x_j \leq b_i; i =1, 2, \ldots, m\\
     x_j \geq 0, j=1, 2, \ldots, n
   \end{align*}
-  Nieco wygodniejszą~formą zapisu programów liniowych jest tak zwana \emph{postać~wektorowa}, zapisywana w następujący sposób.\\
+  Nieco wygodniejszą~formą zapisu programów liniowych jest tak zwana \emph{postać~wektorowa}, zapisywana w następujący sposób.\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
     z(x)={c^T}x
@@ -51,21 +51,19 @@
     \item $Ax \leq b, x\geq 0$ to ograniczenia określające wypukły wielokąt,
       na którym optymalizowana jest funkcja celu $c^{T}x$.
   \end{itemize}
-}
-\par{
-  w~celu otrzymania optymalnego rozwiązania problemu programowania liniowego
+  W~celu otrzymania optymalnego rozwiązania problemu programowania liniowego
   stosuje się jeden z~\emph{algorytmów programowania liniowego}.
   Do grupy algorytmów programowania liniowego zalicza się m.in.\ algorytm
-  simpleks lub algorytm ``na krzyż'' (ang. \emph{criss-cross}).
+  simpleks lub algorytm ,,na krzyż'' (ang. \emph{criss-cross}).
 }
 \par{
   Programowanie liniowe znajduje zastosowanie w~wielu dziedzinach nauki i~przemysłu. 
-  Przykładem może być biznes i~ekonomia, zarówno jak i szeroko pojęta inżynieria.
+  Przykładem może być ekonomia oraz szeroko pojęta inżynieria.
   Techniki programowania liniowego są użyteczne przy problemach związanych 
   z~planowaniem, trasowaniem, harmonogramowaniem, przydziałem zadań oraz
   projektowaniem.
-  Wynika to z~faktu, iż wiele rzeczywistych problemów w~dziedzinie badań
-  operacyjnych mających na celu optymalizację procesów decyzyjnych w~praktyce,
+  Wynika to z~tego, że wiele rzeczywistych problemów w~dziedzinie badań
+  operacyjnych, mających na celu optymalizację procesów decyzyjnych w~praktyce,
   może zostać wyrażone w~postaci zadań programowania liniowego.
   Wiele algorytmów rozwiązujących większe problemy optymalizacyjne wykorzystuje
   programowanie liniowe do rozwiązywania podproblemów częściowych jako zadania 
@@ -163,7 +161,7 @@
   Celem tego procesu jest ograniczenie wartości $n^{\prime}$ przez jak najmniejszą
   funkcję $f(k^{\prime})$.
   Graf $G^{\prime}$ nazywany jest \emph{jądrem} dziedziny problemu.
-  w~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
+  W~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
   $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$, o rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o liczebności $|C| \leq k$.
 }
 \par{
@@ -183,7 +181,7 @@
   \begin{enumerate}
     \item Redukcja przez usunięcie wierzchołków wysokiego stopnia, zaproponowana
       w~pracy~\cite{KernelizationAlgorithms04}.
-    \item Algorytm zaproponowany w~\cite{KernelizationAlgorithms04}, polegający
+    \item Algorytm zaproponowany w~pracy~\cite{KernelizationAlgorithms04}, polegający
       na redukcji opartej na programowaniu liniowym: formulacji programu
       całkowitoliczbowego i rozwiązanie jego liniowej relaksacji.
     \item Redukcja przez usunięcie koron grafu, zaproponowana

@@ -27,15 +27,15 @@ Należy zauważyć, iż wartość $O_{LP}$ (ang. \emph{Linear Programming, LP}) 
 liniowej jest zawsze ograniczona z dołu przez wartość $O_{\textnormal{IP}}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
 Co więcej, w~pracy~\cite{khuller02} udowodniono, że $O_{\textnormal{IP}} \leq 2*O_{LP}$.
-Zależność ta wynika z Twierdzenia Nemhausera--Trottera korzystającego
+Zależność ta wynika z twierdzenia Nemhausera--Trottera korzystającego
 z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
 $X_u \in \{0, \frac{1}{2}, 1\}$.
 
 Definiując $V_0 = \{u : X_u=0\}, V_{\frac{1}{2}}=\{u: X_u=\frac{1}{2}\},
-V_1=\{u: X_u=1\}$, Twierdzenie zapisać można jak następuje.
+V_1=\{u: X_u=1\}$, twierdzenie zapisać można jak następuje.
 
-\begin{theorem}[Pierwsze Twierdzenie Nemhausera--Trottera]\thlabel{nt_lp}
+\begin{theorem}[Pierwsze twierdzenie Nemhausera--Trottera]\thlabel{nt_lp}
   Istnieje optymalne rozwiązanie $O$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach.
   \begin{enumerate}[(a)]
     \item $O \subset V_1 \cup V_{\frac{1}{2}}$.
@@ -54,7 +54,7 @@ R&=\left\{u \in V | X_u<\frac{1}{2}\right\}.
 Istotą redukcji dziedziny problemu do jądra jest dołączenie wszystkich
 wierzchołków $u_P \in P$ do częściowego pokrycia wierzchołkowego $C$ oraz 
 usunięcie z~niego wszystkich wierzchołków $u_R \in R$.
-Graf wynikowy $G^\prime=(V^\prime, E^\prime)$ zaindukowany jest elementami $Q$: 
+Graf wynikowy $G^\prime=(V^\prime, E^\prime)$ indukowany jest elementami $Q$: 
 zbiorem wierzchołków $V^\prime=Q$ oraz zbiorem krawędzi\\$E^\prime=\{e=(v, w)| e \in E, \{v, w\} \in Q\}$.
 \begin{theorem}
   Istnieje optymalne pokrycie wierzchołkowe $C \in G$, dla którego spełnione są własności $P \subset C$ oraz $C \cap R = \emptyset$.
@@ -66,7 +66,7 @@ zbiorem wierzchołków $V^\prime=Q$ oraz zbiorem krawędzi\\$E^\prime=\{e=(v, w)
   Zachodzi $N(B) \cap Q = \emptyset$, co zapewnia właściwość 2 sformułowania, którego rozwiązaniem jest $O_{\textnormal{IP}}$.
 
   Jeżeli $|A|<|B|$, to zastąpienie zbioru $B$ przez $A$ w rozwiązaniu $O_{\textnormal{IP}}$ (ang. \emph{Integer Programming, IP}) spowodowałoby odkrycie przynajmniej jednej krawędzi grafu --- wykluczając tym samym tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
-  W prypadku gdy $|A|>|B|$, musiałaby istnieć możliwość otrzymania rozwiązania sformułowania liniowego lepszego niż $O_{\textnormal{IP}}$ przez ustanowienie $\epsilon &= \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
+  W prypadku gdy $|A|>|B|$, musiałaby istnieć możliwość otrzymania rozwiązania sformułowania liniowego lepszego niż $O_{\textnormal{IP}}$ przez ustanowienie $\epsilon = \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
   zastąpienie $\forall{u \in B}:X_u \leftarrow X_u + \epsilon$ oraz $\forall{v \in A}: X_v \leftarrow X_v -\epsilon$.
   Jest to niemożliwe, ponieważ wynik $O_{\textnormal{IP}}$ stanowi optymalne rozwiązanie sformułowania liniowego w~oparciu o~pierwsze twierdzenie Nemhausera--Trottera~(\ref{nt_lp}).
   Nasuwa się konkluzja, że jedyny przypadek z~jakim można mieć w tym miejscu do czynienia to $|A|=|B|$.

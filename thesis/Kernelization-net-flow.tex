@@ -3,7 +3,7 @@ Algorytm ten, zaproponowany w~pracy~\cite{KernelizationAlgorithms04}, opiera si�
 algorytmie użytym w~pracy~\cite{Niedermeier02} do udowodnienia następującego twierdzenia
 Nemhausera--Trottera.
 
-\begin{theorem}[Drugie Twierdzenie Nemhausera--Trottera]\thlabel{theorem_nt}
+\begin{theorem}[Drugie twierdzenie Nemhausera--Trottera]\thlabel{theorem_nt}
   Dla grafu $G=(V,E)$, gdzie $|V|=n$ i $|E|=m$, dwa rozłączne zbiory $C_0 \subseteq V$ oraz $V_0 \subseteq V$ mogą zostać wyznaczone w czasie $O(\sqrt{n}m)$ przy zachowaniu następujących własności.
   \begin{enumerate}
     \item Dla podgrafu $G[V_0]$ należy założyć istnienie pokrycia wierzchołkowego $D \subseteq V_0$.
@@ -16,8 +16,8 @@ Nemhausera--Trottera.
 Algorytm buduje graf dwudzielny $B$ na podstawie grafu $G$, wyznacza pokrycie wierzchołkowe $C_B$ grafu $B$ przez odnalezienie maksymalnego skojarzenia bigrafu $B$,
 a następnie przydziela wagi wierzchołkom $G$ w oparciu o przynależność do $C_B$.
 Implementacja algorytmu z~pracy~\cite{Niedermeier02} zrealizowana jest przez
-przekształcenie zbioru $B$ w egzemplarz problemu przepływu w sieci i rozwiązania tegoż za pomocą algorytmu Forda-Fulkersona.\footnote{Algorytm Forda-Fulkersona
-  zastosowany został w niniejszej pracy, oryginalna implementacja wykorzystuje w tym celu algorytm Dinica.}
+przekształcenie zbioru $B$ w egzemplarz problemu przepływu w sieci i rozwiązania tegoż za pomocą algorytmu Forda-Fulkersona\footnote{Algorytm Forda-Fulkersona
+  zastosowany został w niniejszej pracy, oryginalna implementacja wykorzystuje w tym celu algorytm Dinica.}.
 Złożoność czasowa algorytmu wynosi $O(\sqrt{n}m)$, zgodnie z~pierwszym twierdzeniem Nemhausera--Trottera. 
 Ponieważ w grafie może istnieć maksymalnie~$n^2$ krawędzi, można wyrazić tę złożoność~w~formie $O(n^{5/2})$.
 Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
@@ -70,7 +70,7 @@ Algorytm redukujący dziedzinę poszukiwań do jądra problemu pokrycia wierzcho
 Utworzenie grafu dwudzielnego jest wartościowe z punktu widzenia problemu
 pokrycia wierzchołkowego przez korelację maksymalnego dopasowania w grafie
 dwudzielnym z optymalnym pokryciem wierzchołkowym. 
-Zależność ta sformułowana została jako Twierdzenie K\"oniga.
+Zależność ta sformułowana została jako twierdzenie K\"oniga.
 \begin{theorem}[Twierdzenie K\"oniga]
   W dowolnym grafie dwudzielnym, liczba krawędzi zawarta w maksymalnym
   dopasowaniu jest równa rozmiarowi optymalnego pokrycia wierzchołkowego tego
@@ -86,7 +86,7 @@ Zależność ta sformułowana została jako Twierdzenie K\"oniga.
   w konsekwencji oznacza, że każda krawędź $f$ jest pokryta przez zbiór $C$.
   Zbiór $C$ stanowi zatem pokrycie wierzchołkowe.
   W przypadku 2 istnieją zbiory $S, R \subset T$ i $T \subset B$ oraz pokrycie wierzchołkowe $C=(A \setminus S \setminus R) \cup T$.
-  Każda krawędź $e=(x, y) \in E$ spełnia własność $x \in S$, $x \in R$ albo $x \in (A \setminus S \setminus R)$.
+  Każda krawędź $e=(x, y) \in E$ spełnia własność $x \in S$, $x \in R$ albo $x \in (A \setminus S \setminus R)$.
   Każdy z przypadków rozpatrywany jest osobno:
   \begin{itemize}
     \item \underline{$x \in S$}: Wierzchołek $x$ jest nieskojarzony --- jeżeli $M$ ma być skojarzeniem maksymalnym, to $y$ musi być skojarzony.

@@ -10,13 +10,12 @@
   $E^\prime=\{(v_0,v_1), (v_0,v_2), \ldots, (v_0,v_{k+1})\}$ należy pokryć każdą krawędź $e \in E^\prime$.
   Zakładając istnienie zbiorów \[V_1=\{v_0,v_1\}, V_2=\{v_0,v_2\}, \ldots,
   V_k=\{v_0,v_k\},V_{k+1}=\{v_0,v_{k+1}\}\]
-  zbiór $C_1=V_1 \cup V_2 \cup \ldots \cup V_k \cup V_{k+1}}$ stanowi pokrycie wierzchołkowe, jednak $|C_1| = k +1$.\\
+  zbiór $C_1=V_1 \cup V_2 \cup \ldots \cup V_k \cup V_{k+1}$ stanowi pokrycie wierzchołkowe, jednak $|C_1| = k +1$.\\
   Jeżeli $C_2=V_1 \cap V_2 \cap \ldots \cap V_k \cap V_{k+1} \neq \emptyset$, to zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$ o liczebności
   $|C_2|=1$.
   Gdyby usunąć wierzchołek należący do zbioru $C_2$, $C_3=V_1 \oplus V_2 \oplus \ldots \oplus V_k \oplus V_{k+1}$ nadal
   również stanowi pokrycie wierzchołkowe, jednak $|C_3|=k$.
-  Dowolny zbiór $C_4=C_3 \setminus \{v\}$ nie spełnia jednak warunków pokrywy
-  wierzchołkowej $G^\prime$.
+  Dowolny zbiór $C_4=C_3 \setminus \{v\}$ nie spełnia jednak warunków pokrycia wierzchołkowego $G^\prime$.
   Na tej podstawie stwierdzić można, iż dowolne pokrycie wierzchołkowe grafu $G$ 
   $C$ o rozmiarze $|C| \leq k$ wykluczające wierzchołek $v_0$ musi zawierać całe jego
   sąsiedztwo. Pokrycie to nie może być jednak optymalna dla $k > 1$.
@@ -40,7 +39,7 @@ to, że każdy wierzchołek $v \in V^\prime$ jest stopnia $3 \leq d(v) \leq k^\p
 
 \begin{theorem}
   Jeżeli $G^\prime$ stanowi graf o~pokryciu wierzchołkowym rozmiaru $k^\prime$, który nie zawiera wierzchołka $v$ stopnia $d(v) > k^\prime \lor d(v) > 3$, to
-  wtedy zawiera on co najwyżej $\frac{k^\prime^2}{3} + k^\prime$ wierzchołków.
+  wtedy zawiera on co najwyżej $\frac{k^{\prime2}}{3} + k^\prime$ wierzchołków.
 \end{theorem}
 \begin{bproof}
   Przyjąć należy $C$ jako pokrycie wierzchołkowe grafu $G^\prime$ rozmiaru $|C|=k^\prime$.
@@ -54,7 +53,7 @@ to, że każdy wierzchołek $v \in V^\prime$ jest stopnia $3 \leq d(v) \leq k^\p
   Liczba krawędzi pokrytych przez zbiór $C$ nie może być mniejsza niż $|F|$ --- nie
   może być również większa niż $k^\prime|C|$, ponieważ po wykonaniu
   przetwarzania wstępnego oraz procedury usuwania wierzchołków wysokiego stopnia spełniona musi być własność $\forall_{v \in V}{|N(v)|\leq~k^\prime}$.
-  Biorąc pod uwagę, że $|C|=k^\prime$, można stwierdzić, iż zbiór $F$ jest rozmiaru ${3(|V^\prime|-k^\prime)\leq|F|\leq~k^\prime^2}$, co daje ${|V^\prime|\leq\frac{k^\prime^2}{3}+k^\prime}$.
+  Biorąc pod uwagę, że $|C|=k^\prime$, można stwierdzić, iż zbiór $F$ jest rozmiaru ${3(|V^\prime|-k^\prime)\leq|F|\leq~k^{\prime2}}$, co daje ${|V^\prime|\leq\frac{k^{\prime2}}{3}+k^\prime}$.
 \end{bproof}
 
 

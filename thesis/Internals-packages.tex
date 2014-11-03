@@ -1,10 +1,10 @@
 \subsection{Opis wybranych pakietów}\label{ss_internals_important_packages}
 \subsubsection{\textbf{Pakiet \texttt{graph}}}
 \par{
-  W obliczu charakterystyki pracy to znaczy podjęcia się analizy i implementacji szerokiej gamy technik związanych z parametryzacją złożoności obliczeniowej pokrycia wierzchołkowego, kwestią wymagającą uwagi jest sposób reprezentacji grafu.
-  W związku ze zróżnicowaniem podejść do problemu, reprezentacja struktur grafowych za pomocą wyłącznie macierzy incydencji lub też listy incydencji okazuje się nie tyle niewystarczająca, co nieoptymalna.
-  Podczas gdy niektóre z technik operują na grafie przede wszystkim za pomocą wierzchołków (głównie metody oparte na sformułowaniu problemu jako egzemplarza przepływu w sieci), inne zdecydowanie traktują graf jako zbiór krawędzi pomiędzy pewnymi punktami.
-  Jako iż jednym z pomniejszych celów pracy jest stworzenie ogólnej platformy użytecznej do testowania rozwiązań różnych problemów związanych z grafami, zdecydowano się zaimplementować strukturę grafu jako reprezentację zawierającą zarówno macierz incydencji jak i listę krawędzi.
+  W obliczu charakterystyki pracy to znaczy podjęcia się analizy i implementacji szerokiej gamy technik związanych z parametryzacją złożoności obliczeniowej pokrycia wierzchołkowego, kwestią wymagającą uwagi jest sposób reprezentacji grafu.
+  W związku ze zróżnicowaniem podejść do problemu, reprezentacja struktur grafowych za pomocą wyłącznie macierzy incydencji lub też listy incydencji okazuje się nie tyle niewystarczająca, co nieoptymalna.
+  Podczas gdy niektóre z technik operują na grafie przede wszystkim za pomocą wierzchołków (głównie metody oparte na sformułowaniu problemu jako egzemplarza przepływu w sieci), inne zdecydowanie traktują graf jako zbiór krawędzi pomiędzy pewnymi punktami.
+  Jako iż jednym z pomniejszych celów pracy jest stworzenie ogólnej platformy użytecznej do testowania rozwiązań różnych problemów związanych z grafami, zdecydowano się zaimplementować strukturę grafu jako reprezentację zawierającą zarówno macierz incydencji jak i listę krawędzi.
 }
 \par{
   \begin{lstlisting}[language=go, caption=Typy reprezentujące wierzchołki grafu.]
@@ -15,7 +15,7 @@
   Zabieg ten pozwala na zastosowanie zwykłych tablic w miejsce tablic haszujących, co pozwala na obniżenie złożoności obliczeniowej związanych z takimi strukturami operacji.
 
   Wartości wierzchołków często występują obok liczb całkowitych, pełniących zazwyczaj w tym kontekście rolę indeksów tablic.
-  Aby łatwiej było odróżnić egzemplarze wierzchołków od zwykłych liczb całkowitych, przyjęto konwencję numeracji wartości wierzchołków grafu od 1.
+  Aby łatwiej było odróżnić egzemplarze wierzchołków od zwykłych liczb całkowitych, przyjęto konwencję numeracji wartości wierzchołków grafu od 1.
   \begin{lstlisting}[language=go, caption=Typy reprezentujące krawędzie grafu.]
   type Edge struct {
     From      Vertex
@@ -27,7 +27,7 @@
   \end{lstlisting}
 
   Krawędzie grafu nie są reprezentowane idiomatycznie, to znaczy jako pary wierzchołków stanowiących ich zakończenia.
-  Wynika to z praktycznej potrzeby związanej ze zwijaniem krawędzi w ramach operacji przetwarzania wstępnego (podrozdział~\ref{Section_preprocessing}), działania algorytmu Edmondsa (podrozdział~\ref{ss_edmonds_blossom}) oraz algorytmu Chen, Kanj, Xia (podrozdział~\ref{s_ckx}).
+  Wynika to z praktycznej potrzeby związanej ze zwijaniem krawędzi w ramach operacji przetwarzania wstępnego (podrozdział~\ref{Section_preprocessing}), działania algorytmu Edmondsa (podrozdział~\ref{ss_edmonds_blossom}) oraz algorytmu Chena, Kanji oraz Xia (podrozdział~\ref{s_ckx}).
   Praktyka pokazuje, iż znacznie łatwiejsze i bardziej wydajne jest oznaczanie krawędzi grafu jako usuniętych zamiast właściwego ich usuwania --- głównie ze względu na to, że w większości przypadków zostają one w późniejszym momencie przywrócone do grafu na przykład w celu określenia pełnej postaci odnalezionej ścieżki powiększającej.
 
   \begin{lstlisting}[language=go, caption=Struktura reprezentująca graf.]
@@ -45,12 +45,12 @@
   }
   \end{lstlisting}
 
-  Podczas implementacji rozwiązań opisywanych w niniejszej pracy problemów napotkano na trzy podstawowe sposoby poruszania się po grafie.
+  Podczas implementacji rozwiązań opisywanych w niniejszej pracy problemów napotkano na trzy podstawowe sposoby poruszania się po grafie.
   Każdy z tych sposobów znajduje odzwierciedlenie w implementacji struktury --- istnieje metoda realizująca dany sposób przy zachowaniu najmniejszej możliwej złożoności dla grafu $G=(V, E)$: $O(1)$, $O(|V|)$, lub $O(|E|)$.
   \\\\\underline{Iteracja po wszystkich wierzchołkach}\\
   \par{
-      Metoda \textit{\lstinline{ForAllVertices(action func(v Vertex, chan<- done bool))}} iteruje po kolekcji \textit{\lstinline{Vertices}}, zapewniając  podstawową złożoność operacji na poziomie $O(|V|)$, z wyłączeniem złożoności operacji realizowanych przez funkcję \textit{\lstinline{action}}. Kanał \textit{\lstinline{done}} służy do informowania o potrzebie przerwania iteracji.\\
-      Metody \textit{\lstinline{ForAllVerticesOfDegree(degree int, action func(v Vertex, chan<- done bool))}} oraz \textit{\lstinline{ForAllVerticesOfDegreeGeq(degree int, action func(v Vertex, chan<- done bool))}} korzystają z metody \textit{\lstinline{ForAllVertices}}, nakładając dodatkowe ograniczenia związane ze stopniem wierzchołków, które mają zostać uwzględnione w iteracjach.
+      Metoda \textit{\lstinline{ForAllVertices(action func(v Vertex, chan<- done bool))}} iteruje po kolekcji \textit{\lstinline{Vertices}}, zapewniając  podstawową złożoność operacji na poziomie $O(|V|)$, z wyłączeniem złożoności operacji realizowanych przez funkcję \textit{\lstinline{action}}. Kanał \textit{\lstinline{done}} służy do informowania o potrzebie przerwania iteracji.\\
+      Metody \textit{\lstinline{ForAllVerticesOfDegree(degree int, action func(v Vertex, chan<- done bool))}} oraz \textit{\lstinline{ForAllVerticesOfDegreeGeq(degree int, action func(v Vertex, chan<- done bool))}} korzystają z metody \textit{\lstinline{ForAllVertices}}, nakładając dodatkowe ograniczenia związane ze stopniem wierzchołków, które mają zostać uwzględnione w iteracjach.
   }
   \\\\\underline{Iteracja po wszystkich krawędziach}\\\
   \par{
@@ -58,21 +58,21 @@
   }
   \\\\\underline{Uzyskiwanie dostępu do krawędzi pomiędzy danymi wierzchołkami}\\
   \par{
-      Metoda \textit{\lstinline{GetEdgeByCoordinates(from, to int) *Edge}} korzysta z macierzy incydencji \textit{\lstinline{neighbors}}, pobierając z niej krawędź łączącą wierzchołki, których wartości skonwertowane do liczb całkowitych odpowiadają podanym współrzędnym.
+      Metoda \textit{\lstinline{GetEdgeByCoordinates(from, to int) *Edge}} korzysta z macierzy incydencji \textit{\lstinline{neighbors}}, pobierając z niej krawędź łączącą wierzchołki, których wartości skonwertowane do liczb całkowitych odpowiadają podanym współrzędnym.
 
       Przy okazji omawiania tejże metody należy zwrócić uwagę na następujące dwie kwestie.
       \begin{enumerate}
         \item Macierz incydencji \textit{\lstinline{neighbors}} zamiast wartości logicznych typu \textit{\lstinline{bool}} zawiera wskaźniki na krawędzie istniejące w kolekcji \textit{\lstinline{Edges}}.
         Rozwiązanie to podyktowane jest znów praktyką --- w zdecydowanej większości przypadków fakt istnienia danej krawędzi wiązał się z potrzebą wykonania działań z nią związanych, gdzie przechowywanie wskaźników na krawędzie pozwoliło na uniknięcie dodatkowych jawnych odwołań do kolekcji \textit{\lstinline{Edges}}.
-        \item W związku z faktem, iż w ramach niniejszej pracy podjęto się analizy rozwiązań wersji problemów dotyczących grafu o nieskierowanych krawędziach, macierz \textit{\lstinline{neighbors}} zawiera wskaźnik do tej samej krawędzi zarówno dla współrzędnych wprost $(x, y)$, jak i zestawu transponowanego $(y, x)$.
+        \item W związku z faktem, iż w ramach niniejszej pracy podjęto się analizy rozwiązań wersji problemów dotyczących grafu o nieskierowanych krawędziach, macierz \textit{\lstinline{neighbors}} zawiera wskaźnik do tej samej krawędzi zarówno dla współrzędnych wprost $(x, y)$, jak i zestawu transponowanego $(y, x)$.
         Rozwiązanie takie zostało przyjęte, mimo pewnego narzutu zajętości pamięci, za pożądane głównie ze względu na spójność właściwej struktury grafu z jego logiczną reprezentacją.
-        Dodatkowo, zachowanie takiego rozłożenia wskaźników pomaga w bardziej zrozumiały sposób posługiwać się strukturą sieci przepływowej.
+        Dodatkowo, zachowanie takiego rozłożenia wskaźników pomaga w bardziej zrozumiały sposób posługiwać się strukturą sieci przepływowej.
       \end{enumerate}
   }
-  \\\\\underline{Operacje wykonywane na zbiorze wierzchołków sąsiednich}\\
+  \underline{Operacje wykonywane na zbiorze wierzchołków sąsiednich}\\
   \par{
     Bardzo szeroki zakres działań implementowanych algorytmów w grafie $G=(V,E)$ opiera się na operacjach wykonywanych na sąsiedztwie wierzchołka $N(v); v \in V$.
-    Zdecydowanie najczęściej realizowana jest iteracja po wierzchołkach sąsiednich, na drugim miejscu znajdują się operacje wymagające uzyskania sąsiedztwa jako kolekcji lub zbioru w rozumieniu struktury danych.
+    Zdecydowanie najczęściej realizowana jest iteracja po wierzchołkach sąsiednich, na drugim miejscu znajdują się operacje wymagające uzyskania sąsiedztwa jako kolekcji lub zbioru w rozumieniu struktury danych.
     W tym celu bardzo pomocna okazuje się macierz incydencji.
     Dla pierwszego przypadku została zaimplementowana metoda \textit{\lstinline{ForAllNeigbors(v Vertex, action func(edge *Edge, done chan<- bool))}}, oparta na rozumowaniu analogicznym do tego, na którym oparto metodę \textit{\lstinline{ForAllEdges}}, jednak iterująca po danym rzędzie macierzy \textit{\lstinline{neighbors}}, indeksowanym przekształconą do liczby całkowitej wartością wierzchołka $v$ z ograniczeniem uwzględniania w iteracjach wyłącznie istniejących wskaźników (to znaczy \textit{\lstinline{edge != nil}}).
 
@@ -82,33 +82,26 @@
     Wszystkie opisane metody związane z operacjami na sąsiedztwie wierzchołka $v$ zachowują złożoność $O(|N(v)|)$ z wyłączeniem złożoności funkcji \textit{\lstinline{action}}.
   }
 }
-\subsubsection{\textbf{Pakiet \texttt{kernelization} --- algorytm Chen, Kanj, Xia}}
-\label{sss_internals_ckx}
-\par{
-  Algorytm Chen, Kanj, Xia, rozwiązujący problem pokrycia wierzchołkowego, opisany w~podrozdziale~\ref{s_ckx} przed każdym rozgałęzieniem wykorzystuje proste, nierozgałęziające się funkcje redukujące przestrzeń poszukiwań przez usunięcie z niej wierzchołków, o których przynależności do optymalnego pokrycia wierzchołkowego zadecydować można bez posługiwania się krotkami.
-  Pierwszą z tych funkcji stanowi strukturyzacja, postępująca zgodnie z pseudokodem~\ref{alg_ckx_struction}.
-}
-
 \subsubsection{\textbf{Pakiet \texttt{vc} --- algorytm \texttt{BranchAndBound}}}
 \label{ss_internals_bnb}
 \par{
   W celu weryfikacji poprawności działania implementacji koncepcji związanych z redukcją dziedziny do jądra problemu pokrycia wierzchołkowego opisanych w podrozdziale~\ref{s_kernelization} wymagane jest zaimplementowanie algorytmu rozwiązującego sam problem pokrycia wierzchołkowego.
 
   W podrozdziale~\ref{s_vertex_cover_domain} przytoczono prosty, rekurencyjny algorytm siłowy służący do tego celu.
-  Jednak w związku z prominencją koncepcji drzewa poszukiwań z ograniczeniami w dziedzinie parametrycznej złożoności obliczeniowej oraz zainteresowaniem technikaliami tej koncepcji, podjęto decyzję o stworzeniu własnego algorytmu na niej opartego, o potencjalnie mniejszej złożoności obliczeniowej od wersji naiwnej przez podążanie wyłącznie za obiecującymi gałęziami poszukiwań.
+  Jednak w związku z prominencją koncepcji drzewa poszukiwań z ograniczeniami w dziedzinie parametrycznej złożoności obliczeniowej oraz zainteresowaniem technikaliami tej koncepcji, podjęto decyzję o stworzeniu własnego algorytmu na niej opartego, o potencjalnie mniejszej złożoności obliczeniowej od wersji naiwnej przez podążanie wyłącznie za obiecującymi gałęziami poszukiwań.
 
   \begin{definition}
     \emph{Rozwiązanie kandydackie} w grafie $G=(V, E)$ określa zbiór wierzchołków $C=\{v_1, v_2, \ldots\, v_p\} \neq \emptyset$, gdzie $C \subseteq V$, spełniający warunki częściowego pokrycia wierzchołkowego.
   \end{definition}
   \begin{definition}\thlabel{def_bnb_promising_solution}
-    W grafie $G=(V,E)$ dla drzewa poszukiwań $T$ z pewnym najlepszym rozwiązaniem kandydackim $r_b$ rozwiązanie \emph{obiecujące} to rozwiązanie kandydackie $r$ spełniające jedną z następujących własności w podanej kolejności.
+    W grafie $G=(V,E)$ dla drzewa poszukiwań $T$ z pewnym najlepszym rozwiązaniem kandydackim $r_b$ rozwiązanie \emph{obiecujące} to rozwiązanie kandydackie $r$ spełniające jedną z następujących własności w podanej kolejności.
     \begin{enumerate}
       \item Liczba krawędzi w zbiorze $E$ pokrytych przez rozwiązanie $r$ jest większa niż liczba krawędzi w zbiorze $E$ pokrytych przez obecne najlepsze rozwiązanie $r_b$.
       \item Liczba krawędzi w zbiorze $E$ pokrytych przez rozwiązanie $r$ jest równa liczbie krawędzi w zbiorze $E$ pokrytych przez obecne najlepsze rozwiązanie $r_b$ i liczebność rozwiązania $|r|$ jest mniejsza od liczebności obecnego najlepszego rozwiązania $|r_b|$.
     \end{enumerate}
   \end{definition}
   \begin{definition}
-     W grafie $G=(V, E)$ dla drzewa poszukiwań $T$ z pewnym obiecującym rozwiązaniem $r_b$ \emph{obiecująca gałąź} $t \subseteq T$ zawiera obiecujące rozwiązanie $r_b$.
+     W grafie $G=(V, E)$ dla drzewa poszukiwań $T$ z pewnym obiecującym rozwiązaniem $r_b$ \emph{obiecująca gałąź} $t \subseteq T$ zawiera obiecujące rozwiązanie $r_b$.
   \end{definition}
 }
 \par{
@@ -158,6 +151,6 @@
   Dzięki zastosowaniu warunków~\algref{alg_VC2}{bnb_promising_check1} oraz~\algref{alg_VC2}{bnb_promising_check2} w momencie odnalezienia rozwiązania -- kandydata oferującego lepsze parametry niż najlepsze odnalezione dotychczas rozwiązanie, ustanowiona (lub zmodyfikowana) zostaje granica wartości funkcji celu.
   Rozwiązania oferujące lokalne maksimum wartości funkcji celu gorsze od ustalonej granicy zostają automatycznie odrzucone jeżeli zostały umieszczone w kolejce priorytetowej przed ustaleniem nowej granicy wartości funkcji celu (wiersz~\algref{alg_VC2}{bnb_promising_check1}).
   Dodatkowo w celu zmniejszenia liczby rozwiązań -- kandydatów przechowywanych w kolejce podobna weryfikacja realizowana jest w wierszu~\algref{alg_VC2}{bnb_promising_check2}, przy czym rozwiązania oferujące gorsze maksimum lokalne funkcji celu nie zostają uwzględnione w dalszych poszukiwaniach.
-  Drogą testów wydajnościowych na różnych rodzajach grafów --- a w szczególności na grafach pełnych $G=(V, E)$, gdzie $|E|=|V|^2$ --- udało się wykazać, że algorytm w zdecydowanej większości przypadków musi rozpatrzyć ok. 15\% rozwiązań kandydackich w celu udzielenia dokładnej odpowiedzi.
+  Drogą testów wydajnościowych na różnych rodzajach grafów --- a w szczególności na grafach pełnych $G=(V, E)$, gdzie $|E|=|V|^2$ --- udało się wykazać, że algorytm w zdecydowanej większości przypadków musi rozpatrzyć ok. 15\% rozwiązań kandydackich w celu udzielenia dokładnej odpowiedzi.
   Mimo, że zapewnia to pewną poprawę względem wariantu siłowego, przedstawiony algorytm nie może stanowić substytutu dla opisywanych w rozdziale~\ref{Chapter_Domain} technik ze względu na wciąż wykładniczą pesymistyczną złożoność obliczeniową.
 }
