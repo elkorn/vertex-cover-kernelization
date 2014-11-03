@@ -1,63 +1,63 @@
-\chapter{Podsumowanie i kierunki dalszych prac}
+\chapter{Podsumowanie i~kierunki dalszych prac}
 \label{summary}
-\section*{Proponowane usprawnienia i kierunki rozwoju}\label{s_improvements}
+\section*{Proponowane usprawnienia i~kierunki rozwoju}\label{s_improvements}
 \addtocounter{section}{1}
   \subsubsection{\textbf{Pełna implementacja algorytmu Chena, Kanji oraz Xia.}}\label{sss_problems_ckx}
 
-  Ze względu na wysoką złożoność analityczną algorytmu Chena, Kanji oraz Xia nie udało się zaimplementować wszystkich elementóœ składowych wymaganych przez główny algorytm w stopniu pozwalającym na przeprowadzenie badań eksperymentalnych z jego wykorzystaniem.
-  Głównym problemem był dobór NT--dekompozycji, którą posługuje się funkcja \textsc{Zwijanie}, działająca zgodnie z pseudokodem~\ref{alg_ckx_gf}.
-  Problem ten polegał na zastosowaniu dekompozycji wyznaczającej korony w grafie, zaimplementowanej zgodnie z wytycznymi opisywanymi w pracy~\cite{KernelizationAlgorithms04} i działająca zgodnie z pseudokodem~\ref{alg_findCrown} w kontekście odszukiwania pseudokoron.
+  Ze względu na wysoką złożoność analityczną algorytmu Chena, Kanji oraz Xia nie udało się zaimplementować wszystkich elementów składowych wymaganych przez główny algorytm w~stopniu pozwalającym na przeprowadzenie badań eksperymentalnych z~jego wykorzystaniem.
+  Głównym problemem był dobór NT--dekompozycji, którą posługuje się funkcja \textsc{Zwijanie}, działająca zgodnie z~pseudokodem~\ref{alg_ckx_gf}.
+  Problem ten polegał na zastosowaniu dekompozycji wyznaczającej korony w~grafie, zaimplementowanej zgodnie z~wytycznymi opisywanymi w~pracy~\cite{KernelizationAlgorithms04} i działająca zgodnie z~pseudokodem~\ref{alg_findCrown} w kontekście odszukiwania pseudokoron.
   Proponowane jest zbadanie wpływu innego rodzaju NT--dekompozycji na poprawność działania algorytmu \textsc{Zwijanie}.
-  Kod źródłowy zawiera kilka przykładowych implementacji NT--dekompozycji uzyskiwanych w oparciu na rozwiązaniu sformułowania problemu jako zadania programowania liniowego.
+  Kod źródłowy zawiera kilka przykładowych implementacji NT--dekompozycji uzyskiwanych w~oparciu na rozwiązaniu sformułowania problemu jako zadania programowania liniowego.
 
-  Usprawnienie logiki związanej z funkcją \textsc{Zwijanie} spowoduje, że implementacja algorytmu Chena, Kanji oraz Xia będzie bardziej wydajny.
-  Dalsze usprawnienia będą dotyczyć części algorytmu zajmującej się utrzymywaniem kolejki priorytetowej struktur, która usuwa krotki o wartości $q = 0$ oraz wykonuje algorytm siłowy w sytuacji, gdy algorytm główny dociera do punktu, gdzie zachodzi $k \leq 7$.
+  Usprawnienie logiki związanej z~funkcją \textsc{Zwijanie} spowoduje, że implementacja algorytmu Chena, Kanji oraz Xia będzie bardziej wydajna.
+  Dalsze usprawnienia będą dotyczyć części algorytmu zajmującej się utrzymywaniem kolejki priorytetowej struktur, która usuwa krotki o~wartości $q = 0$ oraz wykonuje algorytm siłowy w~sytuacji, gdy algorytm główny dociera do punktu, gdzie zachodzi $k \leq 7$.
 
-  \subsubsection{\textbf{Badania eksperymentalne dla różnych implementacji procedur składowych algorytmu Chena, Kanji oraz Xia pominiętych w pracy źródłowej.}}
+  \subsubsection{\textbf{Badania eksperymentalne dla różnych implementacji procedur składowych algorytmu Chena, Kanji oraz Xia pominiętych w~pracy źródłowej.}}
 
-  Omawiany algorytm jest skomplikowany i żmudny w analizie.
+  Omawiany algorytm jest skomplikowany i żmudny w~analizie.
   Duża złożoność esencjonalna problemu prowadzi do zastosowania pewnych skrótów myślowych w~treści pracy~\cite{ImprovedBounds10}.
-  Poczynione przez autorów założenia mówiące, że algorytm niejawnie wykonuje pewne operacji znacząco utrudniają implementację, a w szczególności implementację zoptymalizowaną.
-  Operacje te w praktyce są niebagatelnymi kwestiami i stanowią pole do dalszych badań i optymalizacji pozwalających na poprawę średniej złożoności obliczeniowej stworzonego rozwiązania.
+  Poczynione przez autorów założenia mówiące, że algorytm niejawnie wykonuje pewne operacji znacząco utrudniają implementację, a w~szczególności implementację zoptymalizowaną.
+  Operacje te w~praktyce są niebagatelnymi kwestiami i~stanowią pole do dalszych badań i optymalizacji pozwalających na poprawę średniej złożoności obliczeniowej stworzonego rozwiązania.
 
-  \subsubsection{\textbf{Poprawa wydajności czasowej implementacji techniki redukcji dziedziny w oparciu o algoretm przepływu w sieci.}}
+  \subsubsection{\textbf{Poprawa wydajności czasowej implementacji techniki redukcji dziedziny w~oparciu o~algoretm przepływu w~sieci.}}
 
-  Pozytywny wpływ technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jest widoczny i zaświadcza o poprawności implementacji.
-  Uzyskane wyniki testów wydajnościowych pokazują jednak, że implementacje opisywanych technik zrealizowane w ramach niniejszej pracy wymagają optymalizacji w celu uzyskania wydajności bliższej teoretycznej.
-  W szczególności implementacja algorytmu redukcji opartej o przepływ w sieci boryka się z problemami wydajnościowymi w związku z zastosowanym sposobem wyznaczania zbioru $R$, zawierającego wierzchołki osiągalne ze zbioru $S$ przez $M$-przemienne ścieżki.
-  Proponowane jest usprawnienie tej części kodu przez zastosowanie odpowiedniego, ogólnie przyjętego za efektywny i szybki algorytmu pozwalającego określić osiągalność wierzchołka w grafie począwszy od danego innego wierzchołka.
+  Pozytywny wpływ technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jest widoczny i~zaświadcza o~poprawności implementacji.
+  Uzyskane wyniki testów wydajnościowych pokazują jednak, że implementacje opisywanych technik zrealizowane w~ramach niniejszej pracy wymagają optymalizacji w~celu uzyskania wydajności bliższej teoretycznej.
+  W szczególności implementacja algorytmu redukcji opartej o~przepływ w~sieci boryka się z problemami wydajnościowymi w~związku z~zastosowanym sposobem wyznaczania zbioru $R$, zawierającego wierzchołki osiągalne ze zbioru $S$ przez $M$-przemienne ścieżki.
+  Proponowane jest usprawnienie tej części kodu przez zastosowanie odpowiedniego, ogólnie przyjętego za efektywny i~szybki algorytmu pozwalającego określić osiągalność wierzchołka w~grafie począwszy od danego innego wierzchołka.
 
   \subsubsection{\textbf{Poprawa złożoności pamięciowej.}}
 
-  Cel pracy stanowiła analiza i implementacja omówionych algorytmów.
+  Cel pracy stanowiła analiza i~implementacja omówionych algorytmów.
   Zaproponowane rozwiązania mogą być zoptymalizowane również w kontekście zużycia pamięci.
-  Przedkładając czytelność kodu nad zużycie pamięci, uwagę skupiono na odzwierciedleniu wyników pośrednich w postaci zmiennych oraz jak najłatwiejszym korzystaniu ze struktur danych, na których opierają się implementowane techniki.
-  W załączonej implementacji wszelkie struktury inicjowane są z maksymalną pesymistyczną pojemnością względem analizowanego grafu, nie biorąc pod uwagę na przykład wierzchołków czy krawędzi usuniętych z grafu.
+  Przedkładając czytelność kodu nad zużycie pamięci, uwagę skupiono na odzwierciedleniu wyników pośrednich w~postaci zmiennych oraz jak najłatwiejszym korzystaniu ze struktur danych, na których opierają się implementowane techniki.
+  W załączonej implementacji wszelkie struktury inicjowane są z maksymalną pesymistyczną pojemnością względem analizowanego grafu, nie biorąc pod uwagę na przykład wierzchołków czy krawędzi usuniętych z~grafu.
   Proponowaną optymalizacją jest stworzenie wersji kodu oszczędniej korzystającej ze zmiennych, a także bardziej konserwatywnie rezerwującej potrzebną pamięć.
-  Na uwadze warto mieć również wykorzystanie przez język Go mechanizmu odśmiecania pamięci --- implementacje algorytmów muszą być skonstruowane w sposób sprzyjający jak najszybszym 
+  Na uwadze warto mieć również wykorzystanie przez język Go mechanizmu odśmiecania pamięci --- implementacje algorytmów muszą być skonstruowane w~sposób sprzyjający jak najszybszym 
 
-  \subsubsection{\textbf{Zbadanie wpływu różnych wariantów NT--dekompozycji na szybkość działania i efektywność zaimplementowanych algorytmów.}}
+  \subsubsection{\textbf{Zbadanie wpływu różnych wariantów NT--dekompozycji na szybkość działania i~efektywność zaimplementowanych algorytmów.}}
 
-  Zastosowane w niniejszej pracy uściślenie operacji NT--redukcji nie jest oparte bezpośrednio na rozwiązaniu zadania programowania liniowego, lecz na iteracyjnym poruszaniu się po skojarzeniu grafu w celu wyznaczenia korony.
+  Zastosowane w~niniejszej pracy uściślenie operacji NT--redukcji nie jest oparte bezpośrednio na rozwiązaniu zadania programowania liniowego, lecz na iteracyjnym poruszaniu się po skojarzeniu grafu w~celu wyznaczenia korony.
   Badania eksperymentalne uwidoczniły pewne problemy spowodowane tym podejściem.
   Istnieje potencjał poprawy efektywności algorytmów redukujących dziedzinę w bezpośrednim oparciu na koncepcji NT--dekompozycji.
   W ramach niniejszej pracy zaimplementowano kilka przykładowych NT--dekompozycji (NT--dekompozycja wg. Bar-Yehudy oraz NT--dekompozycja wg. J.F. Bussa).
-  Jako kierunek dalszych prac proponowane jest przeprowadzenie badań eksperymentalnych wpływu zastosowania poszczególnych NT--dekompozycji w algorytmie redukcji koron oraz algorytmie Chena, Kanji oraz Xia na efektywność zawężania dziedziny grafu.
+  Jako kierunek dalszych prac proponowane jest przeprowadzenie badań eksperymentalnych wpływu zastosowania poszczególnych NT--dekompozycji w~algorytmie redukcji koron oraz algorytmie Chena, Kanji oraz Xia na efektywność zawężania dziedziny grafu.
 
-\section*{Podsumowanie i wnioski}
+\section*{Podsumowanie i~wnioski}
 \addtocounter{section}{1}
-  W~ramach niniejszej pracy omówiono oraz zaimplementowano pięć algorytmów służących do redukcji złożoności czasowej rozwiązania problemu pokrycia wierzchołkowego grafu. Przeprowadzono badania szybkości działania dla czterech z nich.
-  Przypadki testowe obejmowały wyznaczanie pokrycia wierzchołkowego i działanie algorytmów redukcji dziedziny do jądra problemu na niezmodyfikowanym grafie wejściowym oraz na grafie poddanym uprzedniemu wykonaniu algorytmu przetwarzania wstępnego.
+  W~ramach niniejszej pracy omówiono oraz zaimplementowano pięć algorytmów służących do redukcji złożoności czasowej rozwiązania problemu pokrycia wierzchołkowego grafu. Przeprowadzono badania szybkości działania dla czterech z~nich.
+  Przypadki testowe obejmowały wyznaczanie pokrycia wierzchołkowego i~działanie algorytmów redukcji dziedziny do jądra problemu na niezmodyfikowanym grafie wejściowym oraz na grafie poddanym uprzedniemu wykonaniu algorytmu przetwarzania wstępnego.
 
-  W oparciu o wyniki badań eksperymentalnych określenie najszybszego spośród zaimplementowanych algorytmów nie jest możliwe.
-  Głównym powodem jest skupienie się na poprawności czytelności stworzonych rozwiązań, pozostawiając szybkość i zużycie pamięci na drugim planie, co opisano w podrozdziale~\ref{s_improvements}.
-  Algorytm rozwiązujący przeformułowanie problemu jako zadania przepływu w sieci wykazuje największą efektywność w redukcji dzedziny --- czas wyznaczania pokrycia wierzchołkowego w grafie zredukowanym omawianą techniką był najniższy spośród wszystkich metod dla większości przypadków testowych.
-  Pomimo koncepcyjnej poprawności i wysokiej efektywności w redukcji dziedziny, czas jej działania w porównaniu do pozostałych metod jest znacznie dłuższy, co oznacza, że stworzone w ramach niniejszej pracy rozwiązanie nie jest zalecane do użytku praktycznego.
+  W oparciu o~wyniki badań eksperymentalnych określenie najszybszego spośród zaimplementowanych algorytmów nie jest możliwe.
+  Głównym powodem jest skupienie się na poprawności czytelności stworzonych rozwiązań, pozostawiając szybkość i zużycie pamięci na drugim planie, co opisano w~podrozdziale~\ref{s_improvements}.
+  Algorytm rozwiązujący przeformułowanie problemu jako zadania przepływu w~sieci wykazuje największą efektywność w redukcji dzedziny --- czas wyznaczania pokrycia wierzchołkowego w~grafie zredukowanym omawianą techniką był najniższy spośród wszystkich metod dla większości przypadków testowych.
+  Pomimo koncepcyjnej poprawności i~wysokiej efektywności w~redukcji dziedziny, czas jej działania w~porównaniu do pozostałych metod jest znacznie dłuższy, co oznacza, że stworzone w~ramach niniejszej pracy rozwiązanie nie jest zalecane do użytku praktycznego.
   W przypadku algorytmu redukcji koron, ciężko mówić o uniwersalności tego podejścia.
-  Wiąże się to z uzależnieniem szybkości działania tej metody od bardzo charakterystycznych struktur występujących w grafie.
-  W związku ze sposobem generacji losowych grafów testowych, były one ubogie w te struktury, co spowodowało spadek efektywności zawężania dziedziny przez algorytm redukcji koron, widoczny na charakterystykach porównujących czas wyznaczania pokrycia wierzchołkowego dla grafu przetworzonego poszczególnymi metodami.
+  Wiąże się to z~uzależnieniem szybkości działania tej metody od bardzo charakterystycznych struktur występujących w~grafie.
+  W związku ze sposobem generacji losowych grafów testowych, były one ubogie w~te struktury, co spowodowało spadek efektywności zawężania dziedziny przez algorytm redukcji koron, widoczny na charakterystykach porównujących czas wyznaczania pokrycia wierzchołkowego dla grafu przetworzonego poszczególnymi metodami.
 
-  Mimo napotkanych problemów, drogą analizy i badań eksperymentalnych udało się wykazać pozytywny wpływ omawianych technik na złożoność czasową rozwiązania problemu pokrycia wierzchołkowego dla grafów ogólnych.
+  Mimo napotkanych problemów, drogą analizy i~badań eksperymentalnych udało się wykazać pozytywny wpływ omawianych technik na złożoność czasową rozwiązania problemu pokrycia wierzchołkowego dla grafów ogólnych.
 
   Oprócz zaproponowanych implementacji, badań oraz~analizy zostały również zaproponowane usprawnienia i~potencjalne rozszerzenia, które zwiększą jakość oraz poprawią wydajność omawianych metod.
-  Interesujące z perspektywy dalszych badań jest zastosowanie innych wariantów koncepcji wykorzystywanych przez zaimplementowane algorytmy --- takich jak NT--dekompozycja --- w celu zbadania wpływu ich zmiany na złożoność czasową algorytmów oraz ich efektywność w redukcji dziedziny grafu.
+  Interesujące z~perspektywy dalszych badań jest zastosowanie innych wariantów koncepcji wykorzystywanych przez zaimplementowane algorytmy --- takich jak NT--dekompozycja --- w celu zbadania wpływu ich zmiany na złożoność czasową algorytmów oraz ich efektywność w redukcji dziedziny grafu.

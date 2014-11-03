@@ -1,7 +1,7 @@
 \subsection{Sformułowanie problemu pokrycia wierzchołkowego jako problemu programowania liniowego}\label{section_kernelization_lp_formulation}
 
 Proces rozwiązywania problemu pokrycia wierzchołkowego może być rozwiązany
-przy zastosowaniu heurystyki zaproponowanej w pracy~\cite{hochbaum82}, opartej 
+przy zastosowaniu heurystyki zaproponowanej w~pracy~\cite{hochbaum82}, opartej 
 na~programowaniu całkowitoliczbowym.
 Opisywany algorytm~\cite[rozdz.~4.2.2]{abukhzam03} korzysta z~ heurystyki proponowanej w~pracy~\cite{hochbaum82} 
 w~następujący sposób.
@@ -17,17 +17,17 @@ Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ należy przypisać wartość $
 Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrycia wierzchołkowego $|C|$.
 Zbiór rozwiązań prawdopodobnych składa się z~funkcji $V \to \{0, 1\}$,
 spełniających warunek 2.
-W związku z faktem, iż programowanie całkowitoliczbowe samo w sobie stanowi
+W związku z~faktem, iż programowanie całkowitoliczbowe samo w~sobie stanowi
 problem $\mathcal{NP}$-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
 zapewni szerszy zakres prawdopodobnych rozwiązań.
 
 W~pracy~\cite{khuller02} zaproponowana została relaksacja przez zamianę wartości 
 $X_u \in \{0,1\}$ na $X_u \geq 0$.
 Należy zauważyć, iż wartość $O_{LP}$ (ang. \emph{Linear Programming, LP}) zwracana przez rozwiązanie postaci 
-liniowej jest zawsze ograniczona z dołu przez wartość $O_{\textnormal{IP}}$ zwracaną przez 
+liniowej jest zawsze ograniczona z~dołu przez wartość $O_{\textnormal{IP}}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
 Co więcej, w~pracy~\cite{khuller02} udowodniono, że $O_{\textnormal{IP}} \leq 2*O_{LP}$.
-Zależność ta wynika z twierdzenia Nemhausera--Trottera korzystającego
+Zależność ta wynika z~twierdzenia Nemhausera--Trottera korzystającego
 z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
 $X_u \in \{0, \frac{1}{2}, 1\}$.
@@ -36,7 +36,7 @@ Definiując $V_0 = \{u : X_u=0\}, V_{\frac{1}{2}}=\{u: X_u=\frac{1}{2}\},
 V_1=\{u: X_u=1\}$, twierdzenie zapisać można jak następuje.
 
 \begin{theorem}[Pierwsze twierdzenie Nemhausera--Trottera]\thlabel{nt_lp}
-  Istnieje optymalne rozwiązanie $O$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o następujących właściwościach.
+  Istnieje optymalne rozwiązanie $O$ sformułowania problemu pokrycia wierzchołkowego jako problemu programowania liniowego o~następujących właściwościach.
   \begin{enumerate}[(a)]
     \item $O \subset V_1 \cup V_{\frac{1}{2}}$.
     \item $V_1 \subset O$.
@@ -79,7 +79,7 @@ Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokr
 \end{theorem}
 \begin{bproof}
   Zauważmy, że rozmiar funkcji celu sformułowania liniowego ogranicza od dołu rozmiar funkcji celu sformułowania całkowitoliczbowego.
-  W przeciwnym wypadku, procedura rozwiązująca początkowe sformułowanie liniowe problemu, którego wynik stanowi zbiór $Q$, nie byłaby w stanie zapewnić optymalnego rozwiązania, co byłoby sprzeczne z założeniami sformułowania.
+  W przeciwnym wypadku, procedura rozwiązująca początkowe sformułowanie liniowe problemu, którego wynik stanowi zbiór $Q$, nie byłaby w~stanie zapewnić optymalnego rozwiązania, co byłoby sprzeczne z~założeniami sformułowania.
 \end{bproof}
 \par{
   W świetle powyższego dowodu widać, że można zakończyć działanie procesu poszukiwania pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o liczebności $|C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej gdy $|Q|>2k^\prime$.

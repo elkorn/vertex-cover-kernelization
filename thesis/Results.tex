@@ -4,11 +4,11 @@
 \par{
   Przygotowanie zestawu danych testowych jasno odzwierciedlającego ograniczenie złożoności obliczeniowej rozwiązania problemu pokrycia wierzchołkowego do wielomianowej przez zastosowanie technik redukcji dziedziny do jądra problemu nie jest łatwe.
   Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które ciężko jest opisać w prosty sposób parametrami generacji losowej.
-  Dlatego też aby przygotować zestaw losowych grafów testowych przyjęto metodę generacji opartą o rozkład losowy stopni wierzchołków grafu w połączeniu z funkcją określającą współczynnik selektywności.
-  Stopień każdego wierzchołka w generowanym grafie wybierany jest losowo z przedziału $\left<1, k\right>$ zgodnie z rozkładem $P(k) \propto \frac{1}{k}$.
-  Uzyskanie zbioru grafów losowych o różnych parametrach owocowało bardzo niespójnymi wynikami czasów ich przetwarzania z pomocą opisywanych w niniejszej pracy technik, co spowodowane jest tym, że istnienie struktur redukowalnych w grafie nie jest uzależnione wprost od liczebności wierzchołków czy też krawędzi.
+  Dlatego też aby przygotować zestaw losowych grafów testowych przyjęto metodę generacji opartą o rozkład losowy stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
+  Stopień każdego wierzchołka w~generowanym grafie wybierany jest losowo z~przedziału $\left<1, k\right>$ zgodnie z~rozkładem $P(k) \propto \frac{1}{k}$.
+  Uzyskanie zbioru grafów losowych o~różnych parametrach owocowało bardzo niespójnymi wynikami czasów ich przetwarzania z~pomocą opisywanych w~niniejszej pracy technik, co spowodowane jest tym, że istnienie struktur redukowalnych w~grafie nie jest uzależnione wprost od liczebności wierzchołków czy też krawędzi.
   Po ,,wypróbowaniu'' kilku postaci funkcji określającej współczynnik selektywności udało się utworzyć zbiór zapewniający na zbliżone do oczekiwanych pod względem przyrostu czasu przetwarzania wyniki --- przyjęta została postać $P(i, k) \propto \frac{1}{1+|i-k|}$, gdzie $i$ stanowi stopień rozpatrywanego wierzchołka.
-  Następnie, w celu uściślenia monotoniczności wyników, metodą prób i błędów dobrano wartość parametru $k=5$.
+  Następnie, w celu uściślenia monotoniczności wyników, metodą prób i~błędów dobrano wartość parametru $k=5$.
   Dla tak wybranych parametrów wygenerowano przedstawiony w~Tabeli~\ref{tab_testdata} zbiór grafów $G=(V, E)$, mających pokrycia wierzchołkowe $C$.\\
   \begin{table}
     \begin{center}
@@ -45,26 +45,26 @@
     \label{tab_testdata}
   \end{table}
 }
-\section{Porównanie i analiza szybkości działania opisanych algorytmów}
+\section{Porównanie i~analiza szybkości działania opisanych algorytmów}
 \par{
-  W celu zbadania efektywności zaimplementowanych algorytmów w redukcji czasu rozwiązania problemu pokrycia wierzchołkowego wykonano serię testów, podczas których mierzono czas wykonywania następujących operacji.
+  W celu zbadania efektywności zaimplementowanych algorytmów w~redukcji czasu rozwiązania problemu pokrycia wierzchołkowego wykonano serię testów, podczas których mierzono czas wykonywania następujących operacji.
   \begin{itemize}
-    \item Wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC2} dla zestawu grafów o pomniejszonych rozmiarach.
+    \item Wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC2} dla zestawu grafów o~pomniejszonych rozmiarach.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym, opisanym Pseudokodem~\ref{alg_VC2}.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji koron.
-    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji dziedziny opartej na algorytmie przepływu w sieci.
-    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i redukcji koron.
-    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i redukcji dziedziny opartej na algorytmie przepływu w sieci.
+    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji dziedziny opartej na algorytmie przepływu w~sieci.
+    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i~redukcji koron.
+    \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i~redukcji dziedziny opartej na algorytmie przepływu w~sieci.
     \item Redukcja dziedziny do jądra problemu poprzez usunięcie koron.
-    \item Redukcja dziedziny do jądra problemu oparta na algorytmie przepływu w sieci.
+    \item Redukcja dziedziny do jądra problemu oparta na algorytmie przepływu w~sieci.
   \end{itemize}
 }
 \subsection{Wyznaczanie pokrycia wierzchołkowego}
 \par{
-  Zgodnie z oczekiwaniami, wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC1}, wymagało wykładniczego czasu.
-  Powoduje to, że analiza grafów o rozmiarach przedstawionych w Tabeli~\ref{tab_testdata} trwa bardzo długo, a wyniki pomiarów związanych z metodą siłową zaciemniają obraz wyników pozostałych testów.
-  W związku z tym pomiar czasu działania metody siłowej został zrealizowany dla osobnego zestawu siedmiu grafów wygenerowanych opisaną metodą o rozmiarach od dziesięciu do trzydziestu wierzchołków z krokiem pięciu wierzchołków.
-  Niestety, struktura jednego z wygenerowanych grafów okazała się niekorzystna dla rozgałęzień algorytmu siłowego --- wyniki pomiarów czasu działania siłowej metody wyznaczania pokrycia wierzchołkowego zawiera Tabela~\ref{tab_vc_naive}.
+  Zgodnie z~oczekiwaniami, wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC1}, wymagało wykładniczego czasu.
+  Powoduje to, że analiza grafów o~rozmiarach przedstawionych w~Tabeli~\ref{tab_testdata} trwa bardzo długo, a wyniki pomiarów związanych z~metodą siłową zaciemniają obraz wyników pozostałych testów.
+  W związku z~tym pomiar czasu działania metody siłowej został zrealizowany dla osobnego zestawu siedmiu grafów wygenerowanych opisaną metodą o rozmiarach od dziesięciu do trzydziestu wierzchołków z~krokiem pięciu wierzchołków.
+  Niestety, struktura jednego z~wygenerowanych grafów okazała się niekorzystna dla rozgałęzień algorytmu siłowego --- wyniki pomiarów czasu działania siłowej metody wyznaczania pokrycia wierzchołkowego zawiera Tabela~\ref{tab_vc_naive}.
   \begin{table}
     \begin{center}
       \begin{tabular}{| c | c | c | c |}
@@ -92,20 +92,20 @@
     \centering
       \includegraphics[width=\textwidth]{results-vc}
   \end{figure}
-  Wyraźnie widoczny jest pozytywny wpływ zastosowania redukcji dziedziny do jądra problemu przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w sieci.
-  Za prawdopodobne uzasadnienie tego, że redukcja koron nie oferuje tak dużego przyspieszenia jak technika oparta na przepływie w sieci uznano dwa czynniki:
+  Wyraźnie widoczny jest pozytywny wpływ zastosowania redukcji dziedziny do jądra problemu przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w~sieci.
+  Za prawdopodobne uzasadnienie tego, że redukcja koron nie oferuje tak dużego przyspieszenia jak technika oparta na przepływie w~sieci uznano dwa czynniki:
   \begin{itemize}
-    \item Grafy stanowiące dane testowe są ubogie w korony.
-    Wynika to z postaci funkcji określającej współczynnik selektywności wierzchołków. Struktury koron wymagają bardzo specyficznych relacji zachodzących pomiędzy zbiorami wierzchołków, mianowicie istnienia zbiorów niezależnych o połączonym sąsiedztwie.
+    \item Grafy stanowiące dane testowe są ubogie w~korony.
+    Wynika to z~postaci funkcji określającej współczynnik selektywności wierzchołków. Struktury koron wymagają bardzo specyficznych relacji zachodzących pomiędzy zbiorami wierzchołków, mianowicie istnienia zbiorów niezależnych o~połączonym sąsiedztwie.
     W ramach procesu przygotowywania danych testowych udało się uzyskać grafy, dla których redukcja dziedziny uzyskana przez usunięcie koron była znacznie większa, jednak grafy te nie pozwalały na uzyskanie wyników dających przedstawić się w postaci funkcji monotonicznej.
-    \item Zaimplementowana technika wyznaczania koron w grafie oparta jest na zbyt restrykcyjnym uściśleniu NT--redukcji do serii operacji działających bezpośrednio na konkretnych egzemplarzach skojarzeń.
-    Najprawdopodobniej stanowi to również powód opisanych w podrozdziale~\ref{sss_problems_ckx} problemów napotkanych przy implementacji algorytmu Chena, Kanji oraz Xia.
+    \item Zaimplementowana technika wyznaczania koron w~grafie oparta jest na zbyt restrykcyjnym uściśleniu NT--redukcji do serii operacji działających bezpośrednio na konkretnych egzemplarzach skojarzeń.
+    Najprawdopodobniej stanowi to również powód opisanych w~podrozdziale~\ref{sss_problems_ckx} problemów napotkanych przy implementacji algorytmu Chena, Kanji oraz Xia.
     Pozostałe zaimplementowane egzemplarze NT--redukcji wyznaczają podzbiory różniące się od tych uzyskiwanych przez redukcję proponowaną w pracy~\cite{KernelizationAlgorithms04}.
-    Dalsze pole do badań może stanowić weryfikacja czy bardziej ogólne postacie NT--redukcji --- wykonywane za pomocą algorytmów programowania liniowego --- zapewnią lepsze rezultaty dla grafów o strukturze zbliżonej do tych, które wykorzystano jako dane testowe.
+    Dalsze pole do badań może stanowić weryfikacja czy bardziej ogólne postacie NT--redukcji --- wykonywane za pomocą algorytmów programowania liniowego --- zapewnią lepsze rezultaty dla grafów o~strukturze zbliżonej do tych, które wykorzystano jako dane testowe.
   \end{itemize}
 
-  Ze względu na brak optymalizacji opisywanych w niniejszej pracy technik nie udało się wykonać pomiarów czasu wyznaczania pokrycia wierzchołkowego bez przetwarzania wstępnego dla grafów zawierających więcej niż 1600 wierzchołków.
-  Pomimo nieco gorszych od oczekiwanych rezultatów należy zauważyć, że każda z przedstawionych charakterystyk jest o wiele rzędów wielkości lepsza niż charakterystyka uzyskana z pomiarów czasu działania metody siłowej.
+  Ze względu na brak optymalizacji opisywanych w~niniejszej pracy technik nie udało się wykonać pomiarów czasu wyznaczania pokrycia wierzchołkowego bez przetwarzania wstępnego dla grafów zawierających więcej niż 1600 wierzchołków.
+  Pomimo nieco gorszych od oczekiwanych rezultatów należy zauważyć, że każda z~przedstawionych charakterystyk jest o~wiele rzędów wielkości lepsza niż charakterystyka uzyskana z~pomiarów czasu działania metody siłowej.
 }
 \subsubsection{\textbf{Czas wyznaczania pokrycia wierzchołkowego po przetwarzaniu wstępnym}}
 
@@ -116,18 +116,18 @@
     \centering
       \includegraphics[width=\textwidth]{results-vc-p}
   \end{figure}
-  Zastosowanie prostych technik przetwarzania wstępnego opisanych w podrozdziale~\ref{Section_preprocessing} pozwala na dodatkowe skrócenie czasu wyznaczania pokrycia wierzchołkowego w grafach testowych o około dwa rzędy wielkości.
+  Zastosowanie prostych technik przetwarzania wstępnego opisanych w~podrozdziale~\ref{Section_preprocessing} pozwala na dodatkowe skrócenie czasu wyznaczania pokrycia wierzchołkowego w~grafach testowych o~około dwa rzędy wielkości.
 
-  Ponieważ różnica w czasie wyznaczania pokrycia wierzchołkowego z zastosowaniem techniki opartej o przepływ w sieci pomiędzy wariantem bez przetwarzania wstępnego a wariantem z zastosowaniem przetwarzania wstępnego jest słabo widoczna, Rysunek~\ref{fig_nf_comp} zestawia charakterystyki czasowe tych przypadków.
+  Ponieważ różnica w~czasie wyznaczania pokrycia wierzchołkowego z~zastosowaniem techniki opartej o~przepływ w~sieci pomiędzy wariantem bez przetwarzania wstępnego a~wariantem z~zastosowaniem przetwarzania wstępnego jest słabo widoczna, Rysunek~\ref{fig_nf_comp} zestawia charakterystyki czasowe tych przypadków.
   \begin{figure}
-    \caption{Wpływ przetwarzania wstępnego na czas wyznaczania pokrycia wierzchołkowego w oparciu o przepływ w sieci.}
+    \caption{Wpływ przetwarzania wstępnego na czas wyznaczania pokrycia wierzchołkowego w~oparciu o~przepływ w~sieci.}
     \label{fig_nf_comp}
     \centering
       \includegraphics[width=\textwidth]{nf-comp}
   \end{figure}
 
-\subsection{Algorytmy przetwarzania wstępnego i redukcji dziedziny do jądra problemu}
-  Redukcja dziedziny do jądra problemu w praktyce może mieć sens jedynie wtedy, gdy czas potrzebny wykonanie operacji zawężających przestrzeń poszukiwań pokrycia wierzchołkowego jest wielomianowy.
+\subsection{Algorytmy przetwarzania wstępnego i~redukcji dziedziny do jądra problemu}
+  Redukcja dziedziny do jądra problemu w~praktyce może mieć sens jedynie wtedy, gdy czas potrzebny wykonanie operacji zawężających przestrzeń poszukiwań pokrycia wierzchołkowego jest wielomianowy.
   W celu weryfikacji szybkości działania implementacji opisywanych technik redukcji dziedziny oraz przetwarzania wstępnego zmierzono czas potrzebny na wykonanie tych operacji dla zbioru grafów testowych. 
 
 \subsubsection{\textbf{Algorytmy redukcji dziedziny do jądra problemu}}
@@ -140,13 +140,13 @@
       \includegraphics[width=\textwidth]{results-k}
   \end{figure}
 
-  Powodem bardzo niekorzystnej złożoności czasowej działania algorytmu redukcji dziedziny przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w sieci są błędy popełnione przy implementacji koncepcji opisanej w pracy~\cite{KernelizationAlgorithms04}.
-  Szczegóły tych błędów oraz proponowane usprawnienia opisane są w podrozdziale~\ref{s_improvements}.
-  Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i nie ukazuje prawdziwej jego szybkości, a także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
-  W związku z zaciemnieniem na wykresie wartości wyników pomiarów czasu działania algorytmu redukcji koron, Rysunek~\ref{fig_results_k_crown} przedstawia wyłącznie tę charakterystykę.
+  Powodem niekorzystnej złożoności czasowej działania algorytmu redukcji dziedziny przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w~sieci jest brak optymalizacji implementacji koncepcji opisanej w~pracy~\cite{KernelizationAlgorithms04}.
+  Szczegóły oraz proponowane usprawnienia opisane są w podrozdziale~\ref{s_improvements}.
+  Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i~nie ukazuje prawdziwej jego szybkości, a także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
+  W związku z~zaciemnieniem na wykresie wartości wyników pomiarów czasu działania algorytmu redukcji koron, Rysunek~\ref{fig_results_k_crown} przedstawia wyłącznie tę charakterystykę.
 
   \begin{figure}
-    \caption{Czas redukcji dziedziny przez wyznaczenie i usunięcie koron bez przetwarzania wstępnego.}
+    \caption{Czas redukcji dziedziny przez wyznaczenie i~usunięcie koron bez przetwarzania wstępnego.}
     \label{fig_results_k_crown}
     \centering
       \includegraphics[width=\textwidth]{results-k-crown}
@@ -160,11 +160,11 @@
       \includegraphics[width=\textwidth]{results-k-crown-p}
   \end{figure}
 
-  Zgodnie z oczekiwaniami, zastosowanie procedur przetwarzania wstępnego przed przystąpieniem do wykonania algorytmu redukcji dziedziny do jądra problemu wpływa pozytywnie na szybkość jego działania.
-  Jest to spowodowane zmniejszeniem liczby wierzchołków i krawędzi grafu przed rozpocząciem algorytmu kernelizacji.
+  Zgodnie z~oczekiwaniami, zastosowanie procedur przetwarzania wstępnego przed przystąpieniem do wykonania algorytmu redukcji dziedziny do jądra problemu wpływa pozytywnie na szybkość jego działania.
+  Jest to spowodowane zmniejszeniem liczby wierzchołków i~krawędzi grafu przed rozpocząciem algorytmu kernelizacji.
 
-  Rysunek~\ref{fig_results_p} przedstawia charakterystykę czasu przetwarzania wstępnego w zależności od liczby wierzchołków grafu.
-  Pokazuje to, że operacja przetwarzania wstępnego jest wykonywana szybko nawet dla grafów o dużej liczbie wierzchołków. Mając na uwadze z przedstawione na poprzedzających wykresach korzyści płynące z jej zastosowania nasuwa się wniosek, że warto tę operację stosować zawsze przed rozpoczęciem rozwiązywania problemu pokrycia wierzchołkowego, bez względu na zastosowane w dalszych etapach metody redukcji dziedziny do jądra problemu oraz algorytmy wyznaczające pokrycie.
+  Rysunek~\ref{fig_results_p} przedstawia charakterystykę czasu przetwarzania wstępnego w~zależności od liczby wierzchołków grafu.
+  Pokazuje to, że operacja przetwarzania wstępnego jest wykonywana szybko nawet dla grafów o~dużej liczbie wierzchołków. Mając na uwadze przedstawione na poprzedzających wykresach korzyści płynące z~jej zastosowania nasuwa się wniosek, że warto tę operację stosować zawsze przed rozpoczęciem rozwiązywania problemu pokrycia wierzchołkowego, bez względu na zastosowane w~dalszych etapach metody redukcji dziedziny do jądra problemu oraz algorytmy wyznaczające pokrycie wierzchołkowe.
   \begin{figure}
     \caption{Czas przetwarzania wstępnego.}
     \label{fig_results_p}

@@ -1,7 +1,7 @@
 \subsection{Rozwiązywanie problemu maksymalnego przepływu w~sieci}\label{ss_max_flow}
 \par{
-  Problem przepływu w sieci jest kwestią o dużym znaczeniu dla opisywanego w podrozdziale \ref{Kernelization_network_flow} sformułowania redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w sieci dla odpowiadającego grafu dwudzielnego. 
-  Wymagana jest zatem solidna podstawa umożliwiająca rozwiązanie tegoż problemu w czasie wielomianowym.
+  Problem przepływu w~sieci jest kwestią o dużym znaczeniu dla opisywanego w~podrozdziale \ref{Kernelization_network_flow} sformułowania redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako egzemplarza problemu przepływu w~sieci dla odpowiadającego grafu dwudzielnego. 
+  Wymagana jest zatem solidna podstawa umożliwiająca rozwiązanie tegoż problemu w~czasie wielomianowym.
 }
 \subsubsection{\textbf{Metoda Forda-Fulkersona}}
 \par{
@@ -115,12 +115,12 @@
 \\
 \\
   \begin{bproof}{(Dla twierdzenia o~maksymalnym przepływie i~minimalnym przekroju)\\}
-    \underline{(1) $\implies$ (2)}: Jeżeli dla maksymalnego przepływu $f$ w~sieci $N$ sieć residualna $N_f$ zawierałaby ścieżkę powiększającą $P_a$, wartość przepływu $f$ musiałaby zostać powiększona o wartość przepływu $f_{P_a}$.
+    \underline{(1) $\implies$ (2)}: Jeżeli dla maksymalnego przepływu $f$ w~sieci $N$ sieć residualna $N_f$ zawierałaby ścieżkę powiększającą $P_a$, wartość przepływu $f$ musiałaby zostać powiększona o~wartość przepływu $f_{P_a}$.
     Implikuje to, iż wartość przepływu $f$ musiałaby być większa niż $|f|$, co przeczy założeniu, że $f$ jest maksymalny.
 
     \underline{(2) $\implies$ (3)}: Założyć należy, że sieć residualna $N_f=(V_f, E_f)$ dla sieci $N$ ze źródłem $s$ i ujściem $t$ nie zawiera żadnej ścieżki powiększającej.
     Przyjąć należy istnienie przekroju $(S, T)$, $S=\{v \in V:\textnormal{ istnieje ścieżka z }s\textnormal{ do }v\textnormal{ w~}N_f\}$ oraz zbioru $T=V\setminus S$.
-    W oparciu o cechę 1 dowolnego przekroju w~sieci stwierdzić można, że $s \in S$ oraz $t \notin S$, gdyż nie istnieje ścieżka z $s$ do $t$ w~sieci residualnej $N_f$.
+    W oparciu o~cechę 1 dowolnego przekroju w~sieci stwierdzić można, że $s \in S$ oraz $t \notin S$, gdyż nie istnieje ścieżka z $s$ do $t$ w~sieci residualnej $N_f$.
     Dla każdej pary wierzchołków $u \in S, v \in T$ musi zachodzić równość $f(u, v)=c(u, v)$, gdyż w~przeciwnym wypadku spełniony byłby warunek klasyfikujący krawędź $(u,v)$ jako krawędź residualną --- w~konsekwencji następowałoby $v \in S$, co przeczy założeniu, że $v \in T$.
     Widać zatem, że $|f|=f(S, T)=c(S, T)$.
 
@@ -128,7 +128,7 @@
   \end{bproof}
 }
 \subsubsection{\textbf{Algorytm Edmondsa-Karpa}}\label{sss_edmonds_karp}
-W konkretnej implementacji metody Forda-Fulkersona powiększanie przepływu o przepływ residualny odbywa się przez aktualizację przepływu $f[u,v]$\footnote{Nawiasami kwadratowymi oznaczany jest dostęp do zmiennej tablicowej.} między każdą parą~wierzchołków $u,v \in V$.
+W konkretnej implementacji metody Forda-Fulkersona powiększanie przepływu o~przepływ residualny odbywa się przez aktualizację przepływu $f[u,v]$\footnote{Nawiasami kwadratowymi oznaczany jest dostęp do zmiennej tablicowej.} między każdą parą~wierzchołków $u,v \in V$.
 Proces ten powtarzany jest do dopóty, dopóki sieć zawiera ścieżkę powiększającą.
 \par{
   \begin{algorithm}
@@ -158,43 +158,43 @@ Proces ten powtarzany jest do dopóty, dopóki sieć zawiera ścieżkę powięks
       \EndFunction
     \end{algorithmic}
   \end{algorithm}
-  Efektywność działania algorytmu w oparciu o metodę Forda-Fulkersona jest w~większości uzależniona od sposobu wyznaczania ścieżki powiększającej przez wiersz \algref{alg_fordFulkersonConcrete}{shortestPath}.
+  Efektywność działania algorytmu w~oparciu o~metodę Forda-Fulkersona jest w~większości uzależniona od sposobu wyznaczania ścieżki powiększającej przez wiersz \algref{alg_fordFulkersonConcrete}{shortestPath}.
   }
 \par{
-  Jednym z praktycznie stosowanych algorytmów, gwarantującym wielomianową złożoność czasową jest algorytm Edmondsa-Karpa.
-  Stanowi on uściślenie pseudokodu \ref{alg_fordFulkersonConcrete} przez zastosowanie przeszukiwania wszerz sieci przepływowej, co zapewnia, że ścieżka powiększająca $P_a$ wyznaczona w wierszu \algref{alg_fordFulkersonConcrete}{shortestPath} będzie za każdym razem najkrótsza z możliwych.
+  Jednym z~praktycznie stosowanych algorytmów, gwarantującym wielomianową złożoność czasową jest algorytm Edmondsa-Karpa.
+  Stanowi on uściślenie pseudokodu \ref{alg_fordFulkersonConcrete} przez zastosowanie przeszukiwania wszerz sieci przepływowej, co zapewnia, że ścieżka powiększająca $P_a$ wyznaczona w~wierszu \algref{alg_fordFulkersonConcrete}{shortestPath} będzie za każdym razem najkrótsza z~możliwych.
   \begin{definition}
-    \emph{Długość} ścieżki w sieci residualnej $N_f=(V_f, E_f)$ pomiędzy wierzchołkami $u, v \in V_f$ stanowi wartosć $\delta_f(u, v)$, określająca liczbę krawędzi składowych najkrótszej ścieżki z wierzchołka $u$ do wierzchołka $v$ przy założeniu jednostkowej długości każdej z krawędzi składowych.
+    \emph{Długość} ścieżki w~sieci residualnej $N_f=(V_f, E_f)$ pomiędzy wierzchołkami $u, v \in V_f$ stanowi wartosć $\delta_f(u, v)$, określająca liczbę krawędzi składowych najkrótszej ścieżki z~wierzchołka $u$ do wierzchołka $v$ przy założeniu jednostkowej długości każdej z~krawędzi składowych.
   \end{definition}
   \begin{definition}
     Krawędź $(u, v)$ w sieci residualnej $N_f=(V_f, E_f)$ o źródle $s$ i ujściu $t$ jest \emph{krytyczna} na ścieżce powiększającej $P_a$ jeżeli przepustowość residualna ścieżki $c_f(P_a)$ jest równa przepustowości residualnej tej krawędzi, to znaczy $c_f(P_a)=c_f(u, v)$.
   \end{definition}
   \begin{theorem}\thlabel{th_augentation_complexity}
-    Łączna liczba powiększeń przepływu w algorytmie Edmondsa-Karpa dla dowolnej sieci przepływowej $N=(V, E)$ o źródle $s$ i ujściu $t$ wynosi $O(|V||E|)$.
+    Łączna liczba powiększeń przepływu w~algorytmie Edmondsa-Karpa dla dowolnej sieci przepływowej $N=(V, E)$ o źródle $s$ i ujściu $t$ wynosi $O(|V||E|)$.
   \end{theorem}
   \begin{bproof}
-    Każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z sieci residualnej $N_f$ w oparciu o Definicję~\ref{def_residual_net}.
+    Każda krawędź krytyczna na dowolnej ścieżce powiększającej zostaje usunięta z~sieci residualnej $N_f$ w oparciu o~Definicję~\ref{def_residual_net}.
     Prowadzi to do wniosku, że co najmniej jedna krawędź na dowolnej ścieżce ścieżce powiększającej musi być krytyczna.
     Założyć należy istnienie wierzchołków $u, v \in V$ takich, że $(u, v) \in E$.
-    W związku z założeniem algorytmu Edmondsa-Karpa --- mówiącemu, że ścieżki powiększające są najkrótsze --- w momencie, gdy krawędź $(u, v)$ jest krytyczna po raz pierwszy, zachodzi $\delta_f(s, v)=\delta_f(s, u)+1$.
-    Powiększenie przepływu wzdłuż krawędzi $(u, v)$ powoduje jej usunięcie z sieci residualnej $N_f$, zgodnie z Definicją \ref{def_residual_net}.
+    W związku z~założeniem algorytmu Edmondsa-Karpa --- mówiącemu, że ścieżki powiększające są najkrótsze --- w momencie, gdy krawędź $(u, v)$ jest krytyczna po raz pierwszy, zachodzi $\delta_f(s, v)=\delta_f(s, u)+1$.
+    Powiększenie przepływu wzdłuż krawędzi $(u, v)$ powoduje jej usunięcie z~sieci residualnej $N_f$, zgodnie z~Definicją \ref{def_residual_net}.
     Dodatkowo, krawędź ta nie może zostać na powrót włączona do sieci residualnej dopóty, dopóki przepływ pomiędzy wierzchołkami $u$ i $v$ nie ulegnie zmniejszeniu.
-    Zgodnie z Definicją \ref{def_flow_values}, jedyną sytuacją pozwalającą na takie zdarzenie jest znalezienie się krawędzi $(v, u)$ na pewnej ścieżce powiększającej.
-    Przepływ w sieci $N$ w momencie odnalezienia takiej ścieżki oznaczony zostanie jako $f^\prime$.
-    Zgodnie z dotychczasowym rozumowaniem łatwo zauważyć, że spełniona jest równość $\delta_{f^\prime}(s, u)=\delta_{f^\prime}(s, v) + 1$.
-    Ponieważ $\delta_{f^\prime}(s, v) \leq \delta_{f^\prime}(s, u)$, oraz w związku z tym, że dla żadnego wierzchołka $v \in V\setminus \{s, t\}$ odległość $\delta_f(s, v)$ nie może maleć, następująca własność musi być spełniona. \begin{align*}
+    Zgodnie z~Definicją \ref{def_flow_values}, jedyną sytuacją pozwalającą na takie zdarzenie jest znalezienie się krawędzi $(v, u)$ na pewnej ścieżce powiększającej.
+    Przepływ w~sieci $N$ w momencie odnalezienia takiej ścieżki oznaczony zostanie jako $f^\prime$.
+    Zgodnie z~dotychczasowym rozumowaniem łatwo zauważyć, że spełniona jest równość $\delta_{f^\prime}(s, u)=\delta_{f^\prime}(s, v) + 1$.
+    Ponieważ $\delta_{f^\prime}(s, v) \leq \delta_{f^\prime}(s, u)$, oraz w~związku z~tym, że dla żadnego wierzchołka $v \in V\setminus \{s, t\}$ odległość $\delta_f(s, v)$ nie może maleć, następująca własność musi być spełniona. \begin{align*}
         \delta_{f^\prime}(s,u)=\delta_{f^\prime}(s,v)+1\\
                            \geq\delta_f(s, v)+1\\
                               =\delta_f(s, u)+2
     \end{align*}
-    Oznacza to, że pomiędzy kolejnymi momentami, w których krawędź $(u, v)$ staje się krytyczna, odległość wierzchołka $u$ od źródła $s$ rośnie co najmniej o 2.
+    Oznacza to, że pomiędzy kolejnymi momentami, w których krawędź $(u, v)$ staje się krytyczna, odległość wierzchołka $u$ od źródła $s$ rośnie co najmniej o~2.
     Jeżeli krawędź $(u, v)$ należy do ścieżki krytycznej, to musi zachodzić $u \neq t$.
-    Prowadzi to do obserwacji, że żaden z wierzchołków $\{s, u, t\}$ nie może stanowić wierzchołka pośredniego na dowolnej najkrótszej ścieżce ze źródła $s$ do wierzchołka $u$.
+    Prowadzi to do obserwacji, że żaden z~wierzchołków $\{s, u, t\}$ nie może stanowić wierzchołka pośredniego na dowolnej najkrótszej ścieżce ze źródła $s$ do wierzchołka $u$.
     Na tej podstawie stwierdzić można, że jeżeli wierzchołek $u$ przestanie być osiągalny ze źródła $s$ wzdłuż ścieżki powiększającej, to jego odległość od $s$ może wzrosnąć co najwyżej do $|V|-2$.
     W efekcie krawędź $(u, v)$ może stać się krytyczna co najwyżej $\frac{|V|-2}{2}$ razy.
-    Ponieważ w sieci residualnej może istnieć co najwyżej $O(|E|)$ par wierzchołków, pomiędzy którymi istnieje krawędź stwierdzić można, że łączna liczba krawędzi krytycznych istniejących w czasie działania algorytmu wynosi co najwyżej $O(\frac{|V|-2}{2}|E|)=O(|V||E|)$.
+    Ponieważ w sieci residualnej może istnieć co najwyżej $O(|E|)$ par wierzchołków, pomiędzy którymi istnieje krawędź stwierdzić można, że łączna liczba krawędzi krytycznych istniejących w~czasie działania algorytmu wynosi co najwyżej $O(\frac{|V|-2}{2}|E|)=O(|V||E|)$.
   \end{bproof}
 
-  Poza wyznaczaniem ścieżek powiększających, pozostałe operacje w algorytmie można zaimplementować jako działania ograniczone złożonością $O(|E|)$, co w efekcie daje całkowitą złożoność czasową $O(|V||E|^2)$.
+  Poza wyznaczaniem ścieżek powiększających, pozostałe operacje w~algorytmie można zaimplementować jako działania ograniczone złożonością $O(|E|)$, co w~efekcie daje całkowitą złożoność czasową $O(|V||E|^2)$.
   Biorąc pod uwagę grafy pełne, gdzie $|E| = |V|^2$, złożoność wynosi $O(|V|^5)$.
 }

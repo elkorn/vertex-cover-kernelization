@@ -1,6 +1,6 @@
 \section{Podstawowe definicje}\label{s_definitions}
 
-Jeżeli nie zaznaczono inaczej, każda z nastepujących definicji odnosi się do
+Jeżeli nie zaznaczono inaczej, każda z~nastepujących definicji odnosi się do
 grafu $G=(V,E)$.
 
 \begin{definition}
@@ -24,11 +24,11 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}\thlabel{def_n_regular}
-  Graf uznaje się za \emph{$N$-regularny} jeżeli graf ten jest regularny i dowolny wierzchołek grafu jest stopnia $N$.
+  Graf uznaje się za \emph{$N$-regularny} jeżeli graf ten jest regularny i~dowolny wierzchołek grafu jest stopnia $N$.
 \end{definition}
 
 \begin{definition}\thlabel{def_isolated_vertex}
-  \emph{Wierzchołek izolowany} $v$ nie pokrywa żadnej z krawędzi grafu --- jego stopień wynosi $d(v)=0$.
+  \emph{Wierzchołek izolowany} $v$ nie pokrywa żadnej z~krawędzi grafu --- jego stopień wynosi $d(v)=0$.
 \end{definition}
 
 \begin{definition}
@@ -54,7 +54,7 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}
-  \emph{Pokryciem wierzchołkowym o optymalnym rozmiarze}, \emph{pokryciem wierzchołkowym optymalnego rozmiaru} lub \emph{optymalnym pokryciem wierzchołkowym} 
+  \emph{Pokryciem wierzchołkowym o~optymalnym rozmiarze}, \emph{pokryciem wierzchołkowym optymalnego rozmiaru} lub \emph{optymalnym pokryciem wierzchołkowym} 
   nazywa się takie pokrycie wierzchołkowe $C_{\textnormal{OPT}}$, że dla zbioru wszystkich pokryć wierzchołkowych $S \in V$ spełniona jest własność \[\forall_{C \in S \setminus C_{\textnormal{OPT}}}{|C_{\textnormal{OPT}}| < |C|}.\]
 \end{definition}
 
@@ -67,7 +67,7 @@ grafu $G=(V,E)$.
 \begin{definition}
   \emph{Grafem dwudzielnym} lub \emph{bigrafem} nazywa się graf, którego zbiór wierzchołków można rozdzielić na takie dwa zbiory niezależne $U, V$, że spełniona jest własność \[\forall_{u \in U}: \exists_{v \in V}: (u,v) \in E.\]
   Równoważym jest stwierdzenie, że graf dwudzielny stanowi graf nie mający
-  żadnego cyklu o nieparzystej długości.
+  żadnego cyklu o~nieparzystej długości.
 
   Graf dwudzielny oznaczać można jako $G=(U,V,E)$, nawiązując do poszczególnych
   podzbiorów wierzchołków oraz krawędzi między nimi.
@@ -91,12 +91,12 @@ grafu $G=(V,E)$.
   \emph{Największe skojarzenie} $M_{\max}$ jest skojarzeniem, do którego nie można
   dołączyć żadnej nowej krawędzi bez naruszenia warunku wymaganego do istnienia
   skojarzenia. 
-  Innymi słowy --- skojarzenie jest największe jeżeli wierzchołki zawartych w nim
+  Innymi słowy --- skojarzenie jest największe jeżeli wierzchołki zawartych w~nim
   krawędzi pokrywają każdą krawędź $e \in E$.
 \end{definition}
 
 \begin{definition}\thlabel{def_maximum_matching}
-  \emph{Skojarzenie maksymalne} lub \emph{skojarzenie o największej liczebności}
+  \emph{Skojarzenie maksymalne} lub \emph{skojarzenie o~największej liczebności}
   $M_{\textnormal{MAX}}$ to skojarzenie zawierające największą możliwą liczbę krawędzi.
   W grafie może istnieć wiele skojarzeń maksymalnych.\\
   Jeżeli skojarzenie jest maksymalne, to jest ono również skojarzeniem największym --- zachodzi $M=M_{\textnormal{MAX}} \implies M=M_{\max}$.
@@ -124,5 +124,5 @@ grafu $G=(V,E)$.
 \begin{definition}\thlabel{def_induced_graph}
   Graf \emph{indukowany} pewnym zbiorem $W \subseteq V$ stanowi graf $G^\prime=(V^\prime, E^\prime)$, którego zbiór wierzchołków ograniczony jest do zbioru $W$, a zbiór krawędzi ograniczony jest wyłącznie do krawędzi pokrytych przez wierzchołki należące do zbioru $W$.
   Formalnie zbiór wierzchołków indukowanego grafu określony jest jako $V^\prime = W$, a zbiór jego krawędzi jako $E^\prime=\{e=(u,v)|e\in E \land (u \in W \lor v \in W)\}$.
-  Graf indukowany z grafu $G$ zbiorem $W$ zapisuje się jako $G^\prime = G[W]$.
+  Graf indukowany z~grafu $G$ zbiorem $W$ zapisuje się jako $G^\prime = G[W]$.
 \end{definition}
