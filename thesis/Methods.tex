@@ -106,7 +106,7 @@
 }
 
 \par{
-  w~kontekście niniejszej pracy dualność problemów problemów programowania
+  W~kontekście niniejszej pracy dualność problemów problemów programowania
   liniowego jest szczególnie wartościowa ze względu na to, że problemem
   wtórnym względem problemu pokrycia wierzchołkowego dowolnego grafu jest 
   problem maksymalnego skojarzenia grafu.
@@ -124,17 +124,16 @@
 }
 \par{  
   Charakterystyczną poddziedziną programów całkowitoliczbowych są
-  \emph{binarne programy całkowitoliczbowe}, charakteryzującę się zamianą
+  \emph{binarne programy całkowitoliczbowe}, charakteryzujące się zamianą
   ograniczenia z~programu całkowitoliczbowego na następujące:
   $\forall_{x_n \in x}: x_n \in \{0, 1\}\label{bilp_bound}$.
   Jedyne problemy programowania całkowitoliczbowego rozpatrywane w~niniejszej
   pracy dotyczyć będą wyłącznie binarnych programów całkowitoliczbowych.
 }
 \par{
-  w~celu przekształcenia problemu $\mathcal{NP}$-trudnego, wyrażonego w~postaci binarnego programu całkowitoliczbowego do problemu rozwiązywalnego w~czasie wielomianowym, wyrażonego w~postaci programu liniowego należy wykonać operację \emph{relaksacji}.
+  W~celu przekształcenia problemu $\mathcal{NP}$-trudnego, wyrażonego w~postaci binarnego programu całkowitoliczbowego do problemu rozwiązywalnego w~czasie wielomianowym, wyrażonego w~postaci programu liniowego należy wykonać operację \emph{relaksacji}.
   Istotą relaksacji jest zastąpienie warunku całkowitoliczbowości binarnego
-  programu całkowitoliczbowego~\eqref{bilp_bound} na mniej restrykcyjne
-  ograniczenie $\forall_{x_n\in x}: 0\leq x_n\leq 1$.
+  programu całkowitoliczbowego~\eqref{bilp_bound} mniej restrykcyjnym ograniczeniem $\forall_{x_n\in x}: 0\leq x_n\leq 1$.
 }
 \par {
   Istotną cechą relaksacji jest jej \emph{dokładność}, która może zostać
@@ -154,7 +153,7 @@
 \par{
   Redukcja dziedziny do jądra problemu jest techniką wykorzystywaną przy
   rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
-  Istotą redukcji dziedziny do jądra problemu przy problemach dotyczących grafów
+  Istotą redukcji dziedziny do jądra problemu przy problemach grafowych
   jest transformacja grafu $G=(V,E)$ o rozmiarze $|V|=n$ przy danym parametrze $k$ w~inny
   graf $G^{\prime}=(V^{\prime}, E^{\prime})$ taki, że $V^{\prime} \subseteq V, E^{\prime} \subseteq E$
   wraz z~parametrem $k^{\prime} \leq k$.
@@ -162,7 +161,7 @@
   funkcję $f(k^{\prime})$.
   Graf $G^{\prime}$ nazywany jest \emph{jądrem} dziedziny problemu.
   W~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
-  $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$, o rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i~tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o liczebności $|C| \leq k$.
+  $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$ o rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i~tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o liczebności $|C| \leq k$.
 }
 \par{
   Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
@@ -172,7 +171,7 @@
   ustaleniu ograniczeń dotyczących wartości paramametru $k$, dyktującego z~kolei
   postać podproblemów lub poddziedziny.
   Po uzyskaniu jądra, jeżeli w~międzyczasie nie została udzielona odpowiedź negatywna, proces rozwiązywania problemu pokrycia wierzchołkowego
-  wykonuje algorytm~\ref{alg_VC1}\ do momentu otrzymania jednozancznego rezultatu.
+  wykonuje algorytm opisany Pseudokodem~\ref{alg_VC1}\ do momentu otrzymania jednoznacznego rezultatu.
 }
 \par{
   Niniejsza praca koncentruje się na opisie, implementacji oraz porównaniu

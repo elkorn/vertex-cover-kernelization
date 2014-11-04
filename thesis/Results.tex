@@ -4,10 +4,10 @@
 \par{
   Przygotowanie zestawu danych testowych jasno odzwierciedlającego ograniczenie złożoności obliczeniowej rozwiązania problemu pokrycia wierzchołkowego do wielomianowej przez zastosowanie technik redukcji dziedziny do jądra problemu nie jest łatwe.
   Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które ciężko jest opisać w prosty sposób parametrami generacji losowej.
-  Dlatego też aby przygotować zestaw losowych grafów testowych przyjęto metodę generacji opartą o rozkład losowy stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
+  Dlatego też aby przygotować zestaw losowych grafów testowych, przyjęto metodę generacji opartą na rozkładzie losowym stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
   Stopień każdego wierzchołka w~generowanym grafie wybierany jest losowo z~przedziału $\left<1, k\right>$ zgodnie z~rozkładem $P(k) \propto \frac{1}{k}$.
   Uzyskanie zbioru grafów losowych o~różnych parametrach owocowało bardzo niespójnymi wynikami czasów ich przetwarzania z~pomocą opisywanych w~niniejszej pracy technik, co spowodowane jest tym, że istnienie struktur redukowalnych w~grafie nie jest uzależnione wprost od liczebności wierzchołków czy też krawędzi.
-  Po ,,wypróbowaniu'' kilku postaci funkcji określającej współczynnik selektywności udało się utworzyć zbiór zapewniający na zbliżone do oczekiwanych pod względem przyrostu czasu przetwarzania wyniki --- przyjęta została postać $P(i, k) \propto \frac{1}{1+|i-k|}$, gdzie $i$ stanowi stopień rozpatrywanego wierzchołka.
+  Po ,,wypróbowaniu'' kilku postaci funkcji określającej współczynnik selektywności udało się utworzyć zbiór zapewniający zbliżone do oczekiwanych pod względem przyrostu czasu przetwarzania wyniki --- przyjęta została postać $P(i, k) \propto \frac{1}{1+|i-k|}$, gdzie $i$ stanowi stopień rozpatrywanego wierzchołka.
   Następnie, w celu uściślenia monotoniczności wyników, metodą prób i~błędów dobrano wartość parametru $k=5$.
   Dla tak wybranych parametrów wygenerowano przedstawiony w~Tabeli~\ref{tab_testdata} zbiór grafów $G=(V, E)$, mających pokrycia wierzchołkowe $C$.\\
   \begin{table}
@@ -47,9 +47,10 @@
 }
 \section{Porównanie i~analiza szybkości działania opisanych algorytmów}
 \par{
-  W celu zbadania efektywności zaimplementowanych algorytmów w~redukcji czasu rozwiązania problemu pokrycia wierzchołkowego wykonano serię testów, podczas których mierzono czas wykonywania następujących operacji.
+  W celu zbadania efektywności zaimplementowanych algorytmów w~redukcji czasu rozwiązania problemu pokrycia wierzchołkowego wykonano serię testów, podczas których mierzono czas wykonywania następujących operacji:
+
   \begin{itemize}
-    \item Wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC2} dla zestawu grafów o~pomniejszonych rozmiarach.
+    \item Wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC1} dla zestawu grafów o~pomniejszonych rozmiarach.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym, opisanym Pseudokodem~\ref{alg_VC2}.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji koron.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji dziedziny opartej na algorytmie przepływu w~sieci.

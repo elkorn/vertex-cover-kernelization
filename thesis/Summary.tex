@@ -6,9 +6,9 @@
 
   Ze względu na wysoką złożoność analityczną algorytmu Chena, Kanji oraz Xia nie udało się zaimplementować wszystkich elementów składowych wymaganych przez główny algorytm w~stopniu pozwalającym na przeprowadzenie badań eksperymentalnych z~jego wykorzystaniem.
   Głównym problemem był dobór NT--dekompozycji, którą posługuje się funkcja \textsc{Zwijanie}, działająca zgodnie z~pseudokodem~\ref{alg_ckx_gf}.
-  Problem ten polegał na zastosowaniu dekompozycji wyznaczającej korony w~grafie, zaimplementowanej zgodnie z~wytycznymi opisywanymi w~pracy~\cite{KernelizationAlgorithms04} i działająca zgodnie z~pseudokodem~\ref{alg_findCrown} w kontekście odszukiwania pseudokoron.
+  Problem ten polegał na zastosowaniu dekompozycji wyznaczającej korony w~grafie, zaimplementowanej zgodnie z~wytycznymi opisywanymi w~pracy~\cite{KernelizationAlgorithms04} i działającej zgodnie z~pseudokodem~\ref{alg_findCrown} w kontekście odszukiwania pseudokoron.
   Proponowane jest zbadanie wpływu innego rodzaju NT--dekompozycji na poprawność działania algorytmu \textsc{Zwijanie}.
-  Kod źródłowy zawiera kilka przykładowych implementacji NT--dekompozycji uzyskiwanych w~oparciu na rozwiązaniu sformułowania problemu jako zadania programowania liniowego.
+  Kod źródłowy zawiera kilka przykładowych implementacji NT--redukcji opartych na rozwiązaniu sformułowania problemu jako zadania programowania liniowego.
 
   Usprawnienie logiki związanej z~funkcją \textsc{Zwijanie} spowoduje, że implementacja algorytmu Chena, Kanji oraz Xia będzie bardziej wydajna.
   Dalsze usprawnienia będą dotyczyć części algorytmu zajmującej się utrzymywaniem kolejki priorytetowej struktur, która usuwa krotki o~wartości $q = 0$ oraz wykonuje algorytm siłowy w~sytuacji, gdy algorytm główny dociera do punktu, gdzie zachodzi $k \leq 7$.
@@ -20,7 +20,7 @@
   Poczynione przez autorów założenia mówiące, że algorytm niejawnie wykonuje pewne operacji znacząco utrudniają implementację, a w~szczególności implementację zoptymalizowaną.
   Operacje te w~praktyce są niebagatelnymi kwestiami i~stanowią pole do dalszych badań i optymalizacji pozwalających na poprawę średniej złożoności obliczeniowej stworzonego rozwiązania.
 
-  \subsubsection{\textbf{Poprawa wydajności czasowej implementacji techniki redukcji dziedziny w~oparciu o~algoretm przepływu w~sieci.}}
+  \subsubsection{\textbf{Poprawa wydajności czasowej implementacji techniki redukcji dziedziny w~oparciu o~algorytm przepływu w~sieci.}}
 
   Pozytywny wpływ technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jest widoczny i~zaświadcza o~poprawności implementacji.
   Uzyskane wyniki testów wydajnościowych pokazują jednak, że implementacje opisywanych technik zrealizowane w~ramach niniejszej pracy wymagają optymalizacji w~celu uzyskania wydajności bliższej teoretycznej.
@@ -34,7 +34,7 @@
   Przedkładając czytelność kodu nad zużycie pamięci, uwagę skupiono na odzwierciedleniu wyników pośrednich w~postaci zmiennych oraz jak najłatwiejszym korzystaniu ze struktur danych, na których opierają się implementowane techniki.
   W załączonej implementacji wszelkie struktury inicjowane są z maksymalną pesymistyczną pojemnością względem analizowanego grafu, nie biorąc pod uwagę na przykład wierzchołków czy krawędzi usuniętych z~grafu.
   Proponowaną optymalizacją jest stworzenie wersji kodu oszczędniej korzystającej ze zmiennych, a także bardziej konserwatywnie rezerwującej potrzebną pamięć.
-  Na uwadze warto mieć również wykorzystanie przez język Go mechanizmu odśmiecania pamięci --- implementacje algorytmów muszą być skonstruowane w~sposób sprzyjający jak najszybszym 
+  Na uwadze warto mieć również wykorzystanie przez język Go mechanizmu odśmiecania pamięci --- implementacje algorytmów muszą być skonstruowane w~sposób sprzyjający jak najszybszym przebiegom urządzenia odśmiecającego.
 
   \subsubsection{\textbf{Zbadanie wpływu różnych wariantów NT--dekompozycji na szybkość działania i~efektywność zaimplementowanych algorytmów.}}
 
@@ -46,7 +46,7 @@
 
 \section*{Podsumowanie i~wnioski}
 \addtocounter{section}{1}
-  W~ramach niniejszej pracy omówiono oraz zaimplementowano pięć algorytmów służących do redukcji złożoności czasowej rozwiązania problemu pokrycia wierzchołkowego grafu. Przeprowadzono badania szybkości działania dla czterech z~nich.
+  W~ramach niniejszej pracy omówiono oraz zaimplementowano pięć algorytmów służących do redukcji złożoności czasowej rozwiązania problemu pokrycia wierzchołkowego grafu. Przeprowadzono badania szybkości działania czterech z~nich.
   Przypadki testowe obejmowały wyznaczanie pokrycia wierzchołkowego i~działanie algorytmów redukcji dziedziny do jądra problemu na niezmodyfikowanym grafie wejściowym oraz na grafie poddanym uprzedniemu wykonaniu algorytmu przetwarzania wstępnego.
 
   W oparciu o~wyniki badań eksperymentalnych określenie najszybszego spośród zaimplementowanych algorytmów nie jest możliwe.
