@@ -172,5 +172,37 @@
     \centering
       \includegraphics[width=\textwidth]{results-p}
   \end{figure}
+\section{Środowisko testowe i wykonywanie testów}
+\par{
+  W celu wykonania testów należy skopiować katalog zawarty na nośniku dołączonym do pracy, a następnie zdefiniować zmienną środowiskową \texttt{\$GOPATH} tak, by wskazywała na ścieżkę do podkatalogu \texttt{src}.
+  W następnej kolejności należy zmienić bieżącą ścieżkę na podkatalog \texttt{src/main}.
+  Do wykonania pomiarów służy polecenie \texttt{go run *.go -measure N}, gdzie \texttt{N} stanowi wyrażenie regularne zawierające część nazwy przypadku testowego.
+  Wyczerpująca lista zdefiniowanych przypadków testowych zawarta jest w~pliku \texttt{test-cases.go}.
 
-  
+  Przedstawione wyniki testów szybkości działania algorytmów uzyskano na komputerze o nastepujących paramterach:
+  \begin{itemize}
+    \item Procesor Intel® Core™ i7-4800MQ (4 $\times$ 2.7 GHz)
+    \item 32 GB DDR3L 1600 MHz
+  \end{itemize}
+
+
+  W celu realizacji testów jednostkowych należy zmienić bieżącą ścieżkę na katalog wybranego pakietu projektu i~wywołać komendę \texttt{go test}.
+}
+\subsection*{Generacja danych testowych}
+\par{
+  Istnieje możliwość wykonania testów na innych niż przedstawione w niniejszym rozdziale danych.
+  Generację grafów losowych realizuje skrypt \texttt{random-graphs.py}, umieszczony w~głównym katalogu aplikacji.
+  Jest on wykonywalny z~linii poleceń.
+  Wywołanie skryptu może być parametryzowane następującymi argumentami:
+  \begin{itemize}
+    \item \texttt{-v}, określający liczebności zbiorów wierzchołków wygenerowanych grafów.
+      Wywołanie skryptu z~wartością parametru \texttt{-v 5} wygeneruje graf o~pięciu wierzchołkach, wartość \texttt{-v 5,10} spowoduje generację dwóch grafów odpowiednio o~pięciu i~dziesięciu wierzchołkach, natomiast wartość \texttt{-v 5-20,5} zaowocuje generacją czterech grafów odpowiednio o~pięciu, dziesięciu, piętnastu oraz dwudziestu wierzchołkach.
+    \item \texttt{-d}, określający współczynnik selektywności wierzchołków określonego stopnia w~generowanych grafach.
+      Argument ten może przyjmować identyczne postaci jak argument \texttt{-v}.
+    \item \texttt{-l}, określający algorytm wizualizacji grafów. Dopuszczalne wartości opisane są w podrozdziale~\ref{sss_internals_misc_graphviz}.
+    \item \texttt{-o}, określający format obrazu wynikowego. Dopuszczalne wartości są określone formatami obsługiwanymi przez pakiet Graphviz.
+  \end{itemize}
+
+  Domyślnie skrypt generuje wyniki do katalogu \texttt{results}.
+  Pliki wynikowe mają postać \texttt{V\_D.dot} oraz \texttt{V\_D.jpeg}, gdzie \texttt{V} jest wartością parametru \texttt{-v}, a  \texttt{D} jest wartością parametru \texttt{-d} dla wygenerowanego grafu.
+}
