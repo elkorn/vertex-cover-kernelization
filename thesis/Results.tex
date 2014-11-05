@@ -3,8 +3,8 @@
 \section{Dane testowe}
 \par{
   Przygotowanie zestawu danych testowych jasno odzwierciedlającego ograniczenie złożoności obliczeniowej rozwiązania problemu pokrycia wierzchołkowego do wielomianowej przez zastosowanie technik redukcji dziedziny do jądra problemu nie jest łatwe.
-  Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które ciężko jest opisać w prosty sposób parametrami generacji losowej.
-  Dlatego też aby przygotować zestaw losowych grafów testowych, przyjęto metodę generacji opartą na rozkładzie losowym stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
+  Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które trudno jest opisać w prosty sposób parametrami generacji losowej.
+  Dlatego też aby przygotować zestaw losowych grafów testowych przyjęto metodę generacji opartą na rozkładzie losowym stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
   Stopień każdego wierzchołka w~generowanym grafie wybierany jest losowo z~przedziału $\left<1, k\right>$ zgodnie z~rozkładem $P(k) \propto \frac{1}{k}$.
   Uzyskanie zbioru grafów losowych o~różnych parametrach owocowało bardzo niespójnymi wynikami czasów ich przetwarzania z~pomocą opisywanych w~niniejszej pracy technik, co spowodowane jest tym, że istnienie struktur redukowalnych w~grafie nie jest uzależnione wprost od liczebności wierzchołków czy też krawędzi.
   Po ,,wypróbowaniu'' kilku postaci funkcji określającej współczynnik selektywności udało się utworzyć zbiór zapewniający zbliżone do oczekiwanych pod względem przyrostu czasu przetwarzania wyniki --- przyjęta została postać $P(i, k) \propto \frac{1}{1+|i-k|}$, gdzie $i$ stanowi stopień rozpatrywanego wierzchołka.
@@ -56,7 +56,7 @@
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po redukcji dziedziny opartej na algorytmie przepływu w~sieci.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i~redukcji koron.
     \item Wyznaczenie pokrycia wierzchołkowego algorytmem własnym po wykonaniu operacji przetwarzania wstępnego i~redukcji dziedziny opartej na algorytmie przepływu w~sieci.
-    \item Redukcja dziedziny do jądra problemu poprzez usunięcie koron.
+    \item Redukcja dziedziny do jądra problemu przez usunięcie koron.
     \item Redukcja dziedziny do jądra problemu oparta na algorytmie przepływu w~sieci.
   \end{itemize}
 }
@@ -71,12 +71,12 @@
       \begin{tabular}{| c | c | c | c |}
         \hline
         l.p. & $|V|$ & $|E|$ & czas \\ \hline
-        1 & 10 & 8 & 323.884$\mu$s \\
-        2 & 15 & 20 & 9.52204ms \\
-        3 & 20 & 20 & 30.605758ms \\
-        4 & 25 & 33 & 614.454963ms \\
-        5 & 30 & 36 & 28.922161504s \\
-        6 & 35 & 35 & 1m27.328533967s \\
+        1 & 10 & 8 & 323.884$ \mu$s \\
+        2 & 15 & 20 & 9.52204 ms \\
+        3 & 20 & 20 & 30.605758 ms \\
+        4 & 25 & 33 & 614.454963 ms \\
+        5 & 30 & 36 & 28.922161504 s \\
+        6 & 35 & 35 & 1 m 27.328533967 s \\
         7 & 40 & 69 & \textit{wyłączono po 2 godzinach} \\ \hline
       \end{tabular} 
     \end{center}
@@ -97,12 +97,12 @@
   Za prawdopodobne uzasadnienie tego, że redukcja koron nie oferuje tak dużego przyspieszenia jak technika oparta na przepływie w~sieci uznano dwa czynniki:
   \begin{itemize}
     \item Grafy stanowiące dane testowe są ubogie w~korony.
-    Wynika to z~postaci funkcji określającej współczynnik selektywności wierzchołków. Struktury koron wymagają bardzo specyficznych relacji zachodzących pomiędzy zbiorami wierzchołków, mianowicie istnienia zbiorów niezależnych o~połączonym sąsiedztwie.
+    Wynika to z~postaci funkcji określającej współczynnik selektywności wierzchołków. Struktury koron wymagają bardzo specyficznych relacji zachodzących między zbiorami wierzchołków, mianowicie istnienia zbiorów niezależnych o~połączonym sąsiedztwie.
     W ramach procesu przygotowywania danych testowych udało się uzyskać grafy, dla których redukcja dziedziny uzyskana przez usunięcie koron była znacznie większa, jednak grafy te nie pozwalały na uzyskanie wyników dających przedstawić się w postaci funkcji monotonicznej.
     \item Zaimplementowana technika wyznaczania koron w~grafie oparta jest na zbyt restrykcyjnym uściśleniu NT--redukcji do serii operacji działających bezpośrednio na konkretnych egzemplarzach skojarzeń.
-    Najprawdopodobniej stanowi to również powód opisanych w~podrozdziale~\ref{sss_problems_ckx} problemów napotkanych przy implementacji algorytmu Chena, Kanji oraz Xia.
+    Najprawdopodobniej stanowi to również powód opisanych w~Podsumowaniu problemów napotkanych przy implementacji algorytmu Chena, Kanji oraz Xia.
     Pozostałe zaimplementowane egzemplarze NT--redukcji wyznaczają podzbiory różniące się od tych uzyskiwanych przez redukcję proponowaną w pracy~\cite{KernelizationAlgorithms04}.
-    Dalsze pole do badań może stanowić weryfikacja czy bardziej ogólne postacie NT--redukcji --- wykonywane za pomocą algorytmów programowania liniowego --- zapewnią lepsze rezultaty dla grafów o~strukturze zbliżonej do tych, które wykorzystano jako dane testowe.
+    Dalsze pole do badań może stanowić weryfikacja lub bardziej ogólne postacie NT--redukcji --- wykonywane za pomocą algorytmów programowania liniowego --- zapewnią lepsze rezultaty dla grafów o~strukturze zbliżonej do tych, które wykorzystano jako dane testowe.
   \end{itemize}
 
   Ze względu na brak optymalizacji opisywanych w~niniejszej pracy technik nie udało się wykonać pomiarów czasu wyznaczania pokrycia wierzchołkowego bez przetwarzania wstępnego dla grafów zawierających więcej niż 1600 wierzchołków.
@@ -119,7 +119,7 @@
   \end{figure}
   Zastosowanie prostych technik przetwarzania wstępnego opisanych w~podrozdziale~\ref{Section_preprocessing} pozwala na dodatkowe skrócenie czasu wyznaczania pokrycia wierzchołkowego w~grafach testowych o~około dwa rzędy wielkości.
 
-  Ponieważ różnica w~czasie wyznaczania pokrycia wierzchołkowego z~zastosowaniem techniki opartej o~przepływ w~sieci pomiędzy wariantem bez przetwarzania wstępnego a~wariantem z~zastosowaniem przetwarzania wstępnego jest słabo widoczna, Rysunek~\ref{fig_nf_comp} zestawia charakterystyki czasowe tych przypadków.
+  Ponieważ różnica w~czasie wyznaczania pokrycia wierzchołkowego z~zastosowaniem techniki opartej na~przepływie w~sieci między wariantem bez przetwarzania wstępnego a~wariantem z~zastosowaniem przetwarzania wstępnego jest słabo widoczna, Rysunek~\ref{fig_nf_comp} zestawia charakterystyki czasowe tych przypadków.
   \begin{figure}
     \caption{Wpływ przetwarzania wstępnego na czas wyznaczania pokrycia wierzchołkowego w~oparciu o~przepływ w~sieci.}
     \label{fig_nf_comp}
@@ -142,7 +142,7 @@
   \end{figure}
 
   Powodem niekorzystnej złożoności czasowej działania algorytmu redukcji dziedziny przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w~sieci jest brak optymalizacji implementacji koncepcji opisanej w~pracy~\cite{KernelizationAlgorithms04}.
-  Szczegóły oraz proponowane usprawnienia opisane są w podrozdziale~\ref{s_improvements}.
+  Szczegóły oraz proponowane usprawnienia opisane są w Podsumowaniu.
   Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i~nie ukazuje prawdziwej jego szybkości, a także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
   W związku z~zaciemnieniem na wykresie wartości wyników pomiarów czasu działania algorytmu redukcji koron, Rysunek~\ref{fig_results_k_crown} przedstawia wyłącznie tę charakterystykę.
 
