@@ -115,10 +115,9 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}\thlabel{def_alternating_path}
-  Mając dane skojarzenie ${M=\{e_{M0}, e_{M1}, \ldots, e_{Mp}\}, e \in M \Rightarrow e \in E}$,
+  Mając dane skojarzenie ${M=\{e_{M_0}, e_{M_1}, \ldots, e_{M_p}\} \subseteq E}$,
   \emph{ścieżkę M-przemienną} stanowi każda ścieżka $P=\{e_0, e_1, \ldots, e_{n-1}\}$ spełniająca warunek: 
-  \[{\forall_\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_{i} \notin M) \oplus
-  (e_{i-1} \notin M \land e_{i} \in M)}\].
+  \[\forall_{\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_i \notin M) \oplus  (e_{i-1} \notin M \land e_i \in M).\]
 \end{definition}
 
 \begin{definition}\thlabel{def_induced_graph}
