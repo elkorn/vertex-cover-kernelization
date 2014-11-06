@@ -22,13 +22,13 @@
   Zmniejszenie zaangażowania za pomocą struktury $(I, N(I))$ polega na zaangażowaniu algorytmu korzystającego z~tejże struktury w~odnajdywanie wyłącznie rozwiązań $C$ spełniających własność $C \cap (I \cup N(I)) = N(I)$, usuwając zbiór $I \cup N(I)$ z dziedziny poszukiwań w grafie $G$, redukując tym samym egzepmlarz problemu pokrycia wierzchołkowego do pomniejszonego grafu $G[V \setminus (I \cup N(I))]$.
 }
 \par{
-  Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w~grafie są tak zwane \emph{NT--dekompozycje}, stanowiące wynik \emph{NT--redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego i~rozwiązania go zgodnie z~Twierdzeniem~\ref{nt_lp}\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające Twierdzenia~\ref{nt_lp}.}
+  Charakterystycznym rodzajem struktur zmiejszających zaangażowanie w~grafie są tak zwane \emph{NT--dekompozycje}, stanowiące wynik \emph{NT--redukcji} --- operacji opartej na sformułowaniu problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego i~rozwiązania go zgodnie z~Twierdzeniem~\ref{nt_lp}\footnote{Sformułowanie problemu jako relaksacji liniowej jest jednym ze sposobów podejścia do identyfikacji struktur zmniejszających zaangażowanie, istnieją również inne sposoby --- jednakże wspólnym mianownikiem wszystkich tych metod są korzenie sięgające twierdzenia~\ref{nt_lp}.}
   \begin{definition}\thlabel{def_nt_decomposition}.
     \emph{NT--dekompozycja} (dekompozycja Nemhausera--Trottera) stanowi specjalny przypadek struktury $(I, N(I))$ zmniejszającej zaangażowanie w~grafie $G=(V, E)$ zidentyfikowanej przez zastosowanie procesu \emph{NT--redukcji} (redukcji Nemhausera--Trottera).
     Proces ten posługuje się funkcją $x: V \rightarrow \left\{0, \frac{1}{2}, 1\right\}$ różną od $x \equiv \frac{1}{2}$, która określa wagę wierzchołków grafu w~kontekście przynależności do optymalnego pokrycia wierzchołkowego.
   \end{definition}
   Przyjmując $V_i^x=\{u \in V| x(u)=i\}$ dla każdej wartości $i\in \{0, \frac{1}{2}, 1\}$, zbiór $V_0^x$ jest niezależny i~niepusty w~grafie $G$, zachowana również zostaje własność $V_1^x = N(V_0^x)$.
-  Z Twierdzenia~\ref{nt_lp} wynika, że zbiór $V_1^x$ stanowi optymalne pokrycie wierzchołkowe grafu $G[V_0^x \cup N(V_0^x)]$.
+  Z twierdzenia~\ref{nt_lp} wynika, że zbiór $V_1^x$ stanowi optymalne pokrycie wierzchołkowe grafu $G[V_0^x \cup N(V_0^x)]$.
   Prowadzi to do wniosku, że para $(V_0^x, N(V_0^x))$ stanowi prawidłową strukturę zmniejszającą zaangażowanie w~grafie $G$.
   Zaangażowanie zostaje zmniejszone do zbioru rozwiązań mających część wspólną ze zbiorem $V_0^x \cup V_1^x$ w zbiorze $V_1^x$, a przestrzeń poszukiwań zredukowana zostaje do grafu $G[V_\frac{1}{2}^x]$.
 }
@@ -137,7 +137,7 @@ Rezultatem działania algorytmu jest korona $(I,H)$, na którą składają się 
 \par{
   Rezultatem jednej iteracji algorytmu redukcji korony (wiersze~\algref{alg_findCrown}{findCrown_while} -- \algref{alg_findCrown}{findCrown_endWhile}) jest graf
   $G^\prime=(V^\prime, E^\prime)$ składający się ze zbiorów $V^\prime=V\setminus H \setminus I$ oraz $E^\prime = E \setminus \{H\leftrightarrow I\}$, gdzie zbiór $\{H\leftrightarrow I\}$ zawiera krawędzie pomiędzy wierzchołkami należącymi do zbiorów $H$ oraz $I$.
-  Rozmiar dziedziny problemu ulega zmniejszeniu do wartości $n^\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k^\prime=k-|H|$, ponieważ każdy z~wierzchołków $h \in H$ musi należeć do optymalnego pokrycia wierzchołkowego, co udowodniono dla Twierdzenia~\ref{th_crown_vc}.
+  Rozmiar dziedziny problemu ulega zmniejszeniu do wartości $n^\prime=n-|I|-|H|$, natomiast wartość parametru spada do $k^\prime=k-|H|$, ponieważ każdy z~wierzchołków $h \in H$ musi należeć do optymalnego pokrycia wierzchołkowego, co udowodniono dla twierdzenia~\ref{th_crown_vc}.
   Zauważmy, że jeżeli w~grafie istnieje maksymalne skojarzenie $M_{\textnormal{MAX}}$ o rozmiarze $|M_{\textnormal{MAX}}| > k$, to wykluczone jest istnienie optymalnego pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o liczebności $|C_{\textnormal{OPT}}|\leq k$.
   Jeżeli więc rozmiar dowolnego z~odnalezionych skojarzeń $M_1, M_2$ jest większy niż $k$, to algorytm może zakończyć działanie, udzielając odpowiedzi negatywnej --- czyli zwrócić trywialny (zgodnie z~Definicją~\ref{def_trivial_crown}) egzemplarz korony.
   Zależność ta pozwala również zdefiniować górną granicę rozmiaru grafu wynikowego $|G^\prime|$.

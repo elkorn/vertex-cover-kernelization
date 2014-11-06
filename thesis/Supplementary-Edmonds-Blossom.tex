@@ -1,6 +1,6 @@
 \subsection{Odnajdywanie maksymalnego skojarzenia w~grafie}\label{ss_edmonds}
 \par{
-  Każdy z~opisywanych w~pracy algorytmów działający w~oparciu o~twierdzenie\\Nemhausera--Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w~sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chena, Kanji oraz Xia (podrozdział~\ref{s_ckx}), wymaga w~pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według Definicji \ref{def_maximum_matching}.
+  Każdy z~opisywanych w~pracy algorytmów działający w~oparciu o~twierdzenie\\Nemhausera--Trottera \ref{nt_lp}, to znaczy sformułowanie redukcji dziedziny do jądra problemu pokrycia wierzchołkowego jako przepływu w~sieci (podrozdział \ref{Kernelization_network_flow}), algorytm redukcji koron (podrozdział \ref{ss_kernelization_crown_reduction}) oraz algorytm Chena, Kanji oraz Xia (podrozdział~\ref{s_ckx}), wymaga w~pewnym momencie odnalezienia maksymalnego skojarzenia grafu rozumianego według definicji \ref{def_maximum_matching}.
   Podrozdział skupia się na opisie problemu odnajdywania maksymalnego skojarzenia w~dowolnych grafach oraz przedstawia wybrane do jego rozwiązania narzędzie --- algorytm skurczania kwiatów Edmondsa
 }
 
@@ -11,7 +11,7 @@
   \begin{theorem}[Twierdzenie Berge'a]\thlabel{th_Berge}
     Skojarzenie $M$ w grafie $G$ jest maksymalne wtedy i~tylko wtedy, gdy nie istnieje ścieżka powiększająca $P_a$ taka, że dla dowolnej pary kolejno następujących po sobie krawędzi $\{e_1, e_2\} \in P_a$ prawdziwe jest $e_1 \in M \oplus e_2 \in M$.
   \end{theorem}
-   Należy zwrócić uwagę, iż ścieżka powiększająca $P_a$ opisywana w~Twierdzeniu~\ref{th_Berge} jest $M$-przemienna w~rozumieniu Definicji~\ref{def_alternating_path}.
+   Należy zwrócić uwagę, iż ścieżka powiększająca $P_a$ opisywana w~Twierdzeniu~\ref{th_Berge} jest $M$-przemienna w~rozumieniu definicji~\ref{def_alternating_path}.
    W kontekście poszukiwania skojarzeń przez ścieżki powiększające, graf można traktować jako odpowiednik sieci przepływowej o~jednostkowych pojemnościach każdej z~krawędzi.
 }
 \par{
@@ -136,9 +136,9 @@
   W pseudokodzie~\ref{alg_Edmonds} zbiorem zaświadczającym jest zbiór $N$.
   Zaznaczyć należy, iż nazewnictwo zmiennych $P$ oraz $N$ jest nieprzypadkowe --- wierzchołki należące do zbioru $P$ znajdują się w parzystej odległości od korzenia pewnego drzewa $T \in F$, natomiast wierzchołki należące do zbioru $N$, analogicznie, w odległości nieparzystej od korzenia drzewa $T$.
   Przez odległość rozumie się długość ścieżki prowadzącej do danego wierzchołka z~korzenia drzewa $T$.\\\\
-  \begin{bproof} (Dla Twierdzenia~\ref{th_edmonds_max_matching})\\
+  \begin{bproof} (Dla twierdzenia~\ref{th_edmonds_max_matching})\\
     W momencie zakończenia działania algorytmu na grafie $G=(V, E)$, zbiór wierzchołków $V$ jest podzielony na trzy podzbiory: $P$, $N$ oraz podzbiór $R = V \setminus P \setminus N$.
-    Zbiór $N$ jest niezależny w~grafie $H=(V_H, E_H)$ (w rozumieniu Definicji~\ref{def_independent_set}) --- w przeciwnym wypadku warunek~\algref{alg_Edmonds}{even_connected} lub~\algref{alg_Edmonds}{even_disjoint} algorytmu Edmondsa byłby spełniony co przeczy założeniu, iż algorytm zakończył działanie.
+    Zbiór $N$ jest niezależny w~grafie $H=(V_H, E_H)$ (w rozumieniu definicji~\ref{def_independent_set}) --- w przeciwnym wypadku warunek~\algref{alg_Edmonds}{even_connected} lub~\algref{alg_Edmonds}{even_disjoint} algorytmu Edmondsa byłby spełniony co przeczy założeniu, iż algorytm zakończył działanie.
     Kroki w~momencie spełnienia warunku~\algref{alg_Edmonds}{put_matched_in_odd} algorytmu gwarantują, że dla każdego wierzchołka $v_N \in N$ dowolny skojarzony z~nim przez zbiór $W$ wierzchołek zostanie umieszczony w~zbiorze $P$.
     Tym samym zagwarantowana jest właściwość, że każdy wierzchołek $v_P \in P$ jest skojarzony przez zbiór $W$ wyłącznie z~innym wierzchołkiem $v_N \in N$.
     Krok~\algref{alg_Edmonds}{pick_edge} zapewnia, że w~momencie zakończenia działania algorytmu nie może istnieć krawędź $(v_P, v_R); v_P \in P, v_R \in R$ pomiędzy zbiorami $P$ oraz $R$.
@@ -158,9 +158,9 @@
   \end{theorem}
   \begin{bproof}
     Jeżeli skojarzenie $W \setminus B$ nie byłoby maksymalne, w grafie $H$ musiałaby istnieć $W$-przemienna ścieżka powiększająca $\eta$.
-    Kroki algorytmu w~razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} w Pseudokodzie~\ref{alg_Edmonds} zajmują się tym przypadkiem.
+    Kroki algorytmu w~razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} w pseudokodzie~\ref{alg_Edmonds} zajmują się tym przypadkiem.
 
-    Ścieżka $\eta$ zaczyna się od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w Pseudokodzie~\ref{alg_Edmonds}) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
+    Ścieżka $\eta$ zaczyna się od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w pseudokodzie~\ref{alg_Edmonds}) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
     Uzyskanie $M$-przemiennej ścieżki powiększającej w~grafie $G$ jest możliwe przez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
     skojarzeń.
 
@@ -182,7 +182,7 @@
     Algorytm Edmondsa znajduje maksymalne dopasowanie grafu $G=(V, E)$ w czasie $O(|V|^4)$.
   \end{theorem}
   \begin{bproof}
-    Podpierając się rozumowaniem przedstawionym w~dowodzie Twierdzenia~\ref{th_augentation_complexity} oraz dowodami zawartymi w~niniejszym podrozdziale łatwo zauważyć, że algorytm Edmondsa w~trakcie działania dokona co najwyżej $\frac{|V|}{2}$ powiększeń.
+    Podpierając się rozumowaniem przedstawionym w~dowodzie twierdzenia~\ref{th_augentation_complexity} oraz dowodami zawartymi w~niniejszym podrozdziale łatwo zauważyć, że algorytm Edmondsa w~trakcie działania dokona co najwyżej $\frac{|V|}{2}$ powiększeń.
     Pomiędzy kolejnymi powiększeniami istnieje możliwość dodania co najwyżej $|E|$ krawędzi do lasu $F$.
     W związku z~faktem, iż kwiat stanowi cykl nieparzystej długości, zawiera on przynajmniej 3 krawędzie --- a zatem pomiędzy kolejnymi powiększeniami istnieje możliwość skurczenia co najwyżej $\frac{|V|}{3}$ kwiatów.
     W związku z~potrzebą utrzymywania lasu $F$, dodawanie do niego kolejnej krawędzi poprzedzone jest sprawdzeniem co najwyżej $O(|E|)$ zawartych krawędzi w~celu zachowania ich unikalności w~ramach drzewa.

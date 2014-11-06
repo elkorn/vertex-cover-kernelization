@@ -137,7 +137,7 @@
     Jeżeli za $G^\prime$ przyjmuje się graf otrzymany w~wyniku strukturyzacji wierzchołka $v_0$ w grafie $G$, to spełniona jest nierówność $\tau(G) \leq \tau(G^\prime) - 1$.
   \end{theorem}
   \begin{bproof}
-    Przyjąć należy $\alpha(G)$ oraz $\alpha(G^\prime)$ jako oznaczenie liczebności największego zbioru niezależnego (w rozumieniu Definicji~\ref{def_independent_set}) odpowiednio w~grafie $G$ oraz $G^\prime$.
+    Przyjąć należy $\alpha(G)$ oraz $\alpha(G^\prime)$ jako oznaczenie liczebności największego zbioru niezależnego (w rozumieniu definicji~\ref{def_independent_set}) odpowiednio w~grafie $G$ oraz $G^\prime$.
     W~pracy~\cite{Ebengger:1984} udowodniono, że jest spełniona własność $\alpha(G^\prime)=\alpha(G) - 1$.
     Niech przez $n$ oraz $n^\prime$ oznaczone będą liczby wierzchołków odpowiednio grafu $G$ oraz $G^\prime$.
     Ponieważ istnieje co najwyżej $p - 1$ antykrawędzi w~zbiorze $N(v_0)$, liczba nowo utworzonych w~grafie $G^\prime$ wierzchołków może wynosić co najwyżej $p - 1$.
@@ -160,13 +160,13 @@
     Dodatkowo założyć należy liczebność zbioru $|N(I)|=|I| + 1$ oraz dla każdego z~podzbiorów $\emptyset \neq S \subseteq I$ liczebność sąsiedztwa $|N(S)| \geq |S| + 1$.
     Wobec takich założeń następujące stwierdzenia są prawdziwe.
     \begin{enumerate}
-      \item Jeżeli graf indukowany z~grafu $G$ zbiorem $N(I)$ (w rozumieniu Definicji~\ref{def_induced_graph}) nie stanowi zbioru niezależnego, to istnieje optymalne pokrycie wierzchołkowe zawierające zbiór $N(I)$ i wykluczające zbiór $I$.
+      \item Jeżeli graf indukowany z~grafu $G$ zbiorem $N(I)$ (w rozumieniu definicji~\ref{def_induced_graph}) nie stanowi zbioru niezależnego, to istnieje optymalne pokrycie wierzchołkowe zawierające zbiór $N(I)$ i wykluczające zbiór $I$.
       \item Jeżeli zbiór wierzchołków grafu $G[N(I)]$ jest zbiorem niezależnym, należy przyjąć graf $G^\prime=(V^\prime, E^\prime)$ uzyskany z~grafu $G$ tak, że $V^\prime=V \setminus (I \cup N(I)) \cup \{u_I\}$ gdzie $u_I$ stanowi nowo dodany wierzchołek, który należy połączyć z każdym wierzchołkiem $v \in V^\prime$ sąsiadującym w~grafie $G$ z dowolnym wierzchołkiem $u \in N(I)$.
       W przypadku spełnienia tych założeń spełniona jest równość $\tau(G^\prime)=\tau(G)-|I|$.
     \end{enumerate}
   \end{theorem}
   \begin{bproof} W celu udowodnienia poprawności operacji należy wpierw ugruntować fundamenty teoretyczne łączące strukturę $(I, N(I))$ z pokryciem wierzchołkowym --- poświęcona temu jest część (0) dowodu.
-    Następujące części kolejno dowodzą przypadków opisanych Twierdzeniem~\ref{th_general_fold}.
+    Następujące części kolejno dowodzą przypadków opisanych twierdzeniem~\ref{th_general_fold}.
     \begin{itemize}
       \item[(0):] Dla grafu $G=(V, E)$ istnieje optymalne pokrycie wierzchołkowe $C$ zawierające zbiór $N(I)$ oraz wykluczające zbiór $I$.
       Przyjąć należy zbiory $\emptyset \neq X=C \cap I$ oraz $\emptyset \neq Y=C \cap N(I)$.
@@ -196,7 +196,7 @@
   \end{bproof}
 
   \begin{definition}
-    Uporządkowana para $(I, H=(N(I)))$ opisywana Twierdzeniem~\ref{th_general_fold} stanowi~\emph{pseudokoronę} w grafie $G$.
+    Uporządkowana para $(I, H=(N(I)))$ opisywana twierdzeniem~\ref{th_general_fold} stanowi~\emph{pseudokoronę} w grafie $G$.
   \end{definition}
 
   Struktura pseudokorony nie jest koroną, ponieważ nie spełnia określonych w~Definicji~\ref{def_crown} założeń dotyczących rozmiaru zbiorów składowych, to znaczy nierówności $|H| \leq |I|$.
@@ -242,7 +242,7 @@
   \end{theorem}
   Kluczowym krokiem dla odnalezienia struktury pseudokorony w~niemającym koron grafie $G$ jest istnienie pewnego wierzchołka $v$, który stanowi jedyny wierzchołek czyniący strukturę grafu $G$ wolną od koron, czego analiza przeprowadzona zostaje w~ramach dowodu następującego twierdzenia.
   \begin{theorem}\thlabel{th_almost_crown}
-    Wolny od koron graf $G=(V, E)$ zawiera pseudokoronę wtedy i~tylko wtedy, gdy istnieje wierzchołek $v \in V$ taki, że graf $G[V\setminus \{v\}]$ zawiera równą koronę (w rozumieniu Definicji~\ref{def_equal_crown}).
+    Wolny od koron graf $G=(V, E)$ zawiera pseudokoronę wtedy i~tylko wtedy, gdy istnieje wierzchołek $v \in V$ taki, że graf $G[V\setminus \{v\}]$ zawiera równą koronę (w rozumieniu definicji~\ref{def_equal_crown}).
   \end{theorem}
   \begin{bproof}
     Zakładając, że graf $G$ ma pseudokoronę $(I, H=N(I))$, spełnione muszą być własności $|H| = |I| + 1$ oraz $\forall_{\emptyset\neq S \subseteq I}:{|N(S)|\geq|S|+1}$.
@@ -273,22 +273,22 @@
     Istnieje algorytm $\mathcal{A}$ o złożoności $O(k^3\sqrt{k})$ redukujący dowolny egzemplarz $(G=(V, E), k)$ problemu pokrycia wierzchołkowego o~rozmiarze $|V|\leq 2k$ do niemającego koron ani pseudokoron egzemplarza $(G^\prime=(V^\prime, E^\prime), k^\prime)$ o parametrach $|V^\prime| \leq |V|$ oraz $k^\prime \leq k$.
   \end{theorem}
   \begin{bproof}
-    W celu usunięcia koron z~grafu $G$ należy wyznaczać kolejne NT--dekompozycje i~redukować za ich pomocą dziedzinę poszukiwań pokrycia wierzchołkowego do momentu otrzymania trywialnego egzemplarza korony (w rozumieniu Definicji~\ref{def_trivial_crown}).
+    W celu usunięcia koron z~grafu $G$ należy wyznaczać kolejne NT--dekompozycje i~redukować za ich pomocą dziedzinę poszukiwań pokrycia wierzchołkowego do momentu otrzymania trywialnego egzemplarza korony (w rozumieniu definicji~\ref{def_trivial_crown}).
     Zgodnie z~drugim twierdzeniem Nemhausera--Trottera~(Twierdzenie~\ref{nt_lp}) każde zastosowanie NT--redukcji wymaga $O(|V|\sqrt{|E|})$ czasu.
     Rozmiary grafu w~rozpatrywanym egzemplarzu problemu pokrycia wierzchołkowego wynoszą odpowiednio $|V|=O(k)$ oraz $|E|=O(k^2)$ --- zatem łatwo zauważyć, że każda NT--redukcja zajmie tak naprawdę $O(k^2\sqrt{k})$ czasu.
     Każda NT--dekompozycja redukuje dziedzinę grafu, a zatem do momentu uzyskania trywialnego egzemplarza korony operacja zostanie wykonana $O(k)$ razy.
     Po otrzymaniu trywialnego egzemplarza korony założyć można, że zredukowany graf nie ma żadnych koron, zgodnie z~Twierdzeniem~\ref{th_crown_free_graph}.
     Łatwo zaobserwować, że w~czasie $O(k^3\sqrt(k))$ można zredukować egzemplarz $(G, k)$ problemu pokrycia wierzchołkowego do egzemplarza $(G^\prime, k^\prime)$, gdzie graf $G^\prime$ nie zawiera żadnych koron.
-    Każda aplikacja NT--redukcji owocująca nietrywialnym egzemplarzem NT--dekompozycji powoduje zmniejszenie parametru $k$ o wartość odpowiadającą szerokości korony (w rozumieniu Definicji~\ref{def_crown_head}) zawartej w~danym egzemplarzu.
+    Każda aplikacja NT--redukcji owocująca nietrywialnym egzemplarzem NT--dekompozycji powoduje zmniejszenie parametru $k$ o wartość odpowiadającą szerokości korony (w rozumieniu definicji~\ref{def_crown_head}) zawartej w~danym egzemplarzu.
 
-    Podążając za dowodem Twierdzenia~\ref{th_almost_crown}, struktura pseudokorony może istnieć w grafie $G^\prime$ wtedy i~tylko wtedy, kiedy zawiera on taki wierzchołek $v$, że graf $G^\prime[V \setminus \{v\}]$ zawiera równą koronę.
+    Podążając za dowodem twierdzenia~\ref{th_almost_crown}, struktura pseudokorony może istnieć w grafie $G^\prime$ wtedy i~tylko wtedy, kiedy zawiera on taki wierzchołek $v$, że graf $G^\prime[V \setminus \{v\}]$ zawiera równą koronę.
     Proces wyznaczania pseudokorony polega zatem na przeprowadzeniu NT--redukcji na grafie $G^\prime[V \setminus \{v\}]$ dla każdego wierzchołka $v \in G^\prime$.
-    Jeżeli dowolna z~przeprowadzonych NT--redukcji owocuje egzemplarzem korony, to na mocy Twierdzenia~\ref{th_almost_crown} musi to być równa korona --- w przeciwnym razie graf $G^\prime$ musiałby zawierać koronę.
+    Jeżeli dowolna z~przeprowadzonych NT--redukcji owocuje egzemplarzem korony, to na mocy twierdzenia~\ref{th_almost_crown} musi to być równa korona --- w przeciwnym razie graf $G^\prime$ musiałby zawierać koronę.
     W efekcie odkryta zostaje struktura pseudokorony, to znaczy wierzchołka $v_c$ wraz z~koroną otrzymaną z NT--dekompozycji grafu $G^\prime[V \setminus \{v_c\}]$.
     Operacja wyznaczania pseudokorony zajmuje $O(k^{\prime3}\sqrt{k^\prime})=O(k^3\sqrt{k})$ czasu, ponieważ należy przeprowadzić co najwyżej $O(k)$ NT--redukcji dla indukowanych grafów.
 
     Po wykonaniu powyższych operacji otrzymany graf jest wolny od koron, nie zawiera też pseudokoron.
-    Z Twierdzenia~\ref{th_crown_domain_reduction} wynika, że rozmiar wynikowego egzemplarza problemu wynosi $|V^\prime| \leq 2k^\prime$.
+    Z twierdzenia~\ref{th_crown_domain_reduction} wynika, że rozmiar wynikowego egzemplarza problemu wynosi $|V^\prime| \leq 2k^\prime$.
   \end{bproof}
 }
 \subsubsection{\textbf{Struktury ,,pożyteczne''}}
@@ -325,7 +325,7 @@
     W celu określenia pierwszego wierzchołka pewnej dobrej pary należy wybrać wierzchołek $u \in V$ spełniający następujące własności w~podanym porządku.
     \begin{enumerate}[(i)]
       \item Wektor etykiety wierzchołka $u$ jest największy w~porządku leksykograficznym spośrów wektorów etykiet wszystkich wierzchołków $w \in G$ stopnia $d(w)=d(u)$.
-      \item  Jeżeli graf $G$ jest regularny (w rozumieniu Definicji~\ref{def_regular}), to liczba par wierzchołków $\{x, y\} \subseteq N(u)$, w których wierzchołek $y$ jest pseudozdominowany przez wierzchołek $x$ jest największa z~możliwych.
+      \item  Jeżeli graf $G$ jest regularny (w rozumieniu definicji~\ref{def_regular}), to liczba par wierzchołków $\{x, y\} \subseteq N(u)$, w których wierzchołek $y$ jest pseudozdominowany przez wierzchołek $x$ jest największa z~możliwych.
       \item Liczba krawędzi pomiędzu wierzchołkami $v_u \in N(u)$ jest największa z~możliwych.
     \end{enumerate}
 
@@ -368,11 +368,11 @@
 \par{
   Aby uwidocznić wysoką wartość krotek, należy wyjaśnić w jaki sposób algorytm wykorzystuje te struktury podczas rozgałęziania.
   Dla potrzeb wyjaśnienia przyjąć należy, że algorytm rozgałęzia się na pewnym wierzchołku $z$ o sąsiedztwie $N(z)$.
-  Na podstawie obserwacji dokonanej w~ramach Twierdzenia~\ref{th_include_neighborhood} stwierdzić można, że istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(z)$ lub wykluczające co najmniej dwa wierzchołki należące do tego zbioru.
+  Na podstawie obserwacji dokonanej w~ramach twierdzenia~\ref{th_include_neighborhood} stwierdzić można, że istnieje optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(z)$ lub wykluczające co najmniej dwa wierzchołki należące do tego zbioru.
   Wobec tego w~momencie rozgałęziania algorytmu, w egzemplarzu zawierającym wierzchołek $z$ przestrzeń poszukiwań może zostać ograniczona do pokrycia wierzchołkowego zbioru wykluczającego co najmniej dwa wierzchołki należące do sąsiedztwa wierzchołka $z$ --- operacja ta jest poprawna, ponieważ jeżeli takie pokrycie nie istnieje, to gałąź rozpatrująca egzemplarz zawierający całość zbioru $N(z)$ odnajdzie optymalne pokrycie wierzchołkowe (jeżeli takowe istnieje).
   Pojęcie wykluczenia co najmniej dwóch wierzchołków sąsiadujących z~wierzchołkiem $z$ jest materializowane przez stworzenie w~momencie rozgałęziania krotki $(N(z), q=2)$.
 
-  W sytuacji, gdy algorytm rozgałęzia się na pewnym wierzchołku $z$ mającym pewien sąsiedni wierzchołek $u$, zgodnie z~obserwacją dokonaną w ramach Twierdzenia~\ref{th_exclude_additional_neighbor} musi istnieć optymalne pokrycie wierzchołkowe, które albo zawiera wierzchołek $z$ albo wyklucza wierzchołek $z$ oraz co najmniej jeden wierzchołek należący do sąsiedztwa wierzhołka $u$.
+  W sytuacji, gdy algorytm rozgałęzia się na pewnym wierzchołku $z$ mającym pewien sąsiedni wierzchołek $u$, zgodnie z~obserwacją dokonaną w ramach twierdzenia~\ref{th_exclude_additional_neighbor} musi istnieć optymalne pokrycie wierzchołkowe, które albo zawiera wierzchołek $z$ albo wyklucza wierzchołek $z$ oraz co najmniej jeden wierzchołek należący do sąsiedztwa wierzhołka $u$.
   Przestrzeń poszukiwań w ramach tej gałęzi algorytmu może być zatem ograniczona do zbioru wykluczającego co najmniej dwa wierzchołki należące do zbioru $N(u)$.
   Pojęcie wykluczenia tychże wierzchołków materializowane jest przez utworzenie w~momencie rozgałęziania krotki $(N(u), q=2)$.
 }
@@ -524,7 +524,7 @@
   W momencie gdy algorytm \textsc{VC} utworzy nowe krotki w~chwili kolejnego rozgałęzienia, przechowana 2-krotka nie będzie już zawarta w~kolejce $T$ --- a zatem nie nastąpi konflikt narzuconych przez krotki własności.
 
   Wiersze~\algref{alg_ckx_conditional_struction}{struction_applicable1} oraz~\algref{alg_ckx_conditional_struction}{struction_applicable2} funkcji \textsc{War\_Strukt} korzystają z pojęcia \emph{aplikowalności} operacji strukturyzacji do pewnego wierzchołka $v$.
-  Własność ta sprowadza się do sprawdzenia, czy wśród wierzchołków należących do zbioru $N(v)$ istnieje co najwyżej $p-1$ antykrawędzi, gdzie $p=|N(v)|$ --- zgodnie z~dowodem Twierdzenia~\ref{th_struction_feasibility}.
+  Własność ta sprowadza się do sprawdzenia, czy wśród wierzchołków należących do zbioru $N(v)$ istnieje co najwyżej $p-1$ antykrawędzi, gdzie $p=|N(v)|$ --- zgodnie z~dowodem twierdzenia~\ref{th_struction_feasibility}.
 }
 \subsubsection{\textbf{Priorytety struktur w~grafie}}
 \label{sss_ckx_priorities}
@@ -567,7 +567,7 @@
     Założyć wpierw należy, że stopień wierzchołków w~grafie $G$ nie jest ograniczony z~góry wartością 2 --- w przeciwnym razie funkcja \textsc{Redukcja} przetworzyłaby graf, zmieniając jego strukturę --- oraz, że graf $G$ jest spójny (dla grafów niespójnych algorytm \textsc{VC} wywoła się rekurencyjnie na każdej ze spójnych składowych).
     Jeżeli graf $G$ ma wierzchołek $v$ stopnia $d(v) \geq 7$, to spełniona musi być przynajmniej jedna z~własności (8), (11).
     W przeciwnym razie graf $G$ ma wierzchołek $v$ stopnia $d(v) \leq 6$.
-    Jeżeli graf $G$ jest regularny (w rozumieniu Definicji~\ref{def_regular}), to wtedy dla każdej dobrej pary $(u, z)$ jest spełniona własność $d(u)=d(z)$ --- w tej sytuacji jedynie własność (12) znajduje zastosowanie.
+    Jeżeli graf $G$ jest regularny (w rozumieniu definicji~\ref{def_regular}), to wtedy dla każdej dobrej pary $(u, z)$ jest spełniona własność $d(u)=d(z)$ --- w tej sytuacji jedynie własność (12) znajduje zastosowanie.
     Jeżeli graf $G$ nie jest regularny, to przyjąć należy $u$ jako wierzchołek najmniejszego stopnia w~grafie $G$.
     Ponieważ graf $G$ nie jest regularny oraz maksymalny stopień wierzchołka w~grafie $G$ wynosi $d_{\max} \leq 6$, graf $G$ musi zawierać wierzchołek $u$ stopnia $d(u) \leq 5$.
     Jeżeli stopień wierzchołka $u$ wynosi $d(u)=3$, to musi zachodzić jedna z~własności (3), (4), (5).
