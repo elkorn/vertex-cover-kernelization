@@ -34,6 +34,7 @@ func writeln(data string) {
 
 type flags struct {
 	runPattern *string
+	dataSource *string
 }
 
 type dataFileDescriptor struct {
@@ -45,6 +46,7 @@ type dataFileDescriptor struct {
 func defineFlags() (result flags) {
 	result = flags{
 		runPattern: flag.String("measure", ".*", "Regexp for which measurements should be run"),
+		dataSource: flag.String("datasource", "../test-data", "Relative path of the directory containing the test .dot files"),
 	}
 
 	flag.Parse()
@@ -105,8 +107,8 @@ func listExInFiles(dir string) {
 }
 
 func main() {
-	listRandomInFiles("../results")
 	currentFlags := defineFlags()
+	listRandomInFiles(*(currentFlags.dataSource))
 	for key, testCase := range testCases {
 		if regexp.MustCompile(*(currentFlags.runPattern)).MatchString(key) {
 			testCase(key)
