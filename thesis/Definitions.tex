@@ -55,7 +55,7 @@ grafu $G=(V,E)$.
 
 \begin{definition}
   \emph{Pokryciem wierzchołkowym o~optymalnym rozmiarze}, \emph{pokryciem wierzchołkowym optymalnego rozmiaru} lub \emph{optymalnym pokryciem wierzchołkowym} 
-  nazywa się takie pokrycie wierzchołkowe $C_{\textnormal{OPT}}$, że dla zbioru wszystkich pokryć wierzchołkowych $S \in V$ spełniona jest własność \[\forall_{C \in S \setminus C_{\textnormal{OPT}}}{|C_{\textnormal{OPT}}| < |C|}.\]
+  nazywa się takie pokrycie wierzchołkowe $C_{\textnormal{OPT}}$, że dla zbioru wszystkich pokryć wierzchołkowych $S \subseteq V$ spełniona jest własność \[\forall_{C \in S \setminus C_{\textnormal{OPT}}}{|C_{\textnormal{OPT}}| < |C|}.\]
 \end{definition}
 
 \begin{definition}\thlabel{def_independent_set}
@@ -117,7 +117,7 @@ grafu $G=(V,E)$.
 \begin{definition}\thlabel{def_alternating_path}
   Mając dane skojarzenie ${M=\{e_{M0}, e_{M1}, \ldots, e_{Mp}\}, e \in M \Rightarrow e \in E}$,
   \emph{ścieżkę M-przemienną} stanowi każda ścieżka $P=\{e_0, e_1, \ldots, e_{n-1}\}$ spełniająca warunek: 
-  \[{\forall{\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_{i} \notin M) \oplus
+  \[{\forall_\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_{i} \notin M) \oplus
   (e_{i-1} \notin M \land e_{i} \in M)}\].
 \end{definition}
 

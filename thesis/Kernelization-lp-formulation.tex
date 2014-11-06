@@ -67,7 +67,7 @@ zbiorem wierzchołków $V^\prime=Q$ oraz zbiorem krawędzi\\$E^\prime=\{e=(v, w)
 
   Jeżeli $|A|<|B|$, to zastąpienie zbioru $B$ przez $A$ w rozwiązaniu $O_{\textnormal{IP}}$ (ang. \emph{Integer Programming, IP}) spowodowałoby odkrycie przynajmniej jednej krawędzi grafu --- wykluczając tym samym tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
   W prypadku gdy $|A|>|B|$, musiałaby istnieć możliwość otrzymania rozwiązania sformułowania liniowego lepszego niż $O_{\textnormal{IP}}$ przez ustanowienie $\epsilon = \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
-  zastąpienie $\forall{u \in B}:X_u \leftarrow X_u + \epsilon$ oraz $\forall{v \in A}: X_v \leftarrow X_v -\epsilon$.
+  zastąpienie $\forall_{u \in B}:X_u \leftarrow X_u + \epsilon$ oraz $\forall_{v \in A}: X_v \leftarrow X_v -\epsilon$.
   Jest to niemożliwe, ponieważ wynik $O_{\textnormal{IP}}$ stanowi optymalne rozwiązanie sformułowania liniowego w~oparciu o~pierwsze twierdzenie Nemhausera--Trottera~(\ref{nt_lp}).
   Nasuwa się konkluzja, że jedyny przypadek z~jakim można mieć w tym miejscu do czynienia to $|A|=|B|$.
   Przypadek ten jest trywialny --- w~celu orzymania optymalnego pokrycia wierzchołkowego wystarczy zastąpić zbiór $A$ zbiorem $B$.
