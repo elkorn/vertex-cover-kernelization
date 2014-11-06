@@ -9,7 +9,6 @@ func shortestPathFromSourceToSink(nf *NetworkFlow) (bool, *graph.IntStack, []int
 	return shortestPath(nf.net, nf.source, nf.sink)
 }
 
-// TODO: migrate to the new logic.
 func shortestPath(net Net, from, to graph.Vertex) (bool, *graph.IntStack, []int) {
 	n := len(net.arcs)
 	marked := make([]bool, n) // Is there a known shortest path to a vertex?
