@@ -17,10 +17,11 @@ var currentfname string
 
 func setOutputFile(filename string) {
 	currentfname = filename + "_" + strconv.FormatInt(time.Now().UnixNano(), 10)
+	os.Create(currentfname)
 }
 
 func writeln(data string) {
-	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE, 0666)
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_WRONLY, 0666)
 
 	if nil != err {
 		log.Fatal(err)
