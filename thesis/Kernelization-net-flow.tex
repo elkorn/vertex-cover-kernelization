@@ -4,7 +4,7 @@ algorytmie użytym w~pracy~\cite{Niedermeier02} do udowodnienia następującego 
 Nemhausera--Trottera.
 
 \begin{theorem}[Drugie twierdzenie Nemhausera--Trottera]\thlabel{theorem_nt}
-  Dla grafu $G=(V,E)$, gdzie $|V|=n$ i $|E|=m$, dwa rozłączne zbiory $C_0 \subseteq V$ oraz $V_0 \subseteq V$ mogą zostać wyznaczone w~czasie $O(\sqrt{n}m)$ przy zachowaniu następujących własności.
+  Dla grafu $G=(V,E)$, gdzie $|V|=n$ i~$|E|=m$, dwa rozłączne zbiory $C_0 \subseteq V$ oraz $V_0 \subseteq V$ mogą zostać wyznaczone w~czasie $O(\sqrt{n}m)$ przy zachowaniu następujących własności.
   \begin{enumerate}
     \item Dla podgrafu $G[V_0]$ należy założyć istnienie pokrycia wierzchołkowego $D \subseteq V_0$.
     Zbiór $C = D \cup C_0$ stanowi pokrycie wierzchołkowe~$G$.
@@ -14,42 +14,41 @@ Nemhausera--Trottera.
 \end{theorem}
 
 Algorytm buduje graf dwudzielny $B$ na podstawie grafu $G$, wyznacza pokrycie wierzchołkowe $C_B$ grafu $B$ przez odnalezienie maksymalnego skojarzenia bigrafu $B$,
-a następnie przydziela wagi wierzchołkom $G$ w oparciu o~przynależność do $C_B$.
+a następnie przydziela wagi wierzchołkom $G$ w~oparciu o~przynależność do $C_B$.
 Implementacja algorytmu z~pracy~\cite{Niedermeier02} zrealizowana jest przez
-przekształcenie zbioru $B$ w egzemplarz problemu przepływu w~sieci i~rozwiązania tegoż za pomocą algorytmu Forda-Fulkersona\footnote{Algorytm Forda-Fulkersona
-  zastosowany został w niniejszej pracy, oryginalna implementacja wykorzystuje w~tym celu algorytm Dinica.}.
-Złożoność czasowa algorytmu wynosi $O(\sqrt{n}m)$, zgodnie z~pierwszym twierdzeniem Nemhausera--Trottera. 
-Ponieważ w grafie może istnieć maksymalnie~$n^2$ krawędzi, można wyrazić tę złożoność~w~formie $O(n^{5/2})$.
+przekształcenie zbioru $B$ w~egzemplarz problemu przepływu w~sieci i~rozwiązania go za pomocą algorytmu Edmondsa--Karpa.
+Złożoność czasowa algorytmu wynosi $O(nm^2)$.
+Ponieważ w~grafie może istnieć maksymalnie~$n^2$ krawędzi, można wyrazić tę złożoność~w~formie $O(n^5)$\footnote{Algorytm Edmondsa--Karpa
+  zastosowany został w~niniejszej pracy, oryginalna implementacja wykorzystuje w~tym celu algorytm Dinica. Zastosowanie algorytmu Dinica zmniejsza złożoność czasową redukcji dziedziny do $O(n^{5/2})$, czyniąc tę metodę zgodną z~pierwszym twierdzeniem Nemhausera--Trottera.}.
 Rozmiar zredukowanej dziedziny problemu ograniczony jest do $2k$.
 
 Algorytm redukujący dziedzinę poszukiwań do jądra problemu pokrycia wierzchołkowego poprzez sformułowanie problemu jako egzemplarza problemu przepływu w~sieci działa zgodnie z~następującym schematem.
 \begin{enumerate}
-  \item Przekształć graf $G=(V,E)$ w graf dwudzielny $H=(U,F)$ zgodnie z
-    następującymi zasadami:\\
-    $A=\{A_v|v \in V\}\\
-    B=\{B_v|v \in V\}\\
-    U=A_v \cup B_v
-    F=\{(A_v, B_v)|(v,u) \in E \lor (u,v) \in E\}$
-  \item Przekształć graf dwudzielny $H$ w graf przepływu w~sieci $H^\prime$:
+  \item Przekształć graf $G=(V,E)$ w~graf dwudzielny $H=(U,F)$ zgodnie z~następującymi zasadami:
+  \begin{align*}
+    A&=\{A_v|v \in V\}\\
+    B&=\{B_v|v \in V\}\\
+    U&=A_v \cup B_v\\
+    F&=\{(A_v, B_v)|(v,u) \in E \lor (u,v) \in E\}
+  \end{align*}
+  \item Przekształć graf dwudzielny $H$ w~graf przepływu w~sieci $H^\prime$:
     \begin{itemize}
-      \item dodaj węzeł źródłowy $v_s$ połączony z~każdym wierzchołkiem $v_a
-        k\in A$ krawędziami skierowanymi $(v_s, v_a)$,
-      \item dodaj węzeł docelowy $v_z$, połączony z~każdym wierzchołkiem $v_b
-        \in B$ krawędziamiy skierowanymi $(v_b, v_z)$,
+      \item dodaj węzeł źródłowy $v_s$ połączony z~każdym wierzchołkiem $v_a \in A$ krawędziami skierowanymi $(v_s, v_a)$,
+      \item dodaj węzeł docelowy $v_z$, połączony z~każdym wierzchołkiem $v_b \in B$ krawędziami skierowanymi $(v_b, v_z)$,
       \item każdą krawędź $f=(v_a, v_b) \in F$ skieruj tak, by spełnić własność $v_a \in a~\land v_b \in B$,
       \item każdej krawędzi $h \in H^\prime$ nadaj pojemność $c(f)=1$.
     \end{itemize}
-  \item Znajdź maksymalny przepływ $MF$ w sieci $H^\prime$.
+  \item Znajdź maksymalny przepływ $MF$ w~sieci $H^\prime$.
   \item Zbiór $M=MF \cap F$ stanowi maksymalne skojarzenie $H$.
   \item Znajdź pokrycie wierzchołkowe $H$ na podstawie skojarzenia $M$.
     \begin{itemize}
-      \item Jeżeli zachodzi $\forall_{v \in U}{v \in M}$, to pokrycie wierzchołkowe stanowi całość zbioru $A$ lub $B$.
-      \item W~przeciwnym razie, przy licznościach zbiorów $A$ i $B$ oraz wagach krawędzi w~egzemplarzu problemu przepływu w~sieci $H^\prime$ dowolny wierzchołek $v_A \in A$ jest skojarzony przez zbiór $M$ wtedy i~tylko wtedy, gdy odpowiadający mu wierzchołek $v_B \in B$ jest również skojarzony przez zbiór $M$ --- musi więc istnieć pewien wierzchołek $v_A \in A$, dla którego zachodzi $v_A \notin M$.
+      \item Jeżeli zachodzi $\forall_{v \in U}:{v \in M}$, to pokrycie wierzchołkowe stanowi całość zbioru $A$ lub $B$.
+      \item W~przeciwnym razie, przy licznościach zbiorów $A$ i~$B$ oraz wagach krawędzi w~egzemplarzu problemu przepływu w~sieci $H^\prime$ dowolny wierzchołek $v_A \in A$ jest skojarzony przez zbiór $M$ wtedy i~tylko wtedy, gdy odpowiadający mu wierzchołek $v_B \in B$ jest również skojarzony przez zbiór $M$ --- musi więc istnieć pewien wierzchołek $v_A \in A$, dla którego zachodzi $v_A \notin M$.
         Skonstruuj zatem trzy zbiory wierzchołków $S$, $R$ oraz $T$.
         Zbiór $S = \{v_{Au}|v_{Au} \in a~\land v_{Au} \notin M\}$ zawiera wszystkie nieskojarzone wierzchołki ze zbioru $A$.
         Zbiór $R$ zawiera wszystkie wierzchołki $v_A \in A$ osiąglne ze zbioru $S$ poprzez $M$-przemienne ścieżki. \\
         Zbiór $T=\{v_T|v_T \in N(R), v_R \in R, ((v_R,v_M) \in M \lor (v_M,v_R)) \in M\}$ zawiera wierzchołki sąsiadujące z~wierzchołkami należącymi do zbioru $R$ wzdłuż ścieżek zawartych w~skojarzeniu $M$.
-        Pokrycie wierzchołkowe grafu dwudzielnego $H$ stanowi zbiór $C=(A \setminus S \setminus R) \cup T$ o liczebności $|C|=|M|$.
+        Pokrycie wierzchołkowe grafu dwudzielnego $H$ stanowi zbiór $C=(A \setminus S \setminus R) \cup T$ o~liczebności $|C|=|M|$.
     \end{itemize}
   \item Przypisz następujące wagi wszystkim wierzchołkom $v \in V$ ze względu na przynależność do pokrycia wierzchołkowego $C$:
     \begin{equation*}
@@ -61,7 +60,7 @@ Algorytm redukujący dziedzinę poszukiwań do jądra problemu pokrycia wierzcho
     \end{array} \right.
     \end{equation*}
 
-    W przypadku gdy zachodzi $\forall_{v \in U}{v \in M}$, wszystkim wierzchołkom nadać należy wagę $W_v=0.5$.
+    W przypadku, gdy zachodzi $\forall_{v \in U}:{v \in M}$, wszystkim wierzchołkom nadać należy wagę $W_v=0.5$.
   \item Zdefiniuj graf wynikowy jako 
     $G^\prime=(V^\prime, E^\prime), V^\prime=\{v \in V|W_v=0.5\}$.
     Wynikowy rozmiar dziedziny problemu zdefiniuj jako 
@@ -77,15 +76,15 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
   grafu.
 \end{theorem}
 \begin{theorem}\label{theorem_nf1}
-  Wynikiem kroku 5 algorytmu jest poprawna pokrycie wierzchołkowe $C$ grafu $H$.
+  Wynikiem kroku 5 algorytmu jest poprawne pokrycie wierzchołkowe $C$ grafu $H$.
 \end{theorem}
 \begin{bproof}
   W przypadku 1 zachodzi $A = C$ albo $B = C$.
   Na tej podstawie stwierdzić można, że ${|A|=|B|=|M|}$.
-  Jeżeli $C = A$, to spełniona jest własność $\forall_{f=(u,v), f\in F}: u \in C \oplus v \in C$, co
-  w konsekwencji oznacza, że każda krawędź $f$ jest pokryta przez zbiór $C$.
+  Jeżeli $C = A$, to spełniona jest własność $\forall_{f=(u,v), f\in F}: u~\in C \oplus v \in C$, co
+  w~konsekwencji oznacza, że każda krawędź $f$ jest pokryta przez zbiór $C$.
   Zbiór $C$ stanowi zatem pokrycie wierzchołkowe.
-  W przypadku 2 istnieją zbiory $S, R \subset T$ i $T \subset B$ oraz pokrycie wierzchołkowe $C=(A \setminus S \setminus R) \cup T$.
+  W przypadku 2 istnieją zbiory $S, R \subset T$ i~$T \subset B$ oraz pokrycie wierzchołkowe $C=(A \setminus S \setminus R) \cup T$.
   Każda krawędź $e=(x, y) \in E$ spełnia własność $x \in S$, $x \in R$ albo $x \in (A \setminus S \setminus R)$.
   Każdy z~przypadków rozpatrywany jest osobno:
   \begin{itemize}
@@ -93,7 +92,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
       Prowadzi to do wniosku, iż $\exists{e_M=(w,y)}: e_M \in M$.
       Na podstawie przebiegu algorytmu wiadomo, że w~takiej sytuacji zachodzi $w \in R$
       oraz, co ważniejsze, $y \in T$ --- krawędź $e$ jest więc pokryta przez $M$.
-    \item \underline{$x \in R$}: Zachodzi $\exists{e_M=(x,w), e_M\in M}: w \in T$. \\
+    \item \underline{$x \in R$}: Zachodzi $\exists{e_M=(x,w), e_M\in M}: w~\in T$. \\
       Jeżeli zachodzi $w=y$, to spełniona musi być włásność $y \in T$.
       W przeciwnym razie, gdy $w \neq y$, istnieje krawędź $(z,w)$ skojarzona przez zbiór $M$, dla której zachodzi albo $z \in R$ albo $z \in S$.
       Dodatkowo wiadomo, że istnieje jeszcze jedna krawędź $(v, y)$ skojarzona przez zbiór $M$.
@@ -109,7 +108,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
 \begin{bproof}
   Z definicji wynika, że $|S| = |V| - |M|$ oraz $|A \setminus S|=|(A \setminus S
   \setminus R) \cup R|=|M|$.\\
-  Ponieważ każdy wierzchołek $v_R in R$ jest skojarzony przez zbiór $M$ oraz każdy z~wierzchołków $v_T \in T$ jest osiągalny z $R$ przez ścieżki złożone z~krawędzi $e_M \in M$, spełniona jest własność $|T|=|R|$.
+  Ponieważ każdy wierzchołek $v_R \in R$ jest skojarzony przez zbiór $M$ oraz każdy z~wierzchołków $v_T \in T$ jest osiągalny z~$R$ przez ścieżki złożone z~krawędzi $e_M \in M$, spełniona jest własność $|T|=|R|$.
   To prowadzi do wniosku, że prawdziwa jest równość $|(A\setminus S\setminus R)\cup T|=|((A \setminus S \setminus R) \cup R)|=|M|$.
 \end{bproof}
 \begin{theorem}\label{theorem_nf2}
@@ -125,7 +124,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
 \begin{bproof}
   Jednym z~warunków sformułowania problemu pokrycia wierzchołkowego jako egzemplarza problemu programowania liniowego jest $\forall_{e=(u,v) \in E}: W_u + W_v \geq 1$.
   Krok 6\ przypisuje następujące wagi wierzchołkom grafu $G$: $\forall_{v \in V}: W_v \in \{0, 0.5, 1\}$.
-  W związku z~charakterystyką przekształcenia grafu $G$ w graf $H$, istnienie pewnej krawędzi $(x,y) \in E$ implikuje istnienie pary krawędzi $\{(A_x, B_y), (A_y, B_x)\} \in H$.
+  W związku z~charakterystyką przekształcenia grafu $G$ w~graf $H$, istnienie pewnej krawędzi $(x,y) \in E$ implikuje istnienie pary krawędzi $\{(A_x, B_y), (A_y, B_x)\} \in H$.
   Z dowodów twierdzeń~\ref{theorem_nf1} i~\ref{theorem_nf2} wynika, że jeżeli przynajmniej jeden z~wierzchołków każdej krawędzi $f \in F$ zawarty jest w~pokryciu wierzchołkowym $C$, to spełniona jest jedna z~własności: $(\{A_x, B_x\} \in C)$, $(\{A_y, B_y\} \in C)$, $(\{A_x, B_y\} \in C)$ albo $(\{A_y, B_x\} \in C)$.
   Widać zatem, że każda krawędź $e$ ma przypisaną prawidłową wagę.
 \end{bproof}
