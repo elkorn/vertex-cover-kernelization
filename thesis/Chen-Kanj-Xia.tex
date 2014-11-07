@@ -178,7 +178,7 @@
       Ponieważ zbiór $I$ jest niezależny w~grafie $G$, zastąpienie zbioru $Y \cup X$ zbiorem $N(I)$ w pokryciu wierzchołkowym $C$ owocuje pokryciem wierzchołkowym $C^\prime$ grafu $G$ o liczebności $|C^\prime| \leq |C|$.
       Wobec tego toku rozumowania łatwo zauważyć, że zbiór $C^\prime$ stanowi pokrycie wierzchołkowe grafu $G$ o najmniejszej liczebności, które zawiera zbiór $N(I)$ oraz wyklucza zbiór niezależny $I$.
       \item[(1):] Założyć należy istnienie pokrycia wierzchołkowego $C$ spełniającego założenia części (0) dowodu.
-      Jeżeli zbiór wierzchołków grafu $G[N(I)]$ nie jest zbiorem niezależnym, to każde z~istniejących pokryć wierzchołkowych grafu $G$, a w~szczególności zbiór $C$, musi zawierać zbiór $N(I)$.
+      Jeżeli zbiór wierzchołków grafu $G[N(I)]$ nie jest zbiorem niezależnym, to każde z~istniejących pokryć wierzchołkowych grafu $G$, a~w~szczególności zbiór $C$, musi zawierać zbiór $N(I)$.
       Prowadzi to do wniosku, że zbiór $C$ stanowi optymalne pokrycie wierzchołkowe grafu $G$ zawierające zbiór $N(I)$ i wykluczające zbiór niezależny $I$.
       \item[(2):] Jeżeli zbiór $N(I)$ stanowić miałby zbiór niezależny w~grafie $G$, to w~sytuacji, gdy zachodzi $C \supseteq I$, zbiór $C$ musiałby jednocześnie wykluczać zbiór $N(I)$ oraz zawierać zbiór $N(N(I))$ w grafie $G^\prime$.
       W takim przypadku zbiór $C^\prime=C \setminus I$ stanowi pokrycie wierzchołkowe grafu $G^\prime$ o liczebności $|C|-|I|=\tau(G)-|I|$ oraz spełniona jest nierówność $\tau(G^\prime)\leq\tau(G)-|I|$ --- właściwość ta oznaczona zostanie jako \textit{(2.1)}.
@@ -250,7 +250,7 @@
     Łatwo zauważyć, że w~tym przypadku para $(I, H^\prime)$ stanowi równą koronę w grafie $G^\prime = G[V \setminus \{v\}]$.
     W grafie $G^\prime$ musi zachodzić równość $H^\prime = N(I)$.
     W związku z~tym, że graf $G$ nie zawiera żadnej korony, dla każdego niepustego podzbioru $S \subseteq I$ spełniona w~grafie $G$ jest nierówność $|N(S)| \geq |S|+1$, co z~kolei implikuje, że dla każdego ze zbiorów $S$ w grafie $G^\prime$ zachodzi nierówność $|N(S)| \geq |S|$.
-    Twierdzenie~\ref{th_hall} pozwala stwierdzić, że zbiór $I$ kojarzy zbiór $H^\prime$ a zatem, na mocy równości $|H^\prime|=|I|$, zbiór $H^\prime$ musi w~ten sam sposób kojarzyć zbiór $I$, co dopełnia definicji równej korony i~dowodzi, że graf $G^\prime$ musi taką koronę zawierać.
+    Twierdzenie~\ref{th_hall} pozwala stwierdzić, że zbiór $I$ kojarzy zbiór $H^\prime$ a~zatem, na mocy równości $|H^\prime|=|I|$, zbiór $H^\prime$ musi w~ten sam sposób kojarzyć zbiór $I$, co dopełnia definicji równej korony i~dowodzi, że graf $G^\prime$ musi taką koronę zawierać.
 
     Spoglądając z~innej perspektywy --- utrzymując założenie, że graf $G$ nie zawiera koron i~istnieje taki wierzchołek $v \in V$, że graf $G^\prime= G[V \setminus \{v\}]$ zawiera równą koronę $(I, H^\prime)$ postuluje się, że struktura $(I, H=H^\prime \cup \{v\})$ stanowi pseudokoronę w grafie $G$.
     Wierzchołek $v$ musi należeć do zbioru $N(I)$ w grafie $G$ --- w przeciwnym razie w~grafie $G$ spełniona musiałaby być równość $H^\prime=N(I)$, w wyniku czego struktura $(I, H^\prime)$ musiałaby stanowić koronę w grafie $G$, co przeczy założeniu o~braku koron w~grafie $G$.
@@ -276,7 +276,7 @@
     W celu usunięcia koron z~grafu $G$ należy wyznaczać kolejne NT--dekompozycje i~redukować za ich pomocą dziedzinę poszukiwań pokrycia wierzchołkowego do momentu otrzymania trywialnego egzemplarza korony (w rozumieniu definicji~\ref{def_trivial_crown}).
     Zgodnie z~drugim twierdzeniem Nemhausera--Trottera~(Twierdzenie~\ref{nt_lp}) każde zastosowanie NT--redukcji wymaga $O(|V|\sqrt{|E|})$ czasu.
     Rozmiary grafu w~rozpatrywanym egzemplarzu problemu pokrycia wierzchołkowego wynoszą odpowiednio $|V|=O(k)$ oraz $|E|=O(k^2)$ --- zatem łatwo zauważyć, że każda NT--redukcja zajmie tak naprawdę $O(k^2\sqrt{k})$ czasu.
-    Każda NT--dekompozycja redukuje dziedzinę grafu, a zatem do momentu uzyskania trywialnego egzemplarza korony operacja zostanie wykonana $O(k)$ razy.
+    Każda NT--dekompozycja redukuje dziedzinę grafu, a~zatem do momentu uzyskania trywialnego egzemplarza korony operacja zostanie wykonana $O(k)$ razy.
     Po otrzymaniu trywialnego egzemplarza korony założyć można, że zredukowany graf nie ma żadnych koron, zgodnie z~Twierdzeniem~\ref{th_crown_free_graph}.
     Łatwo zaobserwować, że w~czasie $O(k^3\sqrt(k))$ można zredukować egzemplarz $(G, k)$ problemu pokrycia wierzchołkowego do egzemplarza $(G^\prime, k^\prime)$, gdzie graf $G^\prime$ nie zawiera żadnych koron.
     Każda aplikacja NT--redukcji owocująca nietrywialnym egzemplarzem NT--dekompozycji powoduje zmniejszenie parametru $k$ o wartość odpowiadającą szerokości korony (w rozumieniu definicji~\ref{def_crown_head}) zawartej w~danym egzemplarzu.
@@ -344,7 +344,7 @@
 \par{
   Szczególnie ważną klasę identyfikowanych w~grafie struktur z~punktu widzenia redukcji przestrzeni poszukiwań stanowią \emph{krotki}.
   \begin{definition}
-    \emph{Krotka} stanowi uporządkowaną parę $(S, q)$, gdzie $S$ to zbiór wierzchołków, a wartość $q$ jest liczbą całkowitą.
+    \emph{Krotka} stanowi uporządkowaną parę $(S, q)$, gdzie $S$ to zbiór wierzchołków, a~wartość $q$ jest liczbą całkowitą.
     Krotka niesie ze sobą informację, że w~aktualnie rozpatrywanym egzemplarzu problemu pokrycia wierzchołkowego $(G, k)$ można wyznaczyć optymalne pokrycie wierzchołkowe z~wyłączeniem co najmniej $q$ wierzchołków należących do zbioru $S$.
   \end{definition}
   W praktyce algorytm rozpatruje wyłącznie krotki $(S, q)$ dla wartości $q \leq 2$ --- wyłącznie na nich skupiona jest również analiza.
@@ -391,7 +391,7 @@
     Jeżeli istnieje optymalne pokrycie wierzchołkwe $C$, które wyklucza co najmniej $q$ wierzchołków należących do zbioru $S$, to wtedy pokrycie $C$ musi wykluczać co najmniej $q-1$ wierzchołków ze zbioru $S \setminus \{v\}$.
   \end{bproof}
   \begin{theorem}
-    Jeżeli pewien wierzchołek $v \in S$ zostanie usunięty z~dziedziny poszukiwań przez włączenie go do pokrycia wierzchołkowego, to krotka $(S, q)$ musi zostać uaktualniona przez usunięcie wierzchołka $v$ ze zbioru $S$, a wartość $q$ nie ulega zmianie.
+    Jeżeli pewien wierzchołek $v \in S$ zostanie usunięty z~dziedziny poszukiwań przez włączenie go do pokrycia wierzchołkowego, to krotka $(S, q)$ musi zostać uaktualniona przez usunięcie wierzchołka $v$ ze zbioru $S$, a~wartość $q$ nie ulega zmianie.
   \end{theorem}
   \begin{bproof}
     Jeżeli istnieje optymalne pokrycie wierzchołkowe $C$ zawierające wierzchołek $u$ oraz wykluczające co najmniej $q$ wierzchołków ze zbioru $S$, to musi ono wykluczać co najmniej $q$ wierzchołków ze zbioru $S \setminus \{v\}$.
@@ -445,7 +445,7 @@
     \item Funkcja \textsc{War\_Strukt}, działająca zgodnie z~pseudokodem~\ref{alg_ckx_conditional_struction}.
   \end{itemize}
 
-  Do zadań funkcji pomocniczej \textsc{Redukcja} należy dekompozycja istniejących krotek do odpowiadających im nowych 2-krotek, redukcja przestrzeni poszukiwań przez wykonywanie operacji strukturyzacji i~uogólnionej operacji zwijania na grafie, a także utrzymywanie odpowiedniego stanu kolejki $T$ w celu uniknięcia konfliktów pomiędzy ograniczeniami nałożonymi na aktualnie rozpatrywany egzemplarz problemu przez kolejne redukcje dziedziny.
+  Do zadań funkcji pomocniczej \textsc{Redukcja} należy dekompozycja istniejących krotek do odpowiadających im nowych 2-krotek, redukcja przestrzeni poszukiwań przez wykonywanie operacji strukturyzacji i~uogólnionej operacji zwijania na grafie, a~także utrzymywanie odpowiedniego stanu kolejki $T$ w celu uniknięcia konfliktów pomiędzy ograniczeniami nałożonymi na aktualnie rozpatrywany egzemplarz problemu przez kolejne redukcje dziedziny.
 
   \begin{algorithm}
    \caption{Algorytm Chena, Kanji oraz Xia --- funkcja \textsc{Redukcja}}\label{alg_ckx_reduction}
@@ -520,8 +520,8 @@
   Utrzymywanie odpowiedniego stanu kolejki priorytetowej $T$ sprowadza się do sprawdzenia czy przed rozpoczęciem kroku~\algref{alg_ckx_reduction}{b} istnieją w kolejce $T$ 2-krotki.
   Jeżeli w~kolejce $T$ istnieje silna 2-krotka, to zostanie ona przechowana --- w przeciwnym razie, jeżeli kolejka zawiera jakąkolwiek 2-krotkę, to zostanie ona przechowana.
   Wszystkie pozostałe krotki zostaną usunięte z~kolejki $T$.
-  Przechowanie jednej 2-krotki uzasadnione jest tym, że 2-krotki stanowią struktury o~najwyższym priorytecie, a zatem po zakończeniu działania funckji \textsc{Redukcja} algorytm \textsc{VC} wybierze tę krotkę jako pierwszą do przetworzenia.
-  W momencie gdy algorytm \textsc{VC} utworzy nowe krotki w~chwili kolejnego rozgałęzienia, przechowana 2-krotka nie będzie już zawarta w~kolejce $T$ --- a zatem nie nastąpi konflikt narzuconych przez krotki własności.
+  Przechowanie jednej 2-krotki uzasadnione jest tym, że 2-krotki stanowią struktury o~najwyższym priorytecie, a~zatem po zakończeniu działania funckji \textsc{Redukcja} algorytm \textsc{VC} wybierze tę krotkę jako pierwszą do przetworzenia.
+  W momencie gdy algorytm \textsc{VC} utworzy nowe krotki w~chwili kolejnego rozgałęzienia, przechowana 2-krotka nie będzie już zawarta w~kolejce $T$ --- a~zatem nie nastąpi konflikt narzuconych przez krotki własności.
 
   Wiersze~\algref{alg_ckx_conditional_struction}{struction_applicable1} oraz~\algref{alg_ckx_conditional_struction}{struction_applicable2} funkcji \textsc{War\_Strukt} korzystają z pojęcia \emph{aplikowalności} operacji strukturyzacji do pewnego wierzchołka $v$.
   Własność ta sprowadza się do sprawdzenia, czy wśród wierzchołków należących do zbioru $N(v)$ istnieje co najwyżej $p-1$ antykrawędzi, gdzie $p=|N(v)|$ --- zgodnie z~dowodem twierdzenia~\ref{th_struction_feasibility}.

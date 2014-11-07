@@ -16,8 +16,8 @@
 }
 \par{
   W przypadku grafów dwudzielnych z~krawędziami o~jednostkowej wadze, problem odnalezienia maksymalnego skojarzenia sprowadza się do rozwiązania problemu maksymalnego przepływu.
-  Problem przeformułować należy przez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z~zasadami opisanymi w~podrozdziale \ref{ss_max_flow}, a następnie postępować zgodnie z~algorytmem Edmondsa-Karpa, opisanym w~podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w~jedną stronę pomiędzy podziałami grafu.
-  Poprawność sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w~sieci jest ugruntowana tym, że każda krytyczna krawędź zostaje usunięta z~sieci residualnej --- a branie pod uwagę przepływu tylko w~jedną stronę zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w~rozwiązaniu.
+  Problem przeformułować należy przez dodanie do sieci przepływowej wierzchołków stanowiących źródło oraz ujście zgodnie z~zasadami opisanymi w~podrozdziale \ref{ss_max_flow}, a~następnie postępować zgodnie z~algorytmem Edmondsa-Karpa, opisanym w~podrozdziale \ref{sss_edmonds_karp} pamiętając, iż rozwiązaniem problemu maksymalnego skojarzenia jest przepływ prowadzący w~jedną stronę pomiędzy podziałami grafu.
+  Poprawność sformułowania problemu odnalezienia maksymalnego skojarzenia jako problemu maksymalnego przepływu w~sieci jest ugruntowana tym, że każda krytyczna krawędź zostaje usunięta z~sieci residualnej --- a~branie pod uwagę przepływu tylko w~jedną stronę zapewnia brak wspólnych wierzchołków wśród krawędzi uczestniczących w~rozwiązaniu.
 }
 \par{
   Problem odnajdywania maksymalnego skojarzenia w~dowolnym grafie nie jest zadaniem trywialnym --- wymaga zatem odpowiedniego, działającego w~czasie wielomianowym narzędzia jego rozwiązywania w~celu możliwości efektywnego rozwiązania problemów głównych.
@@ -127,7 +127,7 @@
   Dla każdego zbioru $U \subseteq V$ dowolne skojarzenie $M \subseteq E^\prime$ musi kojarzyć mniej niż $\circ (G \setminus U)$ wierzchołków --- przynajmniej jeden wierzchołek dla każdej ze składowych w $G^\prime$ musi pozostać nieskojarzony.
   Co więcej, wierzchołki te skojarzone mogą być jedynie ze zbiorem wierzchołków $U$.
   \begin{definition}[ (Oparta na wzorze Tutte-Berge'a)]\thlabel{def_edmonds_max_matching}
-    Skojarzenie $M$ jest maksymalne, jeżeli liczba wierzchołków nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \circ (G \setminus U) - |U|$, a zatem $|M|\leq \frac{|V|+|U| - \circ (G \setminus U)}{2}$.
+    Skojarzenie $M$ jest maksymalne, jeżeli liczba wierzchołków nieskojarzonych przez $M$ wynosi $|V| - 2|M| \geq \circ (G \setminus U) - |U|$, a~zatem $|M|\leq \frac{|V|+|U| - \circ (G \setminus U)}{2}$.
   \end{definition}
   \begin{definition}
   \emph{Zbiór zaświadczający} to zbiór wierzchołków spełniający wzór Tutte-Berge'a.
@@ -160,7 +160,7 @@
     Jeżeli skojarzenie $W \setminus B$ nie byłoby maksymalne, w grafie $H$ musiałaby istnieć $W$-przemienna ścieżka powiększająca $\eta$.
     Kroki algorytmu w~razie spełnienia warunku~\algref{alg_Edmonds}{even_disjoint} w pseudokodzie~\ref{alg_Edmonds} zajmują się tym przypadkiem.
 
-    Ścieżka $\eta$ zaczyna się od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w pseudokodzie~\ref{alg_Edmonds}) prowadzi do wierzchołka $u$, a następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
+    Ścieżka $\eta$ zaczyna się od korzenia pewnego drzewa $T_u$ w lesie $F$, zawierającego wierzchołek $u$ (w rozumieniu warunku~\algref{alg_Edmonds}{pick_edge} w pseudokodzie~\ref{alg_Edmonds}) prowadzi do wierzchołka $u$, a~następnie przez wierzchołek $v$ dociera do korzenia drzewa $T_v \in F$, zawierającego wierzchołek $v$.
     Uzyskanie $M$-przemiennej ścieżki powiększającej w~grafie $G$ jest możliwe przez rozwinięcie znajdujących się na ścieżce skurczonych kwiatów i 
     skojarzeń.
 
@@ -184,7 +184,7 @@
   \begin{bproof}
     Podpierając się rozumowaniem przedstawionym w~dowodzie twierdzenia~\ref{th_augentation_complexity} oraz dowodami zawartymi w~niniejszym podrozdziale łatwo zauważyć, że algorytm Edmondsa w~trakcie działania dokona co najwyżej $\frac{|V|}{2}$ powiększeń.
     Pomiędzy kolejnymi powiększeniami istnieje możliwość dodania co najwyżej $|E|$ krawędzi do lasu $F$.
-    W związku z~faktem, iż kwiat stanowi cykl nieparzystej długości, zawiera on przynajmniej 3 krawędzie --- a zatem pomiędzy kolejnymi powiększeniami istnieje możliwość skurczenia co najwyżej $\frac{|V|}{3}$ kwiatów.
+    W związku z~faktem, iż kwiat stanowi cykl nieparzystej długości, zawiera on przynajmniej 3 krawędzie --- a~zatem pomiędzy kolejnymi powiększeniami istnieje możliwość skurczenia co najwyżej $\frac{|V|}{3}$ kwiatów.
     W związku z~potrzebą utrzymywania lasu $F$, dodawanie do niego kolejnej krawędzi poprzedzone jest sprawdzeniem co najwyżej $O(|E|)$ zawartych krawędzi w~celu zachowania ich unikalności w~ramach drzewa.
     Łatwo zauważyć, że złożoność obliczeniowa wynosić będzie $O(|E||V|^2)$.
     W możliwie najgęstszym grafie spełniona jest równość $|E|=|V|^2$ --- pesymistyczna złożoność obliczeniowa wynosić będzie zatem $O(|V|^2*|V|^2)=O(|V|^4)$.

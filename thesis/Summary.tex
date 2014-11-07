@@ -34,7 +34,7 @@
 
   Omawiany algorytm jest skomplikowany i żmudny w~analizie.
   Duża inherentna złożoność problemu prowadzi do zastosowania pewnych skrótów myślowych w~treści pracy~\cite{ImprovedBounds10}.
-  Poczynione przez autorów założenia mówiące, że algorytm niejawnie wykonuje pewne operacji znacząco utrudniają implementację, a w~szczególności implementację zoptymalizowaną.
+  Poczynione przez autorów założenia mówiące, że algorytm niejawnie wykonuje pewne operacji znacząco utrudniają implementację, a~w~szczególności implementację zoptymalizowaną.
   Operacje te w~praktyce są niebagatelnymi kwestiami i~stanowią pole do dalszych badań i optymalizacji pozwalających na poprawę średniej złożoności obliczeniowej stworzonego rozwiązania.
 
   \subsubsection{\textbf{Poprawa szybkości działania implementacji techniki redukcji dziedziny w~oparciu o~algorytm przepływu w~sieci}}
@@ -50,7 +50,7 @@
   Zaproponowane rozwiązania mogą być zoptymalizowane również w kontekście zużycia pamięci.
   Przedkładając czytelność kodu nad zużycie pamięci, uwagę skupiono na odzwierciedleniu wyników pośrednich w~postaci zmiennych oraz jak najłatwiejszym korzystaniu ze struktur danych, na których opierają się implementowane techniki.
   W załączonej implementacji wszelkie struktury inicjowane są z maksymalną pesymistyczną pojemnością względem analizowanego grafu, nie biorąc pod uwagę na przykład wierzchołków czy krawędzi usuniętych z~grafu.
-  Proponowaną optymalizacją jest stworzenie wersji kodu oszczędniej korzystającej ze zmiennych, a także bardziej konserwatywnie rezerwującej potrzebną pamięć.
+  Proponowaną optymalizacją jest stworzenie wersji kodu oszczędniej korzystającej ze zmiennych, a~także bardziej konserwatywnie rezerwującej potrzebną pamięć.
   Na uwadze warto mieć również wykorzystanie przez język Go mechanizmu odśmiecania pamięci --- implementacje algorytmów muszą być skonstruowane w~sposób sprzyjający jak najszybszym przebiegom modułu odśmiecającego języka Go.
 
   \subsubsection{\textbf{Zbadanie wpływu różnych wariantów NT--dekompozycji na szybkość działania i~efektywność zaimplementowanych algorytmów}}

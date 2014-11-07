@@ -63,7 +63,7 @@
 \subsection{Wyznaczanie pokrycia wierzchołkowego}
 \par{
   Zgodnie z~oczekiwaniami, wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC1}, wymagało wykładniczego czasu.
-  Powoduje to, że analiza grafów o~rozmiarach przedstawionych w~Tabeli~\ref{tab_testdata} trwa bardzo długo, a wyniki pomiarów związanych z~metodą siłową zaciemniają obraz wyników pozostałych testów.
+  Powoduje to, że analiza grafów o~rozmiarach przedstawionych w~Tabeli~\ref{tab_testdata} trwa bardzo długo, a~wyniki pomiarów związanych z~metodą siłową zaciemniają obraz wyników pozostałych testów.
   W związku z~tym pomiar czasu działania metody siłowej został zrealizowany dla osobnego zestawu siedmiu grafów wygenerowanych opisaną metodą o rozmiarach od dziesięciu do trzydziestu wierzchołków z~krokiem pięciu wierzchołków.
   Niestety, struktura jednego z~wygenerowanych grafów okazała się niekorzystna dla rozgałęzień algorytmu siłowego --- wyniki pomiarów czasu działania siłowej metody wyznaczania pokrycia wierzchołkowego zawiera Tabela~\ref{tab_vc_naive}.
   \begin{table}
@@ -143,7 +143,7 @@
 
   Powodem niekorzystnej złożoności czasowej działania algorytmu redukcji dziedziny przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w~sieci jest brak optymalizacji implementacji koncepcji opisanej w~pracy~\cite{KernelizationAlgorithms04}.
   Szczegóły oraz proponowane usprawnienia opisane są w Podsumowaniu.
-  Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i~nie ukazuje prawdziwej jego szybkości, a także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
+  Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i~nie ukazuje prawdziwej jego szybkości, a~także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
   W związku z~zaciemnieniem na wykresie wartości wyników pomiarów czasu działania algorytmu redukcji koron, Rysunek~\ref{fig_results_k_crown} przedstawia wyłącznie tę charakterystykę.
 
   \begin{figure}
@@ -174,7 +174,7 @@
   \end{figure}
 \section{Środowisko testowe i wykonywanie testów}
 \par{
-  W celu wykonania testów należy skopiować katalog zawarty na nośniku dołączonym do pracy, a następnie zdefiniować zmienną środowiskową \texttt{\$GOPATH} tak, by wskazywała na ścieżkę do podkatalogu \texttt{src}.
+  W celu wykonania testów należy skopiować katalog zawarty na nośniku dołączonym do pracy, a~następnie zdefiniować zmienną środowiskową \texttt{\$GOPATH} tak, by wskazywała na ścieżkę do podkatalogu \texttt{src}.
   W następnej kolejności należy zmienić bieżącą ścieżkę na podkatalog \texttt{src/main}.
   Do wykonania pomiarów służy polecenie \texttt{go run *.go -measure N}, gdzie \texttt{N} stanowi wyrażenie regularne zawierające część nazwy przypadku testowego.
   Wyczerpująca lista zdefiniowanych przypadków testowych zawarta jest w~pliku \texttt{test-cases.go}.
@@ -204,5 +204,5 @@
   \end{itemize}
 
   Domyślnie skrypt generuje wyniki do katalogu \texttt{results}.
-  Pliki wynikowe mają postać \texttt{V\_D.dot} oraz \texttt{V\_D.jpeg}, gdzie \texttt{V} jest wartością parametru \texttt{-v}, a  \texttt{D} jest wartością parametru \texttt{-d} dla wygenerowanego grafu.
+  Pliki wynikowe mają postać \texttt{V\_D.dot} oraz \texttt{V\_D.jpeg}, gdzie \texttt{V} jest wartością parametru \texttt{-v}, a~ \texttt{D} jest wartością parametru \texttt{-d} dla wygenerowanego grafu.
 }

@@ -36,7 +36,7 @@ Algorytm redukujący dziedzinę poszukiwań do jądra problemu pokrycia wierzcho
         k\in A$ krawędziami skierowanymi $(v_s, v_a)$,
       \item dodaj węzeł docelowy $v_z$, połączony z~każdym wierzchołkiem $v_b
         \in B$ krawędziamiy skierowanymi $(v_b, v_z)$,
-      \item każdą krawędź $f=(v_a, v_b) \in F$ skieruj tak, by spełnić własność $v_a \in A \land v_b \in B$,
+      \item każdą krawędź $f=(v_a, v_b) \in F$ skieruj tak, by spełnić własność $v_a \in a~\land v_b \in B$,
       \item każdej krawędzi $h \in H^\prime$ nadaj pojemność $c(f)=1$.
     \end{itemize}
   \item Znajdź maksymalny przepływ $MF$ w sieci $H^\prime$.
@@ -46,7 +46,7 @@ Algorytm redukujący dziedzinę poszukiwań do jądra problemu pokrycia wierzcho
       \item Jeżeli zachodzi $\forall_{v \in U}{v \in M}$, to pokrycie wierzchołkowe stanowi całość zbioru $A$ lub $B$.
       \item W~przeciwnym razie, przy licznościach zbiorów $A$ i $B$ oraz wagach krawędzi w~egzemplarzu problemu przepływu w~sieci $H^\prime$ dowolny wierzchołek $v_A \in A$ jest skojarzony przez zbiór $M$ wtedy i~tylko wtedy, gdy odpowiadający mu wierzchołek $v_B \in B$ jest również skojarzony przez zbiór $M$ --- musi więc istnieć pewien wierzchołek $v_A \in A$, dla którego zachodzi $v_A \notin M$.
         Skonstruuj zatem trzy zbiory wierzchołków $S$, $R$ oraz $T$.
-        Zbiór $S = \{v_{Au}|v_{Au} \in A \land v_{Au} \notin M\}$ zawiera wszystkie nieskojarzone wierzchołki ze zbioru $A$.
+        Zbiór $S = \{v_{Au}|v_{Au} \in a~\land v_{Au} \notin M\}$ zawiera wszystkie nieskojarzone wierzchołki ze zbioru $A$.
         Zbiór $R$ zawiera wszystkie wierzchołki $v_A \in A$ osiąglne ze zbioru $S$ poprzez $M$-przemienne ścieżki. \\
         Zbiór $T=\{v_T|v_T \in N(R), v_R \in R, ((v_R,v_M) \in M \lor (v_M,v_R)) \in M\}$ zawiera wierzchołki sąsiadujące z~wierzchołkami należącymi do zbioru $R$ wzdłuż ścieżek zawartych w~skojarzeniu $M$.
         Pokrycie wierzchołkowe grafu dwudzielnego $H$ stanowi zbiór $C=(A \setminus S \setminus R) \cup T$ o liczebności $|C|=|M|$.
@@ -99,7 +99,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
       Dodatkowo wiadomo, że istnieje jeszcze jedna krawędź $(v, y)$ skojarzona przez zbiór $M$.
       Jeżeli ta zależność miałaby nie być spełniona, to zbiór $M$ nie stanowiłby maksymalnego skojarzenia --- zamiast krawędzi $(x,w)$ musiałby zawierać krawędzie $\{(x,y),(z,w)\}$.
       W efekcie spełnione są własności $v \in R$ oraz $y \in T$, tak więc krawędź $e$ jest pokryta przez zbiór $C$.
-    \item \underline{$x \in A \setminus S \setminus R$}: Przypadek trywialny,
+    \item \underline{$x \in a~\setminus S \setminus R$}: Przypadek trywialny,
       pokrycie krawędzi $e$ wynika z~definicji pokrycia wierzchołkowego $C$.
   \end{itemize}
 \end{bproof}
@@ -116,7 +116,7 @@ Zależność ta sformułowana została jako twierdzenie K\"oniga.
   Pokrycie wierzchołkowe stanowiące wynik kroku 5\ algorytmu jest optymalne.
 \end{theorem}
 \begin{bproof}
-  Graf $H$ jest grafem dwudzielnym, a rozmiar jego maksymalnego skojarzenia wynosi $|M|$.
+  Graf $H$ jest grafem dwudzielnym, a~rozmiar jego maksymalnego skojarzenia wynosi $|M|$.
   Z~twierdzenia K\"oniga wynika, że rozmiar optymalnego pokrycia wierzchołkowego grafu dwudzielnego $H$ równy jest liczebności jego maksymalnego skojarzenia.
 \end{bproof}
 \begin{theorem}
