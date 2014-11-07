@@ -1,7 +1,7 @@
 \section{Podstawowe definicje}\label{s_definitions}
 
 Jeżeli nie zaznaczono inaczej, każda z~nastepujących definicji odnosi się do
-grafu $G=(V,E)$.
+grafu nieskierowanego $G=(V,E)$.
 
 \begin{definition}
   Krawędź $e=(u,v)$ uznaje się za \emph{przystającą} (sąsiednią) do wierzchołka $v$
@@ -20,7 +20,7 @@ grafu $G=(V,E)$.
 \end{definition}
 
 \begin{definition}\thlabel{def_regular}
-  Graf uznaje się za \emph{regularny} jeżeli wszystkie należące do niego wierzchołki są tego samego stopnia: $\forall_{v \in V}: \forall_{u \in V}:{d(v)=d(u)}$.
+  Graf uznaje się za \emph{regularny} jeżeli wszystkie należące do niego wierzchołki są tego samego stopnia: $\forall_{u, v \in V}: {d(v)=d(u)}$.
 \end{definition}
 
 \begin{definition}\thlabel{def_n_regular}
@@ -33,14 +33,21 @@ grafu $G=(V,E)$.
 
 \begin{definition}
   \emph{Sąsiedztwem} wierzchołka $v$, gdzie $d(v)=p$ nazywa się zbiór wierzchołków $N=\{v_1, v_2, \ldots, v_p\}$ spełniający warunek 
-  \[\forall_{v_n \in N}{(v,v_n) \in E \lor (v_n,v) \in E}.\]
+  \[\forall_{v_n \in N}:{(v,v_n) \in E \lor (v_n,v) \in E}.\]
   Sąsiedztwo wierzchołka $v$ wyraża się w postaci $N(v)$.
+\end{definition}
+
+\begin{definition}
+  \emph{Sąsiedztwem rozłącznym} wierzchołka $v$, dla którego $d(v)=p$ nazywa się zbiór wierzchołków 
+  $N={v_0, v_1, \ldots, v_p}$ spełniający warunek:\[
+  \not \exists_{\{v_n, v_m\} \subseteq N}:{(v_n,v_n) \in E \lor (v_n,v_m) \in E}.
+  \]
 \end{definition}
 
 \begin{definition}
   \emph{Sąsiedztwem połączonym} wierzchołka $v$, dla którego $d(v)=p$ nazywa się zbiór wierzchołków 
   $N={v_0, v_1, \ldots, v_p}$ spełniający warunek:\[
-  \not \exists_{v_n, v_m \in N}:{(v_n,v_n) \in E \lor (v_n,v_m) \in E}.
+  \forall_{\{v_n, v_m\} \subseteq N}:{(v_n,v_n) \in E \lor (v_n,v_m) \in E}.
   \]
 \end{definition}
 
@@ -55,13 +62,13 @@ grafu $G=(V,E)$.
 
 \begin{definition}
   \emph{Pokryciem wierzchołkowym o~optymalnym rozmiarze}, \emph{pokryciem wierzchołkowym optymalnego rozmiaru} lub \emph{optymalnym pokryciem wierzchołkowym} 
-  nazywa się takie pokrycie wierzchołkowe $C_{\textnormal{OPT}}$, że dla zbioru wszystkich pokryć wierzchołkowych $S \subseteq V$ spełniona jest własność \[\forall_{C \in S \setminus C_{\textnormal{OPT}}}{|C_{\textnormal{OPT}}| < |C|}.\]
+  nazywa się takie pokrycie wierzchołkowe $C_{\textnormal{OPT}}$, że dla zbioru wszystkich pokryć wierzchołkowych $S = \{S_1 \subseteq V, S_1 \subseteq V \ldots\}$ spełniona jest własność \[\forall_{C \in S \setminus C_{\textnormal{OPT}}}:{|C_{\textnormal{OPT}}| < |C|}.\]
 \end{definition}
 
 \begin{definition}\thlabel{def_independent_set}
   \emph{Zbiorem niezależnym} nazywa się zbiór wierzchołków\\
   $V_i=\{v_0, v_1, \ldots, v_p \}, V_i \subseteq V$ spełniający warunek:
-  \[\forall_{v_i, v_j \in V_i}{(v_i, v_j) \notin E \land (v_j, v_i) \notin E}.\]
+  \[\forall_{\{v_i, v_j\} \subseteq V_i}:{(v_i, v_j) \notin E \land (v_j, v_i) \notin E}.\]
 \end{definition}
 
 \begin{definition}
@@ -76,14 +83,13 @@ grafu $G=(V,E)$.
 \begin{definition}\thlabel{def_matching}
   \emph{Skojarzeniem} nazywa się zbiór krawędzi $M=\{e_0, e_1, \ldots, e_p\}$
   nie mających wspólnych wierzchołków.
-  \[\not\exists_{\{e_i=(u_i,v_i), e_j=(u_j, v_j)\} \in M}: (u_i=u_j) \lor (u_i=v_j) \lor (u_j=v_i) \lor (u_j=v_j)\]
+  \[\not\exists_{\{e_i=(u_i,v_i), e_j=(u_j, v_j)\} \subseteq M}: (u_i=u_j) \lor (u_i=v_j) \lor (u_j=v_i) \lor (u_j=v_j)\]
   Za skojarzenie uznać można również cały graf zawierający jedynie krawędzie
   spełniające powyższy warunek.
 \end{definition}
 
 \begin{definition}
-  Wierzchołek $v$ uznaje się za \emph{skojarzony} jeżeli pokrywa on dowolną
-  krawędź należącą do skojarzenia.
+  Wierzchołek $v$ jest \emph{skojarzony} jeżeli pokrywa dowolną krawędź należącą do skojarzenia.
   W przeciwnym razie wierzchołek jest \emph{nieskojarzony}.
 \end{definition}
 
@@ -104,8 +110,7 @@ grafu $G=(V,E)$.
 
 \begin{definition}
   \emph{Ścieżka} to skończony lub nieskończony ciąg krawędzi 
-  $P \subseteq E$ łączących ze sobą ciąg różnych wierzchołków
-  $V_P \subseteq V$.
+  $P \subseteq E$ łączących ze sobą ciąg różnych wierzchołków $V_P \subseteq V$.
   Ścieżka pomiędzy wierzchołkami $v$ oraz $w$ opisywana może być jako $P_{v,w} = (v \rightarrow \ldots \rightarrow w)$.
   Przykład:
   \[G=(V,E), V=\{v_0, v_1, \ldots\}, E=\{(v_a, v_b)| \{v_a, v_b\} \in V\}\]
@@ -117,7 +122,7 @@ grafu $G=(V,E)$.
 \begin{definition}\thlabel{def_alternating_path}
   Mając dane skojarzenie ${M=\{e_{M_0}, e_{M_1}, \ldots, e_{M_p}\} \subseteq E}$,
   \emph{ścieżkę M-przemienną} stanowi każda ścieżka $P=\{e_0, e_1, \ldots, e_{n-1}\}$ spełniająca warunek: 
-  \[\forall_{\{e_{i-1}, e_i\} \in P}: (e_{i-1} \in M \land e_i \notin M) \oplus  (e_{i-1} \notin M \land e_i \in M).\]
+  \[\forall_{\{e_{i-1}, e_i\} \subseteq P}: (e_{i-1} \in M \land e_i \notin M) \oplus  (e_{i-1} \notin M \land e_i \in M).\]
 \end{definition}
 
 \begin{definition}\thlabel{def_induced_graph}
