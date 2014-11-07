@@ -8,7 +8,7 @@ w~następujący sposób.
 
 \subsubsection{\textbf{Rozwiązanie problemu oryginalnego}}\label{ss_lp_original}
 Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ należy przypisać wartość $X_u
-\in \{0, 1\}$, z zachowaniem następujących własności:
+\in \{0, 1\}$, z~zachowaniem następujących własności:
 \begin{enumerate}
   \item $\sum_{u \in V}X_u = \min$,
   \item $\{u,v\} \in E \implies X_u + X_v \geq 1$.
@@ -17,16 +17,16 @@ Każdemu wierzchołkowi $u \in V$ grafu $G=(V,E)$ należy przypisać wartość $
 Funkcja celu programu liniowego zwraca dolną granicę rozmiaru pokrycia wierzchołkowego $|C|$.
 Zbiór rozwiązań prawdopodobnych składa się z~funkcji $V \to \{0, 1\}$,
 spełniających warunek 2.
-W związku z~faktem, iż programowanie całkowitoliczbowe samo w~sobie stanowi
+Ponieważ programowanie całkowitoliczbowe samo w~sobie stanowi
 problem $\mathcal{NP}$-zupełny, dokonać należy relaksacji do postaci programu liniowego, co
 zapewni szerszy zakres prawdopodobnych rozwiązań.
 
 W~pracy~\cite{khuller02} zaproponowana została relaksacja przez zamianę wartości 
 $X_u \in \{0,1\}$ na $X_u \geq 0$.
-Należy zauważyć, iż wartość $O_{LP}$ (ang. \emph{Linear Programming, LP}) zwracana przez rozwiązanie postaci 
+Należy zauważyć, iż wartość $O_{\textnormal{LP}}$ (ang. \emph{Linear Programming, LP}) zwracana przez rozwiązanie postaci 
 liniowej jest zawsze ograniczona z~dołu przez wartość $O_{\textnormal{IP}}$ zwracaną przez 
 rozwiązanie postaci całkowitoliczbowej.
-Co więcej, w~pracy~\cite{khuller02} udowodniono, że $O_{\textnormal{IP}} \leq 2*O_{LP}$.
+Co więcej, w~pracy~\cite{khuller02} udowodniono, że $O_{\textnormal{IP}} \leq 2*O_{\textnormal{LP}}$.
 Zależność ta wynika z~twierdzenia Nemhausera--Trottera korzystającego
 z~własności, że w~dowolnym ekstremum rozwiązania relaksacji programu
 całkowitoliczbowego do postaci liniowej zmienne przyjmują wartość 
@@ -44,7 +44,7 @@ V_1=\{u: X_u=1\}$, twierdzenie zapisać można jak następuje.
 \end{theorem}
 W celu sprowadzenia powyższej relaksacji do przypadku rozwiązania
 sparametryzowanego problemu pokrycia wierzchołkowego, zdefiniować należy zbiór 
-$\{ X_u : u \in V \}$ zawierający wartości przypisywane wierzchołkom grafu 
+$\{ X_u : u~\in V \}$ zawierający wartości przypisywane wierzchołkom grafu 
 $G=(V,E)$ przez funkcję celu oraz zbiory:\\
 \begin{align*}
 P&=\left\{u \in V | X_u>\frac{1}{2}\right\},\\
@@ -65,24 +65,24 @@ zbiorem wierzchołków $V^\prime=Q$ oraz zbiorem krawędzi\\$E^\prime=\{e=(v, w)
   ${A = P \setminus O_{\textnormal{IP}}, B = R \cap O_{\textnormal{IP}}}$.
   Zachodzi $N(B) \cap Q = \emptyset$, co zapewnia właściwość 2 sformułowania, którego rozwiązaniem jest $O_{\textnormal{IP}}$.
 
-  Jeżeli $|A|<|B|$, to zastąpienie zbioru $B$ przez $A$ w rozwiązaniu $O_{\textnormal{IP}}$ (ang. \emph{Integer Programming, IP}) spowodowałoby odkrycie przynajmniej jednej krawędzi grafu --- wykluczając tym samym tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
+  Jeżeli $|A|<|B|$, to zastąpienie zbioru $B$ przez $A$ w~rozwiązaniu $O_{\textnormal{IP}}$ (ang. \emph{Integer Programming, IP}) spowodowałoby odkrycie przynajmniej jednej krawędzi grafu --- wykluczając tym samym tak otrzymane pokrycie wierzchołkowe jako rozwiązanie.
   W prypadku gdy $|A|>|B|$, musiałaby istnieć możliwość otrzymania rozwiązania sformułowania liniowego lepszego niż $O_{\textnormal{IP}}$ przez ustanowienie $\epsilon = \min\{X_v-\frac{1}{2}: v \in A\}$, a~następnie
   zastąpienie $\forall_{u \in B}:X_u \leftarrow X_u + \epsilon$ oraz $\forall_{v \in A}: X_v \leftarrow X_v -\epsilon$.
   Jest to niemożliwe, ponieważ wynik $O_{\textnormal{IP}}$ stanowi optymalne rozwiązanie sformułowania liniowego w~oparciu o~pierwsze twierdzenie Nemhausera--Trottera~(\ref{nt_lp}).
-  Nasuwa się konkluzja, że jedyny przypadek z~jakim można mieć w tym miejscu do czynienia to $|A|=|B|$.
+  Nasuwa się konkluzja, że jedyny przypadek z~jakim można mieć w~tym miejscu do czynienia to $|A|=|B|$.
   Przypadek ten jest trywialny --- w~celu orzymania optymalnego pokrycia wierzchołkowego wystarczy zastąpić zbiór $A$ zbiorem $B$.
 \end{bproof}
 Prezentowany algorytm redukuje dziedzinę do jądra problemu o~rozmiarze $n^\prime=|V|-|P|-|R|$.
 Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokrycia wierzchołkowego zmniejszona zostaje do $k^\prime=k-|P|$.
 \begin{theorem}
-  Nie istnieje optymalne pokrycie wierzchołkowe $C^\prime_{\textnormal{OPT}}\in G^\prime$ o rozmiarze $|C^\prime_{\textnormal{OPT}}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
+  Nie istnieje optymalne pokrycie wierzchołkowe $C^\prime_{\textnormal{OPT}}\in G^\prime$ o~rozmiarze $|C^\prime_{\textnormal{OPT}}|>\Sigma_{u\in Q}X_u=\frac{|Q|}{2}$.
 \end{theorem}
 \begin{bproof}
   Zauważmy, że rozmiar funkcji celu sformułowania liniowego ogranicza od dołu rozmiar funkcji celu sformułowania całkowitoliczbowego.
-  W przeciwnym wypadku, procedura rozwiązująca początkowe sformułowanie liniowe problemu, którego wynik stanowi zbiór $Q$, nie byłaby w~stanie zapewnić optymalnego rozwiązania, co byłoby sprzeczne z~założeniami sformułowania.
+  W przeciwnym przypadku procedura rozwiązująca początkowe sformułowanie liniowe problemu, którego wynik stanowi zbiór $Q$ nie byłaby w~stanie zapewnić optymalnego rozwiązania, co byłoby sprzeczne z~założeniami sformułowania.
 \end{bproof}
 \par{
-  W świetle powyższego dowodu widać, że można zakończyć działanie procesu poszukiwania pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o liczebności $|C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej gdy $|Q|>2k^\prime$.
+  W świetle powyższego dowodu widać, że można zakończyć działanie procesu wyznaczania pokrycia wierzchołkowego $C_{\textnormal{OPT}}$ o~liczebności $|C_{\textnormal{OPT}}|\leq k$, udzielając odpowiedzi negatywnej gdy $|Q|>2k^\prime$.
   Warto dodać, że powyższe sformułowanie algorytmu jest niepraktyczne dla grafów o~dużym zagęszczeniu ze względu na liczbę warunków ograniczających sformułowania równą $|E|$.
   Właściwym podejściem do takich przypadków jest przekształcenie problemu z~minimalizacyjnego do dualnego problemu maksymalizacyjnego, w~którym liczba warunków ograniczających równa będzie $|V|$.
 }
@@ -95,7 +95,7 @@ Wartość wynikowa parametru określającego maksymalny rozmiar optymalnego pokr
   Konstrukcja sformułowania liniowego dualnego problemu maksymalizacyjnego wygląda
   następująco.\\
   Każdej krawędzi $e=(u,v) \in E$ grafu $G=(V,E)$ należy przypisać wartość
-  $Y_{(u,v)} \geq 0$, z zachowaniem następujących własności:
+  $Y_{(u,v)} \geq 0$, z~zachowaniem następujących własności:
   \begin{enumerate}
     \item $\sum_{(u,v) \in E}Y_{(u,v)} = \max$,
     \item $\forall_{v \in V}:\sum_{u:(u,v)\in E}Y_{(u,v)} \leq 1$,

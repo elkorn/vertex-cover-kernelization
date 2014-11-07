@@ -3,12 +3,12 @@
 \section{Dane testowe}
 \par{
   Przygotowanie zestawu danych testowych jasno odzwierciedlającego ograniczenie złożoności obliczeniowej rozwiązania problemu pokrycia wierzchołkowego do wielomianowej przez zastosowanie technik redukcji dziedziny do jądra problemu nie jest łatwe.
-  Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które trudno jest opisać w prosty sposób parametrami generacji losowej.
+  Opisywane techniki bardzo silnie zależą od charakterystycznych cech struktury grafu, które trudno jest opisać w~prosty sposób parametrami generacji losowej.
   Dlatego też aby przygotować zestaw losowych grafów testowych przyjęto metodę generacji opartą na rozkładzie losowym stopni wierzchołków grafu w~połączeniu z~funkcją określającą współczynnik selektywności.
   Stopień każdego wierzchołka w~generowanym grafie wybierany jest losowo z~przedziału $\left<1, k\right>$ zgodnie z~rozkładem $P(k) \propto \frac{1}{k}$.
   Uzyskanie zbioru grafów losowych o~różnych parametrach owocowało bardzo niespójnymi wynikami czasów ich przetwarzania z~pomocą opisywanych w~niniejszej pracy technik, co spowodowane jest tym, że istnienie struktur redukowalnych w~grafie nie jest uzależnione wprost od liczebności wierzchołków czy też krawędzi.
   Po ,,wypróbowaniu'' kilku postaci funkcji określającej współczynnik selektywności udało się utworzyć zbiór zapewniający zbliżone do oczekiwanych pod względem przyrostu czasu przetwarzania wyniki --- przyjęta została postać $P(i, k) \propto \frac{1}{1+|i-k|}$, gdzie $i$ stanowi stopień rozpatrywanego wierzchołka.
-  Następnie, w celu uściślenia monotoniczności wyników, metodą prób i~błędów dobrano wartość parametru $k=5$.
+  Następnie, w~celu uściślenia monotoniczności wyników, metodą prób i~błędów dobrano wartość parametru $k=5$.
   Dla tak wybranych parametrów wygenerowano przedstawiony w~Tabeli~\ref{tab_testdata} zbiór grafów $G=(V, E)$, mających pokrycia wierzchołkowe $C$.\\
   \begin{table}
     \begin{center}
@@ -64,7 +64,7 @@
 \par{
   Zgodnie z~oczekiwaniami, wyznaczenie pokrycia wierzchołkowego metodą siłową, opisaną Pseudokodem~\ref{alg_VC1}, wymagało wykładniczego czasu.
   Powoduje to, że analiza grafów o~rozmiarach przedstawionych w~Tabeli~\ref{tab_testdata} trwa bardzo długo, a~wyniki pomiarów związanych z~metodą siłową zaciemniają obraz wyników pozostałych testów.
-  W związku z~tym pomiar czasu działania metody siłowej został zrealizowany dla osobnego zestawu siedmiu grafów wygenerowanych opisaną metodą o rozmiarach od dziesięciu do trzydziestu wierzchołków z~krokiem pięciu wierzchołków.
+  W związku z~tym pomiar czasu działania metody siłowej został zrealizowany dla osobnego zestawu siedmiu grafów wygenerowanych opisaną metodą o~rozmiarach od dziesięciu do trzydziestu wierzchołków z~krokiem pięciu wierzchołków.
   Niestety, struktura jednego z~wygenerowanych grafów okazała się niekorzystna dla rozgałęzień algorytmu siłowego --- wyniki pomiarów czasu działania siłowej metody wyznaczania pokrycia wierzchołkowego zawiera Tabela~\ref{tab_vc_naive}.
   \begin{table}
     \begin{center}
@@ -98,10 +98,10 @@
   \begin{itemize}
     \item Grafy stanowiące dane testowe są ubogie w~korony.
     Wynika to z~postaci funkcji określającej współczynnik selektywności wierzchołków. Struktury koron wymagają bardzo specyficznych relacji zachodzących między zbiorami wierzchołków, mianowicie istnienia zbiorów niezależnych o~połączonym sąsiedztwie.
-    W ramach procesu przygotowywania danych testowych udało się uzyskać grafy, dla których redukcja dziedziny uzyskana przez usunięcie koron była znacznie większa, jednak grafy te nie pozwalały na uzyskanie wyników dających przedstawić się w postaci funkcji monotonicznej.
+    W ramach procesu przygotowywania danych testowych udało się uzyskać grafy, dla których redukcja dziedziny uzyskana przez usunięcie koron była znacznie większa, jednak grafy te nie pozwalały na uzyskanie wyników dających przedstawić się w~postaci funkcji monotonicznej.
     \item Zaimplementowana technika wyznaczania koron w~grafie oparta jest na zbyt restrykcyjnym uściśleniu NT--redukcji do serii operacji działających bezpośrednio na konkretnych egzemplarzach skojarzeń.
     Najprawdopodobniej stanowi to również powód opisanych w~Podsumowaniu problemów napotkanych przy implementacji algorytmu Chena, Kanji oraz Xia.
-    Pozostałe zaimplementowane egzemplarze NT--redukcji wyznaczają podzbiory różniące się od tych uzyskiwanych przez redukcję proponowaną w pracy~\cite{KernelizationAlgorithms04}.
+    Pozostałe zaimplementowane egzemplarze NT--redukcji wyznaczają podzbiory różniące się od tych uzyskiwanych przez redukcję proponowaną w~pracy~\cite{KernelizationAlgorithms04}.
     Dalsze pole do badań może stanowić weryfikacja lub bardziej ogólne postacie NT--redukcji --- wykonywane za pomocą algorytmów programowania liniowego --- zapewnią lepsze rezultaty dla grafów o~strukturze zbliżonej do tych, które wykorzystano jako dane testowe.
   \end{itemize}
 
@@ -142,7 +142,7 @@
   \end{figure}
 
   Powodem niekorzystnej złożoności czasowej działania algorytmu redukcji dziedziny przez rozwiązanie przeformułowania problemu do egzemplarza problemu przepływu w~sieci jest brak optymalizacji implementacji koncepcji opisanej w~pracy~\cite{KernelizationAlgorithms04}.
-  Szczegóły oraz proponowane usprawnienia opisane są w Podsumowaniu.
+  Szczegóły oraz proponowane usprawnienia opisane są w~Podsumowaniu.
   Ponieważ charakterystyka wyników pomiarów czasu działania tego algorytmu jest zdeformowana i~nie ukazuje prawdziwej jego szybkości, a~także ze względu na bardzo długi czas oczekiwania, ograniczono dziedzinę przetwarzanych przez niego grafów do zawierających najmniejszą liczbę wierzchołków.
   W związku z~zaciemnieniem na wykresie wartości wyników pomiarów czasu działania algorytmu redukcji koron, Rysunek~\ref{fig_results_k_crown} przedstawia wyłącznie tę charakterystykę.
 
@@ -172,14 +172,14 @@
       \includegraphics[width=\textwidth]{results-p}
     \caption{Czas przetwarzania wstępnego.}
   \end{figure}
-\section{Środowisko testowe i wykonywanie testów}
+\section{Środowisko testowe i~wykonywanie testów}
 \par{
   W celu wykonania testów należy skopiować katalog zawarty na nośniku dołączonym do pracy, a~następnie zdefiniować zmienną środowiskową \texttt{\$GOPATH} tak, by wskazywała na ścieżkę do podkatalogu \texttt{src}.
   W następnej kolejności należy zmienić bieżącą ścieżkę na podkatalog \texttt{src/main}.
   Do wykonania pomiarów służy polecenie \texttt{go run *.go -measure N}, gdzie \texttt{N} stanowi wyrażenie regularne zawierające część nazwy przypadku testowego.
   Wyczerpująca lista zdefiniowanych przypadków testowych zawarta jest w~pliku \texttt{test-cases.go}.
 
-  Przedstawione wyniki testów szybkości działania algorytmów uzyskano na komputerze o nastepujących paramterach:
+  Przedstawione wyniki testów szybkości działania algorytmów uzyskano na komputerze o~nastepujących paramterach:
   \begin{itemize}
     \item Procesor Intel® Core™ i7-4800MQ (4 $\times$ 2.7 GHz)
     \item 32 GB DDR3L 1600 MHz
@@ -190,7 +190,7 @@
 }
 \subsection*{Generacja danych testowych}
 \par{
-  Istnieje możliwość wykonania testów na innych niż przedstawione w niniejszym rozdziale danych.
+  Istnieje możliwość wykonania testów na innych niż przedstawione w~niniejszym rozdziale danych.
   Generację grafów losowych realizuje skrypt \texttt{random-graphs.py}, umieszczony w~głównym katalogu aplikacji.
   Jest on wykonywalny z~linii poleceń.
   Wywołanie skryptu może być parametryzowane następującymi argumentami:
@@ -199,7 +199,7 @@
       Wywołanie skryptu z~wartością parametru \texttt{-v 5} wygeneruje graf o~pięciu wierzchołkach, wartość \texttt{-v 5,10} spowoduje generację dwóch grafów odpowiednio o~pięciu i~dziesięciu wierzchołkach, natomiast wartość \texttt{-v 5-20,5} zaowocuje generacją czterech grafów odpowiednio o~pięciu, dziesięciu, piętnastu oraz dwudziestu wierzchołkach.
     \item \texttt{-d}, określający współczynnik selektywności wierzchołków określonego stopnia w~generowanych grafach.
       Argument ten może przyjmować identyczne postaci jak argument \texttt{-v}.
-    \item \texttt{-l}, określający algorytm wizualizacji grafów. Dopuszczalne wartości opisane są w podrozdziale~\ref{sss_internals_misc_graphviz}.
+    \item \texttt{-l}, określający algorytm wizualizacji grafów. Dopuszczalne wartości opisane są w~podrozdziale~\ref{sss_internals_misc_graphviz}.
     \item \texttt{-o}, określający format obrazu wynikowego. Dopuszczalne wartości są określone formatami obsługiwanymi przez pakiet Graphviz.
   \end{itemize}
 

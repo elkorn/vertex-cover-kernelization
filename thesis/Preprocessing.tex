@@ -13,7 +13,7 @@ Procedury składowe przetwarzania wstępnego:
 \begin{enumerate}
   \item Usunięcie wszystkich wierzchołków izolowanych.
 
-    Z~Definicji~\ref{def_isolated_vertex} wynika, że zawarcie izolowanego wierzchołka $u$ w zbiorze pretendującym do miana pokrycia wierzchołkowego nie wpływa na pokrycie krawędzi grafu przez ten zbiór.
+    Z~Definicji~\ref{def_isolated_vertex} wynika, że zawarcie izolowanego wierzchołka $u$ w~zbiorze pretendującym do miana pokrycia wierzchołkowego nie wpływa na pokrycie krawędzi grafu przez ten zbiór.
     Nie ma zatem uzasadnienia dla rozpatrywania wierzchołków izolowanych w~kontekście dziedziny problemu.
     Utworzyć zatem należy graf $G^\prime$, gdzie $V^\prime = V \setminus u$.
     Rozmiar dziedziny problemu zostaje zredukowany do $n^\prime=n-1$.
@@ -41,7 +41,7 @@ Procedury składowe przetwarzania wstępnego:
       grafu $G=(V,E)$ złożonego ze zbiorów $ V^\prime=\{u, v, w\} \subseteq V$ oraz $E^\prime=\{(u,v), (u,w), (w,v)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$.
       Jeżeli przyjmiemy zbiory ${V_1=\{u,v\}, V_2=\{u,w\}, V_3=\{w,v\}}$, to zbiór $C_1=V_1 \cup V_2 \cup V_3$ spełnia warunki wymagane do uzyskania 
       statusu pokrycia wierzchołkowego.
-      Usunięcie dowolnego wierzchołka $x \in V^\prime$ z dziedziny nie wpływa na to, że zbiór ${C_1=V^\prime \setminus \{x\}}$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
+      Usunięcie dowolnego wierzchołka $x \in V^\prime$ z~dziedziny nie wpływa na to, że zbiór ${C_1=V^\prime \setminus \{x\}}$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
       Usunięcie dowolnego wierzchołka $y \in C$ powoduje jednak, iż zbiór $C_2=C_1 \setminus \{y\}$ nie pokrywa jednej z~krawędzi $e \in E^\prime$.
       Na tej podstawie stwierdzić można, że dowolne pokrycie wierzchołkowe $C$ zawierać musi co najmniej 2 wierzchołki należące do zbioru $V^\prime$, a~zatem istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ grafu $G^\prime$ zawierające dokładnie 2 wierzchołki należące do $V^\prime$.
       Jeżeli $d(u)=2$, to zawarcie wierzchołka $u$ w~pokryciu wierzchołkowym $C_{\textnormal{opt}}$ gwarantowałoby pokrycie jedynie krawędzi $\{(u,v), (u,w), (v,w)\}$, podczas gdy usunięcie wierzchołka $u$ ze zbioru $C_{\textnormal{opt}}$ gwarantuje pokrycie nie tylko tych krawędzi ale także i~wszystkich krawędzi $e \in E$ przystających do $\{w, v\}$.
@@ -58,8 +58,8 @@ Procedury składowe przetwarzania wstępnego:
       optymalnego pokrycia wierzchołkowego.
     \end{theorem}
     \begin{proof}
-      W celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$ o zbiorze wierzchołków $V^\prime=\{u, v, w\} \subseteq V$ i zbiorze krawędzi $E^\prime=\{(u,v), (u,w)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$. 
-      Zauważmy, że dla zbiorów $V_1=\{u,v\}$ i $V_2=\{u,w\}$ zbiór $C_1=V_1 \cup V_2$ stanowi pokrycie wierzchołkowe.
+      W celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$ o~zbiorze wierzchołków $V^\prime=\{u, v, w\} \subseteq V$ i~zbiorze krawędzi $E^\prime=\{(u,v), (u,w)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$. 
+      Zauważmy, że dla zbiorów $V_1=\{u,v\}$ i~$V_2=\{u,w\}$ zbiór $C_1=V_1 \cup V_2$ stanowi pokrycie wierzchołkowe.
       Jeżeli spełniona jest własność $C_2=V_1 \cap V_2 \neq \emptyset$, to zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
       Gdyby usunąć wierzchołki należące do $C_2$, zbiór $C_3=V_1 \oplus V_2$ również stanowiłby pokrycie wierzchołkowe, jednak jego rozmiar wynosiłby $|C_3| > |C_2|$.
       Na tej podstawie stwierdzić można, że istnieje takie optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ spełniające własności $\{v,w\} \notin C_{\textnormal{opt}}$ oraz $u \in C_{\textnormal{opt}}$.
@@ -73,7 +73,7 @@ Procedury składowe przetwarzania wstępnego:
         krawędzią $(u, v_i)$.
       \item Każdą krawędź $(w,w_i); w_i \in V \land w_i \neq u$ zastąp
         krawędzią $(u, w_i)$.
-      \item Usuń z grafu wierzchołki $v$ oraz $w$.
+      \item Usuń z~grafu wierzchołki $v$ oraz $w$.
     \end{itemize}
     Jedna iteracja redukuje rozmiar dziedziny problemu do wartości
     $n^\prime=n-2$.

@@ -18,7 +18,7 @@
   \item Problemy $\mathcal{NP}$-trudne stanowią problemy, do których w~czasie
     wielomianowym zredukować można wszystkie problemy klasy $\mathcal{NP}$.
   \item Problemy $\mathcal{NP}$-zupełne stanowią problemy, które są zarówno
-    $\mathcal{NP}$ jak i $\mathcal{NP}$-trudne.
+    $\mathcal{NP}$ jak i~$\mathcal{NP}$-trudne.
     Cechą charakterystyczną problemów $\mathcal{NP}$-zupełnych jest to, iż
     dowolne rozwiązanie problemu $\mathcal{NP}$-zupełnego jest weryfikowalne
     w~czasie wielomianowym, jednak nie jest znana efektywna metoda odnalezienia
@@ -41,10 +41,9 @@
         nie ma pewności, że zawsze zapewnią prawidłowy wynik w~rozsądnym czasie.
       \item \underline{Randomizacja}: przy dopuszczeniu niewielkiego
         prawdopodobieństwa porażki istnieje szansa na poprawienie
-        średniego czasu działania przez zastosowanie elementu losowości w
-        działaniu algorytmu.
+        średniego czasu działania przez zastosowanie elementu losowości w~        działaniu algorytmu.
     \end{itemize}
-  \item $\mathcal{FPT}$, obejmująca problemy \emph{łatwe w rozwiązaniu względem stałych parametrów} (ang. fixed-parameter tractable problems).
+  \item $\mathcal{FPT}$, obejmująca problemy \emph{łatwe w~rozwiązaniu względem stałych parametrów} (ang. fixed-parameter tractable problems).
 \end{itemize}
 
 Należy zaznaczyć, że mimo skupienia uwagi na podejściu opartym o~parametryzację złożoności obliczeniowej, rozpatrywane w~ramach niniejszej pracy metody wykorzystują również pozostałe techniki, w~szczególności z~grupy aproksymacji i~redukcji, dla podproblemów składowych lub redukcji problemu pokrycia wierzchołkowego.
@@ -56,8 +55,7 @@ Należy zaznaczyć, że mimo skupienia uwagi na podejściu opartym o~parametryza
   praktycznych zastosowań, jest próba odpowiedzi na pytanie czy klasa problemów
   $\mathcal{NP}$ nie jest równoznaczna klasie problemów $\mathcal{P}$.
   Pytanie to należy do grupy tzw. ,,Problemów Milenijnych'', a~za pierwszą
-  prawidłową odpowiedź fundacja Clay Mathematics Institute oferuje nagrodę w
-  wysokości miliona dolarów. 
+  prawidłową odpowiedź fundacja Clay Mathematics Institute oferuje nagrodę w~  wysokości miliona dolarów. 
   Do tej pory argumenty zarówno za $\mathcal{P}=\mathcal{NP}$ jak i~za
   $\mathcal{P}\neq\mathcal{NP}$ nie są oparte na ścisłym matematycznym
   rozumowaniu, a~raczej na empirycznych obserwacjach otaczającego świata.
@@ -85,7 +83,7 @@ Należy zaznaczyć, że mimo skupienia uwagi na podejściu opartym o~parametryza
 \par{
   Problem pokrycia wierzchołkowego jest problemem decyzyjnym.
   Polega on na udzieleniu odpowiedzi na pytanie ,,Czy w~grafie $G=(V,E)$ dla zadanego $k$
-  istnieje zbiór wierzchołków $C \in V$ o liczebności $|C| \leq k$ pokrywający każdą krawędź tego grafu?''.
+  istnieje zbiór wierzchołków $C \in V$ o~liczebności $|C| \leq k$ pokrywający każdą krawędź tego grafu?''.
   Pokrycie wierzchołkowe stanowi zbiór wierzchołków $C \subseteq$ spełniający zależność $V\forall_{e=(u,v) \in E}:u\in C\lor v\in C$.
   Problem pokrycia wierzchołkowego należy do klasy problemów $\mathcal{NP}$-zupełnych, co udowodniono w~pracy~\cite{Kar72}.
 }
@@ -101,14 +99,14 @@ Należy zaznaczyć, że mimo skupienia uwagi na podejściu opartym o~parametryza
   Jednym z~zastosowań poza polem biologii obliczeniowej są prace nad dynamicznym wykrywaniem wyścigów w~danych~\cite{O'Callahan:2003:HDD:781498.781528}.
 }
 \begin{theorem}
-  Optymalne pokrycie wierzchołkowe grafu $G=(V,E)$ o rozmiarach $|V|=n, |E|=m$ może zostać odnalezione w~czasie $O(2^{n}m)$.
+  Optymalne pokrycie wierzchołkowe grafu $G=(V,E)$ o~rozmiarach $|V|=n, |E|=m$ może zostać odnalezione w~czasie $O(2^{n}m)$.
 \end{theorem}
 \begin{bproof}
   Aby zweryfikować czy dany podzbiór $V_s \subseteq V$ pokrywa każdą krawędź
   $e \in E$, należy wykonać $O(m)$ porównań.
   Aby wykonać operację na wszystkich podzbiorach $V_s$, należy wykonać tę
   czynność dla wszystkich zbiorów należących do zbioru potęgowego 
-  $P(V)$ o liczebności $|P(V)| = 2^{n}$.
+  $P(V)$ o~liczebności $|P(V)| = 2^{n}$.
   Aby odnaleźć pokrycie wierzchołkowe wśród podzbiorów $V$, należy dla każdego z~nich zrealizować operację weryfikacji pokrycia krawędzi, co w~rezultacie daje 
   złożoność $O(2^{n}m)$.
 \end{bproof}
@@ -124,15 +122,15 @@ Należy zaznaczyć, że mimo skupienia uwagi na podejściu opartym o~parametryza
   gdzie $w(x)$ jest wielomianem.
 
   \begin{theorem}\thlabel{th_vc_naive}
-    W dowolnym grafie $G=(V, E)$ problem pokrycia wierzchołkowego jest rozwiązywalny w~czasie $O^{\star}(2^k)$ i wielomianowej przestrzeni dla zadanego $k \geq 0$.
+    W dowolnym grafie $G=(V, E)$ problem pokrycia wierzchołkowego jest rozwiązywalny w~czasie $O^{\star}(2^k)$ i~wielomianowej przestrzeni dla zadanego $k \geq 0$.
   \end{theorem}
   \begin{bproof}
     Zakładając istnienie zbioru $C \subseteq V$ kandydującego do miana pokrycia wierzchołkowego, dla każdej krawędzi $(u, v) \in E$ zachodzić musi własność  $u \in C \lor v \in C$.
-    Jeżeli więc istnieje krawędź $(u, v) \in E$ łącząca dwa wierzchołki, z których żaden nie należy do zbioru $C$, to należy dodać jeden z~tych wierzchołków do zbioru $C$.
+    Jeżeli więc istnieje krawędź $(u, v) \in E$ łącząca dwa wierzchołki, z~których żaden nie należy do zbioru $C$, to należy dodać jeden z~tych wierzchołków do zbioru $C$.
     Rekurencyjnie realizowane są obydwie możliwości.
     Z~definicji pokrycia wierzchołkowego wynika, że zaakceptowanie wierzchołka jako należącego do optymalnego pokrycia wierzchołkowego eliminuje potrzebę rozpatrywania tego wierzchołka w~kolejnych iteracjach algorytmu.
     W~związku z~tym przed rozpoczęciem każdej kolejnej iteracji wierzchołek podlegający rozpatrzeniu wraz z~przystającymi do niego krawędziami należy usunąć z~dziedziny problemu w~celu wyznaczenia pokrycia wierzchołkowego o~rozmiarze co najwyżej $k-1$ w~pozostałej części grafu.
-    Kiedy rekurencja dociera do momentu, gdzie zachodzi $k=0$ i istnieje krawędź $e=(u,v) \in E$ niepokryta przez zbiór $C$ wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i~należy je odrzucić.
+    Kiedy rekurencja dociera do momentu, gdzie zachodzi $k=0$ i~istnieje krawędź $e=(u,v) \in E$ niepokryta przez zbiór $C$ wiadomo, że rozwiązanie odnalezione w~tej gałęzi nie jest akceptowalne i~należy je odrzucić.
     Bez względu na ostateczną postać rozwiązania zadanego problemu, algorytm z~każdą iteracją konsekwentnie zmniejsza rozmiar parametru poszukiwanego częściowego pokrycia.
     Łatwo zauważyć, że istnieją dwa warunki zakończenia działania algorytmu:
     \begin{enumerate}

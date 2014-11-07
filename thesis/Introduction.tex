@@ -11,18 +11,18 @@
   Niniejsza praca dotyczy analizy, implementacji oraz opisu wybranych metod rozwiązywania problemu pokrycia wierzchołkowego grafu z~wykorzystaniem technik zaliczanych do grupy metod parametryzacji.
   Problem pokrycia wierzchołkowego należy do klasy problemów $\mathcal{NP}$-zupełnych, stanowiących podzbiór problemów klasy $\mathcal{NP}$.
   Problem pokrycia wierzchołkowego został uwzględniony w~zestawie 21 problemów $\mathcal{NP}$-zupełnych w~pracy Richarda Karpa z~roku 1972~\cite{DBLP:Karp10}.
-  Studium klasy problemów $\mathcal{NP}$-zupełnych od ponad 50 lat stanowi aktualną i obszerną dziedzinę algorytmiki oraz teorii obliczeń.
-  Mimo bogatego dorobku naukowego związanego z~analizą problemów $\mathcal{NP}$-zupełnych pytanie czy klasy problemów $\mathcal{NP}$ i $\mathcal{P}$ są jednoznaczne nadal pozostaje otwarte --- nie udzielono na nie popartej konstruktywnymi dowodami odpowiedzi.
+  Studium klasy problemów $\mathcal{NP}$-zupełnych od ponad 50 lat stanowi aktualną i~obszerną dziedzinę algorytmiki oraz teorii obliczeń.
+  Mimo bogatego dorobku naukowego związanego z~analizą problemów $\mathcal{NP}$-zupełnych pytanie czy klasy problemów $\mathcal{NP}$ i~$\mathcal{P}$ są jednoznaczne nadal pozostaje otwarte --- nie udzielono na nie popartej konstruktywnymi dowodami odpowiedzi.
   Fakt ten warunkuje dalsze postępy w~tej dziedzinie i~jednocześnie zachęca do zgłębiania opisywanej tematyki, oferując szerokie pole dla nowego wkładu w~jej rozwój.
 }
 \par{
   Głównym celem niniejszej pracy jest przedstawienie fundamentalnej teoretycznej wiedzy dotyczącej podejścia do rozwiązywania problemów $\mathcal{NP}$-zupełnych, opartego na technikach parametryzacji na przykładzie problemu pokrycia wierzchołkowego grafu oraz materializacji koncepcji teoretycznych w~postaci implementacji opisywanych algorytmów.
   Wybór problemu pokrycia wierzchołkowego jako problemu tematycznego podyktowany jest przynależnością do klasy $\mathcal{FPT}$ .
   Problemy klasy $\mathcal{FPT}$ stanowią podzbiór problemów $\mathcal{NP}$-trudnych.
-  Ich cechą charakterystyczną jest możliwość rozwiązania w znacznie krótszym czasie niż inne problemy $\mathcal{NP}$-trudne przez ograniczenie dziedziny problemu wartością pewnego parametru $k$.
+  Ich cechą charakterystyczną jest możliwość rozwiązania w~znacznie krótszym czasie niż inne problemy $\mathcal{NP}$-trudne przez ograniczenie dziedziny problemu wartością pewnego parametru $k$.
   Za cel dodatkowy pracy należy uznać przedstawienie zaawansowanej matematycznie problematyki w~sposób przystępny dla czytelnika o~tle inżynierskim.
   Będzie to stanowiło zrozumiałą podporę w~dalszych badaniach lub adaptacji przedstawionych rozwiązań do konkretnych problemów praktycznych.
-  Ponadto w~pracy zostanie utworzona możliwie jednolita platforma ułatwiająca implementację i badania eksperymentalne algorytmów związanymi z~problemami grafowymi.
+  Ponadto w~pracy zostanie utworzona możliwie jednolita platforma ułatwiająca implementację i~badania eksperymentalne algorytmów związanymi z~problemami grafowymi.
 }
 \section{Układ pracy}\label{Section_Layout}
 \par{
@@ -36,7 +36,7 @@
   Podrozdział~\ref{Section_preprocessing} przybliża proste techniki modyfikacji struktury grafu stanowiące uzupełnienie mające na celu zwiększenie efektywności algorytmów opisywanych w~podrozdziale~\ref{s_kernelization}.
   Podrozdział~\ref{s_kernelization} przedstawia analizę poszczególnych technik redukcji dziedziny do jądra problemu pokrycia wierzchołkowego zaproponowanych w~literaturze źródłowej.
   Podrozdział~\ref{s_ckx} poświęcony jest w~całości algorytmowi zaproponowanemu w~pracy~\cite{ImprovedBounds10}.
-  Algorytm ten stanowi wyczerpującą całość, wykorzystującą i łączącą opisane w~poprzedzających podrozdziałach koncepcje w~celu uzyskania dużej redukcji złożoności obliczeniowej.
+  Algorytm ten stanowi wyczerpującą całość, wykorzystującą i~łączącą opisane w~poprzedzających podrozdziałach koncepcje w~celu uzyskania dużej redukcji złożoności obliczeniowej.
   Podrozdział~\ref{s_supplementary_algorithms} przybliża algorytmy niezwiązane bezpośrednio z~dziedziną pokrycia wierzchołkowego, które stanowią jednak wartościowe narzędzia wykorzystywane przez techniki opisane w~podrozdziałach poprzedzających.
   Algorytmy opisane w~podrozdziałach~\ref{s_kernelization} oraz~\ref{s_ckx} nazywane będą dalej \emph{algorytmami głównymi}.
   Rozdział~\ref{s_internals} obejmuje opis wykorzystanych technologii, narzędzi i~bibliotek zewnętrznych, architektury załączonego kodu źródłowego, wybranych pakietów oraz implementacji niektórych algorytmów przedstawionych w~opisie zagadanienia.
