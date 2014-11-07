@@ -13,79 +13,60 @@ Procedury składowe przetwarzania wstępnego:
 \begin{enumerate}
   \item Usunięcie wszystkich wierzchołków izolowanych.
 
-    W oparciu o~Definicję~\ref{def_isolated_vertex} zauważyć można, że zawarcie
-    izolowanego wierzchołka $u$ w zbiorze pretendującym do miana pokrycia
-    wierzchołkowego nie wpływa na pokrycie krawędzi grafu przez ten zbiór.
-    Nie ma zatem uzasadnienia dla rozpatrywania wierzchołków izolowanych w
-    kontekście dziedziny problemu.
+    Z~Definicji~\ref{def_isolated_vertex} wynika, że zawarcie izolowanego wierzchołka $u$ w zbiorze pretendującym do miana pokrycia wierzchołkowego nie wpływa na pokrycie krawędzi grafu przez ten zbiór.
+    Nie ma zatem uzasadnienia dla rozpatrywania wierzchołków izolowanych w~kontekście dziedziny problemu.
     Utworzyć zatem należy graf $G^\prime$, gdzie $V^\prime = V \setminus u$.
     Rozmiar dziedziny problemu zostaje zredukowany do $n^\prime=n-1$.
     Operację należy powtarzać dopóty, dopóki $V$ zawiera wierzchołki izolowane.
 
   \item Usunięcie wszystkich wierzchołków stopnia 1.
 
-    Jeżeli w~grafie $G$ istnieje wierzchołek $v$ stopnia 1, to istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$, dla którego istnieje krawędź $(v,u) \in E$, łącząca wierzchołki $v \notin VC{\textnormal{opt}}$ oraz $u \in C_{\textnormal{opt}}$.
+    Jeżeli w~grafie $G$ istnieje wierzchołek $v$ stopnia 1, to istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$, dla którego istnieje krawędź $(v,u) \in E$, łącząca wierzchołki $v \notin C_{\textnormal{opt}}$ oraz $u \in C_{\textnormal{opt}}$.
     Graf $G^\prime$ utworzyć można zatem przez usunięcie z~dziedziny wierzchołków $v$ oraz
-    $u$, a także krawędzi $(v,u)$.
+    $u$, a~także krawędzi $(v,u)$.
     Po wykonaniu tej operacji usunąć należy również wierzchołki sąsiadujące z~wierzchołkami
     $\{v,u\}$, których stopień~wyniósł 0.
     Jedna iteracja redukuje rozmiar dziedziny problemu do $n^\prime=n-x$, gdzie
     $x$ stanowi liczebność~zbioru usuniętych wierzchołków.
-    Ze względu na usuniętą krawędź rozmiar parametru $k$ ulega zmniejszeniu do
+    Ze względu na usuniętą krawędź, rozmiar parametru $k$ ulega zmniejszeniu do
     $k^\prime=k-1$.
-    Operację należy powtarzać do momentu usunięcia z~grafu wszystkich
-    wierzchołków stopnia 1.
+    Operację należy powtarzać dopóty, dopóki graf zawiera wierzchołki stopnia 1.
 
   \item Usunięcie wierzchołków stopnia 2 o~połączonym sąsiedztwie wraz z~wierzchołkami sąsiednimi.   
     \begin{theorem}
       Procedura usuwa z~grafu wierzchołek zbędny w~optymalnym pokryciu wierzchołkowym.
     \end{theorem}
-    \begin{proof}
+    \begin{bproof}
       W celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$
-      grafu $G=(V,E); V^\prime=\{u, v, w\}$ złożonego ze zbiorów $ V^\prime \subseteq V$ oraz $E^\prime=\{(u,v), (u,w), (w,v)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$.\\ 
-      Jeżeli przyjmiemy zbiory ${V_1=\{u,v\}, V_2=\{u,w\}, V_3=\{w,v\}}$,\\ 
-      to zbiór ${C_1=V_1 \cup V_2 \cup V_3}$ spełnia warunki wymagane do uzyskania 
+      grafu $G=(V,E)$ złożonego ze zbiorów $ V^\prime=\{u, v, w\} \subseteq V$ oraz $E^\prime=\{(u,v), (u,w), (w,v)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$.
+      Jeżeli przyjmiemy zbiory ${V_1=\{u,v\}, V_2=\{u,w\}, V_3=\{w,v\}}$, to zbiór $C_1=V_1 \cup V_2 \cup V_3$ spełnia warunki wymagane do uzyskania 
       statusu pokrycia wierzchołkowego.
-      Usunięcie dowolnego wierzchołka $x \in V^\prime$ z dziedziny nie wpływa na to, że 
-      ${C_1=V^\prime \setminus \{x\}}$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
-      Usunięcie dowolnego wierzchołka $y \in VC$ powoduje jednak, iż zbiór
-      $C_2=C_1 \setminus \{y\}$ nie pokrywa jednej z~krawędzi $e \in E^\prime$.
-      Na tej podstawie stwierdzić można, że dowolne pokrycie wierzchołkowe
-      $VC$ zawierać musi co najmniej 2 wierzchołki należące do zbioru $V^\prime$, a zatem
-      istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ grafu $G^\prime$
-      zawierające dokładnie 2 wierzchołki należące do $V^\prime$.
-      Jeżeli $d(u)=2$, to zawarcie wierzchołka $u$ w~pokryciu wierzchołkowym $C_{\textnormal{opt}}$ gwarantowałoby pokrycie jedynie krawędzi
-      $\{(u,v), (u,w), (v,w)\}$, podczas gdy usunięcie wierzchołka $u$ ze zbioru $C_{\textnormal{opt}}$ gwarantuje 
-      pokrycie nie tylko tych krawędzi ale także i~wszystkich krawędzi $e \in E$ przystających do $\{w, v\}$.
-      Na tej podstawie stwierdzić można, iż istnieje takie optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ grafu $G$, że $\{v,w\} \in C_{\textnormal{opt}}$.
-    \end{proof}
-    W związku z~powyższym graf $G^\prime$ otrzymuje się przez usunięcie z~grafu
-    $G$ wierzchołków $\{u,v,w\}$ oraz krawędzi pomiędzy nimi.
-    Następnie usunąć należy wierzchołki, których stopień wyniósł 0.
-    Jedna iteracja redukuje rozmiar dziedziny problemu do wartości
-    $n^\prime=n-x$, gdzie $x$ stanowi liczebność zbioru usuniętych wierzchołków.
-    Ze względu na usunięte krawędzie rozmiar parametru $k$ ulega zmniejszeniu 
-    do wartości $k^\prime=k-2$.
-    Operację należy powtarzać dopóty, dopóki w~grafie istnieją wierzchołki stopnia 2\
-    o~połączonym sąsiedztwie.
-
+      Usunięcie dowolnego wierzchołka $x \in V^\prime$ z dziedziny nie wpływa na to, że zbiór ${C_1=V^\prime \setminus \{x\}}$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
+      Usunięcie dowolnego wierzchołka $y \in C$ powoduje jednak, iż zbiór $C_2=C_1 \setminus \{y\}$ nie pokrywa jednej z~krawędzi $e \in E^\prime$.
+      Na tej podstawie stwierdzić można, że dowolne pokrycie wierzchołkowe $C$ zawierać musi co najmniej 2 wierzchołki należące do zbioru $V^\prime$, a~zatem istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ grafu $G^\prime$ zawierające dokładnie 2 wierzchołki należące do $V^\prime$.
+      Jeżeli $d(u)=2$, to zawarcie wierzchołka $u$ w~pokryciu wierzchołkowym $C_{\textnormal{opt}}$ gwarantowałoby pokrycie jedynie krawędzi $\{(u,v), (u,w), (v,w)\}$, podczas gdy usunięcie wierzchołka $u$ ze zbioru $C_{\textnormal{opt}}$ gwarantuje pokrycie nie tylko tych krawędzi ale także i~wszystkich krawędzi $e \in E$ przystających do $\{w, v\}$.
+      Na tej podstawie stwierdzić można, iż istnieje optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ grafu $G$, spełniające własność $\{v,w\} \in C_{\textnormal{opt}}$.
+    \end{bproof}
+    W związku z~powyższym graf $G^\prime$ otrzymuje się przez usunięcie z~grafu $G$ wierzchołków $\{u,v,w\}$ oraz krawędzi pomiędzy nimi.
+    Następnie należy usunąć wierzchołki, których stopień wyniósł 0.
+    Jedna iteracja redukuje rozmiar dziedziny problemu do wartości $n^\prime=n-x$, gdzie $x$ stanowi liczebność zbioru usuniętych wierzchołków.
+    Ze względu na usunięte krawędzie rozmiar parametru $k$ ulega zmniejszeniu do wartości $k^\prime=k-2$.
+    Operację należy powtarzać dopóty, dopóki w~grafie istnieją wierzchołki stopnia 2\ o~połączonym sąsiedztwie.
   \item Zwinięcie rozłącznego sąsiedztwa wierzchołków stopnia 2.
     \begin{theorem}
       Procedura usuwa z~grafu wierzchołki, które nie mogą lub muszą przynależeć do 
       optymalnego pokrycia wierzchołkowego.
     \end{theorem}
     \begin{proof}
-      Dla pewnego grafu $G=(V,E)$ w celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$ o zbiorze wierzchołków $V^\prime=\{u, v, w\} \subseteq V$ i zbiorze krawędzi $E^\prime=\{(u,v), (u,w)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$. 
+      W celu uzyskania pokrycia wierzchołkowego podgrafu $G^\prime=(V^\prime,E^\prime)$ o zbiorze wierzchołków $V^\prime=\{u, v, w\} \subseteq V$ i zbiorze krawędzi $E^\prime=\{(u,v), (u,w)\} \subseteq E$ należy pokryć każdą krawędź $e \in E^\prime$. 
       Zauważmy, że dla zbiorów $V_1=\{u,v\}$ i $V_2=\{u,w\}$ zbiór $C_1=V_1 \cup V_2$ stanowi pokrycie wierzchołkowe.
-      Jeżeli $C_2=V_1 \cap V_2 \neq \emptyset$, to zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
-      Gdyby usunąć wierzchołki należące do $C_2$, zbiór $C_3=V_1 \oplus V_2$ również stanowi pokrycie wierzchołkowe, jednak $|C_2| < |C_3|$.
+      Jeżeli spełniona jest własność $C_2=V_1 \cap V_2 \neq \emptyset$, to zbiór $C_2$ nadal stanowi pokrycie wierzchołkowe grafu $G^\prime$.
+      Gdyby usunąć wierzchołki należące do $C_2$, zbiór $C_3=V_1 \oplus V_2$ również stanowiłby pokrycie wierzchołkowe, jednak jego rozmiar wynosiłby $|C_3| > |C_2|$.
       Na tej podstawie stwierdzić można, że istnieje takie optymalne pokrycie wierzchołkowe $C_{\textnormal{opt}}$ spełniające własności $\{v,w\} \notin C_{\textnormal{opt}}$ oraz $u \in C_{\textnormal{opt}}$.
     \end{proof}
 
-    W związku z~powyższym graf $G^\prime$ otrzymuje się przez wykonywanie
-    następujących operacji do momentu eliminacji wszystkich wierzchołków stopnia
-    2\ o~rozłącznym sąsiedztwie.
-
+    W związku z~powyższym graf $G^\prime$ otrzymuje się przez wykonywanie następujących operacji do momentu eliminacji wszystkich wierzchołków stopnia 2\ o~rozłącznym 
+    sąsiedztwie:\\
     Dla wierzchołka $u$ stopnia $d(u)=2$ o~rozłącznym sąsiedztwie $(w,v)$:
     \begin{itemize}
       \item Każdą krawędź $(v,v_i); v_i \in V \land v_i \neq u$ zastąp 
@@ -96,8 +77,5 @@ Procedury składowe przetwarzania wstępnego:
     \end{itemize}
     Jedna iteracja redukuje rozmiar dziedziny problemu do wartości
     $n^\prime=n-2$.
-    Ze względu na zastąpienie krawędzi stanowiących o~sąsiedztwie wierzchołka $u$,
-    wartość parametru $k$ ulega zmniejszeniu do $k^\prime=k-1$.
-
+    Ze względu na zastąpienie krawędzi stanowiących o~sąsiedztwie wierzchołka $u$, wartość parametru $k$ ulega zmniejszeniu do $k^\prime=k-1$.
 \end{enumerate}
-
