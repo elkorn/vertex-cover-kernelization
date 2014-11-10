@@ -17,10 +17,11 @@ var currentfname string
 
 func setOutputFile(filename string) {
 	currentfname = filename + "_" + strconv.FormatInt(time.Now().UnixNano(), 10)
+	os.Create(currentfname)
 }
 
 func writeln(data string) {
-	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_CREATE, 0666)
+	file, err := os.OpenFile(currentfname, os.O_APPEND|os.O_WRONLY, 0666)
 
 	if nil != err {
 		log.Fatal(err)
@@ -33,6 +34,7 @@ func writeln(data string) {
 
 type flags struct {
 	runPattern *string
+	dataSource *string
 }
 
 type dataFileDescriptor struct {
@@ -44,6 +46,7 @@ type dataFileDescriptor struct {
 func defineFlags() (result flags) {
 	result = flags{
 		runPattern: flag.String("measure", ".*", "Regexp for which measurements should be run"),
+		dataSource: flag.String("datasource", "../test-data", "Relative path of the directory containing the test .dot files"),
 	}
 
 	flag.Parse()
@@ -104,8 +107,8 @@ func listExInFiles(dir string) {
 }
 
 func main() {
-	listRandomInFiles("../results")
 	currentFlags := defineFlags()
+	listRandomInFiles(*(currentFlags.dataSource))
 	for key, testCase := range testCases {
 		if regexp.MustCompile(*(currentFlags.runPattern)).MatchString(key) {
 			testCase(key)

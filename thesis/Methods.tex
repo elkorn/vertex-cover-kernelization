@@ -4,7 +4,7 @@
 \par{
   Metoda podziału i~ograniczeń jest paradygmatem projektowania algorytmów rozwiązujących problemy optymalizacyjne z~dziedziny kombinatoryki i~optymalizacji dyskretnej.
   Algorytm zaprojektowany według tego paradygmatu polega na rozpatrywaniu poszczególnych \emph{rozwiązań-kandydatów} przez przeszukiwanie pewnej \emph{przestrzeni stanów}, zdefiniowanej dziedziną danych wejściowych.
-  Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli na przykład całością przestrzeni poszukiwań lub zbiorem pustym, w zależności od natury rozwiązywanego problemu.
+  Zbiór tych rozwiązań tworzony jest w~postaci ukorzenionego drzewa, gdzie korzeń stanowi rozwiązanie określone pełnym, nieograniczonym zbiorem stanów czyli na przykład całością przestrzeni poszukiwań lub zbiorem pustym, w~zależności od natury rozwiązywanego problemu.
   Algorytm odwiedza kolejne gałęzie drzewa (podział), reprezentujące poszczególne
   podzbiory pełnego zbioru rozwiązań.
   Zanim jednak dana gałąź~drzewa poszukiwań zostanie odwiedzona, dokonywane jest sprawdzenie szacunkowych dolnych i~górnych granic wartości pewnej funkcji ograniczającej $f$.
@@ -23,14 +23,14 @@
   Formalnie mianem programowania liniowego określa się technikę optymalizacji liniowej \emph{funkcji celu}, poddawanej \emph{ograniczeniom} w~postaci równań lub nierówności liniowych.
   \emph{Region dopuszczalnych rozwiązań} to wypukły wielościan stanowiący zbiór powstały w~wyniku przecięcia skończonej liczby półpłaszczyn wyznaczanych przez nierówności liniowe.
   Funkcja celu to funkcja liniowa $z(x) \in \mathbb{R}$ zdefiniowana na regionie dopuszczalnych rozwiązań.
-  Algorytm programowania liniowego odnajduje na wielościanie punkt, w którym funkcja $z$ osiąga wartość optymalną w~kontekście sformułowania zadania, jeżeli taki punkt istnieje --- w przeciwnym wypadku dane sformułowanie problemu programowania liniowego jest \emph{nieograniczone}.
+  Algorytm programowania liniowego odnajduje na wielościanie punkt, w~którym funkcja $z$ osiąga wartość optymalną w~kontekście sformułowania zadania, jeżeli taki punkt istnieje --- w~przeciwnym przypadku dane sformułowanie problemu programowania liniowego jest \emph{nieograniczone}.
   Przykładowy zapis programu liniowego wygląda następująco:\\
   Zmaksymalizować funkcję celu:
   \begin{align*}
     \sum_{j=1}^{n} c_j x_j
   \end{align*}
   Przy ograniczeniach: \begin{align*}
-    \sum_{j=1}^{n}a_{ij}x_j \leq b_i; i =1, 2, \ldots, m\\
+    \sum_{j=1}^{n}a_{ij}x_j \leq b_i; i~=1, 2, \ldots, m\\
     x_j \geq 0, j=1, 2, \ldots, n
   \end{align*}
   Nieco wygodniejszą~formą zapisu programów liniowych jest tak zwana \emph{postać~wektorowa}, zapisywana w~następujący sposób.\\
@@ -154,14 +154,14 @@
   Redukcja dziedziny do jądra problemu jest techniką wykorzystywaną przy
   rozwiązywaniu problemów $\mathcal{NP}$-zupełnych za pomocą parametryzacji.
   Istotą redukcji dziedziny do jądra problemu przy problemach grafowych
-  jest transformacja grafu $G=(V,E)$ o rozmiarze $|V|=n$ przy danym parametrze $k$ w~inny
+  jest transformacja grafu $G=(V,E)$ o~rozmiarze $|V|=n$ przy danym parametrze $k$ w~inny
   graf $G^{\prime}=(V^{\prime}, E^{\prime})$ taki, że $V^{\prime} \subseteq V, E^{\prime} \subseteq E$
   wraz z~parametrem $k^{\prime} \leq k$.
   Celem tego procesu jest ograniczenie wartości $n^{\prime}$ przez jak najmniejszą
   funkcję $f(k^{\prime})$.
   Graf $G^{\prime}$ nazywany jest \emph{jądrem} dziedziny problemu.
   W~przypadku parametryzacji problemu pokrycia wierzchołkowego, w~grafie
-  $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$ o rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i~tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o liczebności $|C| \leq k$.
+  $G^{\prime}$ pokrycie wierzchołkowe $C^{\prime}$ o~rozmiarze $|C^{\prime}|\leq k^{\prime}$ istnieje wtedy i~tylko wtedy, gdy w~grafie $G$ istnieje pokrycie wierzchołkowe $C$ o~liczebności $|C| \leq k$.
 }
 \par{
   Redukowalność dziedziny do jądra problemu jest cechą wyróżniającą problemy 
@@ -171,11 +171,10 @@
   ustaleniu ograniczeń dotyczących wartości paramametru $k$, dyktującego z~kolei
   postać podproblemów lub poddziedziny.
   Po uzyskaniu jądra, jeżeli w~międzyczasie nie została udzielona odpowiedź negatywna, proces rozwiązywania problemu pokrycia wierzchołkowego
-  wykonuje algorytm opisany Pseudokodem~\ref{alg_VC1}\ do momentu otrzymania jednoznacznego rezultatu.
+  wykonuje algorytm opisany pseudokodem~\ref{alg_VC1}\ do momentu otrzymania jednoznacznego rezultatu.
 }
 \par{
-  Niniejsza praca koncentruje się na opisie, implementacji oraz porównaniu
-  empirycznych wyników czasu działania następujących metod redukcji dziedziny do
+  Niniejsza praca koncentruje się na opisie, implementacji oraz porównaniu wyników pomiarów czasu działania następujących metod redukcji dziedziny do
   jądra problemu:
   \begin{enumerate}
     \item Redukcja przez usunięcie wierzchołków wysokiego stopnia, zaproponowana

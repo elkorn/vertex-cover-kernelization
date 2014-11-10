@@ -31,7 +31,6 @@ func MeasureBnb(whoami string) {
 	for i, dataFile := range dataFiles {
 		var r1 int
 		g := graph.ScanDot(fmt.Sprintf(dataFile.path))
-		// r1, _ = preprocessing.Preprocessing(g)
 		m := takeMeasurement(
 			fmt.Sprintf("bnb:%v_%v", dataFile.vertices, dataFile.degreeDistribution),
 			g,
