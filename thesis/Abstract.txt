@@ -1,0 +1,5 @@
+Głównym celem niniejszej pracy jest przedstawienie fundamentalnej teoretycznej wiedzy dotyczącej podejścia do rozwiązywania problemów NP-zupełnych, opartego na technikach parametryzacji na przykładzie problemu pokrycia wierzchołkowego grafu. Koncepcje teoretyczne zmaterializowane zostaną w postaci implementacji opisywanych podejść: algorytmów przetwarzania wstępnego, algorytmu rozwiązującego problem pokrycia wierzchołkowego w oparciu o przepływ w sieci, algorytmu redukcji koron, algorytmu Chena, Kanji oraz Xia.
+Wybór problemu pokrycia wierzchołkowego jako problemu tematycznego podyktowany jest przynależnością do klasy FPT.
+Za cel dodatkowy pracy należy uznać przedstawienie zaawansowanej matematycznie problematyki w sposób przystępny dla czytelnika o tle inżynierskim.
+Będzie to stanowiło zrozumiałą podporę w dalszych badaniach lub adaptacji przedstawionych rozwiązań do konkretnych problemów praktycznych.
+Ponadto w pracy zostanie utworzona możliwie jednolita platforma ułatwiająca implementację i badania eksperymentalne algorytmów związanymi z problemami grafowymi.
