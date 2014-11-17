@@ -30,4 +30,7 @@ scratchpad*
 *.bcf
 *.run.xml
 *.RData
-*.Rhistory
+*.Rhistorypresentation/*.pdf
+presentation/*.tex
+presentation/*.nav
+presentation/*.snm
