@@ -13,7 +13,7 @@ scratchpad*
 *.log
 *.aux
 *.dvi
-*.pdf
+thesis/*.pdf
 *.lof
 *.lop
 *.lot
@@ -30,7 +30,8 @@ scratchpad*
 *.bcf
 *.run.xml
 *.RData
-*.Rhistorypresentation/*.pdf
+*.Rhistory
 presentation/*.tex
+presentation/*.pdf
 presentation/*.nav
 presentation/*.snm
